@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>cskin</id>
+    <version>16.1.14.3</version>
+    <title>cskin</title>
+    <authors>xiaohongmao</authors>
+    <owners>xiaohongmao</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>cskin nuget version</description>
+    <summary />
+  </metadata>
+</package>
