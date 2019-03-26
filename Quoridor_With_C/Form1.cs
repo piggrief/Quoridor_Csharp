@@ -12,7 +12,7 @@ using System.Runtime.InteropServices;
 
 namespace Quoridor_With_C
 {
-    public partial class Form1 : Skin_VS
+    public partial class Form1 : Skin_Metro
     {
         [DllImport("kernel32.dll")]
         public static extern Boolean AllocConsole();
@@ -41,9 +41,12 @@ namespace Quoridor_With_C
 
         public class _FormDraw
         {
-            public static float CB_LineWidth = 0;
-            public static int CB_size_width = 0;
-            public static int CB_size_height = 0;
+            public static float CB_LineWidth = 0;//棋盘框线宽度
+            public static float CB_BlockWidth = 0;//棋盘每格的宽度
+            public static int CB_size_width = 0;//棋盘宽的像素大小
+            public static int CB_size_height = 0;//棋盘高的像素大小
+            public static int StartLocation_X = 16;//棋盘框线的起始位置X坐标
+            public static int StartLocation_Y = 16;//棋盘框线的起始位置Y坐标
 
             /// <summary>
             /// 画棋盘框线函数
@@ -53,19 +56,12 @@ namespace Quoridor_With_C
             /// <param name="size_height">棋盘高度</param>
             /// <param name="LineColor">框线颜色</param>
             /// <param name="LineWidth">框线宽度</param>
-            public void DrawChessBoard(Graphics Gr, int size_width, int size_height, Color LineColor, float LineWidth)
+            public void DrawChessBoard(Graphics Gr, int size_width, int size_height, float LineWidth, float BlockWidth)
             {
-                Pen pen = new Pen(LineColor, LineWidth);//定义画笔，里面的参数为画笔的颜色
-
-                for (int i = 0; i < 8; i++)//列线
-                {
-                    Gr.DrawLine(pen, size_width / 8 * i + LineWidth / 2, 0 + LineWidth / 2, size_width / 8 * i + LineWidth / 2, size_width /8 *7 + LineWidth / 2);
-                    Gr.DrawLine(pen, 0 + LineWidth / 2, size_height / 8 * i + LineWidth / 2, size_height / 8 * 7 + LineWidth / 2, size_height / 8 * i + LineWidth / 2);                  
-                }
-
                 CB_LineWidth = LineWidth;
                 CB_size_width = size_width;
                 CB_size_height = size_height;
+                CB_BlockWidth = BlockWidth;
             }
             /// <summary>
             /// 画挡板
@@ -76,20 +72,36 @@ namespace Quoridor_With_C
             /// <param name="col">第col列挡板</param>
             /// <param name="BoardColor">挡板颜色</param>
             /// <param name="BoardWidth">挡板宽度，最好和棋盘框长度一样</param>
-            public void DrawBoard(Graphics Gr, NowAction NA, int row, int col, Color BoardColor, int BoardWidth)
+            public void DrawBoard(Graphics Gr, NowAction NA, int row, int col, Color BoardColor)
             {
                 int BlockWidth = _FormDraw.CB_size_width / 8;
                 if (NA == NowAction.Action_PlaceVerticalBoard)
                 {
-                    Pen pen = new Pen(BoardColor, BoardWidth);//定义画笔，里面的参数为画笔的颜色
+                    Pen pen = new Pen(BoardColor, CB_LineWidth);//定义画笔，里面的参数为画笔的颜色
 
-                    Gr.DrawLine(pen, col * BlockWidth + BoardWidth / 2, row * BlockWidth + BoardWidth, col * BlockWidth + BoardWidth / 2, (row + 1) * BlockWidth);
+                    int x0 = StartLocation_X, y0 = StartLocation_Y;
+                    int x1 = StartLocation_X, y1 = StartLocation_Y;
+
+                    x0 = Convert.ToInt16(x0 + CB_LineWidth / 2 + col * CB_BlockWidth);
+                    y0 = Convert.ToInt16(y0 + CB_LineWidth / 2 + row * CB_BlockWidth);
+                    x1 = x0;
+                    y1 = Convert.ToInt16(y0 + 2 * CB_BlockWidth);
+
+                    Gr.DrawLine(pen, x0, y0, x1, y1);
                 }
                 else if(NA == NowAction.Action_PlaceHorizontalBoard)
                 {
-                    Pen pen = new Pen(BoardColor, BoardWidth);//定义画笔，里面的参数为画笔的颜色
+                    Pen pen = new Pen(BoardColor, CB_LineWidth);//定义画笔，里面的参数为画笔的颜色
 
-                    Gr.DrawLine(pen, col * BlockWidth + BoardWidth, row * BlockWidth + BoardWidth / 2, (col + 1) * BlockWidth, row * BlockWidth + BoardWidth / 2);                
+                    int x0 = StartLocation_X, y0 = StartLocation_Y;
+                    int x1 = StartLocation_X, y1 = StartLocation_Y;
+
+                    x0 = Convert.ToInt16(x0 + CB_LineWidth / 2 + col * CB_BlockWidth);
+                    y0 = Convert.ToInt16(y0 + CB_LineWidth / 2 + row * CB_BlockWidth);
+                    x1 = Convert.ToInt16(x0 + 2 * CB_BlockWidth);
+                    y1 = y0;
+
+                    Gr.DrawLine(pen, x0, y0, x1, y1);
                 }
             }
             /// <summary>
@@ -137,11 +149,11 @@ namespace Quoridor_With_C
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            Gr = Graphics.FromImage(bmp);
+            Gr = Graphics.FromImage(ChessBoardPB.Image);
             _FormDraw FD = new _FormDraw();
 
-            Gr.Clear(Color.FromArgb(42, 58, 86));
-            FD.DrawChessBoard(Gr, 630, 630, Color.FromArgb(163,159,147), 15);
+            //Gr.Clear(Color.FromArgb(42, 58, 86));
+            FD.DrawChessBoard(Gr, 630, 630, 10, 83.5F);
             ChessBoardPB.Size = new Size(630, 630);
 
             ChessBoardPB.BackgroundImage = bmp;
@@ -152,7 +164,7 @@ namespace Quoridor_With_C
         {
             if (NowPlayer == EnumNowPlayer.Player1)
             {
-                P1NowAction = NowAction.Action_PlaceHorizontalBoard;
+                P1NowAction = NowAction.Action_PlaceVerticalBoard;
             }
         }
 
@@ -180,12 +192,17 @@ namespace Quoridor_With_C
                 if (P1NowAction == NowAction.Action_PlaceVerticalBoard)
                 {
                     int col = 0, row = 0;//0~7行列
-                    int BlockWidth = _FormDraw.CB_size_width / 8;
-                    col = (TP.X + BlockWidth/2) / BlockWidth;
-                    row = (TP.Y) / BlockWidth;
-                    //Console.WriteLine("挡板位置：" + col.ToString() +","+ row.ToString());
+                    col = Convert.ToInt16((TP.X  - _FormDraw.StartLocation_X) / _FormDraw.CB_BlockWidth);
+                    row = Convert.ToInt16((TP.Y + _FormDraw.CB_BlockWidth / 2 - _FormDraw.StartLocation_Y) / _FormDraw.CB_BlockWidth) - 1;
+                    Console.WriteLine("挡板位置：" + col.ToString() + "," + row.ToString());
+
+                    if (row >= 6 || col <= 0 || col >= 7)
+                    {
+                        MessageBox.Show("挡板放置错误请重放！");
+                        return;
+                    }
                     _FormDraw FD = new _FormDraw();
-                    FD.DrawBoard(Gr, NowAction.Action_PlaceVerticalBoard, row, col, Color.Red, 15);
+                    FD.DrawBoard(Gr, NowAction.Action_PlaceVerticalBoard, row, col, Color.Red);
                     //ChessBoardPB.Size = new Size(630, 630);
                     //ChessBoardPB.BackgroundImage = bmp;
                     ChessBoardPB.Refresh();
@@ -193,30 +210,33 @@ namespace Quoridor_With_C
                 else if (P1NowAction == NowAction.Action_PlaceHorizontalBoard)
                 {
                     int col = 0, row = 0;//0~7行列
-                    int BlockWidth = _FormDraw.CB_size_width / 8;
-                    col = (TP.X) / BlockWidth;
-                    row = (TP.Y + BlockWidth/2) / BlockWidth;
-                    //Console.WriteLine("挡板位置：" + col.ToString() +","+ row.ToString()); 
+                    col = Convert.ToInt16((TP.X + _FormDraw.CB_BlockWidth / 2  - _FormDraw.StartLocation_X) / _FormDraw.CB_BlockWidth) - 1;
+                    row = Convert.ToInt16((TP.Y - _FormDraw.StartLocation_Y) / _FormDraw.CB_BlockWidth);
+                    Console.WriteLine("挡板位置：" + col.ToString() + "," + row.ToString()); 
+                    if (col >= 6 || row <= 0 || row >= 7)
+                    {
+                        MessageBox.Show("挡板放置错误请重放！");
+                        return;
+                    }
                     _FormDraw FD = new _FormDraw();
-                    FD.DrawBoard(Gr, NowAction.Action_PlaceHorizontalBoard, row, col, Color.Red, 15);
+                    FD.DrawBoard(Gr, NowAction.Action_PlaceHorizontalBoard, row, col, Color.Red);
                     ChessBoardPB.Refresh();
 
                 }
                 else if (P1NowAction == NowAction.Action_Move)
                 {
                     int col = 0, row = 0;//0~7行列
-                    int BlockWidth = _FormDraw.CB_size_width / 8;
+                    int BlockWidth = (_FormDraw.CB_size_width - 32) / 8;
                     col = (TP.X) / BlockWidth;
                     row = (TP.Y) / BlockWidth;
-                    Console.WriteLine("挡板位置：" + col.ToString() +","+ row.ToString()); 
+                    Console.WriteLine("挡板位置：" + TP.X.ToString() + "," + TP.Y.ToString()); 
                     _FormDraw FD = new _FormDraw();
-                    //FD.DrawBoard(Gr, NowAction.Action_PlaceHorizontalBoard, row, col, Color.Red, 15);
                     flag_clear = !flag_clear;
 
                     if (flag_clear)
-                        FD.ClearChess(Gr, row, col, Color.FromArgb(42, 58, 86), 15);
+                        FD.ClearChess(Gr, row, col, Color.FromArgb(42, 58, 86), 10);
                     else
-                        FD.DrawChess(Gr, row, col, Color.Green,15);
+                        FD.DrawChess(Gr, row, col, Color.Green,10);
                     ChessBoardPB.Refresh(); 
                 }
             }

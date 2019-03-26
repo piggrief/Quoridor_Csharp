@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.ChessBoardPB = new CCWin.SkinControl.SkinPictureBox();
             this.PlaceBoardBTN = new CCWin.SkinControl.SkinButton();
             this.MoveBTN = new CCWin.SkinControl.SkinButton();
@@ -39,7 +40,8 @@
             // ChessBoardPB
             // 
             this.ChessBoardPB.BackColor = System.Drawing.Color.Transparent;
-            this.ChessBoardPB.Location = new System.Drawing.Point(1, 42);
+            this.ChessBoardPB.Image = ((System.Drawing.Image)(resources.GetObject("ChessBoardPB.Image")));
+            this.ChessBoardPB.Location = new System.Drawing.Point(11, 33);
             this.ChessBoardPB.Name = "ChessBoardPB";
             this.ChessBoardPB.Size = new System.Drawing.Size(630, 630);
             this.ChessBoardPB.TabIndex = 0;
