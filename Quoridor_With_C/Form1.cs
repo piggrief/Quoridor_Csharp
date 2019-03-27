@@ -8,7 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using CCWin;
-using System.Runtime.InteropServices;  
+using System.Runtime.InteropServices;
+using Quoridor;
 
 namespace Quoridor_With_C
 {
@@ -22,6 +23,7 @@ namespace Quoridor_With_C
         Graphics Gr;
         Bitmap bmp = new Bitmap(1000, 900);
 
+        public string GameMode = "DoublePlay";
         enum EnumNowPlayer
         {
             Player1,
@@ -32,12 +34,12 @@ namespace Quoridor_With_C
         {
             Action_PlaceVerticalBoard,
             Action_PlaceHorizontalBoard,
-            Action_Move,
+            Action_Move_Player1,
+            Action_Move_Player2,
             Action_Wait
         }
 
-        NowAction P1NowAction = NowAction.Action_Wait;
-        NowAction P2NowAction = NowAction.Action_Wait;
+        NowAction PlayerNowAction = NowAction.Action_Move_Player1;
 
         public class _FormDraw
         {
@@ -85,7 +87,7 @@ namespace Quoridor_With_C
                     x0 = Convert.ToInt16(x0 + CB_LineWidth / 2 + col * CB_BlockWidth);
                     y0 = Convert.ToInt16(y0 + CB_LineWidth / 2 + row * CB_BlockWidth);
                     x1 = x0;
-                    y1 = Convert.ToInt16(y0 + 2 * CB_BlockWidth);
+                    y1 = Convert.ToInt16(y0 + CB_BlockWidth);
 
                     Gr.DrawLine(pen, x0, y0, x1, y1);
                 }
@@ -98,7 +100,7 @@ namespace Quoridor_With_C
 
                     x0 = Convert.ToInt16(x0 + CB_LineWidth / 2 + col * CB_BlockWidth);
                     y0 = Convert.ToInt16(y0 + CB_LineWidth / 2 + row * CB_BlockWidth);
-                    x1 = Convert.ToInt16(x0 + 2 * CB_BlockWidth);
+                    x1 = Convert.ToInt16(x0 + CB_BlockWidth);
                     y1 = y0;
 
                     Gr.DrawLine(pen, x0, y0, x1, y1);
@@ -112,68 +114,68 @@ namespace Quoridor_With_C
             /// <param name="col">第col行棋格</param>
             /// <param name="ChessColor">棋子颜色</param>
             /// <param name="LineWidth">棋盘线宽</param>
-            public void DrawChess(Graphics Gr, int row, int col, Color ChessColor, int LineWidth)
+            public Point DrawChess(Graphics Gr, int row, int col, Color ChessColor)
             {
-                int BlockWidth = _FormDraw.CB_size_width / 8;
-                int size_Chess = Convert.ToInt16(BlockWidth * 0.6)-2;
-                Gr.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-                Brush bush = new SolidBrush(ChessColor);//填充的颜色
+                int size_Chess = Convert.ToInt16(_FormDraw.CB_BlockWidth * 0.7);
+                //Gr.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                //Brush bush = new SolidBrush(ChessColor);//填充的颜色
+                int x = _FormDraw.StartLocation_X + Convert.ToInt16(col * _FormDraw.CB_BlockWidth + size_Chess / 2 - size_Chess / 5);
+                int y = _FormDraw.StartLocation_Y + Convert.ToInt16(row * _FormDraw.CB_BlockWidth + size_Chess / 2 - size_Chess / 5);
 
-                Gr.FillEllipse(bush, col* BlockWidth + size_Chess / 2 + 2, row * BlockWidth + size_Chess / 2 + 2, size_Chess, size_Chess);//画填充椭圆的方法，x坐标、y坐标、宽、高，如果是100，则半径为50 
-            }
-            /// <summary>
-            /// 清除棋子圆
-            /// </summary>
-            /// <param name="Gr">绘画类</param>
-            /// <param name="row">第row行棋格</param>
-            /// <param name="col">第col行棋格</param>
-            /// <param name="ClearColor">清除颜色</param>
-            /// <param name="LineWidth">棋盘线宽</param>
-            public void ClearChess(Graphics Gr, int row, int col, Color ClearColor, int LineWidth)
-            {
-                int BlockWidth = _FormDraw.CB_size_width / 8;
-                double size_Chess = Convert.ToDouble(BlockWidth) * 0.6;
-                Gr.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-                Brush bush = new SolidBrush(ClearColor);//填充的颜色
-                int x = Convert.ToInt16(col * BlockWidth + size_Chess / 2);
-                int y = Convert.ToInt16(row * BlockWidth + size_Chess / 2);
+                return new Point(x, y);
 
-                Gr.FillEllipse(bush, x, y, Convert.ToInt16(size_Chess), Convert.ToInt16(size_Chess));//画填充椭圆的方法，x坐标、y坐标、宽、高，如果是100，则半径为50 
+                //Gr.FillEllipse(bush, x, y, size_Chess, size_Chess);//画填充椭圆的方法，x坐标、y坐标、宽、高，如果是100，则半径为50 
             }
+
         }
         public Form1()
         {
             InitializeComponent();
-            AllocConsole();
-        }
 
+        }
+        QuoridorGame NowQuoridor = new QuoridorGame();
         private void Form1_Load(object sender, EventArgs e)
         {
+            AllocConsole();
             Gr = Graphics.FromImage(ChessBoardPB.Image);
             _FormDraw FD = new _FormDraw();
 
-            //Gr.Clear(Color.FromArgb(42, 58, 86));
             FD.DrawChessBoard(Gr, 630, 630, 10, 83.5F);
             ChessBoardPB.Size = new Size(630, 630);
 
-            ChessBoardPB.BackgroundImage = bmp;
+            ChessWhitePB.Size = new Size(58, 58);
+            ChessBoardPB.Controls.Add(ChessWhitePB);
+            ChessWhitePB.Location = new Point(0, 0);
+            ChessWhitePB.BackColor = Color.Transparent;
+            ChessBlackPB.Size = new Size(58, 58);
+            ChessBoardPB.Controls.Add(ChessBlackPB);
+            ChessBlackPB.Location = new Point(100, 100);
+            ChessBlackPB.BackColor = Color.Transparent;
+
+            ChessWhitePB.Location = FD.DrawChess(Gr, 0, 3, Color.White);
+            ChessBlackPB.Location = FD.DrawChess(Gr, 6, 3, Color.Black);
+
+            //刷新初始棋盘
+            NowQuoridor.ThisChessBoard.DrawNowChessBoard(ref Gr, ChessWhitePB, ChessBlackPB);
+            ChessBoardPB.Refresh();
         }
 
+        bool IfPlaceBoard = false;
 
         private void PlaceBoardBTN_Click(object sender, EventArgs e)
         {
-            if (NowPlayer == EnumNowPlayer.Player1)
-            {
-                P1NowAction = NowAction.Action_PlaceVerticalBoard;
-            }
+            PlayerNowAction = NowAction.Action_PlaceVerticalBoard;
+            PlaceVerticalBoardBTN.Enabled = false;
+            PlaceHorizontalBoardBTN.Enabled = false;
+            IfPlaceBoard = true;
         }
 
         private void MoveBTN_Click(object sender, EventArgs e)
         {
-            if (NowPlayer == EnumNowPlayer.Player1)
-            {
-                P1NowAction = NowAction.Action_Move;
-            }
+            if(NowPlayer == EnumNowPlayer.Player1) 
+                PlayerNowAction = NowAction.Action_Move_Player1;
+            else
+                PlayerNowAction = NowAction.Action_Move_Player2;
         }
         public System.Drawing.Point TP = new System.Drawing.Point();
 
@@ -182,63 +184,117 @@ namespace Quoridor_With_C
 
     
         }
-        bool flag_clear = true;
         private void ChessBoardPB_MouseClick(object sender, MouseEventArgs e)
         {
-            TP = e.Location;
-            //Console.WriteLine("MouseClick!");
-            if (NowPlayer == EnumNowPlayer.Player1)
+        }
+
+        private void ChessWhitePB_Click(object sender, EventArgs e)
+        {
+            string Hint1 = "This is Not Empty!";
+            Console.WriteLine(Hint1);
+
+        }
+
+        private void PlaceHorizontalBoardBTN_Click(object sender, EventArgs e)
+        {
+            PlayerNowAction = NowAction.Action_PlaceHorizontalBoard;
+            PlaceVerticalBoardBTN.Enabled = false;
+            PlaceHorizontalBoardBTN.Enabled = false;
+            IfPlaceBoard = true;
+
+        }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            FreeConsole();
+            Application.Exit();
+        }
+
+        private void Form1_MouseDown(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void ChessBoardPB_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == System.Windows.Forms.MouseButtons.Right)
             {
-                if (P1NowAction == NowAction.Action_PlaceVerticalBoard)
+                if (IfPlaceBoard)
                 {
-                    int col = 0, row = 0;//0~7行列
-                    col = Convert.ToInt16((TP.X  - _FormDraw.StartLocation_X) / _FormDraw.CB_BlockWidth);
+                    IfPlaceBoard = false;
+                    if (NowPlayer == EnumNowPlayer.Player1)
+                    {
+                        PlayerNowAction = NowAction.Action_Move_Player1;
+                    }
+                    if (NowPlayer == EnumNowPlayer.Player2)
+                    {
+                        PlayerNowAction = NowAction.Action_Move_Player2;
+                    }
+                    PlaceVerticalBoardBTN.Enabled = true;
+                    PlaceHorizontalBoardBTN.Enabled = true;
+                }
+            }
+            else if (e.Button == System.Windows.Forms.MouseButtons.Left)
+            {
+                TP = e.Location;
+                int col = 0, row = 0;//0~7行列
+
+                if (PlayerNowAction == NowAction.Action_PlaceVerticalBoard)
+                {
+                    col = Convert.ToInt16((TP.X - _FormDraw.StartLocation_X) / _FormDraw.CB_BlockWidth);
                     row = Convert.ToInt16((TP.Y + _FormDraw.CB_BlockWidth / 2 - _FormDraw.StartLocation_Y) / _FormDraw.CB_BlockWidth) - 1;
-                    Console.WriteLine("挡板位置：" + col.ToString() + "," + row.ToString());
-
-                    if (row >= 6 || col <= 0 || col >= 7)
-                    {
-                        MessageBox.Show("挡板放置错误请重放！");
-                        return;
-                    }
-                    _FormDraw FD = new _FormDraw();
-                    FD.DrawBoard(Gr, NowAction.Action_PlaceVerticalBoard, row, col, Color.Red);
-                    //ChessBoardPB.Size = new Size(630, 630);
-                    //ChessBoardPB.BackgroundImage = bmp;
-                    ChessBoardPB.Refresh();
                 }
-                else if (P1NowAction == NowAction.Action_PlaceHorizontalBoard)
+                else if (PlayerNowAction == NowAction.Action_PlaceHorizontalBoard)
                 {
-                    int col = 0, row = 0;//0~7行列
-                    col = Convert.ToInt16((TP.X + _FormDraw.CB_BlockWidth / 2  - _FormDraw.StartLocation_X) / _FormDraw.CB_BlockWidth) - 1;
+                    col = Convert.ToInt16((TP.X + _FormDraw.CB_BlockWidth / 2 - _FormDraw.StartLocation_X) / _FormDraw.CB_BlockWidth) - 1;
                     row = Convert.ToInt16((TP.Y - _FormDraw.StartLocation_Y) / _FormDraw.CB_BlockWidth);
-                    Console.WriteLine("挡板位置：" + col.ToString() + "," + row.ToString()); 
-                    if (col >= 6 || row <= 0 || row >= 7)
-                    {
-                        MessageBox.Show("挡板放置错误请重放！");
-                        return;
-                    }
-                    _FormDraw FD = new _FormDraw();
-                    FD.DrawBoard(Gr, NowAction.Action_PlaceHorizontalBoard, row, col, Color.Red);
-                    ChessBoardPB.Refresh();
-
                 }
-                else if (P1NowAction == NowAction.Action_Move)
+                else if (PlayerNowAction == NowAction.Action_Move_Player1 || PlayerNowAction == NowAction.Action_Move_Player2)
                 {
-                    int col = 0, row = 0;//0~7行列
-                    int BlockWidth = (_FormDraw.CB_size_width - 32) / 8;
-                    col = (TP.X) / BlockWidth;
-                    row = (TP.Y) / BlockWidth;
-                    Console.WriteLine("挡板位置：" + TP.X.ToString() + "," + TP.Y.ToString()); 
-                    _FormDraw FD = new _FormDraw();
-                    flag_clear = !flag_clear;
-
-                    if (flag_clear)
-                        FD.ClearChess(Gr, row, col, Color.FromArgb(42, 58, 86), 10);
-                    else
-                        FD.DrawChess(Gr, row, col, Color.Green,10);
-                    ChessBoardPB.Refresh(); 
+                    col = Convert.ToInt16(TP.X / _FormDraw.CB_BlockWidth) - 1;
+                    row = Convert.ToInt16(TP.Y / _FormDraw.CB_BlockWidth) - 1;
                 }
+                string Hint1 = NowQuoridor.ThisChessBoard.Action(row, col, PlayerNowAction);
+                Console.WriteLine(Hint1);
+
+                if (Hint1 != "OK")
+                {
+                    MessageBox.Show(Hint1);
+                    return;
+                }
+                else
+                {
+                    if (NowPlayer == EnumNowPlayer.Player1)
+                    {
+                        NowPlayer = EnumNowPlayer.Player2;
+                    }
+                    else if (NowPlayer == EnumNowPlayer.Player2)
+                    {
+                        NowPlayer = EnumNowPlayer.Player1;
+                    }
+                }
+
+                NowQuoridor.ThisChessBoard.DrawNowChessBoard(ref Gr, ChessWhitePB, ChessBlackPB);
+                ChessBoardPB.Refresh();
+
+                string result = NowQuoridor.CheckResult();
+                if (result != "No success")
+                {
+                    MessageBox.Show(result);
+                }
+                if (NowPlayer == EnumNowPlayer.Player1)
+                {
+                    MessageBox.Show("现在轮到玩家1操作！");
+                    PlayerNowAction = NowAction.Action_Move_Player1;
+                }
+                if (NowPlayer == EnumNowPlayer.Player2)
+                {
+                    MessageBox.Show("现在轮到玩家2操作！");
+                    PlayerNowAction = NowAction.Action_Move_Player2;
+                }
+
+                PlaceVerticalBoardBTN.Enabled = true;
+                PlaceHorizontalBoardBTN.Enabled = true; 
             }
         }
 
