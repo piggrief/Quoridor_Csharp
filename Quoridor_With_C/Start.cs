@@ -11,7 +11,7 @@ using CCWin;
 
 namespace Quoridor_With_C
 {
-    public partial class Start : Skin_Metro
+    public partial class Start : Skin_Mac
     {
         public Start()
         {

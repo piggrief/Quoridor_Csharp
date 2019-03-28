@@ -24,7 +24,7 @@ namespace Quoridor_With_C
         Bitmap bmp = new Bitmap(1000, 900);
 
         public string GameMode = "DoublePlay";
-        enum EnumNowPlayer
+        public enum EnumNowPlayer
         {
             Player1,
             Player2
@@ -217,7 +217,7 @@ namespace Quoridor_With_C
 
         private void ChessBoardPB_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == System.Windows.Forms.MouseButtons.Right)
+            if (e.Button == System.Windows.Forms.MouseButtons.Right)//右键取消正在执行的操作
             {
                 if (IfPlaceBoard)
                 {
@@ -234,11 +234,12 @@ namespace Quoridor_With_C
                     PlaceHorizontalBoardBTN.Enabled = true;
                 }
             }
-            else if (e.Button == System.Windows.Forms.MouseButtons.Left)
+            else if (e.Button == System.Windows.Forms.MouseButtons.Left)//左键执行某个行动
             {
                 TP = e.Location;
-                int col = 0, row = 0;//0~7行列
+                # region 计算相关操作对应的操作位置的行和列
 
+                int col = 0, row = 0;//0~7行列
                 if (PlayerNowAction == NowAction.Action_PlaceVerticalBoard)
                 {
                     col = Convert.ToInt16((TP.X - _FormDraw.StartLocation_X) / _FormDraw.CB_BlockWidth);
@@ -247,14 +248,34 @@ namespace Quoridor_With_C
                 else if (PlayerNowAction == NowAction.Action_PlaceHorizontalBoard)
                 {
                     col = Convert.ToInt16((TP.X + _FormDraw.CB_BlockWidth / 2 - _FormDraw.StartLocation_X) / _FormDraw.CB_BlockWidth) - 1;
-                    row = Convert.ToInt16((TP.Y - _FormDraw.StartLocation_Y) / _FormDraw.CB_BlockWidth);
+                    row = Convert.ToInt16((TP.Y - _FormDraw.StartLocation_Y) / _FormDraw.CB_BlockWidth);                
                 }
                 else if (PlayerNowAction == NowAction.Action_Move_Player1 || PlayerNowAction == NowAction.Action_Move_Player2)
                 {
                     col = Convert.ToInt16(TP.X / _FormDraw.CB_BlockWidth) - 1;
                     row = Convert.ToInt16(TP.Y / _FormDraw.CB_BlockWidth) - 1;
                 }
-                string Hint1 = NowQuoridor.ThisChessBoard.Action(row, col, PlayerNowAction);
+
+                # endregion
+
+                string Hint1 = "";
+
+                int Player1_RoadLenght = 0;
+                int Player2_RoadLenght = 0;
+                Player1_RoadLenght = NowQuoridor.CheckBoard(PlayerNowAction, EnumNowPlayer.Player1, row, col);
+                Player2_RoadLenght = NowQuoridor.CheckBoard(PlayerNowAction, EnumNowPlayer.Player2, row, col);
+
+                if (999 <= Player1_RoadLenght || 999 <= Player2_RoadLenght)
+                {
+                        Hint1 = "No Road";                
+                }
+                if (Hint1 != "No Road")
+                {
+                    if (row >= 0 && row <= 6 && col >= 0 && col <= 6)
+                        Hint1 = NowQuoridor.ThisChessBoard.Action(row, col, PlayerNowAction);
+                    else
+                        Hint1 = "点击越界！";
+                }
                 Console.WriteLine(Hint1);
 
                 if (Hint1 != "OK")
@@ -276,6 +297,24 @@ namespace Quoridor_With_C
 
                 NowQuoridor.ThisChessBoard.DrawNowChessBoard(ref Gr, ChessWhitePB, ChessBlackPB);
                 ChessBoardPB.Refresh();
+
+                int[,] disbuff = new int[7, 7];
+                for (int i = 0; i < 7; i++)
+                {
+                    for (int j = 0; j < 7; j++)
+                    {
+                        disbuff[i, j] = NowQuoridor.CalDistance(EnumNowPlayer.Player1, i, j);
+                        Console.Write(disbuff[i, j].ToString() + " ");
+                    }
+                    Console.WriteLine();
+                }
+
+                int dis = 0;
+                if (NowPlayer == EnumNowPlayer.Player1)
+                    dis = NowQuoridor.LookupRoad_Greedy(NowPlayer, NowQuoridor.ThisChessBoard.Player1Location.X, NowQuoridor.ThisChessBoard.Player1Location.Y, new List<Point>());
+                else
+                    dis = NowQuoridor.LookupRoad_Greedy(NowPlayer, NowQuoridor.ThisChessBoard.Player2Location.X, NowQuoridor.ThisChessBoard.Player2Location.Y, new List<Point>());
+                Console.WriteLine("dis = " + dis.ToString());
 
                 string result = NowQuoridor.CheckResult();
                 if (result != "No success")
