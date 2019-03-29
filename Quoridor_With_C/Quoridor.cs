@@ -95,6 +95,314 @@ namespace Quoridor
                 }
             } 
         }
+        public string CheckMove(int row, int col, Form1.NowAction NA)
+        {
+            if (ChessBoardAll[row, col].GridStatus != Grid.GridInsideStatus.Empty) return "This Not Empty";
+
+            Grid.GridInsideStatus ActionPlayer = Grid.GridInsideStatus.Empty;
+            Grid.GridInsideStatus AnotherPlayer = Grid.GridInsideStatus.Empty;
+
+            if (NA != Form1.NowAction.Action_Move_Player1
+                && NA != Form1.NowAction.Action_Move_Player2)
+                return "Error";
+            if (NA == Form1.NowAction.Action_Move_Player1)
+            {
+                ActionPlayer = Grid.GridInsideStatus.Have_Player1;
+                AnotherPlayer = Grid.GridInsideStatus.Have_Player2;
+            }
+            else
+            {
+                ActionPlayer = Grid.GridInsideStatus.Have_Player2;
+                AnotherPlayer = Grid.GridInsideStatus.Have_Player1;
+            }
+
+            //前扫一格
+            if (row >= 1
+                && !(ChessBoardAll[row, col].IfUpBoard))//上扫
+            {
+                if (ChessBoardAll[row - 1, col].GridStatus == ActionPlayer)
+                {
+                    ChessBoardAll[row - 1, col].GridStatus = Grid.GridInsideStatus.Empty;
+                    ChessBoardAll[row, col].GridStatus = ActionPlayer;
+                    Player1Location = new Point(row, col);
+                    return "OK";
+                }
+                else if (ChessBoardAll[row - 1, col].GridStatus == AnotherPlayer)
+                {
+                    if (row >= 2
+                        && ChessBoardAll[row - 2, col].GridStatus == ActionPlayer
+                        && !(ChessBoardAll[row - 2, col].IfUpBoard))
+                    {
+                        ChessBoardAll[row - 2, col].GridStatus = Grid.GridInsideStatus.Empty;
+                        ChessBoardAll[row, col].GridStatus = ActionPlayer;
+                        Player1Location = new Point(row, col);
+                        return "OK";
+                    }
+                }
+            }
+            if (row <= 5
+                && !(ChessBoardAll[row + 1, col].IfUpBoard))//下扫
+            {
+                if (ChessBoardAll[row + 1, col].GridStatus == ActionPlayer)
+                {
+                    ChessBoardAll[row + 1, col].GridStatus = Grid.GridInsideStatus.Empty;
+                    ChessBoardAll[row, col].GridStatus = ActionPlayer;
+                    Player1Location = new Point(row, col);
+                    return "OK";
+                }
+                else if (ChessBoardAll[row + 1, col].GridStatus == AnotherPlayer)
+                {
+                    if (row <= 4
+                        && ChessBoardAll[row + 2, col].GridStatus == ActionPlayer
+                        && !(ChessBoardAll[row + 2, col].IfUpBoard))
+                    {
+                        ChessBoardAll[row + 2, col].GridStatus = Grid.GridInsideStatus.Empty;
+                        ChessBoardAll[row, col].GridStatus = ActionPlayer;
+                        Player1Location = new Point(row, col);
+                        return "OK";
+                    }
+                }
+            }
+            if (col >= 1
+                && !(ChessBoardAll[row, col].IfLeftBoard))//左扫
+            {
+                if (ChessBoardAll[row, col - 1].GridStatus == ActionPlayer)
+                {
+                    ChessBoardAll[row, col - 1].GridStatus = Grid.GridInsideStatus.Empty;
+                    ChessBoardAll[row, col].GridStatus = ActionPlayer;
+                    Player1Location = new Point(row, col);
+                    return "OK";
+                }
+                else if (ChessBoardAll[row, col - 1].GridStatus == AnotherPlayer)
+                {
+                    if (col >= 2
+                        && ChessBoardAll[row, col - 2].GridStatus == ActionPlayer
+                        && !(ChessBoardAll[row, col - 1].IfLeftBoard))
+                    {
+                        ChessBoardAll[row, col - 2].GridStatus = Grid.GridInsideStatus.Empty;
+                        ChessBoardAll[row, col].GridStatus = ActionPlayer;
+                        Player1Location = new Point(row, col);
+                        return "OK";
+                    }
+                }
+            }
+            if (col <= 5
+                && !(ChessBoardAll[row, col + 1].IfLeftBoard))//右扫
+            {
+                if (ChessBoardAll[row, col + 1].GridStatus == ActionPlayer)
+                {
+                    ChessBoardAll[row, col + 1].GridStatus = Grid.GridInsideStatus.Empty;
+                    ChessBoardAll[row, col].GridStatus = ActionPlayer;
+                    Player1Location = new Point(row, col);
+                    return "OK";
+                }
+                else if (ChessBoardAll[row, col + 1].GridStatus == AnotherPlayer)
+                {
+                    if (col <= 4
+                        && ChessBoardAll[row, col + 2].GridStatus == ActionPlayer
+                        && !(ChessBoardAll[row, col + 2].IfLeftBoard))
+                    {
+                        ChessBoardAll[row, col + 2].GridStatus = Grid.GridInsideStatus.Empty;
+                        ChessBoardAll[row, col].GridStatus = ActionPlayer;
+                        Player1Location = new Point(row, col);
+                        return "OK";
+                    }
+                }
+            }
+
+            return "MoveError";
+        }
+        public string CheckMove_New(int row, int col, Form1.NowAction NA)
+        {
+            if (ChessBoardAll[row, col].GridStatus != Grid.GridInsideStatus.Empty) return "This Not Empty";
+
+            Grid.GridInsideStatus ActionPlayer = Grid.GridInsideStatus.Empty;
+            Grid.GridInsideStatus AnotherPlayer = Grid.GridInsideStatus.Empty;
+
+            if (NA != Form1.NowAction.Action_Move_Player1
+                && NA != Form1.NowAction.Action_Move_Player2)
+                return "Error";
+            if (NA == Form1.NowAction.Action_Move_Player1)
+            {
+                ActionPlayer = Grid.GridInsideStatus.Have_Player1;
+                AnotherPlayer = Grid.GridInsideStatus.Have_Player2;
+            }
+            else
+            {
+                ActionPlayer = Grid.GridInsideStatus.Have_Player2;
+                AnotherPlayer = Grid.GridInsideStatus.Have_Player1;
+            }
+
+            //前扫一格
+            if (row >= 1
+                && !(ChessBoardAll[row, col].IfUpBoard))//上扫
+            {
+                if (ChessBoardAll[row - 1, col].GridStatus == ActionPlayer)
+                {
+                    ChessBoardAll[row - 1, col].GridStatus = Grid.GridInsideStatus.Empty;
+                    ChessBoardAll[row, col].GridStatus = ActionPlayer;
+                    Player1Location = new Point(row, col);
+                    return "OK";
+                }
+                else if (ChessBoardAll[row - 1, col].GridStatus == AnotherPlayer)
+                {
+                    if (col >= 1
+                        && ChessBoardAll[row - 1, col - 1].GridStatus == ActionPlayer
+                        && !(ChessBoardAll[row - 1, col].IfLeftBoard))//左扫
+                    {
+                        ChessBoardAll[row - 1, col - 1].GridStatus = Grid.GridInsideStatus.Empty;
+                        ChessBoardAll[row, col].GridStatus = ActionPlayer;
+                        Player1Location = new Point(row, col);
+                        return "OK"; 
+                    }
+                    if (col <= 5
+                        && ChessBoardAll[row - 1, col + 1].GridStatus == ActionPlayer
+                        && !(ChessBoardAll[row - 1, col + 1].IfLeftBoard))//右扫
+                    {
+                        ChessBoardAll[row - 1, col + 1].GridStatus = Grid.GridInsideStatus.Empty;
+                        ChessBoardAll[row, col].GridStatus = ActionPlayer;
+                        Player1Location = new Point(row, col);
+                        return "OK";
+                    }
+                    if (row >= 2
+                        && ChessBoardAll[row - 2, col].GridStatus == ActionPlayer
+                        && !(ChessBoardAll[row - 1, col].IfUpBoard))//上扫
+                    {
+                        ChessBoardAll[row - 2, col].GridStatus = Grid.GridInsideStatus.Empty;
+                        ChessBoardAll[row, col].GridStatus = ActionPlayer;
+                        Player1Location = new Point(row, col);
+                        return "OK";
+                    }
+                }
+            }
+            if (row <= 5
+                && !(ChessBoardAll[row + 1, col].IfUpBoard))//下扫
+            {
+                if (ChessBoardAll[row + 1, col].GridStatus == ActionPlayer)
+                {
+                    ChessBoardAll[row + 1, col].GridStatus = Grid.GridInsideStatus.Empty;
+                    ChessBoardAll[row, col].GridStatus = ActionPlayer;
+                    Player1Location = new Point(row, col);
+                    return "OK";
+                }
+                else if (ChessBoardAll[row + 1, col].GridStatus == AnotherPlayer)
+                {
+                    if (col >= 1
+                        && ChessBoardAll[row + 1, col - 1].GridStatus == ActionPlayer
+                        && !(ChessBoardAll[row + 1, col].IfLeftBoard))//左扫
+                    {
+                        ChessBoardAll[row + 1, col - 1].GridStatus = Grid.GridInsideStatus.Empty;
+                        ChessBoardAll[row, col].GridStatus = ActionPlayer;
+                        Player1Location = new Point(row, col);
+                        return "OK";
+                    }
+                    if (col <= 5
+                        && ChessBoardAll[row + 1, col + 1].GridStatus == ActionPlayer
+                        && !(ChessBoardAll[row + 1, col + 1].IfLeftBoard))//右扫
+                    {
+                        ChessBoardAll[row + 1, col + 1].GridStatus = Grid.GridInsideStatus.Empty;
+                        ChessBoardAll[row, col].GridStatus = ActionPlayer;
+                        Player1Location = new Point(row, col);
+                        return "OK";
+                    }
+
+                    if (row <= 4
+                        && ChessBoardAll[row + 2, col].GridStatus == ActionPlayer
+                        && !(ChessBoardAll[row + 2, col].IfUpBoard))//下扫
+                    {
+                        ChessBoardAll[row + 2, col].GridStatus = Grid.GridInsideStatus.Empty;
+                        ChessBoardAll[row, col].GridStatus = ActionPlayer;
+                        Player1Location = new Point(row, col);
+                        return "OK";
+                    }
+                }
+            }
+            if (col >= 1
+                && !(ChessBoardAll[row, col].IfLeftBoard))//左扫
+            {
+                if (ChessBoardAll[row, col - 1].GridStatus == ActionPlayer)
+                {
+                    ChessBoardAll[row, col - 1].GridStatus = Grid.GridInsideStatus.Empty;
+                    ChessBoardAll[row, col].GridStatus = ActionPlayer;
+                    Player1Location = new Point(row, col);
+                    return "OK";
+                }
+                else if (ChessBoardAll[row, col - 1].GridStatus == AnotherPlayer)
+                {
+                    if (col >= 2
+                        && ChessBoardAll[row, col - 2].GridStatus == ActionPlayer
+                        && !(ChessBoardAll[row, col - 1].IfLeftBoard))//左扫
+                    {
+                        ChessBoardAll[row, col - 2].GridStatus = Grid.GridInsideStatus.Empty;
+                        ChessBoardAll[row, col].GridStatus = ActionPlayer;
+                        Player1Location = new Point(row, col);
+                        return "OK";
+                    }
+                    if (row <= 5
+                        && ChessBoardAll[row + 1, col - 1].GridStatus == ActionPlayer
+                        && !(ChessBoardAll[row + 1, col - 1].IfUpBoard))//下扫
+                    {
+                        ChessBoardAll[row + 1, col - 1].GridStatus = Grid.GridInsideStatus.Empty;
+                        ChessBoardAll[row, col].GridStatus = ActionPlayer;
+                        Player1Location = new Point(row, col);
+                        return "OK";
+                    }
+                    if (row >= 1
+                        && ChessBoardAll[row - 1, col - 1].GridStatus == ActionPlayer
+                        && !(ChessBoardAll[row, col - 1].IfUpBoard))//上扫
+                    {
+                        ChessBoardAll[row - 1, col - 1].GridStatus = Grid.GridInsideStatus.Empty;
+                        ChessBoardAll[row, col].GridStatus = ActionPlayer;
+                        Player1Location = new Point(row, col);
+                        return "OK";
+                    }
+                }
+            }
+            if (col <= 5
+                && !(ChessBoardAll[row, col + 1].IfLeftBoard))//右扫
+            {
+                if (ChessBoardAll[row, col + 1].GridStatus == ActionPlayer)
+                {
+                    ChessBoardAll[row, col + 1].GridStatus = Grid.GridInsideStatus.Empty;
+                    ChessBoardAll[row, col].GridStatus = ActionPlayer;
+                    Player1Location = new Point(row, col);
+                    return "OK";
+                }
+                else if (ChessBoardAll[row, col + 1].GridStatus == AnotherPlayer)
+                {
+                    if (col <= 4
+                        && ChessBoardAll[row, col + 2].GridStatus == ActionPlayer
+                        && !(ChessBoardAll[row, col + 2].IfLeftBoard))//右扫
+                    {
+                        ChessBoardAll[row, col + 2].GridStatus = Grid.GridInsideStatus.Empty;
+                        ChessBoardAll[row, col].GridStatus = ActionPlayer;
+                        Player1Location = new Point(row, col);
+                        return "OK";
+                    }
+                    if (row <= 5
+                        && ChessBoardAll[row + 1, col + 1].GridStatus == ActionPlayer
+                        && !(ChessBoardAll[row + 1, col + 1].IfUpBoard))//下扫
+                    {
+                        ChessBoardAll[row + 1, col + 1].GridStatus = Grid.GridInsideStatus.Empty;
+                        ChessBoardAll[row, col].GridStatus = ActionPlayer;
+                        Player1Location = new Point(row, col);
+                        return "OK";
+                    }
+                    if (row >= 1
+                        && ChessBoardAll[row - 1, col + 1].GridStatus == ActionPlayer
+                        && !(ChessBoardAll[row, col + 1].IfUpBoard))//上扫
+                    {
+                        ChessBoardAll[row - 1, col + 1].GridStatus = Grid.GridInsideStatus.Empty;
+                        ChessBoardAll[row, col].GridStatus = ActionPlayer;
+                        Player1Location = new Point(row, col);
+                        return "OK";
+                    }
+                }
+            }
+
+            return "MoveError";
+        }
+
         /// <summary>
         /// 行动操作，主要是用来改变棋盘状态数组
         /// </summary>
@@ -109,207 +417,23 @@ namespace Quoridor
                 case Form1.NowAction.Action_PlaceVerticalBoard:
                     if (col <= 0 || col >= 7 || row >= 6) return "VerticalBoardPlaceError!";
                     if (ChessBoardAll[row, col].IfLeftBoard || ChessBoardAll[row+1, col].IfLeftBoard) return "This has a VerticalBoard!";
+                    if (ChessBoardAll[row + 1, col].IfUpBoard && ChessBoardAll[row + 1, col - 1].IfUpBoard)
+                        return "十字交叉违规！";
                     ChessBoardAll[row, col].IfLeftBoard = true;
                     ChessBoardAll[row+1, col].IfLeftBoard = true;
                     return "OK";
                 case Form1.NowAction.Action_PlaceHorizontalBoard:
                     if (row <= 0 || row >= 7 || col >= 6) return "HorizontalBoardPlaceError!";
                     if (ChessBoardAll[row, col].IfUpBoard || ChessBoardAll[row, col+1].IfUpBoard) return "This has a HorizontalBoard!";
+                    if (ChessBoardAll[row, col + 1].IfLeftBoard && ChessBoardAll[row - 1, col + 1].IfLeftBoard)
+                        return "十字交叉违规！";                    
                     ChessBoardAll[row, col].IfUpBoard = true;
                     ChessBoardAll[row, col+1].IfUpBoard = true;
                     return "OK";
                 case Form1.NowAction.Action_Move_Player1:
-                    if (ChessBoardAll[row, col].GridStatus != Grid.GridInsideStatus.Empty) return "This Not Empty";
-                    //前扫一格
-                    if (row >= 1  
-                        && !(ChessBoardAll[row, col].IfUpBoard))//上扫
-                    {
-                        if (ChessBoardAll[row - 1, col].GridStatus == Grid.GridInsideStatus.Have_Player1)
-                        {
-                            ChessBoardAll[row - 1, col].GridStatus = Grid.GridInsideStatus.Empty;
-                            ChessBoardAll[row, col].GridStatus = Grid.GridInsideStatus.Have_Player1;
-                            Player1Location = new Point(row,col);
-                            return "OK";
-                        }
-                        else if (ChessBoardAll[row - 1, col].GridStatus == Grid.GridInsideStatus.Have_Player2)
-                        {
-                            if (row >= 2
-                                && ChessBoardAll[row - 2, col].GridStatus == Grid.GridInsideStatus.Have_Player1
-                                && !(ChessBoardAll[row - 2, col].IfUpBoard))
-                            {
-                                ChessBoardAll[row - 2, col].GridStatus = Grid.GridInsideStatus.Empty;
-                                ChessBoardAll[row, col].GridStatus = Grid.GridInsideStatus.Have_Player1;
-                                Player1Location = new Point(row, col);
-                                return "OK"; 
-                            }
-                        }
-                    }
-                    if (row <= 5
-                        && !(ChessBoardAll[row + 1, col].IfUpBoard))//下扫
-                    {
-                        if (ChessBoardAll[row + 1, col].GridStatus == Grid.GridInsideStatus.Have_Player1)
-                        {
-                            ChessBoardAll[row + 1, col].GridStatus = Grid.GridInsideStatus.Empty;
-                            ChessBoardAll[row, col].GridStatus = Grid.GridInsideStatus.Have_Player1;
-                            Player1Location = new Point(row, col);
-                            return "OK";
-                        }
-                        else if (ChessBoardAll[row + 1, col].GridStatus == Grid.GridInsideStatus.Have_Player2)
-                        {
-                            if (row <= 4
-                                && ChessBoardAll[row + 2, col].GridStatus == Grid.GridInsideStatus.Have_Player1
-                                && !(ChessBoardAll[row + 2, col].IfUpBoard))
-                            {
-                                ChessBoardAll[row + 2, col].GridStatus = Grid.GridInsideStatus.Empty;
-                                ChessBoardAll[row, col].GridStatus = Grid.GridInsideStatus.Have_Player1;
-                                Player1Location = new Point(row, col);
-                                return "OK"; 
-                            }
-                        }
-                    }
-                    if (col >= 1 
-                        && !(ChessBoardAll[row, col].IfLeftBoard))//左扫
-                    {
-                        if(ChessBoardAll[row, col - 1].GridStatus == Grid.GridInsideStatus.Have_Player1)
-                        { 
-                            ChessBoardAll[row, col - 1].GridStatus = Grid.GridInsideStatus.Empty;
-                            ChessBoardAll[row, col].GridStatus = Grid.GridInsideStatus.Have_Player1;
-                            Player1Location = new Point(row, col);
-                            return "OK";
-                        }
-                        else if (ChessBoardAll[row, col - 1].GridStatus == Grid.GridInsideStatus.Have_Player2)
-                        {
-                            if (col >= 2
-                                && ChessBoardAll[row, col - 2].GridStatus == Grid.GridInsideStatus.Have_Player1
-                                && !(ChessBoardAll[row, col - 1].IfLeftBoard))
-                            {
-                                ChessBoardAll[row, col - 2].GridStatus = Grid.GridInsideStatus.Empty;
-                                ChessBoardAll[row, col].GridStatus = Grid.GridInsideStatus.Have_Player1;
-                                Player1Location = new Point(row, col);
-                                return "OK"; 
-                            }
-                        }
-                    }
-                    if (col <= 5 
-                        && !(ChessBoardAll[row, col + 1].IfLeftBoard))//右扫
-                    {
-                        if (ChessBoardAll[row, col + 1].GridStatus == Grid.GridInsideStatus.Have_Player1)
-                        {
-                            ChessBoardAll[row, col + 1].GridStatus = Grid.GridInsideStatus.Empty;
-                            ChessBoardAll[row, col].GridStatus = Grid.GridInsideStatus.Have_Player1;
-                            Player1Location = new Point(row, col);
-                            return "OK";
-                        }
-                        else if (ChessBoardAll[row, col + 1].GridStatus == Grid.GridInsideStatus.Have_Player2)
-                        {
-                            if(col <= 4
-                                && ChessBoardAll[row, col + 2].GridStatus == Grid.GridInsideStatus.Have_Player1
-                                && !(ChessBoardAll[row, col + 2].IfLeftBoard))
-                            {
-                                ChessBoardAll[row, col + 2].GridStatus = Grid.GridInsideStatus.Empty;
-                                ChessBoardAll[row, col].GridStatus = Grid.GridInsideStatus.Have_Player1;
-                                Player1Location = new Point(row, col);
-                                return "OK";
-                            }
-                        }
-                    }
-
-                    return "MoveError";
+                    return CheckMove_New(row, col, Form1.NowAction.Action_Move_Player1);
                 case Form1.NowAction.Action_Move_Player2:
-                    if (ChessBoardAll[row, col].GridStatus != Grid.GridInsideStatus.Empty) return "This Not Empty";
-                    if (row >= 1  
-                        && !(ChessBoardAll[row, col].IfUpBoard))//上扫
-                    {
-                        if (ChessBoardAll[row - 1, col].GridStatus == Grid.GridInsideStatus.Have_Player2)
-                        {
-                            ChessBoardAll[row - 1, col].GridStatus = Grid.GridInsideStatus.Empty;
-                            ChessBoardAll[row, col].GridStatus = Grid.GridInsideStatus.Have_Player2;
-                            Player2Location = new Point(row, col);
-                            return "OK";
-                        }
-                        else if (ChessBoardAll[row - 1, col].GridStatus == Grid.GridInsideStatus.Have_Player1)
-                        {
-                            if (row >= 2
-                                && ChessBoardAll[row - 2, col].GridStatus == Grid.GridInsideStatus.Have_Player2
-                                && !(ChessBoardAll[row - 2, col].IfUpBoard))
-                            {
-                                ChessBoardAll[row - 2, col].GridStatus = Grid.GridInsideStatus.Empty;
-                                ChessBoardAll[row, col].GridStatus = Grid.GridInsideStatus.Have_Player2;
-                                Player2Location = new Point(row, col);
-                                return "OK"; 
-                            }
-                        }
-                    }
-                    if (row <= 5
-                        && !(ChessBoardAll[row + 1, col].IfUpBoard))//下扫
-                    {
-                        if (ChessBoardAll[row + 1, col].GridStatus == Grid.GridInsideStatus.Have_Player2)
-                        {
-                            ChessBoardAll[row + 1, col].GridStatus = Grid.GridInsideStatus.Empty;
-                            ChessBoardAll[row, col].GridStatus = Grid.GridInsideStatus.Have_Player2;
-                            Player2Location = new Point(row, col);
-                            return "OK";
-                        }
-                        else if (ChessBoardAll[row + 1, col].GridStatus == Grid.GridInsideStatus.Have_Player1)
-                        {
-                            if (row <= 4
-                                && ChessBoardAll[row + 2, col].GridStatus == Grid.GridInsideStatus.Have_Player2
-                                && !(ChessBoardAll[row + 2, col].IfUpBoard))
-                            {
-                                ChessBoardAll[row + 2, col].GridStatus = Grid.GridInsideStatus.Empty;
-                                ChessBoardAll[row, col].GridStatus = Grid.GridInsideStatus.Have_Player2;
-                                Player2Location = new Point(row, col);
-                                return "OK"; 
-                            }
-                        }
-                    }
-                    if (col >= 1 
-                        && !(ChessBoardAll[row, col].IfLeftBoard))//左扫
-                    {
-                        if(ChessBoardAll[row, col - 1].GridStatus == Grid.GridInsideStatus.Have_Player2)
-                        { 
-                            ChessBoardAll[row, col - 1].GridStatus = Grid.GridInsideStatus.Empty;
-                            ChessBoardAll[row, col].GridStatus = Grid.GridInsideStatus.Have_Player2;
-                            Player2Location = new Point(row, col);
-                            return "OK";
-                        }
-                        else if (ChessBoardAll[row, col - 1].GridStatus == Grid.GridInsideStatus.Have_Player1)
-                        {
-                            if (col >= 2
-                                && ChessBoardAll[row, col - 2].GridStatus == Grid.GridInsideStatus.Have_Player2
-                                && !(ChessBoardAll[row, col - 1].IfLeftBoard))
-                            {
-                                ChessBoardAll[row, col - 2].GridStatus = Grid.GridInsideStatus.Empty;
-                                ChessBoardAll[row, col].GridStatus = Grid.GridInsideStatus.Have_Player2;
-                                Player2Location = new Point(row, col);
-                                return "OK"; 
-                            }
-                        }
-                    }
-                    if (col <= 5 
-                        && !(ChessBoardAll[row, col + 1].IfLeftBoard))//右扫
-                    {
-                        if (ChessBoardAll[row, col + 1].GridStatus == Grid.GridInsideStatus.Have_Player2)
-                        {
-                            ChessBoardAll[row, col + 1].GridStatus = Grid.GridInsideStatus.Empty;
-                            ChessBoardAll[row, col].GridStatus = Grid.GridInsideStatus.Have_Player2;
-                            Player2Location = new Point(row, col);
-                            return "OK";
-                        }
-                        else if (ChessBoardAll[row, col + 1].GridStatus == Grid.GridInsideStatus.Have_Player1)
-                        {
-                            if(col <= 4
-                                && ChessBoardAll[row, col + 2].GridStatus == Grid.GridInsideStatus.Have_Player2
-                                && !(ChessBoardAll[row, col + 2].IfLeftBoard))
-                            {
-                                ChessBoardAll[row, col + 2].GridStatus = Grid.GridInsideStatus.Empty;
-                                ChessBoardAll[row, col].GridStatus = Grid.GridInsideStatus.Have_Player2;
-                                Player2Location = new Point(row, col);
-                                return "OK";
-                            }
-                        }
-                    }
-                    return "MoveError";
+                    return CheckMove_New(row, col, Form1.NowAction.Action_Move_Player2);
                 case Form1.NowAction.Action_Wait:
                     return "OK";
                 default:
@@ -325,6 +449,9 @@ namespace Quoridor
     /// </summary>
     public class QuoridorGame
     {
+        public int NumPlayer1Board = 16;
+        public int NumPlayer2Board = 16;
+
         public ChessBoard ThisChessBoard = new ChessBoard();
         /// <summary>
         /// 检测游戏是否结束
@@ -689,9 +816,16 @@ namespace Quoridor
         /// <param name="Player">检测哪个玩家会被堵死</param>
         /// <param name="Location_row">玩家的位置行</param>
         /// <param name="Location_col">玩家的位置列</param>
-        /// <returns></returns>
-        public int CheckBoard(Form1.NowAction WhichBoard, Form1.EnumNowPlayer Player, int Location_row, int Location_col)
+        /// <returns>错误提示符，能被放下就会返回“OK”</returns>
+        public string CheckBoard(Form1.NowAction WhichBoard, Form1.EnumNowPlayer Player, int Location_row, int Location_col)
         {
+            if (WhichBoard == Form1.NowAction.Action_Move_Player1 || WhichBoard == Form1.NowAction.Action_Move_Player2)
+                return "OK";
+            if (Player == Form1.EnumNowPlayer.Player1 && NumPlayer1Board <= 0)
+                return "Player1 No Board";
+            else if (Player == Form1.EnumNowPlayer.Player2 && NumPlayer2Board <= 0)
+                return "Player2 No Board";
+
             ///为了不改变原状态而暂存原状态以便后续恢复
             ChessBoard ChessBoardBuff = new ChessBoard();
             for (int i = 0; i < 7; i++)
@@ -709,7 +843,25 @@ namespace Quoridor
             ChessBoardBuff.Player2Location.Y = ThisChessBoard.Player2Location.Y;
 
             //假设能放挡板
-            ThisChessBoard.Action(Location_row, Location_col, WhichBoard);
+            string Hint = ThisChessBoard.Action(Location_row, Location_col, WhichBoard);
+            if (Hint != "OK")
+            {
+                for (int i = 0; i < 7; i++)
+                {
+                    for (int j = 0; j < 7; j++)
+                    {
+                        ThisChessBoard.ChessBoardAll[i, j].IfLeftBoard = ChessBoardBuff.ChessBoardAll[i, j].IfLeftBoard;
+                        ThisChessBoard.ChessBoardAll[i, j].IfUpBoard = ChessBoardBuff.ChessBoardAll[i, j].IfUpBoard;
+                        ThisChessBoard.ChessBoardAll[i, j].GridStatus = ChessBoardBuff.ChessBoardAll[i, j].GridStatus;
+                    }
+                }
+                ThisChessBoard.Player1Location.X = ChessBoardBuff.Player1Location.X;
+                ThisChessBoard.Player1Location.Y = ChessBoardBuff.Player1Location.Y;
+                ThisChessBoard.Player2Location.X = ChessBoardBuff.Player2Location.X;
+                ThisChessBoard.Player2Location.Y = ChessBoardBuff.Player2Location.Y;
+
+                return Hint;
+            }
 
             int disbuff = 0;
             List<AstarList> InitAList = new List<AstarList>();
@@ -756,11 +908,11 @@ namespace Quoridor
 
             if (disbuff >= 999)
             {
-                return 999;
+                return "No Road";
             }
             else
             {
-                return disbuff;
+                return "OK";
             }
         }
     }

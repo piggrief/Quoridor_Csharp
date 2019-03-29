@@ -158,6 +158,13 @@ namespace Quoridor_With_C
             //刷新初始棋盘
             NowQuoridor.ThisChessBoard.DrawNowChessBoard(ref Gr, ChessWhitePB, ChessBlackPB);
             ChessBoardPB.Refresh();
+
+            TestTB.Text = "当前行动玩家：白子";
+            TestTB.Text += System.Environment.NewLine;
+            TestTB.Text += "白子剩余挡板：" + NowQuoridor.NumPlayer1Board.ToString();
+            TestTB.Text += System.Environment.NewLine;
+            TestTB.Text += "黑子剩余挡板：" + NowQuoridor.NumPlayer2Board.ToString();
+
         }
 
         bool IfPlaceBoard = false;
@@ -236,6 +243,8 @@ namespace Quoridor_With_C
             }
             else if (e.Button == System.Windows.Forms.MouseButtons.Left)//左键执行某个行动
             {
+                string Hint = "OK";
+
                 TP = e.Location;
                 # region 计算相关操作对应的操作位置的行和列
 
@@ -258,41 +267,63 @@ namespace Quoridor_With_C
 
                 # endregion
 
-                string Hint1 = "";
-
-                int Player1_RoadLenght = 0;
-                int Player2_RoadLenght = 0;
-                Player1_RoadLenght = NowQuoridor.CheckBoard(PlayerNowAction, EnumNowPlayer.Player1, row, col);
-                Player2_RoadLenght = NowQuoridor.CheckBoard(PlayerNowAction, EnumNowPlayer.Player2, row, col);
-
-                if (999 <= Player1_RoadLenght || 999 <= Player2_RoadLenght)
+                if (!(row >= 0 && row <= 6 && col >= 0 && col <= 6))
                 {
-                        Hint1 = "No Road";                
-                }
-                if (Hint1 != "No Road")
-                {
-                    if (row >= 0 && row <= 6 && col >= 0 && col <= 6)
-                        Hint1 = NowQuoridor.ThisChessBoard.Action(row, col, PlayerNowAction);
-                    else
-                        Hint1 = "点击越界！";
-                }
-                Console.WriteLine(Hint1);
-
-                if (Hint1 != "OK")
-                {
-                    MessageBox.Show(Hint1);
+                    Hint = "点击越界！";
+                    MessageBox.Show(Hint);
                     return;
                 }
-                else
+                string Hint1 = "";
+                string Hint2 = "";
+                Hint1 = NowQuoridor.CheckBoard(PlayerNowAction, EnumNowPlayer.Player1, row, col);
+                Hint2 = NowQuoridor.CheckBoard(PlayerNowAction, EnumNowPlayer.Player2, row, col);
+
+
+                if (Hint1 == "Player1 No Board")
                 {
-                    if (NowPlayer == EnumNowPlayer.Player1)
+                    if (PlayerNowAction == NowAction.Action_PlaceHorizontalBoard
+                        || PlayerNowAction == NowAction.Action_PlaceVerticalBoard)
                     {
-                        NowPlayer = EnumNowPlayer.Player2;
+                        MessageBox.Show(Hint1);
+                        return;
                     }
-                    else if (NowPlayer == EnumNowPlayer.Player2)
+                }
+                else if (Hint2 == "Player2 No Board")
+                {
+                    if (PlayerNowAction == NowAction.Action_PlaceHorizontalBoard
+                        || PlayerNowAction == NowAction.Action_PlaceVerticalBoard)
                     {
-                        NowPlayer = EnumNowPlayer.Player1;
-                    }
+                        MessageBox.Show(Hint1);
+                        return;
+                    } 
+                }
+
+                if ((Hint1 != "Player1 No Board" && Hint2 != "Player2 No Board")
+                    && (Hint1 != "OK" || Hint2 != "OK"))
+                {
+                    MessageBox.Show(Hint1 + Hint2);
+                    return;
+                }
+
+                Hint = NowQuoridor.ThisChessBoard.Action(row, col, PlayerNowAction);
+                if (Hint != "OK")
+                {
+                    MessageBox.Show(Hint);
+                    return;
+                }
+                if (NowPlayer == EnumNowPlayer.Player1)
+                {
+                    if(PlayerNowAction == NowAction.Action_PlaceVerticalBoard 
+                        || PlayerNowAction == NowAction.Action_PlaceHorizontalBoard)
+                        NowQuoridor.NumPlayer1Board -= 2;
+                    NowPlayer = EnumNowPlayer.Player2;
+                }
+                else if (NowPlayer == EnumNowPlayer.Player2)
+                {
+                    if (PlayerNowAction == NowAction.Action_PlaceVerticalBoard
+                        || PlayerNowAction == NowAction.Action_PlaceHorizontalBoard)
+                        NowQuoridor.NumPlayer2Board -= 2;
+                    NowPlayer = EnumNowPlayer.Player1;
                 }
 
                 NowQuoridor.ThisChessBoard.DrawNowChessBoard(ref Gr, ChessWhitePB, ChessBlackPB);
@@ -321,14 +352,27 @@ namespace Quoridor_With_C
                 {
                     MessageBox.Show(result);
                 }
+
                 if (NowPlayer == EnumNowPlayer.Player1)
                 {
                     MessageBox.Show("现在轮到玩家1操作！");
+                    TestTB.Text = "当前行动玩家：白子";
+                    TestTB.Text += System.Environment.NewLine;
+                    TestTB.Text += "白子剩余挡板：" + NowQuoridor.NumPlayer1Board.ToString();
+                    TestTB.Text += System.Environment.NewLine;
+                    TestTB.Text += "黑子剩余挡板：" + NowQuoridor.NumPlayer2Board.ToString();
+
                     PlayerNowAction = NowAction.Action_Move_Player1;
                 }
                 if (NowPlayer == EnumNowPlayer.Player2)
                 {
                     MessageBox.Show("现在轮到玩家2操作！");
+                    TestTB.Text = "当前行动玩家：黑子";
+                    TestTB.Text += System.Environment.NewLine;
+                    TestTB.Text += "白子剩余挡板：" + NowQuoridor.NumPlayer1Board.ToString();
+                    TestTB.Text += System.Environment.NewLine;
+                    TestTB.Text += "黑子剩余挡板：" + NowQuoridor.NumPlayer2Board.ToString();
+
                     PlayerNowAction = NowAction.Action_Move_Player2;
                 }
 
