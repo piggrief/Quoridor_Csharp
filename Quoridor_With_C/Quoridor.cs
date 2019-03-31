@@ -500,6 +500,19 @@ namespace Quoridor
                 Grid_col = col;
             }
         }
+        public int AstarRestart(Form1.EnumNowPlayer Player, int Location_row, int Location_col)
+        {
+            Min_DistanceLength = 0;
+            List<AstarList> InitAList = new List<AstarList>();
+            Astar_Stop = false;
+            InitAList.Add(new AstarList(6, 0, 6, Location_row, Location_col));
+
+            int distance = LookupRoad_Astar(Player, Location_row, Location_col,1,
+                new List<AstarList>(), InitAList);
+
+            return Min_DistanceLength;
+
+        }
         public int LookupRoad_Astar(Form1.EnumNowPlayer Player, int Location_row, int Location_col, int num_renew, List<AstarList> OpenList, List<AstarList> CloseList)
         {
             if (Astar_Stop == true)
@@ -518,40 +531,6 @@ namespace Quoridor
                 default:
                     break;
             }
-            #endregion
-            #region 上下扫描是否有木板，用来减少搜索空间
-            bool flag_NoBoard = true;
-            bool flag_UpNowBoard = true;
-            bool flag_DownNowBoard = true;
-
-            for (int i = Location_row + 1; i <= Row_Destination; i++)//下扫
-            {
-                if (ThisChessBoard.ChessBoardAll[i, Location_col].IfUpBoard)
-                {
-                    flag_DownNowBoard = false;
-                    break;
-                }
-            }
-            for (int i = Location_row - 1; i >= Row_Destination; i--)//上扫
-            {
-                if (ThisChessBoard.ChessBoardAll[i + 1, Location_col].IfUpBoard)
-                {
-                    flag_UpNowBoard = false;
-                    break;
-                }
-            }
-            if (flag_DownNowBoard && flag_UpNowBoard)
-                flag_NoBoard = true;
-            else
-                flag_NoBoard = false;
-
-            if (flag_NoBoard)
-            {
-                Astar_Stop = true;
-                Min_DistanceLength += Math.Abs((Row_Destination - Location_row)); 
-                return Math.Abs((Row_Destination - Location_row));
-            }
-
             #endregion
 
             #region 检查四周能移动的位置添加进P_List_Enable列表
@@ -575,6 +554,40 @@ namespace Quoridor
                 P_List_Enable.Add(new Point(Location_row + 1, Location_col));
             #endregion
 
+            #region 上下扫描是否有木板，用来减少搜索空间
+            bool flag_NoBoard = true;
+            bool flag_UpNowBoard = true;
+            bool flag_DownNowBoard = true;
+
+            for (int k = Location_row + 1; k <= Row_Destination; k++)//下扫
+            {
+                if (ThisChessBoard.ChessBoardAll[k, Location_col].IfUpBoard)
+                {
+                    flag_DownNowBoard = false;
+                    break;
+                }
+            }
+            for (int k = Location_row - 1; k >= Row_Destination; k--)//上扫
+            {
+                if (ThisChessBoard.ChessBoardAll[k + 1, Location_col].IfUpBoard)
+                {
+                    flag_UpNowBoard = false;
+                    break;
+                }
+            }
+            if (flag_DownNowBoard && flag_UpNowBoard)
+                flag_NoBoard = true;
+            else
+                flag_NoBoard = false;
+
+            if (flag_NoBoard)
+            {
+                Astar_Stop = true;
+                Min_DistanceLength = Math.Abs((Row_Destination - Location_row)) + CloseList.Last().G;
+                return Min_DistanceLength;
+            }
+
+            #endregion
 
             #region 搜索树搜索策略——A*算法
             List<int> P_Dis = new List<int>();
@@ -584,7 +597,7 @@ namespace Quoridor
             }
             int minF = 9999;
             int minindex = 0;
-            for (int i = 0; i < P_List_Enable.Count; i++)
+            for (int i = 0; i < P_List_Enable.Count && i >= 0; i++)
             {
                 int Hbuff = Math.Abs(P_List_Enable[i].X - Row_Destination);
                 P_Dis[i] = Hbuff;
@@ -596,14 +609,6 @@ namespace Quoridor
                 {
                     if (P_List_Enable[i].X == CloseList[j].Grid_row && P_List_Enable[i].Y == CloseList[j].Grid_col)
                     {
-                        if (Gbuff < CloseList[j].G)
-                        {
-                            CloseList[j].Grid_row = P_List_Enable[i].X;
-                            CloseList[j].Grid_col = P_List_Enable[i].Y;
-                            CloseList[j].H = Hbuff;
-                            CloseList[j].G = Gbuff;
-                            CloseList[j].F = Fbuff;
-                        }
                         P_List_Enable.Remove(P_List_Enable[i]);
                         P_Dis.Remove(P_Dis[i]);
                         i--;
@@ -611,8 +616,33 @@ namespace Quoridor
                         break;
                     }
                 }
+                if (flag_InClose)
+                {
+                    continue;
+                }
 
-                if (!flag_InClose)
+                bool flag_InOpen = false;
+                //检测是否在Open列表里
+                for (int j = 0; j < OpenList.Count; j++)
+                {
+                    if (P_List_Enable[i].X == OpenList[j].Grid_row && P_List_Enable[i].Y == OpenList[j].Grid_col)
+                    {
+                        P_List_Enable.Remove(P_List_Enable[i]);
+                        P_Dis.Remove(P_Dis[i]);
+                        i--;
+                        flag_InOpen = true;
+
+                        if (Gbuff < OpenList[j].G)
+                        {
+                            OpenList[j].G = Gbuff;
+                            OpenList[j].F = Fbuff;
+                            OpenList[j].H = Hbuff;
+                        }
+                        break;
+                    }
+                }
+
+                if (!flag_InOpen && !flag_InClose)
                 {
                     AstarList NewGrid = new AstarList(Hbuff, Gbuff, Fbuff, P_List_Enable[i].X, P_List_Enable[i].Y);
                     OpenList.Add(NewGrid); 
@@ -644,7 +674,7 @@ namespace Quoridor
                 if (OpenList.Count > 0)
                 {
                     OpenList.Remove(MinFGrid);
-                    dislengthbuff = LookupRoad_Astar(Player, MinFGrid.Grid_row, MinFGrid.Grid_col, num_renew + 1, OpenList, CloseList);
+                    dislengthbuff = LookupRoad_Astar(Player, MinFGrid.Grid_row, MinFGrid.Grid_col, MinFGrid.G + 1, OpenList, CloseList);
                 }
                 else
                     return 999;

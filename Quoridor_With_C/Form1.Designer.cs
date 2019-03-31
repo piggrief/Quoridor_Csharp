@@ -36,6 +36,7 @@
             this.ChessWhitePB = new CCWin.SkinControl.SkinPictureBox();
             this.ChessBlackPB = new CCWin.SkinControl.SkinPictureBox();
             this.PlaceHorizontalBoardBTN = new CCWin.SkinControl.SkinButton();
+            this.TestBTN = new CCWin.SkinControl.SkinButton();
             ((System.ComponentModel.ISupportInitialize)(this.ChessBoardPB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ChessWhitePB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ChessBlackPB)).BeginInit();
@@ -150,11 +151,29 @@
             this.PlaceHorizontalBoardBTN.UseVisualStyleBackColor = false;
             this.PlaceHorizontalBoardBTN.Click += new System.EventHandler(this.PlaceHorizontalBoardBTN_Click);
             // 
+            // TestBTN
+            // 
+            this.TestBTN.BackColor = System.Drawing.Color.Transparent;
+            this.TestBTN.BaseColor = System.Drawing.Color.AliceBlue;
+            this.TestBTN.ControlState = CCWin.SkinClass.ControlState.Normal;
+            this.TestBTN.DownBack = null;
+            this.TestBTN.Font = new System.Drawing.Font("微软雅黑", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.TestBTN.Location = new System.Drawing.Point(898, 262);
+            this.TestBTN.MouseBack = null;
+            this.TestBTN.Name = "TestBTN";
+            this.TestBTN.NormlBack = null;
+            this.TestBTN.Size = new System.Drawing.Size(194, 54);
+            this.TestBTN.TabIndex = 7;
+            this.TestBTN.Text = "测试";
+            this.TestBTN.UseVisualStyleBackColor = false;
+            this.TestBTN.Click += new System.EventHandler(this.TestBTN_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1280, 800);
+            this.Controls.Add(this.TestBTN);
             this.Controls.Add(this.PlaceHorizontalBoardBTN);
             this.Controls.Add(this.ChessBlackPB);
             this.Controls.Add(this.ChessWhitePB);
@@ -184,6 +203,7 @@
         private CCWin.SkinControl.SkinPictureBox ChessWhitePB;
         private CCWin.SkinControl.SkinPictureBox ChessBlackPB;
         private CCWin.SkinControl.SkinButton PlaceHorizontalBoardBTN;
+        private CCWin.SkinControl.SkinButton TestBTN;
     }
 }
 
