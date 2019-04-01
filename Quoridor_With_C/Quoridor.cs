@@ -499,22 +499,31 @@ namespace Quoridor
                 Grid_row = row;
                 Grid_col = col;
             }
+            public AstarList Father;
         }
         public int AstarRestart(Form1.EnumNowPlayer Player, int Location_row, int Location_col)
         {
             Min_DistanceLength = 0;
             List<AstarList> InitAList = new List<AstarList>();
             Astar_Stop = false;
-            InitAList.Add(new AstarList(6, 0, 6, Location_row, Location_col));
 
-            int distance = LookupRoad_Astar(Player, Location_row, Location_col,1,
+            AstarList InitGrid = new AstarList(6, 0, 6, Location_row, Location_col);
+            InitAList.Add(InitGrid);
+
+            int distance = LookupRoad_Astar(Player, InitGrid, 1,
                 new List<AstarList>(), InitAList);
 
             return Min_DistanceLength;
 
         }
-        public int LookupRoad_Astar(Form1.EnumNowPlayer Player, int Location_row, int Location_col, int num_renew, List<AstarList> OpenList, List<AstarList> CloseList)
+        public List<Point> Player1MinRoad = new List<Point>();
+        public List<Point> Player2MinRoad = new List<Point>();
+
+        public int LookupRoad_Astar(Form1.EnumNowPlayer Player, AstarList NowGrid, int num_renew, List<AstarList> OpenList, List<AstarList> CloseList)
         {
+            int Location_row = NowGrid.Grid_row;
+            int Location_col = NowGrid.Grid_col;
+
             if (Astar_Stop == true)
                 return Min_DistanceLength;
 
@@ -584,6 +593,46 @@ namespace Quoridor
             {
                 Astar_Stop = true;
                 Min_DistanceLength = Math.Abs((Row_Destination - Location_row)) + CloseList.Last().G;
+
+                #region 迭代寻找最短路径
+                List<Point> MinRoad;
+                if (Player == Form1.EnumNowPlayer.Player1)
+                {
+                    Player1MinRoad = new List<Point>();
+                    MinRoad = Player1MinRoad;
+                }
+                else
+                {
+                    Player2MinRoad = new List<Point>();
+                    MinRoad = Player2MinRoad;
+                }
+
+                if (Location_row < Row_Destination)
+                {
+                    for (int i = Row_Destination; i >= Location_row; i--)
+                    {
+                        MinRoad.Add(new Point(i, Location_col));
+                    }
+                }
+                else
+                {
+                    for (int i = Row_Destination; i <= Location_row; i++)
+                    {
+                        MinRoad.Add(new Point(i, Location_col));
+                    } 
+                }
+                AstarList ALBuff = CloseList.Last();
+                while (true)
+                {
+                    if (ALBuff.Father != null)
+                    {
+                        MinRoad.Add(new Point(ALBuff.Father.Grid_row, ALBuff.Father.Grid_col));
+                        ALBuff = ALBuff.Father;
+                    }
+                    else
+                        break;
+                }
+                #endregion
                 return Min_DistanceLength;
             }
 
@@ -637,6 +686,7 @@ namespace Quoridor
                             OpenList[j].G = Gbuff;
                             OpenList[j].F = Fbuff;
                             OpenList[j].H = Hbuff;
+                            OpenList[j].Father = NowGrid;
                         }
                         break;
                     }
@@ -645,6 +695,7 @@ namespace Quoridor
                 if (!flag_InOpen && !flag_InClose)
                 {
                     AstarList NewGrid = new AstarList(Hbuff, Gbuff, Fbuff, P_List_Enable[i].X, P_List_Enable[i].Y);
+                    NewGrid.Father = NowGrid;
                     OpenList.Add(NewGrid); 
                 }
 
@@ -674,7 +725,7 @@ namespace Quoridor
                 if (OpenList.Count > 0)
                 {
                     OpenList.Remove(MinFGrid);
-                    dislengthbuff = LookupRoad_Astar(Player, MinFGrid.Grid_row, MinFGrid.Grid_col, MinFGrid.G + 1, OpenList, CloseList);
+                    dislengthbuff = LookupRoad_Astar(Player, MinFGrid, MinFGrid.G + 1, OpenList, CloseList);
                 }
                 else
                     return 999;
@@ -902,10 +953,11 @@ namespace Quoridor
                 //disbuff = LookupRoad_Greedy(Player
                 //    , ThisChessBoard.Player1Location.X, ThisChessBoard.Player1Location.Y
                 //    , Moved);
-                InitAList.Add(new AstarList(6,0,6,ThisChessBoard.Player1Location.X,ThisChessBoard.Player1Location.Y));
+                AstarList InitGrid = new AstarList(6, 0, 6, ThisChessBoard.Player1Location.X, ThisChessBoard.Player1Location.Y);
+                
+                InitAList.Add(InitGrid);              
                 disbuff = LookupRoad_Astar(Player
-                    , ThisChessBoard.Player1Location.X
-                    , ThisChessBoard.Player1Location.Y
+                    , InitGrid
                     , 1, new List<AstarList>()
                     , InitAList);
             }
@@ -914,10 +966,11 @@ namespace Quoridor
                 //disbuff = LookupRoad_Greedy(Player
                 //    , ThisChessBoard.Player2Location.X, ThisChessBoard.Player2Location.Y
                 //    , Moved); 
-                InitAList.Add(new AstarList(6, 0, 6, ThisChessBoard.Player2Location.X, ThisChessBoard.Player2Location.Y));
+                AstarList InitGrid = new AstarList(6, 0, 6, ThisChessBoard.Player2Location.X, ThisChessBoard.Player2Location.Y);
+
+                InitAList.Add(InitGrid);
                 disbuff = LookupRoad_Astar(Player
-                    , ThisChessBoard.Player2Location.X
-                    , ThisChessBoard.Player2Location.Y
+                    , InitGrid
                     , 1, new List<AstarList>()
                     , InitAList);
             }

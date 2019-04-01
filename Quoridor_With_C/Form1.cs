@@ -395,6 +395,18 @@ namespace Quoridor_With_C
             Console.WriteLine("玩家2最短路径长度：");
             Console.WriteLine(player2dis.ToString());
 
+            List<Point> Roadbuff = NowQuoridor.Player1MinRoad;
+            Console.WriteLine("Player1最短路径：");
+            for (int i = Roadbuff.Count - 1; i >= 0; i--)
+            {
+                Console.WriteLine(Roadbuff[i].X.ToString()+ ", " +Roadbuff[i].Y.ToString());
+            }
+            Roadbuff = NowQuoridor.Player2MinRoad;
+            Console.WriteLine("Player2最短路径：");
+            for (int i = Roadbuff.Count - 1; i >= 0; i--)
+            {
+                Console.WriteLine(Roadbuff[i].X.ToString() + ", " + Roadbuff[i].Y.ToString());
+            }
         }
 
     }
