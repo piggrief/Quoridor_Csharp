@@ -41,7 +41,6 @@
             this.SinglePlayBTN.BaseColor = System.Drawing.Color.AliceBlue;
             this.SinglePlayBTN.ControlState = CCWin.SkinClass.ControlState.Normal;
             this.SinglePlayBTN.DownBack = null;
-            this.SinglePlayBTN.Enabled = false;
             this.SinglePlayBTN.Font = new System.Drawing.Font("微软雅黑", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.SinglePlayBTN.Location = new System.Drawing.Point(583, 75);
             this.SinglePlayBTN.MouseBack = null;
@@ -51,6 +50,7 @@
             this.SinglePlayBTN.TabIndex = 2;
             this.SinglePlayBTN.Text = "单人游戏";
             this.SinglePlayBTN.UseVisualStyleBackColor = false;
+            this.SinglePlayBTN.Click += new System.EventHandler(this.SinglePlayBTN_Click);
             // 
             // DoublePlayBTN
             // 

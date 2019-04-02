@@ -133,7 +133,7 @@ namespace Quoridor_With_C
             InitializeComponent();
 
         }
-        QuoridorGame NowQuoridor = new QuoridorGame();
+        QuoridorAI NowQuoridor = new QuoridorAI();
         private void Form1_Load(object sender, EventArgs e)
         {
             AllocConsole();
@@ -306,6 +306,7 @@ namespace Quoridor_With_C
                 }
 
                 Hint = NowQuoridor.ThisChessBoard.Action(row, col, PlayerNowAction);
+
                 if (Hint != "OK")
                 {
                     MessageBox.Show(Hint);
@@ -328,24 +329,6 @@ namespace Quoridor_With_C
 
                 NowQuoridor.ThisChessBoard.DrawNowChessBoard(ref Gr, ChessWhitePB, ChessBlackPB);
                 ChessBoardPB.Refresh();
-
-                int[,] disbuff = new int[7, 7];
-                for (int i = 0; i < 7; i++)
-                {
-                    for (int j = 0; j < 7; j++)
-                    {
-                        disbuff[i, j] = NowQuoridor.CalDistance(EnumNowPlayer.Player1, i, j);
-                        Console.Write(disbuff[i, j].ToString() + " ");
-                    }
-                    Console.WriteLine();
-                }
-
-                int dis = 0;
-                if (NowPlayer == EnumNowPlayer.Player1)
-                    dis = NowQuoridor.LookupRoad_Greedy(NowPlayer, NowQuoridor.ThisChessBoard.Player1Location.X, NowQuoridor.ThisChessBoard.Player1Location.Y, new List<Point>());
-                else
-                    dis = NowQuoridor.LookupRoad_Greedy(NowPlayer, NowQuoridor.ThisChessBoard.Player2Location.X, NowQuoridor.ThisChessBoard.Player2Location.Y, new List<Point>());
-                Console.WriteLine("dis = " + dis.ToString());
 
                 string result = NowQuoridor.CheckResult();
                 if (result != "No success")
@@ -375,6 +358,68 @@ namespace Quoridor_With_C
 
                     PlayerNowAction = NowAction.Action_Move_Player2;
                 }
+                NowQuoridor.Player_Now = NowPlayer;
+
+                #region AI落子
+                if(GameMode == "SinglePlay")
+                { 
+                    QuoridorAction AIAction = NowQuoridor.AIAction_Greedy(EnumNowPlayer.Player2);
+                    Hint = NowQuoridor.ThisChessBoard.Action(AIAction.ActionPoint.X, AIAction.ActionPoint.Y, AIAction.PlayerAction);
+                    PlayerNowAction = AIAction.PlayerAction;
+                    if (Hint != "OK")
+                    {
+                        MessageBox.Show(Hint);
+                        return;
+                    }
+                    if (NowPlayer == EnumNowPlayer.Player1)
+                    {
+                        if (PlayerNowAction == NowAction.Action_PlaceVerticalBoard
+                            || PlayerNowAction == NowAction.Action_PlaceHorizontalBoard)
+                            NowQuoridor.NumPlayer1Board -= 2;
+                        NowPlayer = EnumNowPlayer.Player2;
+                    }
+                    else if (NowPlayer == EnumNowPlayer.Player2)
+                    {
+                        if (PlayerNowAction == NowAction.Action_PlaceVerticalBoard
+                            || PlayerNowAction == NowAction.Action_PlaceHorizontalBoard)
+                            NowQuoridor.NumPlayer2Board -= 2;
+                        NowPlayer = EnumNowPlayer.Player1;
+                    }
+
+                    NowQuoridor.ThisChessBoard.DrawNowChessBoard(ref Gr, ChessWhitePB, ChessBlackPB);
+                    ChessBoardPB.Refresh();
+
+                    result = NowQuoridor.CheckResult();
+                    if (result != "No success")
+                    {
+                        MessageBox.Show(result);
+                    }
+
+                    if (NowPlayer == EnumNowPlayer.Player1)
+                    {
+                        MessageBox.Show("现在轮到玩家1操作！");
+                        TestTB.Text = "当前行动玩家：白子";
+                        TestTB.Text += System.Environment.NewLine;
+                        TestTB.Text += "白子剩余挡板：" + NowQuoridor.NumPlayer1Board.ToString();
+                        TestTB.Text += System.Environment.NewLine;
+                        TestTB.Text += "黑子剩余挡板：" + NowQuoridor.NumPlayer2Board.ToString();
+
+                        PlayerNowAction = NowAction.Action_Move_Player1;
+                    }
+                    if (NowPlayer == EnumNowPlayer.Player2)
+                    {
+                        MessageBox.Show("现在轮到玩家2操作！");
+                        TestTB.Text = "当前行动玩家：黑子";
+                        TestTB.Text += System.Environment.NewLine;
+                        TestTB.Text += "白子剩余挡板：" + NowQuoridor.NumPlayer1Board.ToString();
+                        TestTB.Text += System.Environment.NewLine;
+                        TestTB.Text += "黑子剩余挡板：" + NowQuoridor.NumPlayer2Board.ToString();
+
+                        PlayerNowAction = NowAction.Action_Move_Player2;
+                    }
+                    NowQuoridor.Player_Now = NowPlayer;
+                }
+                #endregion
 
                 PlaceVerticalBoardBTN.Enabled = true;
                 PlaceHorizontalBoardBTN.Enabled = true; 
@@ -383,30 +428,32 @@ namespace Quoridor_With_C
 
         private void TestBTN_Click(object sender, EventArgs e)
         {
-            int rowbuff = NowQuoridor.ThisChessBoard.Player1Location.X;
-            int colbuff = NowQuoridor.ThisChessBoard.Player1Location.Y;
-            int player1dis = NowQuoridor.AstarRestart(EnumNowPlayer.Player1, rowbuff, colbuff);
-            Console.WriteLine("玩家1最短路径长度：");
-            Console.WriteLine(player1dis.ToString());
+            //int rowbuff = NowQuoridor.ThisChessBoard.Player1Location.X;
+            //int colbuff = NowQuoridor.ThisChessBoard.Player1Location.Y;
+            //int player1dis = NowQuoridor.AstarRestart(EnumNowPlayer.Player1, rowbuff, colbuff);
+            //Console.WriteLine("玩家1最短路径长度：");
+            //Console.WriteLine(player1dis.ToString());
 
-            rowbuff = NowQuoridor.ThisChessBoard.Player2Location.X;
-            colbuff = NowQuoridor.ThisChessBoard.Player2Location.Y;
-            int player2dis = NowQuoridor.AstarRestart(EnumNowPlayer.Player2, rowbuff, colbuff);
-            Console.WriteLine("玩家2最短路径长度：");
-            Console.WriteLine(player2dis.ToString());
+            //rowbuff = NowQuoridor.ThisChessBoard.Player2Location.X;
+            //colbuff = NowQuoridor.ThisChessBoard.Player2Location.Y;
+            //int player2dis = NowQuoridor.AstarRestart(EnumNowPlayer.Player2, rowbuff, colbuff);
+            //Console.WriteLine("玩家2最短路径长度：");
+            //Console.WriteLine(player2dis.ToString());
 
-            List<Point> Roadbuff = NowQuoridor.Player1MinRoad;
-            Console.WriteLine("Player1最短路径：");
-            for (int i = Roadbuff.Count - 1; i >= 0; i--)
-            {
-                Console.WriteLine(Roadbuff[i].X.ToString()+ ", " +Roadbuff[i].Y.ToString());
-            }
-            Roadbuff = NowQuoridor.Player2MinRoad;
-            Console.WriteLine("Player2最短路径：");
-            for (int i = Roadbuff.Count - 1; i >= 0; i--)
-            {
-                Console.WriteLine(Roadbuff[i].X.ToString() + ", " + Roadbuff[i].Y.ToString());
-            }
+            //List<Point> Roadbuff = NowQuoridor.Player1MinRoad;
+            //Console.WriteLine("Player1最短路径：");
+   
+            //for (int i = Roadbuff.Count - 1; i >= 0; i--)
+            //{
+            //    Console.WriteLine(Roadbuff[i].X.ToString()+ ", " +Roadbuff[i].Y.ToString());
+            //}
+            //Roadbuff = NowQuoridor.Player2MinRoad;
+            //Console.WriteLine("Player2最短路径：");
+            //for (int i = Roadbuff.Count - 1; i >= 0; i--)
+            //{
+            //    Console.WriteLine(Roadbuff[i].X.ToString() + ", " + Roadbuff[i].Y.ToString());
+            //}
+            NowQuoridor.TestEvaluation();
         }
 
     }

@@ -33,5 +33,15 @@ namespace Quoridor_With_C
         {
 
         }
+
+        private void SinglePlayBTN_Click(object sender, EventArgs e)
+        {
+            //Close();
+            this.Hide();
+            Form1 f1 = new Form1();
+            //f1.MdiParent = this;
+            f1.Show();
+            f1.GameMode = "SinglePlay";
+        }
     }
 }

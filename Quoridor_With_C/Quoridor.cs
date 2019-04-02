@@ -222,6 +222,7 @@ namespace Quoridor
             if (NA != Form1.NowAction.Action_Move_Player1
                 && NA != Form1.NowAction.Action_Move_Player2)
                 return "Error";
+
             if (NA == Form1.NowAction.Action_Move_Player1)
             {
                 ActionPlayer = Grid.GridInsideStatus.Have_Player1;
@@ -241,7 +242,10 @@ namespace Quoridor
                 {
                     ChessBoardAll[row - 1, col].GridStatus = Grid.GridInsideStatus.Empty;
                     ChessBoardAll[row, col].GridStatus = ActionPlayer;
-                    Player1Location = new Point(row, col);
+                    if (NA == Form1.NowAction.Action_Move_Player1)
+                        Player1Location = new Point(row, col);
+                    else
+                        Player2Location = new Point(row, col); 
                     return "OK";
                 }
                 else if (ChessBoardAll[row - 1, col].GridStatus == AnotherPlayer)
@@ -252,7 +256,10 @@ namespace Quoridor
                     {
                         ChessBoardAll[row - 1, col - 1].GridStatus = Grid.GridInsideStatus.Empty;
                         ChessBoardAll[row, col].GridStatus = ActionPlayer;
-                        Player1Location = new Point(row, col);
+                        if (NA == Form1.NowAction.Action_Move_Player1)
+                            Player1Location = new Point(row, col);
+                        else
+                            Player2Location = new Point(row, col);
                         return "OK"; 
                     }
                     if (col <= 5
@@ -261,7 +268,10 @@ namespace Quoridor
                     {
                         ChessBoardAll[row - 1, col + 1].GridStatus = Grid.GridInsideStatus.Empty;
                         ChessBoardAll[row, col].GridStatus = ActionPlayer;
-                        Player1Location = new Point(row, col);
+                        if (NA == Form1.NowAction.Action_Move_Player1)
+                            Player1Location = new Point(row, col);
+                        else
+                            Player2Location = new Point(row, col);
                         return "OK";
                     }
                     if (row >= 2
@@ -270,7 +280,10 @@ namespace Quoridor
                     {
                         ChessBoardAll[row - 2, col].GridStatus = Grid.GridInsideStatus.Empty;
                         ChessBoardAll[row, col].GridStatus = ActionPlayer;
-                        Player1Location = new Point(row, col);
+                        if (NA == Form1.NowAction.Action_Move_Player1)
+                            Player1Location = new Point(row, col);
+                        else
+                            Player2Location = new Point(row, col);
                         return "OK";
                     }
                 }
@@ -282,7 +295,10 @@ namespace Quoridor
                 {
                     ChessBoardAll[row + 1, col].GridStatus = Grid.GridInsideStatus.Empty;
                     ChessBoardAll[row, col].GridStatus = ActionPlayer;
-                    Player1Location = new Point(row, col);
+                    if (NA == Form1.NowAction.Action_Move_Player1)
+                        Player1Location = new Point(row, col);
+                    else
+                        Player2Location = new Point(row, col);
                     return "OK";
                 }
                 else if (ChessBoardAll[row + 1, col].GridStatus == AnotherPlayer)
@@ -293,7 +309,10 @@ namespace Quoridor
                     {
                         ChessBoardAll[row + 1, col - 1].GridStatus = Grid.GridInsideStatus.Empty;
                         ChessBoardAll[row, col].GridStatus = ActionPlayer;
-                        Player1Location = new Point(row, col);
+                        if (NA == Form1.NowAction.Action_Move_Player1)
+                            Player1Location = new Point(row, col);
+                        else
+                            Player2Location = new Point(row, col);
                         return "OK";
                     }
                     if (col <= 5
@@ -302,7 +321,10 @@ namespace Quoridor
                     {
                         ChessBoardAll[row + 1, col + 1].GridStatus = Grid.GridInsideStatus.Empty;
                         ChessBoardAll[row, col].GridStatus = ActionPlayer;
-                        Player1Location = new Point(row, col);
+                        if (NA == Form1.NowAction.Action_Move_Player1)
+                            Player1Location = new Point(row, col);
+                        else
+                            Player2Location = new Point(row, col);
                         return "OK";
                     }
 
@@ -312,7 +334,10 @@ namespace Quoridor
                     {
                         ChessBoardAll[row + 2, col].GridStatus = Grid.GridInsideStatus.Empty;
                         ChessBoardAll[row, col].GridStatus = ActionPlayer;
-                        Player1Location = new Point(row, col);
+                        if (NA == Form1.NowAction.Action_Move_Player1)
+                            Player1Location = new Point(row, col);
+                        else
+                            Player2Location = new Point(row, col);
                         return "OK";
                     }
                 }
@@ -324,7 +349,10 @@ namespace Quoridor
                 {
                     ChessBoardAll[row, col - 1].GridStatus = Grid.GridInsideStatus.Empty;
                     ChessBoardAll[row, col].GridStatus = ActionPlayer;
-                    Player1Location = new Point(row, col);
+                    if (NA == Form1.NowAction.Action_Move_Player1)
+                        Player1Location = new Point(row, col);
+                    else
+                        Player2Location = new Point(row, col);
                     return "OK";
                 }
                 else if (ChessBoardAll[row, col - 1].GridStatus == AnotherPlayer)
@@ -335,7 +363,10 @@ namespace Quoridor
                     {
                         ChessBoardAll[row, col - 2].GridStatus = Grid.GridInsideStatus.Empty;
                         ChessBoardAll[row, col].GridStatus = ActionPlayer;
-                        Player1Location = new Point(row, col);
+                        if (NA == Form1.NowAction.Action_Move_Player1)
+                            Player1Location = new Point(row, col);
+                        else
+                            Player2Location = new Point(row, col);
                         return "OK";
                     }
                     if (row <= 5
@@ -344,7 +375,10 @@ namespace Quoridor
                     {
                         ChessBoardAll[row + 1, col - 1].GridStatus = Grid.GridInsideStatus.Empty;
                         ChessBoardAll[row, col].GridStatus = ActionPlayer;
-                        Player1Location = new Point(row, col);
+                        if (NA == Form1.NowAction.Action_Move_Player1)
+                            Player1Location = new Point(row, col);
+                        else
+                            Player2Location = new Point(row, col);
                         return "OK";
                     }
                     if (row >= 1
@@ -353,7 +387,10 @@ namespace Quoridor
                     {
                         ChessBoardAll[row - 1, col - 1].GridStatus = Grid.GridInsideStatus.Empty;
                         ChessBoardAll[row, col].GridStatus = ActionPlayer;
-                        Player1Location = new Point(row, col);
+                        if (NA == Form1.NowAction.Action_Move_Player1)
+                            Player1Location = new Point(row, col);
+                        else
+                            Player2Location = new Point(row, col);
                         return "OK";
                     }
                 }
@@ -365,7 +402,10 @@ namespace Quoridor
                 {
                     ChessBoardAll[row, col + 1].GridStatus = Grid.GridInsideStatus.Empty;
                     ChessBoardAll[row, col].GridStatus = ActionPlayer;
-                    Player1Location = new Point(row, col);
+                    if (NA == Form1.NowAction.Action_Move_Player1)
+                        Player1Location = new Point(row, col);
+                    else
+                        Player2Location = new Point(row, col);
                     return "OK";
                 }
                 else if (ChessBoardAll[row, col + 1].GridStatus == AnotherPlayer)
@@ -376,7 +416,10 @@ namespace Quoridor
                     {
                         ChessBoardAll[row, col + 2].GridStatus = Grid.GridInsideStatus.Empty;
                         ChessBoardAll[row, col].GridStatus = ActionPlayer;
-                        Player1Location = new Point(row, col);
+                        if (NA == Form1.NowAction.Action_Move_Player1)
+                            Player1Location = new Point(row, col);
+                        else
+                            Player2Location = new Point(row, col);
                         return "OK";
                     }
                     if (row <= 5
@@ -385,7 +428,10 @@ namespace Quoridor
                     {
                         ChessBoardAll[row + 1, col + 1].GridStatus = Grid.GridInsideStatus.Empty;
                         ChessBoardAll[row, col].GridStatus = ActionPlayer;
-                        Player1Location = new Point(row, col);
+                        if (NA == Form1.NowAction.Action_Move_Player1)
+                            Player1Location = new Point(row, col);
+                        else
+                            Player2Location = new Point(row, col);
                         return "OK";
                     }
                     if (row >= 1
@@ -394,7 +440,10 @@ namespace Quoridor
                     {
                         ChessBoardAll[row - 1, col + 1].GridStatus = Grid.GridInsideStatus.Empty;
                         ChessBoardAll[row, col].GridStatus = ActionPlayer;
-                        Player1Location = new Point(row, col);
+                        if (NA == Form1.NowAction.Action_Move_Player1)
+                            Player1Location = new Point(row, col);
+                        else
+                            Player2Location = new Point(row, col);
                         return "OK";
                     }
                 }
@@ -501,6 +550,13 @@ namespace Quoridor
             }
             public AstarList Father;
         }
+        /// <summary>
+        /// 重启A*寻路
+        /// </summary>
+        /// <param name="Player">寻路玩家</param>
+        /// <param name="Location_row">该玩家所在位置行</param>
+        /// <param name="Location_col">该玩家所在位置列</param>
+        /// <returns></returns>
         public int AstarRestart(Form1.EnumNowPlayer Player, int Location_row, int Location_col)
         {
             Min_DistanceLength = 0;
@@ -518,7 +574,15 @@ namespace Quoridor
         }
         public List<Point> Player1MinRoad = new List<Point>();
         public List<Point> Player2MinRoad = new List<Point>();
-
+        /// <summary>
+        /// A*寻路，最短路径保存在Player1MinRoad或Player2MinRoad中，返回最短路径长度
+        /// </summary>
+        /// <param name="Player">寻路玩家</param>
+        /// <param name="NowGrid">当前寻路的格子</param>
+        /// <param name="num_renew">迭代次数</param>
+        /// <param name="OpenList">Open列表</param>
+        /// <param name="CloseList">Close列表</param>
+        /// <returns></returns>
         public int LookupRoad_Astar(Form1.EnumNowPlayer Player, AstarList NowGrid, int num_renew, List<AstarList> OpenList, List<AstarList> CloseList)
         {
             int Location_row = NowGrid.Grid_row;
@@ -998,5 +1062,492 @@ namespace Quoridor
                 return "OK";
             }
         }
+        /// <summary>
+        /// 检测该挡板对该玩家有何影响
+        /// </summary>
+        /// <param name="WhichBoard">放置哪种挡板</param>
+        /// <param name="Player">检测哪个玩家会被堵死</param>
+        /// <param name="Location_row">玩家的位置行</param>
+        /// <param name="Location_col">玩家的位置列</param>
+        /// <returns>影响了该玩家多少步数</returns>
+        public int CheckBoardEffect(Form1.NowAction WhichBoard, Form1.EnumNowPlayer Player, int Location_row, int Location_col)
+        {
+            if (WhichBoard == Form1.NowAction.Action_Move_Player1 || WhichBoard == Form1.NowAction.Action_Move_Player2)
+                return 993;
+            if (Player == Form1.EnumNowPlayer.Player1 && NumPlayer1Board <= 0)
+                return 993;
+            else if (Player == Form1.EnumNowPlayer.Player2 && NumPlayer2Board <= 0)
+                return 993;
+
+            //int dis_pre = 0;
+            //if (Player == Form1.EnumNowPlayer.Player1)
+            //    dis_pre = AstarRestart(Form1.EnumNowPlayer.Player1
+            //        , ThisChessBoard.Player1Location.X, ThisChessBoard.Player1Location.Y);
+            //else
+            //    dis_pre = AstarRestart(Form1.EnumNowPlayer.Player2
+            //        , ThisChessBoard.Player2Location.X, ThisChessBoard.Player2Location.Y);
+
+            ///为了不改变原状态而暂存原状态以便后续恢复
+            ChessBoard ChessBoardBuff = new ChessBoard();
+            for (int i = 0; i < 7; i++)
+            {
+                for (int j = 0; j < 7; j++)
+                {
+                    ChessBoardBuff.ChessBoardAll[i, j].IfLeftBoard = ThisChessBoard.ChessBoardAll[i, j].IfLeftBoard;
+                    ChessBoardBuff.ChessBoardAll[i, j].IfUpBoard = ThisChessBoard.ChessBoardAll[i, j].IfUpBoard;
+                    ChessBoardBuff.ChessBoardAll[i, j].GridStatus = ThisChessBoard.ChessBoardAll[i, j].GridStatus;
+                }
+            }
+            ChessBoardBuff.Player1Location.X = ThisChessBoard.Player1Location.X;
+            ChessBoardBuff.Player1Location.Y = ThisChessBoard.Player1Location.Y;
+            ChessBoardBuff.Player2Location.X = ThisChessBoard.Player2Location.X;
+            ChessBoardBuff.Player2Location.Y = ThisChessBoard.Player2Location.Y;
+
+            //假设能放挡板
+            string Hint = ThisChessBoard.Action(Location_row, Location_col, WhichBoard);
+            if (Hint != "OK")
+            {
+                for (int i = 0; i < 7; i++)
+                {
+                    for (int j = 0; j < 7; j++)
+                    {
+                        ThisChessBoard.ChessBoardAll[i, j].IfLeftBoard = ChessBoardBuff.ChessBoardAll[i, j].IfLeftBoard;
+                        ThisChessBoard.ChessBoardAll[i, j].IfUpBoard = ChessBoardBuff.ChessBoardAll[i, j].IfUpBoard;
+                        ThisChessBoard.ChessBoardAll[i, j].GridStatus = ChessBoardBuff.ChessBoardAll[i, j].GridStatus;
+                    }
+                }
+                ThisChessBoard.Player1Location.X = ChessBoardBuff.Player1Location.X;
+                ThisChessBoard.Player1Location.Y = ChessBoardBuff.Player1Location.Y;
+                ThisChessBoard.Player2Location.X = ChessBoardBuff.Player2Location.X;
+                ThisChessBoard.Player2Location.Y = ChessBoardBuff.Player2Location.Y;
+
+                return 995;
+            }
+
+            int disbuff = 0;
+            List<AstarList> InitAList = new List<AstarList>();
+            Astar_Stop = false;
+            Min_DistanceLength = 0;
+            if (Player == Form1.EnumNowPlayer.Player1)
+            {
+                //disbuff = LookupRoad_Greedy(Player
+                //    , ThisChessBoard.Player1Location.X, ThisChessBoard.Player1Location.Y
+                //    , Moved);
+                AstarList InitGrid = new AstarList(6, 0, 6, ThisChessBoard.Player1Location.X, ThisChessBoard.Player1Location.Y);
+
+                InitAList.Add(InitGrid);
+                disbuff = LookupRoad_Astar(Form1.EnumNowPlayer.Player1
+                    , InitGrid
+                    , 1, new List<AstarList>()
+                    , InitAList);
+            }
+            else
+            {
+                //disbuff = LookupRoad_Greedy(Player
+                //    , ThisChessBoard.Player2Location.X, ThisChessBoard.Player2Location.Y
+                //    , Moved); 
+                AstarList InitGrid = new AstarList(6, 0, 6, ThisChessBoard.Player2Location.X, ThisChessBoard.Player2Location.Y);
+
+                InitAList.Add(InitGrid);
+                disbuff = LookupRoad_Astar(Form1.EnumNowPlayer.Player2
+                    , InitGrid
+                    , 1, new List<AstarList>()
+                    , InitAList);
+            }
+
+            for (int i = 0; i < 7; i++)
+            {
+                for (int j = 0; j < 7; j++)
+                {
+                    ThisChessBoard.ChessBoardAll[i, j].IfLeftBoard = ChessBoardBuff.ChessBoardAll[i, j].IfLeftBoard;
+                    ThisChessBoard.ChessBoardAll[i, j].IfUpBoard = ChessBoardBuff.ChessBoardAll[i, j].IfUpBoard;
+                    ThisChessBoard.ChessBoardAll[i, j].GridStatus = ChessBoardBuff.ChessBoardAll[i, j].GridStatus;
+                }
+            }
+            ThisChessBoard.Player1Location.X = ChessBoardBuff.Player1Location.X;
+            ThisChessBoard.Player1Location.Y = ChessBoardBuff.Player1Location.Y;
+            ThisChessBoard.Player2Location.X = ChessBoardBuff.Player2Location.X;
+            ThisChessBoard.Player2Location.Y = ChessBoardBuff.Player2Location.Y;
+
+            if (disbuff >= 50)
+            {
+                return 994;
+            }
+            else
+            {
+                return disbuff; //- dis_pre;
+            }
+        }
+
     }
+    /// <summary>
+    /// 动作类，包含双方评分
+    /// </summary>
+    public class QuoridorAction
+    {
+        public Form1.NowAction PlayerAction = Form1.NowAction.Action_Move_Player1;
+
+        public Point ActionPoint = new Point(-1, -1);
+
+        public double SelfScore = 50;
+        public double OpponentScore = 50;
+        public double WholeScore = 50;
+
+        public QuoridorAction(Form1.NowAction PA, Point AP)
+        {
+            PlayerAction = PA;
+            ActionPoint.X = AP.X;
+            ActionPoint.Y = AP.Y;
+        }
+    }
+    /// <summary>
+    /// 步步为营AI类 
+    /// </summary>
+    public class QuoridorAI:QuoridorGame
+    {
+        public List<QuoridorAction> ActionList = new List<QuoridorAction>();
+        public Form1.EnumNowPlayer Player_Now = Form1.EnumNowPlayer.Player1;
+
+        /// <summary>
+        /// 计算一个动作的评分
+        /// </summary>
+        /// <param name="Action_Once">本次动作</param>
+        /// <param name="Player">做该动作的玩家</param>
+        public void ActionEvaluation(QuoridorAction Action_Once, Form1.EnumNowPlayer Player)
+        {
+            if (Action_Once.PlayerAction == Form1.NowAction.Action_Move_Player1)
+            {
+                Action_Once.SelfScore = Convert.ToDouble(AstarRestart(Form1.EnumNowPlayer.Player1, Action_Once.ActionPoint.X, Action_Once.ActionPoint.Y));
+            }
+            else if (Action_Once.PlayerAction == Form1.NowAction.Action_Move_Player2)
+            {
+                Action_Once.SelfScore = Convert.ToDouble(AstarRestart(Form1.EnumNowPlayer.Player2, Action_Once.ActionPoint.X, Action_Once.ActionPoint.Y)); 
+            }
+            else if (Action_Once.PlayerAction == Form1.NowAction.Action_PlaceHorizontalBoard
+                || Action_Once.PlayerAction == Form1.NowAction.Action_PlaceVerticalBoard)
+            {
+                Point PlayerLocation = new Point();
+                Form1.EnumNowPlayer CheckPlayer = Form1.EnumNowPlayer.Player1;
+                if(Player == Form1.EnumNowPlayer.Player1)
+                {
+                    PlayerLocation.X = ThisChessBoard.Player2Location.X;
+                    PlayerLocation.Y = ThisChessBoard.Player2Location.Y;
+                    CheckPlayer = Form1.EnumNowPlayer.Player2;
+                }
+                else
+                {
+                    PlayerLocation.X = ThisChessBoard.Player1Location.X;
+                    PlayerLocation.Y = ThisChessBoard.Player1Location.Y;
+                    CheckPlayer = Form1.EnumNowPlayer.Player1;
+
+                }
+                int distance_effect = CheckBoardEffect(Action_Once.PlayerAction
+                                                        , CheckPlayer
+                                                        , Action_Once.ActionPoint.X
+                                                        , Action_Once.ActionPoint.Y);
+
+                Action_Once.OpponentScore = Convert.ToDouble(distance_effect);
+
+                distance_effect = CheckBoardEffect(Action_Once.PlayerAction
+                                                        , Player
+                                                        , Action_Once.ActionPoint.X
+                                                        , Action_Once.ActionPoint.Y);
+
+                Action_Once.SelfScore = Convert.ToDouble(distance_effect);
+            }
+        }
+        /// <summary>
+        /// 对整个动作列表的每个动作评分
+        /// </summary>
+        public void ActionListEvaluation()
+        {
+            int dis_player1 = 0, dis_player2 = 0;
+            dis_player1 = AstarRestart(Form1.EnumNowPlayer.Player1
+                        , ThisChessBoard.Player1Location.X, ThisChessBoard.Player1Location.Y);
+            dis_player2 = AstarRestart(Form1.EnumNowPlayer.Player2
+                        , ThisChessBoard.Player2Location.X, ThisChessBoard.Player2Location.Y);
+
+            for (int i = ActionList.Count - 1; i >= 0 ; i--)
+            {
+                QuoridorAction Action = ActionList[i];
+                ActionEvaluation(Action, Player_Now);
+
+                if (Action.SelfScore >= 100 || Action.OpponentScore >= 100)
+                {
+                    ActionList.Remove(ActionList[i]);
+                    continue;
+                }
+
+                # region 计算整体评分
+                //移动
+                if (Action.PlayerAction == Form1.NowAction.Action_Move_Player1
+                    || Action.PlayerAction == Form1.NowAction.Action_Move_Player2)
+                {
+                    if (Action.PlayerAction == Form1.NowAction.Action_Move_Player1)
+                        Action.WholeScore = Action.SelfScore - dis_player2;
+                    else
+                        Action.WholeScore = Action.SelfScore - dis_player1;
+
+                    //检测四周是否有别人棋子
+                    if( Action.ActionPoint.X >= 1 &&
+                        ThisChessBoard.ChessBoardAll[Action.ActionPoint.X - 1,Action.ActionPoint.Y].GridStatus != Grid.GridInsideStatus.Empty)//上
+                       Action.WholeScore++; 
+                    else if(Action.ActionPoint.X <= 5 &&                       
+                        ThisChessBoard.ChessBoardAll[Action.ActionPoint.X + 1,Action.ActionPoint.Y].GridStatus != Grid.GridInsideStatus.Empty)//下
+                       Action.WholeScore++;
+                    if (Action.ActionPoint.Y >= 1 &&
+                        ThisChessBoard.ChessBoardAll[Action.ActionPoint.X, Action.ActionPoint.Y - 1].GridStatus != Grid.GridInsideStatus.Empty)//左
+                        Action.WholeScore++;
+                    else if (Action.ActionPoint.Y <= 5 &&
+                        ThisChessBoard.ChessBoardAll[Action.ActionPoint.X, Action.ActionPoint.Y + 1].GridStatus != Grid.GridInsideStatus.Empty)//右
+                        Action.WholeScore++; 
+                    
+                    //检测是否能跳过对方
+                    if(ThisChessBoard.ChessBoardAll[Action.ActionPoint.X,Action.ActionPoint.Y].GridStatus != Grid.GridInsideStatus.Empty)
+                        Action.WholeScore--;
+
+                    //检测是前走还是后走
+                    if (Action.PlayerAction == Form1.NowAction.Action_Move_Player1)
+                    {
+                        if (Action.ActionPoint.X < ThisChessBoard.Player1Location.X)
+                            Action.WholeScore -= 0.5;
+                    }
+                    else
+                    {
+                        if (Action.ActionPoint.X > ThisChessBoard.Player1Location.X)
+                            Action.WholeScore -= 0.5; 
+                    }
+                    Action.WholeScore += 1;
+                }
+                //放挡板
+                if (Action.PlayerAction == Form1.NowAction.Action_PlaceHorizontalBoard
+                || Action.PlayerAction == Form1.NowAction.Action_PlaceVerticalBoard)
+                {
+                    double disbuff_1 = 0, disbuff_2 = 0, disbuff_3 = 0, disbuff_4 = 0;
+                    if (Player_Now == Form1.EnumNowPlayer.Player1)
+                    { 
+                        disbuff_1 = dis_player2 - 1 - Action.OpponentScore;
+                        disbuff_2 = dis_player1 - 1 - Action.SelfScore;
+                        if (Action.PlayerAction == Form1.NowAction.Action_PlaceHorizontalBoard)
+                        {
+                            disbuff_3 = Math.Abs(Action.ActionPoint.X - ThisChessBoard.Player1Location.X);
+
+                            if (Action.ActionPoint.X > ThisChessBoard.Player1Location.X)//下方
+                            {
+                                disbuff_3 = 6 - ThisChessBoard.Player1Location.X - disbuff_3;
+                            }
+
+                            disbuff_4 = Math.Abs(Action.ActionPoint.Y - ThisChessBoard.Player1Location.Y);
+                        }
+                        else
+                        {
+                            disbuff_3 = Math.Abs(Action.ActionPoint.Y - ThisChessBoard.Player1Location.Y);
+                            disbuff_4 = Math.Abs(Action.ActionPoint.X - ThisChessBoard.Player1Location.X);
+                        }
+
+
+                        Action.WholeScore = disbuff_1 - disbuff_2 + disbuff_3 + disbuff_4; 
+                    }
+                    else
+                    {
+                        disbuff_1 = dis_player1 - 1 - Action.OpponentScore;
+                        disbuff_2 = dis_player2 - 1 - Action.SelfScore;
+                        if (Action.PlayerAction == Form1.NowAction.Action_PlaceHorizontalBoard)
+                        {
+                            disbuff_3 = Math.Abs(Action.ActionPoint.X - ThisChessBoard.Player2Location.X);
+
+                            if (Action.ActionPoint.X <= ThisChessBoard.Player2Location.X)//上方
+                            {
+                                disbuff_3 = ThisChessBoard.Player2Location.X - disbuff_3;
+                            }
+
+                            disbuff_4 = Math.Abs(Action.ActionPoint.Y - ThisChessBoard.Player2Location.Y);
+                        }
+                        else
+                        {
+                            disbuff_3 = Math.Abs(Action.ActionPoint.Y - ThisChessBoard.Player2Location.Y);
+                            disbuff_4 = Math.Abs(Action.ActionPoint.X - ThisChessBoard.Player2Location.X);
+                        }
+
+                        Action.WholeScore = disbuff_1 - disbuff_2 + disbuff_3 + disbuff_4;
+                    }
+                }
+
+                #endregion
+
+
+            }
+        }
+        /// <summary>
+        /// 创建可选动作列表（目前只是用挡住对手的最短路径上的挡板动作为主）
+        /// </summary>
+        public void CreateActionList()
+        {
+            ActionList = new List<QuoridorAction>();
+
+            Point PlayerLocation = new Point();
+            if(Player_Now == Form1.EnumNowPlayer.Player1)
+            {
+                PlayerLocation.X = ThisChessBoard.Player1Location.X;
+                PlayerLocation.Y = ThisChessBoard.Player1Location.Y;
+            }
+            else
+            {
+                PlayerLocation.X = ThisChessBoard.Player2Location.X;
+                PlayerLocation.Y = ThisChessBoard.Player2Location.Y;
+            }
+
+            #region 创建移动Action
+            Form1.NowAction MoveAction = Form1.NowAction.Action_Move_Player1;
+            if(Player_Now == Form1.EnumNowPlayer.Player2)
+                MoveAction = Form1.NowAction.Action_Move_Player2;
+
+            int row = PlayerLocation.X, col = PlayerLocation.Y;
+
+            if (row >= 1 && !(ThisChessBoard.ChessBoardAll[row, col].IfUpBoard))//上扫
+                ActionList.Add(new QuoridorAction(MoveAction, new Point(row - 1, col)));
+            if (row <= 5 && !(ThisChessBoard.ChessBoardAll[row + 1, col].IfUpBoard))//下扫
+                ActionList.Add(new QuoridorAction(MoveAction, new Point(row + 1, col)));
+            if (col <= 5 && !(ThisChessBoard.ChessBoardAll[row, col + 1].IfLeftBoard))//右扫
+                ActionList.Add(new QuoridorAction(MoveAction, new Point(row, col + 1)));
+            if (col >= 1 && !(ThisChessBoard.ChessBoardAll[row, col].IfLeftBoard))//左扫
+                ActionList.Add(new QuoridorAction(MoveAction, new Point(row, col - 1)));
+
+            #endregion
+
+            #region 创建放置挡板Action
+            List<Point> MinRoad = new List<Point>();
+            if(Player_Now == Form1.EnumNowPlayer.Player1)
+            {
+                AstarRestart(Form1.EnumNowPlayer.Player2, ThisChessBoard.Player2Location.X, ThisChessBoard.Player2Location.Y);
+                MinRoad = Player2MinRoad;
+            }
+            else
+            {
+                AstarRestart(Form1.EnumNowPlayer.Player1, ThisChessBoard.Player1Location.X, ThisChessBoard.Player1Location.Y);
+                MinRoad = Player1MinRoad;
+            }
+
+            for (int i = 0; i < MinRoad.Count - 1; i++)
+            {
+                int row_1 = MinRoad[i].X, col_1 = MinRoad[i].Y;
+                int row_2 = MinRoad[i + 1].X, col_2 = MinRoad[i + 1].Y;
+
+
+                /*判断下一格在这一格的哪个方位*/
+                if (col_1 == col_2 && row_1 != row_2)//上或下
+                {
+                    if (row_1 < row_2)//下
+                    {
+                        if (col_2 <= 5 && !ThisChessBoard.ChessBoardAll[row_2, col_2 + 1].IfUpBoard)
+                            ActionList.Add(new QuoridorAction(
+                                                            Form1.NowAction.Action_PlaceHorizontalBoard
+                                                            ,new Point(row_2, col_2)));
+                        if(col_2 >= 1 && !ThisChessBoard.ChessBoardAll[row_2, col_2 - 1].IfUpBoard)
+                            ActionList.Add(new QuoridorAction(
+                                                            Form1.NowAction.Action_PlaceHorizontalBoard
+                                                            , new Point(row_2, col_2 - 1)));
+                    }
+                    else//上
+                    {
+                        if (col_1 <= 5 && !ThisChessBoard.ChessBoardAll[row_1, col_1 + 1].IfUpBoard)
+                            ActionList.Add(new QuoridorAction(
+                                                            Form1.NowAction.Action_PlaceHorizontalBoard
+                                                            , new Point(row_1, col_1)));
+                        if(col_1 >= 1 && !ThisChessBoard.ChessBoardAll[row_1,col_1 - 1].IfUpBoard)
+                            ActionList.Add(new QuoridorAction(
+                                                            Form1.NowAction.Action_PlaceHorizontalBoard
+                                                            , new Point(row_1, col_1 - 1)));
+
+                    }
+                }
+                else if (row_1 == row_2 && col_1 != col_2)//左或右
+                {
+                    if (col_1 < col_2)//右
+                    {
+                        if(row_2 <= 5 && !ThisChessBoard.ChessBoardAll[row_2 + 1,col_2].IfLeftBoard)
+                            ActionList.Add(new QuoridorAction(
+                                                            Form1.NowAction.Action_PlaceVerticalBoard
+                                                            , new Point(row_2, col_2)));
+                        if(row_2 >= 1 && !ThisChessBoard.ChessBoardAll[row_2 - 1,col_2].IfLeftBoard)
+                            ActionList.Add(new QuoridorAction(
+                                                            Form1.NowAction.Action_PlaceVerticalBoard
+                                                            , new Point(row_2 - 1, col_2)));
+                    }
+                    else//上
+                    {
+                        if (row_1 <= 5 && !ThisChessBoard.ChessBoardAll[row_1 + 1, col_1].IfLeftBoard)
+                            ActionList.Add(new QuoridorAction(
+                                                            Form1.NowAction.Action_PlaceVerticalBoard
+                                                            , new Point(row_1, col_1)));
+                        if (row_1 >= 1 && !ThisChessBoard.ChessBoardAll[row_1 - 1, col_1].IfLeftBoard)
+                            ActionList.Add(new QuoridorAction(
+                                                            Form1.NowAction.Action_PlaceVerticalBoard
+                                                            , new Point(row_1 - 1, col_1)));
+                    } 
+                }
+            }
+            #endregion
+        }
+        /// <summary>
+        /// 测试该动作列表的评分
+        /// </summary>
+        public void TestEvaluation()
+        {
+            CreateActionList();
+            ActionListEvaluation();
+
+            Console.WriteLine("/**********显示"+ (Player_Now).ToString()+"动作评分***********/");
+            foreach (QuoridorAction AL in ActionList)
+            {
+                Console.Write("在(" + AL.ActionPoint.X.ToString() + "," + AL.ActionPoint.Y.ToString() + ")处");
+                string actionstr = "";
+                switch (AL.PlayerAction)
+                {
+                    case Form1.NowAction.Action_PlaceVerticalBoard:
+                        actionstr = "放置竖挡板";break;
+                    case Form1.NowAction.Action_PlaceHorizontalBoard:
+                        actionstr = "放置横挡板"; break;
+                    case Form1.NowAction.Action_Move_Player1:
+                        actionstr = "移动玩家1"; break;
+                    case Form1.NowAction.Action_Move_Player2:
+                        actionstr = "移动玩家2"; break;
+                    default:
+                        actionstr = "异常"; break;
+                }
+                Console.WriteLine(actionstr);
+                Console.Write("该动作评分为：");
+                Console.WriteLine(AL.OpponentScore.ToString() + "," + AL.SelfScore.ToString() + "," + AL.WholeScore.ToString());
+
+            }
+            Console.WriteLine("/****************************************/");
+        }
+
+        public QuoridorAction AIAction_Greedy(Form1.EnumNowPlayer AIPlayer)
+        {
+            ///暂存一些量以便恢复
+            Form1.EnumNowPlayer PlayerSave = Player_Now;
+
+            Player_Now = AIPlayer;
+
+            CreateActionList();
+            ActionListEvaluation();     
+
+            QuoridorAction BestAction = ActionList.First();
+            double MinScore = 99;
+            foreach (QuoridorAction AL in ActionList)
+            {
+                if (MinScore > AL.WholeScore)
+                {
+                    BestAction = AL;
+                    MinScore = AL.WholeScore;
+                }
+            }
+
+            Player_Now = PlayerSave;
+            return BestAction;
+        }
+    }
+
+
 }
