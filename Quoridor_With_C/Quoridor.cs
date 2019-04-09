@@ -95,7 +95,7 @@ namespace Quoridor
                 }
             } 
         }
-        public string CheckMove(int row, int col, Form1.NowAction NA)
+        public string CheckMove_NoChange(int row, int col, Form1.NowAction NA)
         {
             if (ChessBoardAll[row, col].GridStatus != Grid.GridInsideStatus.Empty) return "This Not Empty";
 
@@ -105,6 +105,7 @@ namespace Quoridor
             if (NA != Form1.NowAction.Action_Move_Player1
                 && NA != Form1.NowAction.Action_Move_Player2)
                 return "Error";
+
             if (NA == Form1.NowAction.Action_Move_Player1)
             {
                 ActionPlayer = Grid.GridInsideStatus.Have_Player1;
@@ -122,20 +123,26 @@ namespace Quoridor
             {
                 if (ChessBoardAll[row - 1, col].GridStatus == ActionPlayer)
                 {
-                    ChessBoardAll[row - 1, col].GridStatus = Grid.GridInsideStatus.Empty;
-                    ChessBoardAll[row, col].GridStatus = ActionPlayer;
-                    Player1Location = new Point(row, col);
                     return "OK";
                 }
                 else if (ChessBoardAll[row - 1, col].GridStatus == AnotherPlayer)
                 {
+                    if (col >= 1
+                        && ChessBoardAll[row - 1, col - 1].GridStatus == ActionPlayer
+                        && !(ChessBoardAll[row - 1, col].IfLeftBoard))//左扫
+                    {
+                        return "OK";
+                    }
+                    if (col <= 5
+                        && ChessBoardAll[row - 1, col + 1].GridStatus == ActionPlayer
+                        && !(ChessBoardAll[row - 1, col + 1].IfLeftBoard))//右扫
+                    {
+                        return "OK";
+                    }
                     if (row >= 2
                         && ChessBoardAll[row - 2, col].GridStatus == ActionPlayer
-                        && !(ChessBoardAll[row - 2, col].IfUpBoard))
+                        && !(ChessBoardAll[row - 1, col].IfUpBoard))//上扫
                     {
-                        ChessBoardAll[row - 2, col].GridStatus = Grid.GridInsideStatus.Empty;
-                        ChessBoardAll[row, col].GridStatus = ActionPlayer;
-                        Player1Location = new Point(row, col);
                         return "OK";
                     }
                 }
@@ -145,20 +152,27 @@ namespace Quoridor
             {
                 if (ChessBoardAll[row + 1, col].GridStatus == ActionPlayer)
                 {
-                    ChessBoardAll[row + 1, col].GridStatus = Grid.GridInsideStatus.Empty;
-                    ChessBoardAll[row, col].GridStatus = ActionPlayer;
-                    Player1Location = new Point(row, col);
                     return "OK";
                 }
                 else if (ChessBoardAll[row + 1, col].GridStatus == AnotherPlayer)
                 {
+                    if (col >= 1
+                        && ChessBoardAll[row + 1, col - 1].GridStatus == ActionPlayer
+                        && !(ChessBoardAll[row + 1, col].IfLeftBoard))//左扫
+                    {
+                        return "OK";
+                    }
+                    if (col <= 5
+                        && ChessBoardAll[row + 1, col + 1].GridStatus == ActionPlayer
+                        && !(ChessBoardAll[row + 1, col + 1].IfLeftBoard))//右扫
+                    {
+                        return "OK";
+                    }
+
                     if (row <= 4
                         && ChessBoardAll[row + 2, col].GridStatus == ActionPlayer
-                        && !(ChessBoardAll[row + 2, col].IfUpBoard))
+                        && !(ChessBoardAll[row + 2, col].IfUpBoard))//下扫
                     {
-                        ChessBoardAll[row + 2, col].GridStatus = Grid.GridInsideStatus.Empty;
-                        ChessBoardAll[row, col].GridStatus = ActionPlayer;
-                        Player1Location = new Point(row, col);
                         return "OK";
                     }
                 }
@@ -168,20 +182,26 @@ namespace Quoridor
             {
                 if (ChessBoardAll[row, col - 1].GridStatus == ActionPlayer)
                 {
-                    ChessBoardAll[row, col - 1].GridStatus = Grid.GridInsideStatus.Empty;
-                    ChessBoardAll[row, col].GridStatus = ActionPlayer;
-                    Player1Location = new Point(row, col);
                     return "OK";
                 }
                 else if (ChessBoardAll[row, col - 1].GridStatus == AnotherPlayer)
                 {
                     if (col >= 2
                         && ChessBoardAll[row, col - 2].GridStatus == ActionPlayer
-                        && !(ChessBoardAll[row, col - 1].IfLeftBoard))
+                        && !(ChessBoardAll[row, col - 1].IfLeftBoard))//左扫
                     {
-                        ChessBoardAll[row, col - 2].GridStatus = Grid.GridInsideStatus.Empty;
-                        ChessBoardAll[row, col].GridStatus = ActionPlayer;
-                        Player1Location = new Point(row, col);
+                        return "OK";
+                    }
+                    if (row <= 5
+                        && ChessBoardAll[row + 1, col - 1].GridStatus == ActionPlayer
+                        && !(ChessBoardAll[row + 1, col - 1].IfUpBoard))//下扫
+                    {
+                        return "OK";
+                    }
+                    if (row >= 1
+                        && ChessBoardAll[row - 1, col - 1].GridStatus == ActionPlayer
+                        && !(ChessBoardAll[row, col - 1].IfUpBoard))//上扫
+                    {
                         return "OK";
                     }
                 }
@@ -191,20 +211,26 @@ namespace Quoridor
             {
                 if (ChessBoardAll[row, col + 1].GridStatus == ActionPlayer)
                 {
-                    ChessBoardAll[row, col + 1].GridStatus = Grid.GridInsideStatus.Empty;
-                    ChessBoardAll[row, col].GridStatus = ActionPlayer;
-                    Player1Location = new Point(row, col);
                     return "OK";
                 }
                 else if (ChessBoardAll[row, col + 1].GridStatus == AnotherPlayer)
                 {
                     if (col <= 4
                         && ChessBoardAll[row, col + 2].GridStatus == ActionPlayer
-                        && !(ChessBoardAll[row, col + 2].IfLeftBoard))
+                        && !(ChessBoardAll[row, col + 2].IfLeftBoard))//右扫
                     {
-                        ChessBoardAll[row, col + 2].GridStatus = Grid.GridInsideStatus.Empty;
-                        ChessBoardAll[row, col].GridStatus = ActionPlayer;
-                        Player1Location = new Point(row, col);
+                        return "OK";
+                    }
+                    if (row <= 5
+                        && ChessBoardAll[row + 1, col + 1].GridStatus == ActionPlayer
+                        && !(ChessBoardAll[row + 1, col + 1].IfUpBoard))//下扫
+                    {
+                        return "OK";
+                    }
+                    if (row >= 1
+                        && ChessBoardAll[row - 1, col + 1].GridStatus == ActionPlayer
+                        && !(ChessBoardAll[row, col + 1].IfUpBoard))//上扫
+                    {
                         return "OK";
                     }
                 }
@@ -1404,14 +1430,44 @@ namespace Quoridor
 
             int row = PlayerLocation.X, col = PlayerLocation.Y;
 
-            if (row >= 1 && !(ThisChessBoard.ChessBoardAll[row, col].IfUpBoard))//上扫
+            //if (row >= 1 && !(ThisChessBoard.ChessBoardAll[row, col].IfUpBoard))//上扫
+            //    ActionList.Add(new QuoridorAction(MoveAction, new Point(row - 1, col)));
+            //if (row <= 5 && !(ThisChessBoard.ChessBoardAll[row + 1, col].IfUpBoard))//下扫
+            //    ActionList.Add(new QuoridorAction(MoveAction, new Point(row + 1, col)));
+            //if (col <= 5 && !(ThisChessBoard.ChessBoardAll[row, col + 1].IfLeftBoard))//右扫
+            //    ActionList.Add(new QuoridorAction(MoveAction, new Point(row, col + 1)));
+            //if (col >= 1 && !(ThisChessBoard.ChessBoardAll[row, col].IfLeftBoard))//左扫
+            //    ActionList.Add(new QuoridorAction(MoveAction, new Point(row, col - 1)));
+
+            ///检测附近的12个可能点
+            if (row >= 2 && ThisChessBoard.CheckMove_NoChange(row - 2, col, MoveAction) == "OK")
+                ActionList.Add(new QuoridorAction(MoveAction, new Point(row - 2, col)));
+
+            if (row >= 1 && col >= 1 && ThisChessBoard.CheckMove_NoChange(row - 1, col - 1, MoveAction) == "OK")
+                ActionList.Add(new QuoridorAction(MoveAction, new Point(row - 1, col - 1)));
+            if (row >= 1 && ThisChessBoard.CheckMove_NoChange(row - 1, col, MoveAction) == "OK")
                 ActionList.Add(new QuoridorAction(MoveAction, new Point(row - 1, col)));
-            if (row <= 5 && !(ThisChessBoard.ChessBoardAll[row + 1, col].IfUpBoard))//下扫
-                ActionList.Add(new QuoridorAction(MoveAction, new Point(row + 1, col)));
-            if (col <= 5 && !(ThisChessBoard.ChessBoardAll[row, col + 1].IfLeftBoard))//右扫
-                ActionList.Add(new QuoridorAction(MoveAction, new Point(row, col + 1)));
-            if (col >= 1 && !(ThisChessBoard.ChessBoardAll[row, col].IfLeftBoard))//左扫
+            if (row >= 1 && col <= 5 && ThisChessBoard.CheckMove_NoChange(row - 1, col + 1, MoveAction) == "OK")
+                ActionList.Add(new QuoridorAction(MoveAction, new Point(row, col)));
+
+            if (col >= 2 && ThisChessBoard.CheckMove_NoChange(row, col - 2, MoveAction) == "OK")
+                ActionList.Add(new QuoridorAction(MoveAction, new Point(row, col - 2)));
+            if (col >= 1 && ThisChessBoard.CheckMove_NoChange(row, col - 1, MoveAction) == "OK")
                 ActionList.Add(new QuoridorAction(MoveAction, new Point(row, col - 1)));
+            if (col <= 5 && ThisChessBoard.CheckMove_NoChange(row, col + 1, MoveAction) == "OK")
+                ActionList.Add(new QuoridorAction(MoveAction, new Point(row, col + 1)));
+            if (col <= 4 && ThisChessBoard.CheckMove_NoChange(row, col + 2, MoveAction) == "OK")
+                ActionList.Add(new QuoridorAction(MoveAction, new Point(row, col + 2)));
+
+            if (row <= 5 && col >= 1 && ThisChessBoard.CheckMove_NoChange(row + 1, col - 1, MoveAction) == "OK")
+                ActionList.Add(new QuoridorAction(MoveAction, new Point(row + 1, col - 1)));
+            if (row <= 5 && ThisChessBoard.CheckMove_NoChange(row + 1, col, MoveAction) == "OK")
+                ActionList.Add(new QuoridorAction(MoveAction, new Point(row + 1, col)));
+            if (row <= 5 && col <= 5 && ThisChessBoard.CheckMove_NoChange(row + 1, col + 1, MoveAction) == "OK")
+                ActionList.Add(new QuoridorAction(MoveAction, new Point(row + 1, col)));
+
+            if (row <= 4 && ThisChessBoard.CheckMove_NoChange(row + 2, col, MoveAction) == "OK")
+                ActionList.Add(new QuoridorAction(MoveAction, new Point(row + 2, col)));
 
             #endregion
 

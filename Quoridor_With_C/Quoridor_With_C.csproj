@@ -113,6 +113,9 @@
   <ItemGroup>
     <None Include="Resources\封面.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\qipan2019.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

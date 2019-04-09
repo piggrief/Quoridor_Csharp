@@ -93,6 +93,16 @@ namespace Quoridor_With_C {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
+        internal static System.Drawing.Bitmap qipan2019 {
+            get {
+                object obj = ResourceManager.GetObject("qipan2019", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
         internal static System.Drawing.Bitmap 封面 {
             get {
                 object obj = ResourceManager.GetObject("封面", resourceCulture);

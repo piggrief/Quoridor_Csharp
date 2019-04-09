@@ -23,10 +23,9 @@ namespace Quoridor_With_C
         {
             //Close();
             this.Hide();
-            Form1 f1 = new Form1();
+            Form1 f1 = new Form1(Form1.GameModeStatus.DoublePlay);
             //f1.MdiParent = this;
             f1.Show();
-            f1.GameMode = "DoublePlay";
         }
 
         private void Start_Load(object sender, EventArgs e)
@@ -38,10 +37,18 @@ namespace Quoridor_With_C
         {
             //Close();
             this.Hide();
-            Form1 f1 = new Form1();
+            Form1 f1 = new Form1(Form1.GameModeStatus.SinglePlay);
             //f1.MdiParent = this;
             f1.Show();
-            f1.GameMode = "SinglePlay";
+        }
+
+        private void Queen8BTN_Click(object sender, EventArgs e)
+        {
+            //Close();
+            this.Hide();
+            Form1 f1 = new Form1(Form1.GameModeStatus.Queen8);
+            //f1.MdiParent = this;
+            f1.Show();
         }
     }
 }
