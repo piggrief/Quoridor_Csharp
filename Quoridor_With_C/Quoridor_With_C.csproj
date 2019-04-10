@@ -56,6 +56,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueenSolve.cs" />
     <Compile Include="Quoridor.cs" />
     <Compile Include="Resource1.Designer.cs">
       <AutoGen>True</AutoGen>

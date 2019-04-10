@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using CCWin;
 using System.Runtime.InteropServices;
 using Quoridor;
+using Queen;
 
 namespace Quoridor_With_C
 {
@@ -676,6 +677,27 @@ namespace Quoridor_With_C
         {
             CustomPlaceBTN.Enabled = false;
             RandomPlaceBTN.Enabled = false;
+        }
+
+        public QueenSolve ThisQueenSolve = new QueenSolve(QueenSolve.DistanceCalMethod.ManhattanDistance
+                                                         ,QueenSolve.InitResultMethod.Dijkstra);
+        private void Test2BTN_Click(object sender, EventArgs e)
+        {
+            ThisQueenSolve.ChessLocationList = QueenChessLocation;
+
+            for (int i = 0; i < 8; i++)
+            {
+                ThisQueenSolve.QueenLocationList.Add(new Point(i,i));
+            }
+
+            List<int> MoveSequence = new List<int>();
+            double disall = 0;
+            MoveSequence = ThisQueenSolve.CreateInitResult(ThisQueenSolve.ChessLocationList
+                                                          ,ThisQueenSolve.QueenLocationList
+                                                          ,ref disall);
+
+            ThisQueenSolve.PrintMoveSequence(MoveSequence, ThisQueenSolve.ChessLocationList, ThisQueenSolve.QueenLocationList);
+            Console.WriteLine("总路径长度为" + disall.ToString());
         }
 
     }

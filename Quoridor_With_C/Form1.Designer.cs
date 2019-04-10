@@ -239,6 +239,7 @@
             this.Test2BTN.TabIndex = 10;
             this.Test2BTN.Text = "测试";
             this.Test2BTN.UseVisualStyleBackColor = false;
+            this.Test2BTN.Click += new System.EventHandler(this.Test2BTN_Click);
             // 
             // HBoardPB
             // 
