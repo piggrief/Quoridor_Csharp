@@ -22,6 +22,8 @@ namespace Quoridor_With_C
         public static extern Boolean FreeConsole(); 
 
         Graphics Gr;
+        Graphics Gr_Chess1;
+
         Bitmap bmp = new Bitmap(1000, 900);
         public enum GameModeStatus
         {
@@ -166,6 +168,7 @@ namespace Quoridor_With_C
         }
         QuoridorAI NowQuoridor = new QuoridorAI();
         List<CCWin.SkinControl.SkinPictureBox> QueenChessList = new List<CCWin.SkinControl.SkinPictureBox>();
+        List<CCWin.SkinControl.SkinPictureBox> QueenList = new List<CCWin.SkinControl.SkinPictureBox>();      
         List<Point> QueenChessLocation = new List<Point>();
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -227,6 +230,24 @@ namespace Quoridor_With_C
                 PlaceHorizontalBoardBTN.Dispose();
                 TestBTN.Dispose();
 
+                QueenList.Add(Queen1PB);
+                QueenList.Add(Queen2PB);
+                QueenList.Add(Queen3PB);
+                QueenList.Add(Queen4PB);
+                QueenList.Add(Queen5PB);
+                QueenList.Add(Queen6PB);
+                QueenList.Add(Queen7PB);
+                QueenList.Add(Queen8PB);
+
+                foreach (CCWin.SkinControl.SkinPictureBox SPB in QueenList)
+                {
+                    SPB.Size = new Size(58, 58);
+                    ChessBoardPB.Controls.Add(SPB);
+                    SPB.Visible = false;
+                    SPB.BackColor = Color.Transparent;
+                    QueenChessLocation.Add(new Point(-1, -1));
+                }
+
                 QueenChessList.Add(QueenChess1PB);
                 QueenChessList.Add(QueenChess2PB);
                 QueenChessList.Add(QueenChess3PB);
@@ -242,7 +263,6 @@ namespace Quoridor_With_C
                     ChessBoardPB.Controls.Add(SPB);
                     SPB.Visible = false;
                     SPB.BackColor = Color.Transparent;
-                    QueenChessLocation.Add(new Point(-1, -1));
                 }
 
                 ChessBoardPB.Refresh();
@@ -304,7 +324,11 @@ namespace Quoridor_With_C
         {
 
         }
-
+        /// <summary>
+        /// 根据点击坐标执行下棋操作
+        /// </summary>
+        /// <param name="TP">点击坐标</param>
+        /// <returns>行动提示字符串</returns>
         string MouseAction_PlayChess(Point TP)
         {
             string Hint = "OK";
@@ -493,6 +517,10 @@ namespace Quoridor_With_C
             return Hint;
         }
         int Place_Index = 0;
+        /// <summary>
+        /// 根据点击坐标生成棋子初始位置
+        /// </summary>
+        /// <param name="TP"></param>
         void MouseAction_PlaceQueen(Point TP)
         {
             string Hint = "OK";
@@ -681,23 +709,84 @@ namespace Quoridor_With_C
 
         public QueenSolve ThisQueenSolve = new QueenSolve(QueenSolve.DistanceCalMethod.ManhattanDistance
                                                          ,QueenSolve.InitResultMethod.Dijkstra);
+        /// <summary>
+        /// 显示八皇后位置（在棋盘上显示）
+        /// </summary>
+        /// <param name="QueenLocation">皇后位置（行列表示）</param>
+        /// <param name="QueenPB">皇后位置图片列表</param>
+        public void ShowQueenLocation(List<Point> QueenLocation, List<CCWin.SkinControl.SkinPictureBox> QueenPB)
+        {
+            _FormDraw FDBuff = new _FormDraw();
+            for (int i = 0; i < QueenPB.Count; i++)
+            {
+                QueenPB[i].Location = FDBuff.GetQueenChessLocation(QueenLocation[i].X,QueenLocation[i].Y);
+                QueenPB[i].Visible = true;
+            }
+        }
+        /// <summary>
+        /// 隐藏皇后位置
+        /// </summary>
+        /// <param name="QueenPB">皇后图片列表</param>
+        public void HideQueen(List<CCWin.SkinControl.SkinPictureBox> QueenPB)
+        {
+            foreach (CCWin.SkinControl.SkinPictureBox SPB in QueenPB)
+            {
+                SPB.Visible = false;
+                SPB.Location = new Point(808, 348);
+            }
+        }
+        bool IsShowQueenFlag = true;
         private void Test2BTN_Click(object sender, EventArgs e)
         {
             ThisQueenSolve.ChessLocationList = QueenChessLocation;
 
+            ThisQueenSolve.QueenLocationList = new List<Point>();
             for (int i = 0; i < 8; i++)
             {
-                ThisQueenSolve.QueenLocationList.Add(new Point(i,i));
+                ThisQueenSolve.QueenLocationList.Add(new Point(i, ThisQueenSolve.EightQueenResult[0, i] - 1));
             }
 
+            ThisQueenSolve.InitSA(100000, 0.99, 1000, 0, SimulateAnneal.Annealing.SAMode.SA);
+            List<Point> BestResult_QueenLocation = new List<Point>();
             List<int> MoveSequence = new List<int>();
             double disall = 0;
-            MoveSequence = ThisQueenSolve.CreateInitResult(ThisQueenSolve.ChessLocationList
-                                                          ,ThisQueenSolve.QueenLocationList
-                                                          ,ref disall);
+
+            System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
+            stopwatch.Start(); //  开始监视代码运行时间
+            //  需要测试的代码 
+            MoveSequence = ThisQueenSolve.SearchResult_ForOverall(ref disall, ref BestResult_QueenLocation);
+            //
+            stopwatch.Stop(); //  停止监视
+            TimeSpan timespan = stopwatch.Elapsed; //  获取当前实例测量得出的总时间
+            double hours = timespan.TotalHours; // 总小时
+            double minutes = timespan.TotalMinutes;  // 总分钟
+            double seconds = timespan.TotalSeconds;  //  总秒数
+            double milliseconds = timespan.TotalMilliseconds;  //  总毫秒数
+
+            //MoveSequence = ThisQueenSolve.CreateInitResult(ThisQueenSolve.ChessLocationList
+            //                                              ,ThisQueenSolve.QueenLocationList
+            //                                              ,ref disall);
 
             ThisQueenSolve.PrintMoveSequence(MoveSequence, ThisQueenSolve.ChessLocationList, ThisQueenSolve.QueenLocationList);
             Console.WriteLine("总路径长度为" + disall.ToString());
+            Console.WriteLine("用时(s) ："  + seconds.ToString() + "秒");
+            Console.WriteLine("用时(ms)：" + milliseconds.ToString() + "毫秒");
+
+
+            if (IsShowQueenFlag)
+            {
+                ShowQueenLocation(ThisQueenSolve.QueenLocationList, QueenList);
+            }
+            else
+            {
+                HideQueen(QueenList);
+            }
+            IsShowQueenFlag = !IsShowQueenFlag;
+        }
+
+        private void Queen3PB_Click(object sender, EventArgs e)
+        {
+
         }
 
     }

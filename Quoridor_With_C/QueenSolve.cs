@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using MathNet.Numerics.Random;
+using SimulateAnneal;
 
 namespace Queen
 {
@@ -112,6 +114,45 @@ namespace Queen
             return MoveSequence;
         }
         /// <summary>
+        /// 用逆转策略改变解序列，如(1,2,3,4,5,6)随机选出2，5两个点，逆转之后新序列（1,5,4,3,2,6）
+        /// </summary>
+        /// <param name="Sequence_last">待随机逆转的序列</param>
+        /// <returns>逆转完成的序列</returns>
+        public List<int> ChangeResult_Reverse(List<int> Sequence_last)
+        {
+            #region 随机选择两个可交换的点
+            bool RandomSuccess = false;
+            CryptoRandomSource rnd = new CryptoRandomSource();
+            int[] RandomNumber = new int[2];
+            do//保证随机出来的数全奇或全偶且不相等
+            {
+                RandomNumber = rnd.NextInt32s(2, 0, 16);
+                int buff = RandomNumber[0] + RandomNumber[1];
+                if ((buff % 2 == 0) && (RandomNumber[0] != RandomNumber[1]))
+                    RandomSuccess = true;
+            } while (!RandomSuccess);
+            if (RandomNumber[0] > RandomNumber[1])//保证第一个数一定小
+            {
+                int t = RandomNumber[0];
+                RandomNumber[0] = RandomNumber[1];
+                RandomNumber[1] = RandomNumber[0];
+            }
+            #endregion
+
+            #region 将这两个点之间的序列倒序
+            List<int> NewSequence = new List<int>();
+            for (int i = 0; i < Sequence_last.Count; i++)
+			{
+			    NewSequence.Add(Sequence_last[i]); 
+			}
+            for (int i = RandomNumber[0], j = 0; i <= RandomNumber[1]; i++, j++)
+            {
+                NewSequence[i] = Sequence_last[RandomNumber[1] - j];
+            }
+            #endregion
+            return NewSequence;
+        }
+        /// <summary>
         /// 计算一个移动序列的总距离
         /// </summary>
         /// <param name="MoveSequence">移动序列列表</param>
@@ -165,5 +206,234 @@ namespace Queen
                 Console.WriteLine();
             }
         }
+
+        Annealing ThisSA;
+        Annealing.SAMode ThisSAMode = Annealing.SAMode.SA; 
+        /// <summary>
+        /// 初始化模拟退火（主要为了设定SA算法的初始参数）
+        /// </summary>
+        /// <param name="InitTemp">初始温度</param>
+        /// <param name="Alpha">衰减常数alpha</param>
+        /// <param name="L">最大迭代次数</param>
+        /// <param name="FSA_H">快速模拟退火中所需的H参数</param>
+        /// <param name="WhichSA">使用哪种模拟退火算法（如SA、FSA）</param>
+        public void InitSA(double InitTemp, double Alpha, double L, double FSA_H, Annealing.SAMode WhichSA)
+        {
+            ThisSA = new Annealing(InitTemp, Alpha, L, FSA_H);
+            ThisSAMode = WhichSA;
+        }
+        /// <summary>
+        /// 搜索最短路径问题的解
+        /// </summary>
+        /// <param name="BestDistance">最优的路径的总距离</param>
+        /// <returns>最优路径序列</returns>
+        public List<int> SearchResult_ForMinDistance(ref double BestDistance)
+        {
+            //if (ChessLocationList.Count == 0 || QueenLocationList.Count == 0)
+            //    return new List<int>();
+
+            double OverallBest_Distance = 999999;//全局最优解的距离
+            List<int> OverallBest_Sequence = new List<int>();//全局最优解
+
+            #region 创建初始解
+            List<int> Init_Sequence = new List<int>();
+            double Init_Distance = 999999;
+
+            Init_Sequence = CreateInitResult(ChessLocationList, QueenLocationList, ref Init_Distance);
+            Init_Distance = CalMoveSequenceDistance(Init_Sequence, ChessLocationList, QueenLocationList);
+
+            #endregion
+
+            double PartBest_Distance = 999999;//局部最优解的距离
+            List<int> PartBest_Sequence = new List<int>();//局部最优解
+
+            #region 模拟退火
+            double T = ThisSA.Temp_Init;
+            int l = 0;//初始迭代变量
+            double E = 0;//能量
+            double P = 0;//接受概率
+            double result_distance_pre = Init_Distance;//前一次解的质量  
+            double result_distance_new = Init_Distance;//新的解的质量
+
+            List<int> Last_Sequence = Init_Sequence;
+            List<int> New_Sequence = Init_Sequence;
+            //纯模拟退火框架
+            while (T > 1)//外循环，退火终止条件
+            {
+                while (l <= ThisSA.L)//内循环，迭代终止条件
+                {
+                    Last_Sequence = New_Sequence;
+                    result_distance_pre = result_distance_new;
+                    ///产生新的随机解
+                    New_Sequence = new List<int>();
+                    New_Sequence = ChangeResult_Reverse(Last_Sequence);
+                    result_distance_new = CalMoveSequenceDistance(New_Sequence, ChessLocationList, QueenLocationList);                    
+
+                    ///搜出最优解要记录保存
+                    if (result_distance_new < OverallBest_Distance)
+                    {
+                        OverallBest_Distance = result_distance_new;
+                        OverallBest_Sequence = New_Sequence;
+                    }
+
+                    ///模拟退火核心
+                    E = result_distance_new - result_distance_pre;
+                    P = ThisSA.P_rec(E, T, ThisSAMode);
+                    CryptoRandomSource rnd = new CryptoRandomSource();
+                    double[] randnum = new double[] { 1 };
+                    randnum = rnd.NextDoubles(1);
+
+                    if (E > 0)//局部更优必然接受
+                    {
+                        PartBest_Distance = result_distance_new;
+                        PartBest_Sequence = New_Sequence;
+                    }
+                    else if (randnum[0] < P)//按概率接受
+                    {
+                        PartBest_Distance = result_distance_new;
+                        PartBest_Sequence = New_Sequence;
+                    }
+
+                    l = l + 1;//继续迭代
+                }
+                T = ThisSA.SA_Ann_fun(T);//退火
+            }
+            #endregion
+            BestDistance = OverallBest_Distance;
+            return OverallBest_Sequence;
+        }
+        /// <summary>
+        /// 在92个八皇后的解中搜索最短路径问题的解
+        /// </summary>
+        /// <param name="BestDistance">最优的路径的总距离</param>
+        /// <returns>最优路径序列</returns>
+        public List<int> SearchResult_ForOverall(ref double BestDistance, ref List<Point> QueenLocation)
+        {
+            if (ChessLocationList.Count == 0)
+                return new List<int>();
+
+            double OverallBest_Distance = 999999;//全局最优解的距离
+            List<int> OverallBest_Sequence = new List<int>();//全局最优解
+
+            List<Point> QueenLocationBuff = new List<Point>();
+
+            for (int i = 0; i < 92; i++)
+            {
+                QueenLocationList = new List<Point>();
+                for (int j = 0; j < 8; j++)
+                {
+                    QueenLocationList.Add(new Point(j, EightQueenResult[i, j] - 1));
+                }
+
+                double PartBest_Distance = 999999;//全局最优解的距离
+                List<int> PartBest_Sequence = new List<int>();//全局最优解
+
+                PartBest_Sequence = SearchResult_ForMinDistance(ref PartBest_Distance);
+
+                if (PartBest_Distance < OverallBest_Distance)
+                {
+                    OverallBest_Distance = PartBest_Distance;
+                    OverallBest_Sequence = PartBest_Sequence;
+                    QueenLocation = QueenLocationList;
+                }
+            }
+
+            BestDistance = OverallBest_Distance;
+            return OverallBest_Sequence;
+        }
+        #region 八皇后所有的解
+        public int[,] EightQueenResult = new int[92, 8]  {{1,5,8,6,3,7,2,4},
+                                                                {1,6,8,3,7,4,2,5},
+                                                                {1,7,4,6,8,2,5,3},
+                                                                {1,7,5,8,2,4,6,3},
+                                                                {2,4,6,8,3,1,7,5},
+                                                                {2,5,7,1,3,8,6,4},
+                                                                {2,5,7,4,1,8,6,3},
+                                                                {2,6,1,7,4,8,3,5},
+                                                                {2,6,8,3,1,4,7,5},
+                                                                {2,7,3,6,8,5,1,4},
+                                                                {2,7,5,8,1,4,6,3},
+                                                                {2,8,6,1,3,5,7,4},
+                                                                {3,1,7,5,8,2,4,6},
+                                                                {3,5,2,8,1,7,4,6},
+                                                                {3,5,2,8,6,4,7,1},
+                                                                {3,5,7,1,4,2,8,6},
+                                                                {3,5,8,4,1,7,2,6},
+                                                                {3,6,2,5,8,1,7,4},
+                                                                {3,6,2,7,1,4,8,5},
+                                                                {3,6,2,7,5,1,8,4},
+                                                                {3,6,4,1,8,5,7,2},
+                                                                {3,6,4,2,8,5,7,1},
+                                                                {3,6,8,1,4,7,5,2},
+                                                                {3,6,8,1,5,7,2,4},
+                                                                {3,6,8,2,4,1,7,5},
+                                                                {3,7,2,8,5,1,4,6},
+                                                                {3,7,2,8,6,4,1,5},
+                                                                {3,8,4,7,1,6,2,5},
+                                                                {4,1,5,8,2,7,3,6},
+                                                                {4,1,5,8,6,3,7,2},
+                                                                {4,2,5,8,6,1,3,7},
+                                                                {4,2,7,3,6,8,1,5},
+                                                                {4,2,7,3,6,8,5,1},
+                                                                {4,2,7,5,1,8,6,3},
+                                                                {4,2,8,5,7,1,3,6},
+                                                                {4,2,8,6,1,3,5,7},
+                                                                {4,6,1,5,2,8,3,7},
+                                                                {4,6,8,2,7,1,3,5},
+                                                                {4,6,8,3,1,7,5,2},
+                                                                {4,7,1,8,5,2,6,3},
+                                                                {4,7,3,8,2,5,1,6},
+                                                                {4,7,5,2,6,1,3,8},
+                                                                {4,7,5,3,1,6,8,2},
+                                                                {4,8,1,3,6,2,7,5},
+                                                                {4,8,1,5,7,2,6,3},
+                                                                {4,8,5,3,1,7,2,6},
+                                                                {5,1,4,6,8,2,7,3},
+                                                                {5,1,8,4,2,7,3,6},
+                                                                {5,1,8,6,3,7,2,4},
+                                                                {5,2,4,6,8,3,1,7},
+                                                                {5,2,4,7,3,8,6,1},
+                                                                {5,2,6,1,7,4,8,3},
+                                                                {5,2,8,1,4,7,3,6},
+                                                                {5,3,1,6,8,2,4,7},
+                                                                {5,3,1,7,2,8,6,4},
+                                                                {5,3,8,4,7,1,6,2},
+                                                                {5,7,1,3,8,6,4,2},
+                                                                {5,7,1,4,2,8,6,3},
+                                                                {5,7,2,4,8,1,3,6},
+                                                                {5,7,2,6,3,1,4,8},
+                                                                {5,7,2,6,3,1,8,4},
+                                                                {5,7,4,1,3,8,6,2},
+                                                                {5,8,4,1,3,6,2,7},
+                                                                {5,8,4,1,7,2,6,3},
+                                                                {6,1,5,2,8,3,7,4},
+                                                                {6,2,7,1,3,5,8,4},
+                                                                {6,2,7,1,4,8,5,3},
+                                                                {6,3,1,7,5,8,2,4},
+                                                                {6,3,1,8,4,2,7,5},
+                                                                {6,3,1,8,5,2,4,7},
+                                                                {6,3,5,7,1,4,2,8},
+                                                                {6,3,5,8,1,4,2,7},
+                                                                {6,3,7,2,4,8,1,5},
+                                                                {6,3,7,2,8,5,1,4},
+                                                                {6,3,7,4,1,8,2,5},
+                                                                {6,4,1,5,8,2,7,3},
+                                                                {6,4,2,8,5,7,1,3},
+                                                                {6,4,7,1,3,5,2,8},
+                                                                {6,4,7,1,8,2,5,3},
+                                                                {6,8,2,4,1,7,5,3},
+                                                                {7,1,3,8,6,4,2,5},
+                                                                {7,2,4,1,8,5,3,6},
+                                                                {7,2,6,3,1,4,8,5},
+                                                                {7,3,1,6,8,5,2,4},
+                                                                {7,3,8,2,5,1,6,4},
+                                                                {7,4,2,5,8,1,3,6},
+                                                                {7,4,2,8,6,1,3,5},
+                                                                {7,5,3,1,6,8,2,4},
+                                                                {8,2,4,1,7,5,3,6},
+                                                                {8,2,5,3,1,7,4,6},
+                                                                {8,3,1,6,2,5,7,4},
+                                                                {8,4,1,3,6,2,7,5}};
+        #endregion
     }
 }

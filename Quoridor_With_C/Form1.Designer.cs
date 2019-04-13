@@ -49,6 +49,14 @@
             this.QueenChess7PB = new CCWin.SkinControl.SkinPictureBox();
             this.QueenChess6PB = new CCWin.SkinControl.SkinPictureBox();
             this.QueenChess5PB = new CCWin.SkinControl.SkinPictureBox();
+            this.Queen2PB = new CCWin.SkinControl.SkinPictureBox();
+            this.Queen3PB = new CCWin.SkinControl.SkinPictureBox();
+            this.Queen4PB = new CCWin.SkinControl.SkinPictureBox();
+            this.Queen1PB = new CCWin.SkinControl.SkinPictureBox();
+            this.Queen5PB = new CCWin.SkinControl.SkinPictureBox();
+            this.Queen6PB = new CCWin.SkinControl.SkinPictureBox();
+            this.Queen7PB = new CCWin.SkinControl.SkinPictureBox();
+            this.Queen8PB = new CCWin.SkinControl.SkinPictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.ChessBoardPB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ChessWhitePB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ChessBlackPB)).BeginInit();
@@ -62,6 +70,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.QueenChess7PB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.QueenChess6PB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.QueenChess5PB)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Queen2PB)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Queen3PB)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Queen4PB)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Queen1PB)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Queen5PB)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Queen6PB)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Queen7PB)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Queen8PB)).BeginInit();
             this.SuspendLayout();
             // 
             // ChessBoardPB
@@ -343,11 +359,100 @@
             this.QueenChess5PB.TabStop = false;
             this.QueenChess5PB.Click += new System.EventHandler(this.skinPictureBox4_Click);
             // 
+            // Queen2PB
+            // 
+            this.Queen2PB.BackColor = System.Drawing.Color.Transparent;
+            this.Queen2PB.Image = global::Quoridor_With_C.Resource1.ChessBlack;
+            this.Queen2PB.Location = new System.Drawing.Point(808, 348);
+            this.Queen2PB.Name = "Queen2PB";
+            this.Queen2PB.Size = new System.Drawing.Size(58, 58);
+            this.Queen2PB.TabIndex = 21;
+            this.Queen2PB.TabStop = false;
+            // 
+            // Queen3PB
+            // 
+            this.Queen3PB.BackColor = System.Drawing.Color.Transparent;
+            this.Queen3PB.Image = global::Quoridor_With_C.Resource1.ChessBlack;
+            this.Queen3PB.Location = new System.Drawing.Point(808, 348);
+            this.Queen3PB.Name = "Queen3PB";
+            this.Queen3PB.Size = new System.Drawing.Size(58, 58);
+            this.Queen3PB.TabIndex = 22;
+            this.Queen3PB.TabStop = false;
+            this.Queen3PB.Click += new System.EventHandler(this.Queen3PB_Click);
+            // 
+            // Queen4PB
+            // 
+            this.Queen4PB.BackColor = System.Drawing.Color.Transparent;
+            this.Queen4PB.Image = global::Quoridor_With_C.Resource1.ChessBlack;
+            this.Queen4PB.Location = new System.Drawing.Point(808, 348);
+            this.Queen4PB.Name = "Queen4PB";
+            this.Queen4PB.Size = new System.Drawing.Size(58, 58);
+            this.Queen4PB.TabIndex = 23;
+            this.Queen4PB.TabStop = false;
+            // 
+            // Queen1PB
+            // 
+            this.Queen1PB.BackColor = System.Drawing.Color.Transparent;
+            this.Queen1PB.Image = global::Quoridor_With_C.Resource1.ChessBlack;
+            this.Queen1PB.Location = new System.Drawing.Point(808, 348);
+            this.Queen1PB.Name = "Queen1PB";
+            this.Queen1PB.Size = new System.Drawing.Size(58, 58);
+            this.Queen1PB.TabIndex = 24;
+            this.Queen1PB.TabStop = false;
+            // 
+            // Queen5PB
+            // 
+            this.Queen5PB.BackColor = System.Drawing.Color.Transparent;
+            this.Queen5PB.Image = global::Quoridor_With_C.Resource1.ChessBlack;
+            this.Queen5PB.Location = new System.Drawing.Point(808, 348);
+            this.Queen5PB.Name = "Queen5PB";
+            this.Queen5PB.Size = new System.Drawing.Size(58, 58);
+            this.Queen5PB.TabIndex = 25;
+            this.Queen5PB.TabStop = false;
+            // 
+            // Queen6PB
+            // 
+            this.Queen6PB.BackColor = System.Drawing.Color.Transparent;
+            this.Queen6PB.Image = global::Quoridor_With_C.Resource1.ChessBlack;
+            this.Queen6PB.Location = new System.Drawing.Point(808, 348);
+            this.Queen6PB.Name = "Queen6PB";
+            this.Queen6PB.Size = new System.Drawing.Size(58, 58);
+            this.Queen6PB.TabIndex = 26;
+            this.Queen6PB.TabStop = false;
+            // 
+            // Queen7PB
+            // 
+            this.Queen7PB.BackColor = System.Drawing.Color.Transparent;
+            this.Queen7PB.Image = global::Quoridor_With_C.Resource1.ChessBlack;
+            this.Queen7PB.Location = new System.Drawing.Point(808, 348);
+            this.Queen7PB.Name = "Queen7PB";
+            this.Queen7PB.Size = new System.Drawing.Size(58, 58);
+            this.Queen7PB.TabIndex = 27;
+            this.Queen7PB.TabStop = false;
+            // 
+            // Queen8PB
+            // 
+            this.Queen8PB.BackColor = System.Drawing.Color.Transparent;
+            this.Queen8PB.Image = global::Quoridor_With_C.Resource1.ChessBlack;
+            this.Queen8PB.Location = new System.Drawing.Point(808, 348);
+            this.Queen8PB.Name = "Queen8PB";
+            this.Queen8PB.Size = new System.Drawing.Size(58, 58);
+            this.Queen8PB.TabIndex = 28;
+            this.Queen8PB.TabStop = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1280, 840);
+            this.Controls.Add(this.Queen8PB);
+            this.Controls.Add(this.Queen7PB);
+            this.Controls.Add(this.Queen6PB);
+            this.Controls.Add(this.Queen5PB);
+            this.Controls.Add(this.Queen1PB);
+            this.Controls.Add(this.Queen4PB);
+            this.Controls.Add(this.Queen3PB);
+            this.Controls.Add(this.Queen2PB);
             this.Controls.Add(this.QueenChess8PB);
             this.Controls.Add(this.QueenChess7PB);
             this.Controls.Add(this.QueenChess6PB);
@@ -390,6 +495,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.QueenChess7PB)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.QueenChess6PB)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.QueenChess5PB)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Queen2PB)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Queen3PB)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Queen4PB)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Queen1PB)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Queen5PB)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Queen6PB)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Queen7PB)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Queen8PB)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -415,6 +528,14 @@
         private CCWin.SkinControl.SkinPictureBox QueenChess7PB;
         private CCWin.SkinControl.SkinPictureBox QueenChess6PB;
         private CCWin.SkinControl.SkinPictureBox QueenChess5PB;
+        private CCWin.SkinControl.SkinPictureBox Queen2PB;
+        private CCWin.SkinControl.SkinPictureBox Queen3PB;
+        private CCWin.SkinControl.SkinPictureBox Queen4PB;
+        private CCWin.SkinControl.SkinPictureBox Queen1PB;
+        private CCWin.SkinControl.SkinPictureBox Queen5PB;
+        private CCWin.SkinControl.SkinPictureBox Queen6PB;
+        private CCWin.SkinControl.SkinPictureBox Queen7PB;
+        private CCWin.SkinControl.SkinPictureBox Queen8PB;
 
     }
 }
