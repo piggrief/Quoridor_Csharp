@@ -156,10 +156,11 @@ namespace Quoridor_With_C
             }
 
         }
+        public static Form1 form1;
         public Form1()
         {
             InitializeComponent();
-
+            form1 = this;
         }
         public Form1(GameModeStatus GM)
         {
@@ -746,36 +747,36 @@ namespace Quoridor_With_C
                 ThisQueenSolve.QueenLocationList.Add(new Point(i, ThisQueenSolve.EightQueenResult[0, i] - 1));
             }
 
-            ThisQueenSolve.InitSA(100000, 0.99, 1000, 0, SimulateAnneal.Annealing.SAMode.SA);
-            List<Point> BestResult_QueenLocation = new List<Point>();
-            List<int> MoveSequence = new List<int>();
-            double disall = 0;
-
-            System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
-            stopwatch.Start(); //  开始监视代码运行时间
-            //  需要测试的代码 
-            MoveSequence = ThisQueenSolve.SearchResult_ForOverall(ref disall, ref BestResult_QueenLocation);
-            //
-            stopwatch.Stop(); //  停止监视
-            TimeSpan timespan = stopwatch.Elapsed; //  获取当前实例测量得出的总时间
-            double hours = timespan.TotalHours; // 总小时
-            double minutes = timespan.TotalMinutes;  // 总分钟
-            double seconds = timespan.TotalSeconds;  //  总秒数
-            double milliseconds = timespan.TotalMilliseconds;  //  总毫秒数
-
-            //MoveSequence = ThisQueenSolve.CreateInitResult(ThisQueenSolve.ChessLocationList
-            //                                              ,ThisQueenSolve.QueenLocationList
-            //                                              ,ref disall);
-
-            ThisQueenSolve.PrintMoveSequence(MoveSequence, ThisQueenSolve.ChessLocationList, ThisQueenSolve.QueenLocationList);
-            Console.WriteLine("总路径长度为" + disall.ToString());
-            Console.WriteLine("用时(s) ："  + seconds.ToString() + "秒");
-            Console.WriteLine("用时(ms)：" + milliseconds.ToString() + "毫秒");
-
-
             if (IsShowQueenFlag)
             {
                 ShowQueenLocation(ThisQueenSolve.QueenLocationList, QueenList);
+                ///100000 0.99 1000 0 SA
+                ThisQueenSolve.InitSA(1000000, 0.99, 10000, 0, SimulateAnneal.Annealing.SAMode.SA);
+                List<Point> BestResult_QueenLocation = new List<Point>();
+                List<int> MoveSequence = new List<int>();
+                double disall = 0;
+
+                System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
+                stopwatch.Start(); //  开始监视代码运行时间
+                //  需要测试的代码 
+                //MoveSequence = ThisQueenSolve.SearchResult_ForOverall(ref disall, ref BestResult_QueenLocation);
+                MoveSequence = ThisQueenSolve.SearchResult_ForOverall_ForBar(ref disall, ref BestResult_QueenLocation, SearchPB);
+                //
+                stopwatch.Stop(); //  停止监视
+                TimeSpan timespan = stopwatch.Elapsed; //  获取当前实例测量得出的总时间
+                double hours = timespan.TotalHours; // 总小时
+                double minutes = timespan.TotalMinutes;  // 总分钟
+                double seconds = timespan.TotalSeconds;  //  总秒数
+                double milliseconds = timespan.TotalMilliseconds;  //  总毫秒数
+
+                //MoveSequence = ThisQueenSolve.CreateInitResult(ThisQueenSolve.ChessLocationList
+                //                                              ,ThisQueenSolve.QueenLocationList
+                //                                              ,ref disall);
+
+                ThisQueenSolve.PrintMoveSequence(MoveSequence, ThisQueenSolve.ChessLocationList, ThisQueenSolve.QueenLocationList);
+                Console.WriteLine("总路径长度为" + disall.ToString());
+                Console.WriteLine("用时(s) ：" + seconds.ToString() + "秒");
+                Console.WriteLine("用时(ms)：" + milliseconds.ToString() + "毫秒");
             }
             else
             {
@@ -787,6 +788,11 @@ namespace Quoridor_With_C
         private void Queen3PB_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void SearchPB_Click(object sender, EventArgs e)
+        {
+            
         }
 
     }

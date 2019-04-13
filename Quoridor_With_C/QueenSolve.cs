@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Drawing;
 using MathNet.Numerics.Random;
 using SimulateAnneal;
+using Quoridor_With_C;
 
 namespace Queen
 {
@@ -336,6 +337,46 @@ namespace Queen
                     OverallBest_Sequence = PartBest_Sequence;
                     QueenLocation = QueenLocationList;
                 }
+            }
+
+            BestDistance = OverallBest_Distance;
+            return OverallBest_Sequence;
+        }
+        /// <summary>
+        /// 在92个八皇后的解中搜索最短路径问题的解
+        /// </summary>
+        /// <param name="BestDistance">最优的路径的总距离</param>
+        /// <returns>最优路径序列</returns>
+        public List<int> SearchResult_ForOverall_ForBar(ref double BestDistance, ref List<Point> QueenLocation, CCWin.SkinControl.SkinProgressBar SPBar)
+        {
+            if (ChessLocationList.Count == 0)
+                return new List<int>();
+            SPBar.Value = 0;
+            double OverallBest_Distance = 999999;//全局最优解的距离
+            List<int> OverallBest_Sequence = new List<int>();//全局最优解
+
+            List<Point> QueenLocationBuff = new List<Point>();
+
+            for (int i = 0; i < 92; i++)
+            {
+                QueenLocationList = new List<Point>();
+                for (int j = 0; j < 8; j++)
+                {
+                    QueenLocationList.Add(new Point(j, EightQueenResult[i, j] - 1));
+                }
+
+                double PartBest_Distance = 999999;//全局最优解的距离
+                List<int> PartBest_Sequence = new List<int>();//全局最优解
+
+                PartBest_Sequence = SearchResult_ForMinDistance(ref PartBest_Distance);
+
+                if (PartBest_Distance < OverallBest_Distance)
+                {
+                    OverallBest_Distance = PartBest_Distance;
+                    OverallBest_Sequence = PartBest_Sequence;
+                    QueenLocation = QueenLocationList;
+                }
+                SPBar.Value++;
             }
 
             BestDistance = OverallBest_Distance;

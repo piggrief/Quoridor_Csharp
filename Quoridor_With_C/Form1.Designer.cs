@@ -57,6 +57,7 @@
             this.Queen6PB = new CCWin.SkinControl.SkinPictureBox();
             this.Queen7PB = new CCWin.SkinControl.SkinPictureBox();
             this.Queen8PB = new CCWin.SkinControl.SkinPictureBox();
+            this.SearchPB = new CCWin.SkinControl.SkinProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.ChessBoardPB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ChessWhitePB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ChessBlackPB)).BeginInit();
@@ -440,11 +441,27 @@
             this.Queen8PB.TabIndex = 28;
             this.Queen8PB.TabStop = false;
             // 
+            // SearchPB
+            // 
+            this.SearchPB.Back = null;
+            this.SearchPB.BackColor = System.Drawing.Color.Transparent;
+            this.SearchPB.BarBack = null;
+            this.SearchPB.BarRadiusStyle = CCWin.SkinClass.RoundStyle.All;
+            this.SearchPB.ForeColor = System.Drawing.Color.Red;
+            this.SearchPB.Location = new System.Drawing.Point(898, 348);
+            this.SearchPB.Maximum = 92;
+            this.SearchPB.Name = "SearchPB";
+            this.SearchPB.RadiusStyle = CCWin.SkinClass.RoundStyle.All;
+            this.SearchPB.Size = new System.Drawing.Size(293, 77);
+            this.SearchPB.TabIndex = 29;
+            this.SearchPB.Click += new System.EventHandler(this.SearchPB_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1280, 840);
+            this.Controls.Add(this.SearchPB);
             this.Controls.Add(this.Queen8PB);
             this.Controls.Add(this.Queen7PB);
             this.Controls.Add(this.Queen6PB);
@@ -536,6 +553,7 @@
         private CCWin.SkinControl.SkinPictureBox Queen6PB;
         private CCWin.SkinControl.SkinPictureBox Queen7PB;
         private CCWin.SkinControl.SkinPictureBox Queen8PB;
+        public CCWin.SkinControl.SkinProgressBar SearchPB;
 
     }
 }
