@@ -13,3 +13,4 @@ D:\智能车\步步为营人工智障\Quoridor_With_C\Quoridor_With_C\obj\Debug\
 D:\智能车\步步为营人工智障\Quoridor_With_C\Quoridor_With_C\obj\Debug\Quoridor_With_C.Start.resources
 D:\智能车\步步为营人工智障\Quoridor_With_C\Quoridor_With_C\bin\Debug\MathNet.Numerics.dll
 D:\智能车\步步为营人工智障\Quoridor_With_C\Quoridor_With_C\bin\Debug\MathNet.Numerics.xml
+D:\智能车\步步为营人工智障\Quoridor_With_C\Quoridor_With_C\obj\Debug\Quoridor_With_C.DebugTool.resources

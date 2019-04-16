@@ -161,6 +161,7 @@ namespace Quoridor_With_C
         {
             InitializeComponent();
             form1 = this;
+
         }
         public Form1(GameModeStatus GM)
         {
@@ -176,6 +177,42 @@ namespace Quoridor_With_C
             AllocConsole();
             this.Size = new System.Drawing.Size(1024, 720);
             _FormDraw FD = new _FormDraw();
+
+            QueenList.Add(Queen1PB);
+            QueenList.Add(Queen2PB);
+            QueenList.Add(Queen3PB);
+            QueenList.Add(Queen4PB);
+            QueenList.Add(Queen5PB);
+            QueenList.Add(Queen6PB);
+            QueenList.Add(Queen7PB);
+            QueenList.Add(Queen8PB);
+
+            foreach (CCWin.SkinControl.SkinPictureBox SPB in QueenList)
+            {
+                SPB.Size = new Size(58, 58);
+                ChessBoardPB.Controls.Add(SPB);
+                SPB.Visible = false;
+                SPB.BackColor = Color.Transparent;
+                QueenChessLocation.Add(new Point(-1, -1));
+            }
+
+            QueenChessList.Add(QueenChess1PB);
+            QueenChessList.Add(QueenChess2PB);
+            QueenChessList.Add(QueenChess3PB);
+            QueenChessList.Add(QueenChess4PB);
+            QueenChessList.Add(QueenChess5PB);
+            QueenChessList.Add(QueenChess6PB);
+            QueenChessList.Add(QueenChess7PB);
+            QueenChessList.Add(QueenChess8PB);
+
+            foreach (CCWin.SkinControl.SkinPictureBox SPB in QueenChessList)
+            {
+                SPB.Size = new Size(58, 58);
+                ChessBoardPB.Controls.Add(SPB);
+                SPB.Visible = false;
+                SPB.BackColor = Color.Transparent;
+            }
+
 
             if (GameMode == GameModeStatus.DoublePlay || GameMode == GameModeStatus.SinglePlay)
             {
@@ -205,6 +242,8 @@ namespace Quoridor_With_C
                 VBoardPB.Size = new System.Drawing.Size(10, 170);
                 HBoardPB.Size = new System.Drawing.Size(170, 10);
 
+                HideQueen(QueenList);
+
                 //刷新初始棋盘
                 NowQuoridor.ThisChessBoard.DrawNowChessBoard(ref Gr, ChessWhitePB, ChessBlackPB);
                 ChessBoardPB.Refresh();
@@ -231,40 +270,6 @@ namespace Quoridor_With_C
                 PlaceHorizontalBoardBTN.Dispose();
                 TestBTN.Dispose();
 
-                QueenList.Add(Queen1PB);
-                QueenList.Add(Queen2PB);
-                QueenList.Add(Queen3PB);
-                QueenList.Add(Queen4PB);
-                QueenList.Add(Queen5PB);
-                QueenList.Add(Queen6PB);
-                QueenList.Add(Queen7PB);
-                QueenList.Add(Queen8PB);
-
-                foreach (CCWin.SkinControl.SkinPictureBox SPB in QueenList)
-                {
-                    SPB.Size = new Size(58, 58);
-                    ChessBoardPB.Controls.Add(SPB);
-                    SPB.Visible = false;
-                    SPB.BackColor = Color.Transparent;
-                    QueenChessLocation.Add(new Point(-1, -1));
-                }
-
-                QueenChessList.Add(QueenChess1PB);
-                QueenChessList.Add(QueenChess2PB);
-                QueenChessList.Add(QueenChess3PB);
-                QueenChessList.Add(QueenChess4PB);
-                QueenChessList.Add(QueenChess5PB);
-                QueenChessList.Add(QueenChess6PB);
-                QueenChessList.Add(QueenChess7PB);
-                QueenChessList.Add(QueenChess8PB);
-
-                foreach (CCWin.SkinControl.SkinPictureBox SPB in QueenChessList)
-                {
-                    SPB.Size = new Size(58, 58);
-                    ChessBoardPB.Controls.Add(SPB);
-                    SPB.Visible = false;
-                    SPB.BackColor = Color.Transparent;
-                }
 
                 ChessBoardPB.Refresh();
             }
@@ -751,7 +756,7 @@ namespace Quoridor_With_C
             {
                 ShowQueenLocation(ThisQueenSolve.QueenLocationList, QueenList);
                 ///100000 0.99 1000 0 SA
-                ThisQueenSolve.InitSA(1000000, 0.99, 10000, 0, SimulateAnneal.Annealing.SAMode.SA);
+                ThisQueenSolve.InitSA(100000, 0.99, 1000, 0, SimulateAnneal.Annealing.SAMode.SA);
                 List<Point> BestResult_QueenLocation = new List<Point>();
                 List<int> MoveSequence = new List<int>();
                 double disall = 0;

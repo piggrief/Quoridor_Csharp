@@ -96,6 +96,7 @@
             // 
             // PlaceVerticalBoardBTN
             // 
+            this.PlaceVerticalBoardBTN.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.PlaceVerticalBoardBTN.BackColor = System.Drawing.Color.Transparent;
             this.PlaceVerticalBoardBTN.BaseColor = System.Drawing.Color.AliceBlue;
             this.PlaceVerticalBoardBTN.ControlState = CCWin.SkinClass.ControlState.Normal;
@@ -113,6 +114,7 @@
             // 
             // TestTB
             // 
+            this.TestTB.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.TestTB.BackColor = System.Drawing.Color.Transparent;
             this.TestTB.DownBack = null;
             this.TestTB.Icon = null;
@@ -121,7 +123,7 @@
             this.TestTB.IsPasswordChat = '\0';
             this.TestTB.IsSystemPasswordChar = false;
             this.TestTB.Lines = new string[0];
-            this.TestTB.Location = new System.Drawing.Point(874, 446);
+            this.TestTB.Location = new System.Drawing.Point(898, 454);
             this.TestTB.Margin = new System.Windows.Forms.Padding(0);
             this.TestTB.MaxLength = 32767;
             this.TestTB.MinimumSize = new System.Drawing.Size(28, 28);
@@ -176,6 +178,7 @@
             // 
             // PlaceHorizontalBoardBTN
             // 
+            this.PlaceHorizontalBoardBTN.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.PlaceHorizontalBoardBTN.BackColor = System.Drawing.Color.Transparent;
             this.PlaceHorizontalBoardBTN.BaseColor = System.Drawing.Color.AliceBlue;
             this.PlaceHorizontalBoardBTN.ControlState = CCWin.SkinClass.ControlState.Normal;
@@ -193,6 +196,7 @@
             // 
             // TestBTN
             // 
+            this.TestBTN.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.TestBTN.BackColor = System.Drawing.Color.Transparent;
             this.TestBTN.BaseColor = System.Drawing.Color.AliceBlue;
             this.TestBTN.ControlState = CCWin.SkinClass.ControlState.Normal;
@@ -210,6 +214,7 @@
             // 
             // RandomPlaceBTN
             // 
+            this.RandomPlaceBTN.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.RandomPlaceBTN.BackColor = System.Drawing.Color.Transparent;
             this.RandomPlaceBTN.BaseColor = System.Drawing.Color.AliceBlue;
             this.RandomPlaceBTN.ControlState = CCWin.SkinClass.ControlState.Normal;
@@ -226,6 +231,7 @@
             // 
             // CustomPlaceBTN
             // 
+            this.CustomPlaceBTN.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.CustomPlaceBTN.BackColor = System.Drawing.Color.Transparent;
             this.CustomPlaceBTN.BaseColor = System.Drawing.Color.AliceBlue;
             this.CustomPlaceBTN.ControlState = CCWin.SkinClass.ControlState.Normal;
@@ -243,6 +249,7 @@
             // 
             // Test2BTN
             // 
+            this.Test2BTN.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.Test2BTN.BackColor = System.Drawing.Color.Transparent;
             this.Test2BTN.BaseColor = System.Drawing.Color.AliceBlue;
             this.Test2BTN.ControlState = CCWin.SkinClass.ControlState.Normal;
@@ -443,6 +450,7 @@
             // 
             // SearchPB
             // 
+            this.SearchPB.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.SearchPB.Back = null;
             this.SearchPB.BackColor = System.Drawing.Color.Transparent;
             this.SearchPB.BarBack = null;
