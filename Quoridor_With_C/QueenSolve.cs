@@ -7,6 +7,7 @@ using System.Drawing;
 using MathNet.Numerics.Random;
 using SimulateAnneal;
 using Quoridor_With_C;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace Queen
 {
@@ -304,6 +305,90 @@ namespace Queen
             return OverallBest_Sequence;
         }
         /// <summary>
+        /// 搜索最短路径问题的解,加入了图表刷新程序
+        /// </summary>
+        /// <param name="BestDistance">最优的路径的总距离</param>
+        /// <returns>最优路径序列</returns>
+        public List<int> SearchResult_ForMinDistance(ref double BestDistance, DataPointCollection DataPoint)
+        {
+            long PointIndex = 0;
+            DataPoint.Clear();
+
+            double OverallBest_Distance = 999999;//全局最优解的距离
+            List<int> OverallBest_Sequence = new List<int>();//全局最优解
+
+            #region 创建初始解
+            List<int> Init_Sequence = new List<int>();
+            double Init_Distance = 999999;
+
+            Init_Sequence = CreateInitResult(ChessLocationList, QueenLocationList, ref Init_Distance);
+            Init_Distance = CalMoveSequenceDistance(Init_Sequence, ChessLocationList, QueenLocationList);
+
+            #endregion
+
+            double PartBest_Distance = 999999;//局部最优解的距离
+            List<int> PartBest_Sequence = new List<int>();//局部最优解
+
+            #region 模拟退火
+            double T = ThisSA.Temp_Init;
+            int l = 0;//初始迭代变量
+            double E = 0;//能量
+            double P = 0;//接受概率
+            double result_distance_pre = Init_Distance;//前一次解的质量  
+            double result_distance_new = Init_Distance;//新的解的质量
+
+            List<int> Last_Sequence = Init_Sequence;
+            List<int> New_Sequence = Init_Sequence;
+            //纯模拟退火框架
+            while (T > 1)//外循环，退火终止条件
+            {
+                while (l <= ThisSA.L)//内循环，迭代终止条件
+                {
+                    Last_Sequence = New_Sequence;
+                    result_distance_pre = result_distance_new;
+                    ///产生新的随机解
+                    New_Sequence = new List<int>();
+                    New_Sequence = ChangeResult_Reverse(Last_Sequence);
+                    result_distance_new = CalMoveSequenceDistance(New_Sequence, ChessLocationList, QueenLocationList);
+
+                    ///搜出最优解要记录保存
+                    if (result_distance_new < OverallBest_Distance)
+                    {
+                        OverallBest_Distance = result_distance_new;
+                        OverallBest_Sequence = New_Sequence;
+                    }
+
+                    ///模拟退火核心
+                    E = result_distance_new - result_distance_pre;
+                    P = ThisSA.P_rec(E, T, ThisSAMode);
+                    CryptoRandomSource rnd = new CryptoRandomSource();
+                    double[] randnum = new double[] { 1 };
+                    randnum = rnd.NextDoubles(1);
+
+                    if (E > 0)//局部更优必然接受
+                    {
+                        PartBest_Distance = result_distance_new;
+                        PartBest_Sequence = New_Sequence;
+                        DataPoint.Add(new DataPoint(PointIndex, PartBest_Distance));
+                        PointIndex++;
+                    }
+                    else if (randnum[0] < P)//按概率接受
+                    {
+                        PartBest_Distance = result_distance_new;
+                        PartBest_Sequence = New_Sequence;
+                        DataPoint.Add(new DataPoint(PointIndex, PartBest_Distance));
+                        PointIndex++;
+                    }
+
+                    l = l + 1;//继续迭代
+                }
+                T = ThisSA.SA_Ann_fun(T);//退火
+            }
+            #endregion
+            BestDistance = OverallBest_Distance;
+            return OverallBest_Sequence;
+        }
+        /// <summary>
         /// 在92个八皇后的解中搜索最短路径问题的解
         /// </summary>
         /// <param name="BestDistance">最优的路径的总距离</param>
@@ -343,11 +428,11 @@ namespace Queen
             return OverallBest_Sequence;
         }
         /// <summary>
-        /// 在92个八皇后的解中搜索最短路径问题的解
+        /// 在92个八皇后的解中搜索最短路径问题的解(加入了进度条刷新)
         /// </summary>
         /// <param name="BestDistance">最优的路径的总距离</param>
         /// <returns>最优路径序列</returns>
-        public List<int> SearchResult_ForOverall_ForBar(ref double BestDistance, ref List<Point> QueenLocation, CCWin.SkinControl.SkinProgressBar SPBar)
+        public List<int> SearchResult_ForOverall(ref double BestDistance, ref List<Point> QueenLocation, CCWin.SkinControl.SkinProgressBar SPBar)
         {
             if (ChessLocationList.Count == 0)
                 return new List<int>();

@@ -38,6 +38,9 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DebugTool));
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.skinTabControl1 = new CCWin.SkinControl.SkinTabControl();
             this.PortTabPage = new CCWin.SkinControl.SkinTabPage();
             this.SendGB = new CCWin.SkinControl.SkinGroupBox();
@@ -51,6 +54,11 @@
             this.ReceiveClearBTN = new CCWin.SkinControl.SkinButton();
             this.SaveDataBTN = new CCWin.SkinControl.SkinButton();
             this.SwitchReceiveBTN = new CCWin.SkinControl.SkinButton();
+            this.ChartTabPage = new CCWin.SkinControl.SkinTabPage();
+            this.skinTabControl2 = new CCWin.SkinControl.SkinTabControl();
+            this.skinTabPage2 = new CCWin.SkinControl.SkinTabPage();
+            this.SATest1BTN = new CCWin.SkinControl.SkinButton();
+            this.Chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.skinMenuStrip1 = new CCWin.SkinControl.SkinMenuStrip();
             this.串口设置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -63,10 +71,23 @@
             this.StopBitsCB = new System.Windows.Forms.ToolStripComboBox();
             this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripMenuItem();
             this.ParityCB = new System.Windows.Forms.ToolStripComboBox();
+            this.图表设置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripMenuItem();
+            this.IfSASelctCB = new System.Windows.Forms.ToolStripComboBox();
+            this.toolStripMenuItem7 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem8 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem9 = new System.Windows.Forms.ToolStripMenuItem();
+            this.InitTempSetTB = new System.Windows.Forms.ToolStripTextBox();
+            this.AlphaSetTB = new System.Windows.Forms.ToolStripTextBox();
+            this.SALenghtSetTB = new System.Windows.Forms.ToolStripTextBox();
             this.skinTabControl1.SuspendLayout();
             this.PortTabPage.SuspendLayout();
             this.SendGB.SuspendLayout();
             this.ReceiveGB.SuspendLayout();
+            this.ChartTabPage.SuspendLayout();
+            this.skinTabControl2.SuspendLayout();
+            this.skinTabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Chart1)).BeginInit();
             this.skinMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -76,6 +97,7 @@
             this.skinTabControl1.AnimatorType = CCWin.SkinControl.AnimationType.HorizSlide;
             this.skinTabControl1.CloseRect = new System.Drawing.Rectangle(2, 2, 12, 12);
             this.skinTabControl1.Controls.Add(this.PortTabPage);
+            this.skinTabControl1.Controls.Add(this.ChartTabPage);
             this.skinTabControl1.HeadBack = null;
             this.skinTabControl1.ImgTxtOffset = new System.Drawing.Point(0, 0);
             this.skinTabControl1.ItemSize = new System.Drawing.Size(70, 36);
@@ -89,7 +111,7 @@
             this.skinTabControl1.PageHover = ((System.Drawing.Image)(resources.GetObject("skinTabControl1.PageHover")));
             this.skinTabControl1.PageImagePosition = CCWin.SkinControl.SkinTabControl.ePageImagePosition.Left;
             this.skinTabControl1.PageNorml = null;
-            this.skinTabControl1.SelectedIndex = 0;
+            this.skinTabControl1.SelectedIndex = 1;
             this.skinTabControl1.Size = new System.Drawing.Size(621, 408);
             this.skinTabControl1.SizeMode = System.Windows.Forms.TabSizeMode.FillToRight;
             this.skinTabControl1.TabIndex = 0;
@@ -172,6 +194,7 @@
             this.SendClearBTN.TabIndex = 6;
             this.SendClearBTN.Text = "清除";
             this.SendClearBTN.UseVisualStyleBackColor = false;
+            this.SendClearBTN.Click += new System.EventHandler(this.SendClearBTN_Click);
             // 
             // SendBTN
             // 
@@ -255,6 +278,7 @@
             this.ReceiveClearBTN.TabIndex = 3;
             this.ReceiveClearBTN.Text = "清除数据";
             this.ReceiveClearBTN.UseVisualStyleBackColor = false;
+            this.ReceiveClearBTN.Click += new System.EventHandler(this.ReceiveClearBTN_Click);
             // 
             // SaveDataBTN
             // 
@@ -288,6 +312,89 @@
             this.SwitchReceiveBTN.Text = "开始接收";
             this.SwitchReceiveBTN.UseVisualStyleBackColor = false;
             this.SwitchReceiveBTN.Click += new System.EventHandler(this.SwitchReceiveBTN_Click);
+            // 
+            // ChartTabPage
+            // 
+            this.ChartTabPage.BackColor = System.Drawing.Color.White;
+            this.ChartTabPage.Controls.Add(this.skinTabControl2);
+            this.ChartTabPage.Controls.Add(this.Chart1);
+            this.ChartTabPage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ChartTabPage.Location = new System.Drawing.Point(0, 36);
+            this.ChartTabPage.Name = "ChartTabPage";
+            this.ChartTabPage.Size = new System.Drawing.Size(621, 372);
+            this.ChartTabPage.TabIndex = 1;
+            this.ChartTabPage.TabItemImage = null;
+            this.ChartTabPage.Text = "退火图表";
+            // 
+            // skinTabControl2
+            // 
+            this.skinTabControl2.AnimatorType = CCWin.SkinControl.AnimationType.HorizSlide;
+            this.skinTabControl2.CloseRect = new System.Drawing.Rectangle(2, 2, 12, 12);
+            this.skinTabControl2.Controls.Add(this.skinTabPage2);
+            this.skinTabControl2.HeadBack = null;
+            this.skinTabControl2.ImgTxtOffset = new System.Drawing.Point(0, 0);
+            this.skinTabControl2.ItemSize = new System.Drawing.Size(70, 36);
+            this.skinTabControl2.Location = new System.Drawing.Point(3, 0);
+            this.skinTabControl2.Name = "skinTabControl2";
+            this.skinTabControl2.PageArrowDown = ((System.Drawing.Image)(resources.GetObject("skinTabControl2.PageArrowDown")));
+            this.skinTabControl2.PageArrowHover = ((System.Drawing.Image)(resources.GetObject("skinTabControl2.PageArrowHover")));
+            this.skinTabControl2.PageCloseHover = ((System.Drawing.Image)(resources.GetObject("skinTabControl2.PageCloseHover")));
+            this.skinTabControl2.PageCloseNormal = ((System.Drawing.Image)(resources.GetObject("skinTabControl2.PageCloseNormal")));
+            this.skinTabControl2.PageDown = ((System.Drawing.Image)(resources.GetObject("skinTabControl2.PageDown")));
+            this.skinTabControl2.PageHover = ((System.Drawing.Image)(resources.GetObject("skinTabControl2.PageHover")));
+            this.skinTabControl2.PageImagePosition = CCWin.SkinControl.SkinTabControl.ePageImagePosition.Left;
+            this.skinTabControl2.PageNorml = null;
+            this.skinTabControl2.SelectedIndex = 0;
+            this.skinTabControl2.Size = new System.Drawing.Size(618, 112);
+            this.skinTabControl2.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
+            this.skinTabControl2.TabIndex = 3;
+            // 
+            // skinTabPage2
+            // 
+            this.skinTabPage2.BackColor = System.Drawing.Color.White;
+            this.skinTabPage2.Controls.Add(this.SATest1BTN);
+            this.skinTabPage2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.skinTabPage2.Location = new System.Drawing.Point(0, 36);
+            this.skinTabPage2.Name = "skinTabPage2";
+            this.skinTabPage2.Size = new System.Drawing.Size(618, 76);
+            this.skinTabPage2.TabIndex = 1;
+            this.skinTabPage2.TabItemImage = null;
+            this.skinTabPage2.Text = "单次SA";
+            // 
+            // SATest1BTN
+            // 
+            this.SATest1BTN.BackColor = System.Drawing.Color.Transparent;
+            this.SATest1BTN.BaseColor = System.Drawing.Color.Silver;
+            this.SATest1BTN.BorderColor = System.Drawing.Color.Transparent;
+            this.SATest1BTN.ControlState = CCWin.SkinClass.ControlState.Normal;
+            this.SATest1BTN.DownBack = null;
+            this.SATest1BTN.Location = new System.Drawing.Point(0, 3);
+            this.SATest1BTN.MouseBack = null;
+            this.SATest1BTN.Name = "SATest1BTN";
+            this.SATest1BTN.NormlBack = null;
+            this.SATest1BTN.Size = new System.Drawing.Size(124, 36);
+            this.SATest1BTN.TabIndex = 2;
+            this.SATest1BTN.Text = "测试单次SA";
+            this.SATest1BTN.UseVisualStyleBackColor = false;
+            this.SATest1BTN.Click += new System.EventHandler(this.SATest1BTN_Click);
+            // 
+            // Chart1
+            // 
+            chartArea1.Name = "ChartArea1";
+            this.Chart1.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.Chart1.Legends.Add(legend1);
+            this.Chart1.Location = new System.Drawing.Point(0, 99);
+            this.Chart1.Name = "Chart1";
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series1.IsVisibleInLegend = false;
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.Chart1.Series.Add(series1);
+            this.Chart1.Size = new System.Drawing.Size(618, 274);
+            this.Chart1.TabIndex = 0;
+            this.Chart1.Text = "chart1";
             // 
             // skinMenuStrip1
             // 
@@ -323,7 +430,8 @@
             this.skinMenuStrip1.ItemRadius = 4;
             this.skinMenuStrip1.ItemRadiusStyle = CCWin.SkinClass.RoundStyle.All;
             this.skinMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.串口设置ToolStripMenuItem});
+            this.串口设置ToolStripMenuItem,
+            this.图表设置ToolStripMenuItem});
             this.skinMenuStrip1.Location = new System.Drawing.Point(8, 30);
             this.skinMenuStrip1.Name = "skinMenuStrip1";
             this.skinMenuStrip1.RadiusStyle = CCWin.SkinClass.RoundStyle.All;
@@ -436,6 +544,74 @@
             this.ParityCB.Name = "ParityCB";
             this.ParityCB.Size = new System.Drawing.Size(121, 28);
             // 
+            // 图表设置ToolStripMenuItem
+            // 
+            this.图表设置ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem6});
+            this.图表设置ToolStripMenuItem.Name = "图表设置ToolStripMenuItem";
+            this.图表设置ToolStripMenuItem.Size = new System.Drawing.Size(101, 24);
+            this.图表设置ToolStripMenuItem.Text = "图表设置(&C)";
+            // 
+            // toolStripMenuItem6
+            // 
+            this.toolStripMenuItem6.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.IfSASelctCB});
+            this.toolStripMenuItem6.Name = "toolStripMenuItem6";
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(181, 26);
+            this.toolStripMenuItem6.Text = "用途";
+            // 
+            // IfSASelctCB
+            // 
+            this.IfSASelctCB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.IfSASelctCB.Items.AddRange(new object[] {
+            "模拟退火测试",
+            "其它"});
+            this.IfSASelctCB.Name = "IfSASelctCB";
+            this.IfSASelctCB.Size = new System.Drawing.Size(121, 23);
+            // 
+            // toolStripMenuItem7
+            // 
+            this.toolStripMenuItem7.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.InitTempSetTB});
+            this.toolStripMenuItem7.Name = "toolStripMenuItem7";
+            this.toolStripMenuItem7.Size = new System.Drawing.Size(144, 26);
+            this.toolStripMenuItem7.Text = "初始温度";
+            // 
+            // toolStripMenuItem8
+            // 
+            this.toolStripMenuItem8.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.AlphaSetTB});
+            this.toolStripMenuItem8.Name = "toolStripMenuItem8";
+            this.toolStripMenuItem8.Size = new System.Drawing.Size(144, 26);
+            this.toolStripMenuItem8.Text = "衰减常数";
+            // 
+            // toolStripMenuItem9
+            // 
+            this.toolStripMenuItem9.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.SALenghtSetTB});
+            this.toolStripMenuItem9.Name = "toolStripMenuItem9";
+            this.toolStripMenuItem9.Size = new System.Drawing.Size(144, 26);
+            this.toolStripMenuItem9.Text = "迭代长度";
+            // 
+            // InitTempSetTB
+            // 
+            this.InitTempSetTB.MaxLength = 20;
+            this.InitTempSetTB.Name = "InitTempSetTB";
+            this.InitTempSetTB.Size = new System.Drawing.Size(100, 27);
+            this.InitTempSetTB.Text = "10000";
+            // 
+            // AlphaSetTB
+            // 
+            this.AlphaSetTB.Name = "AlphaSetTB";
+            this.AlphaSetTB.Size = new System.Drawing.Size(100, 27);
+            this.AlphaSetTB.Text = "0.99";
+            // 
+            // SALenghtSetTB
+            // 
+            this.SALenghtSetTB.Name = "SALenghtSetTB";
+            this.SALenghtSetTB.Size = new System.Drawing.Size(100, 27);
+            this.SALenghtSetTB.Text = "100";
+            // 
             // DebugTool
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -455,6 +631,10 @@
             this.SendGB.PerformLayout();
             this.ReceiveGB.ResumeLayout(false);
             this.ReceiveGB.PerformLayout();
+            this.ChartTabPage.ResumeLayout(false);
+            this.skinTabControl2.ResumeLayout(false);
+            this.skinTabPage2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.Chart1)).EndInit();
             this.skinMenuStrip1.ResumeLayout(false);
             this.skinMenuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -489,5 +669,19 @@
         private CCWin.SkinControl.SkinCheckBox HexSendCB;
         private System.Windows.Forms.TextBox SendTB;
         private System.Windows.Forms.TextBox ReceiveTB;
+        private CCWin.SkinControl.SkinTabPage ChartTabPage;
+        public System.Windows.Forms.DataVisualization.Charting.Chart Chart1;
+        private CCWin.SkinControl.SkinButton SATest1BTN;
+        private CCWin.SkinControl.SkinTabControl skinTabControl2;
+        private CCWin.SkinControl.SkinTabPage skinTabPage2;
+        private System.Windows.Forms.ToolStripMenuItem 图表设置ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem6;
+        private System.Windows.Forms.ToolStripComboBox IfSASelctCB;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem7;
+        private System.Windows.Forms.ToolStripTextBox InitTempSetTB;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem8;
+        private System.Windows.Forms.ToolStripTextBox AlphaSetTB;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem9;
+        private System.Windows.Forms.ToolStripTextBox SALenghtSetTB;
     }
 }

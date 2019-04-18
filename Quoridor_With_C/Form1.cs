@@ -159,19 +159,21 @@ namespace Quoridor_With_C
         public static Form1 form1;
         public Form1()
         {
-            InitializeComponent();
-            form1 = this;
+           InitializeComponent();
+           form1 = this;
 
         }
         public Form1(GameModeStatus GM)
         {
             InitializeComponent();
             GameMode = GM;
+            form1 = this;
+
         }
         QuoridorAI NowQuoridor = new QuoridorAI();
         List<CCWin.SkinControl.SkinPictureBox> QueenChessList = new List<CCWin.SkinControl.SkinPictureBox>();
         List<CCWin.SkinControl.SkinPictureBox> QueenList = new List<CCWin.SkinControl.SkinPictureBox>();      
-        List<Point> QueenChessLocation = new List<Point>();
+        public static List<Point> QueenChessLocation = new List<Point>();
         private void Form1_Load(object sender, EventArgs e)
         {
             AllocConsole();
@@ -273,6 +275,8 @@ namespace Quoridor_With_C
 
                 ChessBoardPB.Refresh();
             }
+            DebugTool DT1 = new DebugTool(this);
+            DT1.Show();
         }
 
         bool IfPlaceBoard = false;
@@ -713,7 +717,7 @@ namespace Quoridor_With_C
             RandomPlaceBTN.Enabled = false;
         }
 
-        public QueenSolve ThisQueenSolve = new QueenSolve(QueenSolve.DistanceCalMethod.ManhattanDistance
+        public static QueenSolve ThisQueenSolve = new QueenSolve(QueenSolve.DistanceCalMethod.ManhattanDistance
                                                          ,QueenSolve.InitResultMethod.Dijkstra);
         /// <summary>
         /// 显示八皇后位置（在棋盘上显示）
@@ -765,7 +769,7 @@ namespace Quoridor_With_C
                 stopwatch.Start(); //  开始监视代码运行时间
                 //  需要测试的代码 
                 //MoveSequence = ThisQueenSolve.SearchResult_ForOverall(ref disall, ref BestResult_QueenLocation);
-                MoveSequence = ThisQueenSolve.SearchResult_ForOverall_ForBar(ref disall, ref BestResult_QueenLocation, SearchPB);
+                MoveSequence = ThisQueenSolve.SearchResult_ForOverall(ref disall, ref BestResult_QueenLocation, SearchPB);
                 //
                 stopwatch.Stop(); //  停止监视
                 TimeSpan timespan = stopwatch.Elapsed; //  获取当前实例测量得出的总时间

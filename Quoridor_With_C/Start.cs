@@ -50,8 +50,6 @@ namespace Quoridor_With_C
             Form1 f1 = new Form1(Form1.GameModeStatus.Queen8);
             //f1.MdiParent = this;
             f1.Show();
-            DebugTool DT1 = new DebugTool();
-            DT1.Show();
         }
     }
 }

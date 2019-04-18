@@ -12,6 +12,8 @@ using System.IO.Ports;
 using System.IO;
 using System.Threading;
 using UartComunication;
+using System.Windows.Forms.DataVisualization.Charting;
+using Quoridor;
 
 namespace Quoridor_With_C
 {
@@ -23,16 +25,31 @@ namespace Quoridor_With_C
         {
             InitializeComponent();
         }
-
+        Form1 Form_ChessBorad = null;
+        public DebugTool(Form1 Formbuff)
+        {
+            InitializeComponent();
+            Form_ChessBorad = Formbuff;
+        }
+        /// <summary>
+        /// 串口设置界面初始化，一般就是选择ComboBox控件的默认选项
+        /// </summary>
         public void SerialPortSetInit()
         {
-            BaudCB.SelectedIndex = 0;
+            BaudCB.SelectedIndex = 2;//115200
             DataBitsCB.SelectedIndex = 0;
             StopBitsCB.SelectedIndex = 0;
             ParityCB.SelectedIndex = 0;
             PortCBFresh();
             if (PortCB.Items.Count > 0)
                 PortCB.SelectedIndex = 0;
+        }
+        /// <summary>
+        /// 图表设置界面初始化，一般就是选择ComboBox控件的默认选项
+        /// </summary>
+        public void ChartSetInit()
+        {
+            IfSASelctCB.SelectedIndex = 0;
         }
         /// <summary>
         /// 串口端口号Combox刷新
@@ -60,13 +77,18 @@ namespace Quoridor_With_C
             Control.CheckForIllegalCrossThreadCalls = false;
 
             SerialPortSetInit();
+            ChartSetInit();
             this.Size = new System.Drawing.Size(640, 480);
             Size_x = this.Size.Width;
             Size_y = this.Size.Height;
             skinTabControl1.Location = new Point(skinMenuStrip1.Location.X, skinMenuStrip1.Size.Height + skinMenuStrip1.Location.Y);
             skinTabControl1.Size = new Size(this.Size.Width - skinMenuStrip1.Location.X * 2, this.Size.Height - skinTabControl1.Location.Y - skinMenuStrip1.Location.Y);
-        }
 
+            ShowPoint = Chart1.Series.First().Points;
+        }
+        /// <summary>
+        /// 端口设置ComboBox控件点击事件，用来刷新串口端口
+        /// </summary>
         private void PortCB_Click(object sender, EventArgs e)
         {
             PortCBFresh();
@@ -149,6 +171,9 @@ namespace Quoridor_With_C
         }
 
         public UART Uart1 = new UART();
+        /// <summary>
+        /// 串口接受状态枚举
+        /// </summary>
         public enum UARTReceiveStatus
         {
             SerialPortClosed,
@@ -157,6 +182,9 @@ namespace Quoridor_With_C
             DataReceiveFinish,
         }
         UARTReceiveStatus NowUartReceiveStatus = UARTReceiveStatus.SerialPortClosed;
+        /// <summary>
+        /// 串口发送状态枚举
+        /// </summary>
         public enum UARTSendStatus
         {
             SerialPortClosed,
@@ -169,6 +197,9 @@ namespace Quoridor_With_C
         Thread getRecevice;
         string strRecieve;
         TimerExampleState s = new TimerExampleState();
+        /// <summary>
+        /// 用来切换串口接收或者串口不接收
+        /// </summary>
         private void SwitchReceiveBTN_Click(object sender, EventArgs e)
         {
             if (SwitchReceiveBTN.Text == "停止接收")
@@ -205,6 +236,10 @@ namespace Quoridor_With_C
                 NowUartReceiveStatus = UARTReceiveStatus.DataReceiving;
             }
         }
+        /// <summary>
+        /// 串口接收用定时器函数
+        /// </summary>
+        /// <param name="state"></param>
         void TimerRecive(Object state)
         {
             TimerExampleState s = (TimerExampleState)state;
@@ -227,42 +262,55 @@ namespace Quoridor_With_C
             }
             try
             {
-                strRecieve = Uart1.sp.ReadExisting();
-                if(strRecieve != "")
-                { 
-                    string newstr = "";
-                    #region 转Hex显示
-                    if (HexCB.Checked == true)
-                    {
-                        byte[] b = Uart1.sp.Encoding.GetBytes(strRecieve);
-                        newstr += b.ToString();
-                        //strRecieve = strRecieve.ToString("X2");//StringToHexString(strRecieve, Encoding.GetEncoding("GB2312"));
-                    }
-                    #endregion
-                    Console.WriteLine(strRecieve);
-                    ReceiveTB.AppendText(strRecieve);
+                if (HexCB.Checked == true)
+                {
+                    strRecieve = "";
+                    byte[] Receivebuff = new byte[500];
+                    int ReceiveNum = Uart1.sp.Read(Receivebuff, 0, Uart1.sp.BytesToRead);
 
-                    if (ReceiveTB.Text.Length >= 10000)
+                    if (ReceiveNum > 0)
                     {
-                        NowUartReceiveStatus = UARTReceiveStatus.DataReceiveFinish;
-                        SwitchReceiveBTN.Text = "开始接收";
+                        for (int i = 0; i < ReceiveNum; i++)
+                        {
+                            int hexnum1 = Receivebuff[i] / 16;
+                            int hexnum2 = Receivebuff[i] % 16;
+
+                            strRecieve += hexnum1.ToString();
+                            strRecieve += hexnum2.ToString();
+                            strRecieve += " ";
+
+                            //strRecieve += Receivebuff[i];
+                        }
+
+                        Console.WriteLine(strRecieve);
+                        ReceiveTB.AppendText(strRecieve);
+                    }
+
+
+                    //Console.WriteLine(Receivebuff.ToString());
+                }
+                else
+                { 
+                    strRecieve = Uart1.sp.ReadExisting();
+                    if(strRecieve != "")
+                    {                     
+                        Console.WriteLine(strRecieve);
+                        ReceiveTB.AppendText(strRecieve);
+
+                        if (ReceiveTB.Text.Length >= 10000)
+                        {
+                            NowUartReceiveStatus = UARTReceiveStatus.DataReceiveFinish;
+                            SwitchReceiveBTN.Text = "开始接收";
+                        }
                     }
                 }
             }
             catch (Exception ex) { }
             //}
         }
-        private string StringToHexString(string s,Encoding encode)
-        {
-            byte[] b = encode.GetBytes(s);//按照指定编码将string编程字节数组
-            string result = string.Empty;
-            for (int i = 0; i < b.Length; i++)//逐字节变为16进制字符，以%隔开
-            {
-                result += "%"+Convert.ToString(b[i], 16);
-            }
-            return result;
-        }
-
+        /// <summary>
+        /// 用来将发送区文本框的文本通过串口发送
+        /// </summary>
         private void SendBTN_Click(object sender, EventArgs e)
         {
             if (NowUartSendStatus == UARTSendStatus.SerialPortClosed)
@@ -282,10 +330,98 @@ namespace Quoridor_With_C
             if (NowUartSendStatus == UARTSendStatus.SerialPortOpen)
             {
                 NowUartSendStatus = UARTSendStatus.DataSending;
-                Uart1.sp.Write(SendTB.Text);
+
+                string strbuff = SendTB.Text;
+                if (HexSendCB.Checked == true)
+                {
+                    ///检测是否符合格式
+                    for (int i = 0; i < strbuff.Length; i+=3)
+                    {
+                        try
+                        {
+                            int var1 = Convert.ToInt16(strbuff[i]);
+                            if (var1 < 48 || var1 > 57)
+                                throw new Exception();
+                            var1 = Convert.ToInt16(strbuff[i + 1]);
+                        }
+                        catch (Exception)
+                        {
+                            MessageBox.Show("不符合Hex的发送格式！\r\n格式为：3A 2B\r\n最后没有空格！！！");
+                            return;
+                        }
+                        if (i + 2 < strbuff.Length && strbuff[i + 2] != ' ')
+                        {
+                            MessageBox.Show("不符合Hex的发送格式！\r\n格式为：3A 2B\r\n最后没有空格！！！");
+                            return; 
+                        }
+                        
+                    }
+
+                    ///正式发送
+                    int size = (strbuff.Length + 1) / 3;
+                    if ((strbuff.Length + 1) % 3 != 0)
+                    {
+                        MessageBox.Show("不符合Hex的发送格式！\r\n格式为：3A 2B\r\n最后没有空格！！！");
+                        return;  
+                    }
+                    if (size <= 0)
+                    {
+                        MessageBox.Show("至少要一个16进制数！");
+                        return;  
+                    }
+                    byte[] sendbuff = new byte[size];
+                    for (int i = 0; i < strbuff.Length; i += 3)
+                    {
+                        byte num1 = Convert.ToByte(Convert.ToByte(strbuff[i] - '0') * 16);
+                        byte num2 = Convert.ToByte(Convert.ToByte(strbuff[i + 1] - '0'));
+                        sendbuff[i / 3] = Convert.ToByte(num1 + num2);
+                    }
+
+                    Uart1.sp.Write(sendbuff, 0, size);
+                }
+                else
+                    Uart1.sp.Write(strbuff);
+
                 NowUartSendStatus = UARTSendStatus.DataSendFinish;
                 NowUartSendStatus = UARTSendStatus.SerialPortOpen;
             }
+        }
+        /// <summary>
+        /// 用来清除发送区文本框内的内容
+        /// </summary>
+        private void SendClearBTN_Click(object sender, EventArgs e)
+        {
+            SendTB.Text = "";
+        }
+        /// <summary>
+        /// 用来清除接收区文本框内的内容
+        /// </summary>
+        private void ReceiveClearBTN_Click(object sender, EventArgs e)
+        {
+            ReceiveTB.Text = "";
+        }
+        public Queen.QueenSolve NowQueenSolve = new Queen.QueenSolve(Queen.QueenSolve.DistanceCalMethod.ManhattanDistance
+                                                         , Queen.QueenSolve.InitResultMethod.Dijkstra);
+        DataPointCollection ShowPoint;///用来显示的点集
+        private void SATest1BTN_Click(object sender, EventArgs e)
+        {
+            ShowPoint.Clear();
+
+            NowQueenSolve = Form1.ThisQueenSolve;
+            NowQueenSolve.ChessLocationList = Form1.QueenChessLocation;
+
+            NowQueenSolve.QueenLocationList = new List<Point>();
+            for (int i = 0; i < 8; i++)
+            {
+                NowQueenSolve.QueenLocationList.Add(new Point(i, NowQueenSolve.EightQueenResult[0, i] - 1));
+            }
+            NowQueenSolve.InitSA(100000, 0.99, 1000, 0, SimulateAnneal.Annealing.SAMode.SA);
+            List<Point> BestResult_QueenLocation = new List<Point>();
+            List<int> MoveSequence = new List<int>();
+            double disall = 0;
+
+            MoveSequence = NowQueenSolve.SearchResult_ForMinDistance(ref disall, ShowPoint);
+
         }
     }
 }
