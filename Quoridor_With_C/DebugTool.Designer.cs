@@ -75,11 +75,18 @@
             this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripMenuItem();
             this.IfSASelctCB = new System.Windows.Forms.ToolStripComboBox();
             this.toolStripMenuItem7 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem8 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem9 = new System.Windows.Forms.ToolStripMenuItem();
             this.InitTempSetTB = new System.Windows.Forms.ToolStripTextBox();
+            this.toolStripMenuItem8 = new System.Windows.Forms.ToolStripMenuItem();
             this.AlphaSetTB = new System.Windows.Forms.ToolStripTextBox();
+            this.toolStripMenuItem9 = new System.Windows.Forms.ToolStripMenuItem();
             this.SALenghtSetTB = new System.Windows.Forms.ToolStripTextBox();
+            this.sA参数设定ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem10 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem11 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem12 = new System.Windows.Forms.ToolStripMenuItem();
+            this.InitTempTB = new System.Windows.Forms.ToolStripTextBox();
+            this.AlphaTB = new System.Windows.Forms.ToolStripTextBox();
+            this.SALenghtTB = new System.Windows.Forms.ToolStripTextBox();
             this.skinTabControl1.SuspendLayout();
             this.PortTabPage.SuspendLayout();
             this.SendGB.SuspendLayout();
@@ -461,7 +468,7 @@
             this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.PortCB});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(181, 26);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(129, 26);
             this.toolStripMenuItem1.Text = "端口号";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
@@ -476,7 +483,7 @@
             this.toolStripMenuItem2.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.BaudCB});
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(181, 26);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(129, 26);
             this.toolStripMenuItem2.Text = "波特率";
             // 
             // BaudCB
@@ -501,7 +508,7 @@
             this.toolStripMenuItem3.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.DataBitsCB});
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(181, 26);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(129, 26);
             this.toolStripMenuItem3.Text = "数据位";
             // 
             // DataBitsCB
@@ -519,7 +526,7 @@
             this.toolStripMenuItem4.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.StopBitsCB});
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(181, 26);
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(129, 26);
             this.toolStripMenuItem4.Text = "停止位";
             // 
             // StopBitsCB
@@ -534,7 +541,7 @@
             this.toolStripMenuItem5.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ParityCB});
             this.toolStripMenuItem5.Name = "toolStripMenuItem5";
-            this.toolStripMenuItem5.Size = new System.Drawing.Size(181, 26);
+            this.toolStripMenuItem5.Size = new System.Drawing.Size(129, 26);
             this.toolStripMenuItem5.Text = "校验位";
             // 
             // ParityCB
@@ -547,7 +554,8 @@
             // 图表设置ToolStripMenuItem
             // 
             this.图表设置ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem6});
+            this.toolStripMenuItem6,
+            this.sA参数设定ToolStripMenuItem});
             this.图表设置ToolStripMenuItem.Name = "图表设置ToolStripMenuItem";
             this.图表设置ToolStripMenuItem.Size = new System.Drawing.Size(101, 24);
             this.图表设置ToolStripMenuItem.Text = "图表设置(&C)";
@@ -567,7 +575,7 @@
             "模拟退火测试",
             "其它"});
             this.IfSASelctCB.Name = "IfSASelctCB";
-            this.IfSASelctCB.Size = new System.Drawing.Size(121, 23);
+            this.IfSASelctCB.Size = new System.Drawing.Size(121, 28);
             // 
             // toolStripMenuItem7
             // 
@@ -577,6 +585,13 @@
             this.toolStripMenuItem7.Size = new System.Drawing.Size(144, 26);
             this.toolStripMenuItem7.Text = "初始温度";
             // 
+            // InitTempSetTB
+            // 
+            this.InitTempSetTB.MaxLength = 20;
+            this.InitTempSetTB.Name = "InitTempSetTB";
+            this.InitTempSetTB.Size = new System.Drawing.Size(100, 27);
+            this.InitTempSetTB.Text = "10000";
+            // 
             // toolStripMenuItem8
             // 
             this.toolStripMenuItem8.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -584,6 +599,12 @@
             this.toolStripMenuItem8.Name = "toolStripMenuItem8";
             this.toolStripMenuItem8.Size = new System.Drawing.Size(144, 26);
             this.toolStripMenuItem8.Text = "衰减常数";
+            // 
+            // AlphaSetTB
+            // 
+            this.AlphaSetTB.Name = "AlphaSetTB";
+            this.AlphaSetTB.Size = new System.Drawing.Size(100, 27);
+            this.AlphaSetTB.Text = "0.99";
             // 
             // toolStripMenuItem9
             // 
@@ -593,24 +614,63 @@
             this.toolStripMenuItem9.Size = new System.Drawing.Size(144, 26);
             this.toolStripMenuItem9.Text = "迭代长度";
             // 
-            // InitTempSetTB
-            // 
-            this.InitTempSetTB.MaxLength = 20;
-            this.InitTempSetTB.Name = "InitTempSetTB";
-            this.InitTempSetTB.Size = new System.Drawing.Size(100, 27);
-            this.InitTempSetTB.Text = "10000";
-            // 
-            // AlphaSetTB
-            // 
-            this.AlphaSetTB.Name = "AlphaSetTB";
-            this.AlphaSetTB.Size = new System.Drawing.Size(100, 27);
-            this.AlphaSetTB.Text = "0.99";
-            // 
             // SALenghtSetTB
             // 
             this.SALenghtSetTB.Name = "SALenghtSetTB";
             this.SALenghtSetTB.Size = new System.Drawing.Size(100, 27);
             this.SALenghtSetTB.Text = "100";
+            // 
+            // sA参数设定ToolStripMenuItem
+            // 
+            this.sA参数设定ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem10,
+            this.toolStripMenuItem11,
+            this.toolStripMenuItem12});
+            this.sA参数设定ToolStripMenuItem.Name = "sA参数设定ToolStripMenuItem";
+            this.sA参数设定ToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.sA参数设定ToolStripMenuItem.Text = "SA参数设定";
+            // 
+            // toolStripMenuItem10
+            // 
+            this.toolStripMenuItem10.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.InitTempTB});
+            this.toolStripMenuItem10.Name = "toolStripMenuItem10";
+            this.toolStripMenuItem10.Size = new System.Drawing.Size(181, 26);
+            this.toolStripMenuItem10.Text = "初始温度";
+            // 
+            // toolStripMenuItem11
+            // 
+            this.toolStripMenuItem11.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.AlphaTB});
+            this.toolStripMenuItem11.Name = "toolStripMenuItem11";
+            this.toolStripMenuItem11.Size = new System.Drawing.Size(181, 26);
+            this.toolStripMenuItem11.Text = "衰减常数";
+            // 
+            // toolStripMenuItem12
+            // 
+            this.toolStripMenuItem12.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.SALenghtTB});
+            this.toolStripMenuItem12.Name = "toolStripMenuItem12";
+            this.toolStripMenuItem12.Size = new System.Drawing.Size(181, 26);
+            this.toolStripMenuItem12.Text = "迭代长度";
+            // 
+            // InitTempTB
+            // 
+            this.InitTempTB.Name = "InitTempTB";
+            this.InitTempTB.Size = new System.Drawing.Size(100, 27);
+            this.InitTempTB.Text = "10000";
+            // 
+            // AlphaTB
+            // 
+            this.AlphaTB.Name = "AlphaTB";
+            this.AlphaTB.Size = new System.Drawing.Size(100, 27);
+            this.AlphaTB.Text = "0.99";
+            // 
+            // SALenghtTB
+            // 
+            this.SALenghtTB.Name = "SALenghtTB";
+            this.SALenghtTB.Size = new System.Drawing.Size(100, 27);
+            this.SALenghtTB.Text = "100";
             // 
             // DebugTool
             // 
@@ -683,5 +743,12 @@
         private System.Windows.Forms.ToolStripTextBox AlphaSetTB;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem9;
         private System.Windows.Forms.ToolStripTextBox SALenghtSetTB;
+        private System.Windows.Forms.ToolStripMenuItem sA参数设定ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem10;
+        private System.Windows.Forms.ToolStripTextBox InitTempTB;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem11;
+        private System.Windows.Forms.ToolStripTextBox AlphaTB;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem12;
+        private System.Windows.Forms.ToolStripTextBox SALenghtTB;
     }
 }
