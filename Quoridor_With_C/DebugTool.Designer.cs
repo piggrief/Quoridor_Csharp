@@ -41,6 +41,7 @@
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.skinTabControl1 = new CCWin.SkinControl.SkinTabControl();
             this.PortTabPage = new CCWin.SkinControl.SkinTabPage();
             this.SendGB = new CCWin.SkinControl.SkinGroupBox();
@@ -74,19 +75,20 @@
             this.图表设置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripMenuItem();
             this.IfSASelctCB = new System.Windows.Forms.ToolStripComboBox();
+            this.sA参数设定ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem10 = new System.Windows.Forms.ToolStripMenuItem();
+            this.InitTempTB = new System.Windows.Forms.ToolStripTextBox();
+            this.toolStripMenuItem11 = new System.Windows.Forms.ToolStripMenuItem();
+            this.AlphaTB = new System.Windows.Forms.ToolStripTextBox();
+            this.toolStripMenuItem12 = new System.Windows.Forms.ToolStripMenuItem();
+            this.SALenghtTB = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripMenuItem7 = new System.Windows.Forms.ToolStripMenuItem();
             this.InitTempSetTB = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripMenuItem8 = new System.Windows.Forms.ToolStripMenuItem();
             this.AlphaSetTB = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripMenuItem9 = new System.Windows.Forms.ToolStripMenuItem();
             this.SALenghtSetTB = new System.Windows.Forms.ToolStripTextBox();
-            this.sA参数设定ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem10 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem11 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem12 = new System.Windows.Forms.ToolStripMenuItem();
-            this.InitTempTB = new System.Windows.Forms.ToolStripTextBox();
-            this.AlphaTB = new System.Windows.Forms.ToolStripTextBox();
-            this.SALenghtTB = new System.Windows.Forms.ToolStripTextBox();
+            this.InfoPrintTB = new CCWin.SkinControl.SkinTextBox();
             this.skinTabControl1.SuspendLayout();
             this.PortTabPage.SuspendLayout();
             this.SendGB.SuspendLayout();
@@ -323,6 +325,7 @@
             // ChartTabPage
             // 
             this.ChartTabPage.BackColor = System.Drawing.Color.White;
+            this.ChartTabPage.Controls.Add(this.InfoPrintTB);
             this.ChartTabPage.Controls.Add(this.skinTabControl2);
             this.ChartTabPage.Controls.Add(this.Chart1);
             this.ChartTabPage.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -352,7 +355,7 @@
             this.skinTabControl2.PageImagePosition = CCWin.SkinControl.SkinTabControl.ePageImagePosition.Left;
             this.skinTabControl2.PageNorml = null;
             this.skinTabControl2.SelectedIndex = 0;
-            this.skinTabControl2.Size = new System.Drawing.Size(618, 112);
+            this.skinTabControl2.Size = new System.Drawing.Size(618, 84);
             this.skinTabControl2.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.skinTabControl2.TabIndex = 3;
             // 
@@ -363,7 +366,7 @@
             this.skinTabPage2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.skinTabPage2.Location = new System.Drawing.Point(0, 36);
             this.skinTabPage2.Name = "skinTabPage2";
-            this.skinTabPage2.Size = new System.Drawing.Size(618, 76);
+            this.skinTabPage2.Size = new System.Drawing.Size(618, 48);
             this.skinTabPage2.TabIndex = 1;
             this.skinTabPage2.TabItemImage = null;
             this.skinTabPage2.Text = "单次SA";
@@ -398,7 +401,12 @@
             series1.IsVisibleInLegend = false;
             series1.Legend = "Legend1";
             series1.Name = "Series1";
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series2.Legend = "Legend1";
+            series2.Name = "Series2";
             this.Chart1.Series.Add(series1);
+            this.Chart1.Series.Add(series2);
             this.Chart1.Size = new System.Drawing.Size(618, 274);
             this.Chart1.TabIndex = 0;
             this.Chart1.Text = "chart1";
@@ -565,7 +573,7 @@
             this.toolStripMenuItem6.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.IfSASelctCB});
             this.toolStripMenuItem6.Name = "toolStripMenuItem6";
-            this.toolStripMenuItem6.Size = new System.Drawing.Size(181, 26);
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(164, 26);
             this.toolStripMenuItem6.Text = "用途";
             // 
             // IfSASelctCB
@@ -576,6 +584,58 @@
             "其它"});
             this.IfSASelctCB.Name = "IfSASelctCB";
             this.IfSASelctCB.Size = new System.Drawing.Size(121, 28);
+            // 
+            // sA参数设定ToolStripMenuItem
+            // 
+            this.sA参数设定ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem10,
+            this.toolStripMenuItem11,
+            this.toolStripMenuItem12});
+            this.sA参数设定ToolStripMenuItem.Name = "sA参数设定ToolStripMenuItem";
+            this.sA参数设定ToolStripMenuItem.Size = new System.Drawing.Size(164, 26);
+            this.sA参数设定ToolStripMenuItem.Text = "SA参数设定";
+            // 
+            // toolStripMenuItem10
+            // 
+            this.toolStripMenuItem10.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.InitTempTB});
+            this.toolStripMenuItem10.Name = "toolStripMenuItem10";
+            this.toolStripMenuItem10.Size = new System.Drawing.Size(144, 26);
+            this.toolStripMenuItem10.Text = "初始温度";
+            // 
+            // InitTempTB
+            // 
+            this.InitTempTB.Name = "InitTempTB";
+            this.InitTempTB.Size = new System.Drawing.Size(100, 27);
+            this.InitTempTB.Text = "10000";
+            // 
+            // toolStripMenuItem11
+            // 
+            this.toolStripMenuItem11.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.AlphaTB});
+            this.toolStripMenuItem11.Name = "toolStripMenuItem11";
+            this.toolStripMenuItem11.Size = new System.Drawing.Size(144, 26);
+            this.toolStripMenuItem11.Text = "衰减常数";
+            // 
+            // AlphaTB
+            // 
+            this.AlphaTB.Name = "AlphaTB";
+            this.AlphaTB.Size = new System.Drawing.Size(100, 27);
+            this.AlphaTB.Text = "0.99";
+            // 
+            // toolStripMenuItem12
+            // 
+            this.toolStripMenuItem12.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.SALenghtTB});
+            this.toolStripMenuItem12.Name = "toolStripMenuItem12";
+            this.toolStripMenuItem12.Size = new System.Drawing.Size(144, 26);
+            this.toolStripMenuItem12.Text = "迭代长度";
+            // 
+            // SALenghtTB
+            // 
+            this.SALenghtTB.Name = "SALenghtTB";
+            this.SALenghtTB.Size = new System.Drawing.Size(100, 27);
+            this.SALenghtTB.Text = "100";
             // 
             // toolStripMenuItem7
             // 
@@ -620,57 +680,51 @@
             this.SALenghtSetTB.Size = new System.Drawing.Size(100, 27);
             this.SALenghtSetTB.Text = "100";
             // 
-            // sA参数设定ToolStripMenuItem
+            // InfoPrintTB
             // 
-            this.sA参数设定ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem10,
-            this.toolStripMenuItem11,
-            this.toolStripMenuItem12});
-            this.sA参数设定ToolStripMenuItem.Name = "sA参数设定ToolStripMenuItem";
-            this.sA参数设定ToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
-            this.sA参数设定ToolStripMenuItem.Text = "SA参数设定";
+            this.InfoPrintTB.BackColor = System.Drawing.Color.Transparent;
+            this.InfoPrintTB.DownBack = null;
+            this.InfoPrintTB.Icon = null;
+            this.InfoPrintTB.IconIsButton = false;
+            this.InfoPrintTB.IconMouseState = CCWin.SkinClass.ControlState.Normal;
+            this.InfoPrintTB.IsPasswordChat = '\0';
+            this.InfoPrintTB.IsSystemPasswordChar = false;
+            this.InfoPrintTB.Lines = new string[] {
+        "第一次的解为"};
+            this.InfoPrintTB.Location = new System.Drawing.Point(442, 110);
+            this.InfoPrintTB.Margin = new System.Windows.Forms.Padding(0);
+            this.InfoPrintTB.MaxLength = 32767;
+            this.InfoPrintTB.MinimumSize = new System.Drawing.Size(28, 28);
+            this.InfoPrintTB.MouseBack = null;
+            this.InfoPrintTB.MouseState = CCWin.SkinClass.ControlState.Normal;
+            this.InfoPrintTB.Multiline = true;
+            this.InfoPrintTB.Name = "InfoPrintTB";
+            this.InfoPrintTB.NormlBack = null;
+            this.InfoPrintTB.Padding = new System.Windows.Forms.Padding(5);
+            this.InfoPrintTB.ReadOnly = true;
+            this.InfoPrintTB.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.InfoPrintTB.Size = new System.Drawing.Size(176, 244);
             // 
-            // toolStripMenuItem10
             // 
-            this.toolStripMenuItem10.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.InitTempTB});
-            this.toolStripMenuItem10.Name = "toolStripMenuItem10";
-            this.toolStripMenuItem10.Size = new System.Drawing.Size(181, 26);
-            this.toolStripMenuItem10.Text = "初始温度";
             // 
-            // toolStripMenuItem11
-            // 
-            this.toolStripMenuItem11.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.AlphaTB});
-            this.toolStripMenuItem11.Name = "toolStripMenuItem11";
-            this.toolStripMenuItem11.Size = new System.Drawing.Size(181, 26);
-            this.toolStripMenuItem11.Text = "衰减常数";
-            // 
-            // toolStripMenuItem12
-            // 
-            this.toolStripMenuItem12.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.SALenghtTB});
-            this.toolStripMenuItem12.Name = "toolStripMenuItem12";
-            this.toolStripMenuItem12.Size = new System.Drawing.Size(181, 26);
-            this.toolStripMenuItem12.Text = "迭代长度";
-            // 
-            // InitTempTB
-            // 
-            this.InitTempTB.Name = "InitTempTB";
-            this.InitTempTB.Size = new System.Drawing.Size(100, 27);
-            this.InitTempTB.Text = "10000";
-            // 
-            // AlphaTB
-            // 
-            this.AlphaTB.Name = "AlphaTB";
-            this.AlphaTB.Size = new System.Drawing.Size(100, 27);
-            this.AlphaTB.Text = "0.99";
-            // 
-            // SALenghtTB
-            // 
-            this.SALenghtTB.Name = "SALenghtTB";
-            this.SALenghtTB.Size = new System.Drawing.Size(100, 27);
-            this.SALenghtTB.Text = "100";
+            this.InfoPrintTB.SkinTxt.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.InfoPrintTB.SkinTxt.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.InfoPrintTB.SkinTxt.Font = new System.Drawing.Font("微软雅黑", 9.75F);
+            this.InfoPrintTB.SkinTxt.Location = new System.Drawing.Point(5, 5);
+            this.InfoPrintTB.SkinTxt.Multiline = true;
+            this.InfoPrintTB.SkinTxt.Name = "BaseText";
+            this.InfoPrintTB.SkinTxt.ReadOnly = true;
+            this.InfoPrintTB.SkinTxt.Size = new System.Drawing.Size(166, 234);
+            this.InfoPrintTB.SkinTxt.TabIndex = 0;
+            this.InfoPrintTB.SkinTxt.Text = "第一次的解为";
+            this.InfoPrintTB.SkinTxt.WaterColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(127)))), ((int)(((byte)(127)))));
+            this.InfoPrintTB.SkinTxt.WaterText = "";
+            this.InfoPrintTB.TabIndex = 4;
+            this.InfoPrintTB.Text = "第一次的解为";
+            this.InfoPrintTB.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.InfoPrintTB.WaterColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(127)))), ((int)(((byte)(127)))));
+            this.InfoPrintTB.WaterText = "";
+            this.InfoPrintTB.WordWrap = true;
             // 
             // DebugTool
             // 
@@ -681,7 +735,7 @@
             this.Controls.Add(this.skinMenuStrip1);
             this.MainMenuStrip = this.skinMenuStrip1;
             this.Name = "DebugTool";
-            this.Text = "DebugTool";
+            this.Text = "调试助手 by上海海事大学对弈创意组";
             this.Load += new System.EventHandler(this.DebugTool_Load);
             this.SizeChanged += new System.EventHandler(this.DebugTool_SizeChanged);
             this.Resize += new System.EventHandler(this.DebugTool_Resize);
@@ -750,5 +804,6 @@
         private System.Windows.Forms.ToolStripTextBox AlphaTB;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem12;
         private System.Windows.Forms.ToolStripTextBox SALenghtTB;
+        private CCWin.SkinControl.SkinTextBox InfoPrintTB;
     }
 }

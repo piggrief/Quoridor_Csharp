@@ -85,6 +85,13 @@ namespace Quoridor_With_C
             skinTabControl1.Size = new Size(this.Size.Width - skinMenuStrip1.Location.X * 2, this.Size.Height - skinTabControl1.Location.Y - skinMenuStrip1.Location.Y);
 
             ShowPoint = Chart1.Series.First().Points;
+
+            ShowPoint.Add(new DataPoint(1, 1));
+            ShowPoint.Add(new DataPoint(2, 5));
+            ShowPoint.Add(new DataPoint(3, -2));
+            ShowPoint.Add(new DataPoint(4, 0));
+            ShowPoint.Add(new DataPoint(5, 4.5));
+
         }
         /// <summary>
         /// 端口设置ComboBox控件点击事件，用来刷新串口端口
@@ -162,6 +169,23 @@ namespace Quoridor_With_C
 
             SendTB.Size = new Size(Convert.ToInt32(SendGB.Size.Width - SendBTN.Size.Width * 1.1 - SendBTN.Size.Height * 0.5)
                                     , SendGB.Size.Height - ReceiveTB.Location.Y - 10);
+            #endregion
+
+            #region 图表页调整
+
+            //skinTabControl2.Location = new Point(0, 0);
+            skinTabControl2.Size = new Size(skinTabControl1.Size.Width, 85);
+
+            SATest1BTN.Location = new Point(SATest1BTN.Size.Width / 4, (skinTabControl2.Size.Height - SATest1BTN.Size.Width) / 2);
+            
+            InfoPrintTB.Size = new System.Drawing.Size(180,
+                skinTabControl1.Size.Height - skinTabControl2.Location.Y - skinTabControl2.Size.Height - 36);
+
+            Chart1.Location = new Point(0, skinTabControl2.Size.Height);
+            Chart1.Size = new Size(skinTabControl2.Size.Width - InfoPrintTB.Size.Width,
+                skinTabControl1.Size.Height - skinTabControl2.Location.Y - skinTabControl2.Size.Height - 36);
+
+            InfoPrintTB.Location = new Point(Chart1.Size.Width, Chart1.Location.Y);
             #endregion
         }
         class TimerExampleState
@@ -415,13 +439,37 @@ namespace Quoridor_With_C
             {
                 NowQueenSolve.QueenLocationList.Add(new Point(i, NowQueenSolve.EightQueenResult[0, i] - 1));
             }
-            NowQueenSolve.InitSA(100000, 0.99, 1000, 0, SimulateAnneal.Annealing.SAMode.SA);
+
+            double InitTemp = 0, alpha = 0, SALenght = 0;
+            try 
+	        {	        
+                 InitTemp = Convert.ToDouble(InitTempTB.Text);
+                 alpha = Convert.ToDouble(AlphaTB.Text);
+                 SALenght = Convert.ToDouble(SALenghtTB.Text);
+	        }
+	        catch (Exception)
+	        {
+		
+		        throw;
+	        }
+
+            NowQueenSolve.InitSA(InitTemp, alpha, SALenght, 0, SimulateAnneal.Annealing.SAMode.SA);
             List<Point> BestResult_QueenLocation = new List<Point>();
             List<int> MoveSequence = new List<int>();
             double disall = 0;
-
+            double dis_init = 0;
+            MoveSequence = NowQueenSolve.CreateInitResult(NowQueenSolve.ChessLocationList, NowQueenSolve.QueenLocationList, ref dis_init);
+            dis_init = NowQueenSolve.CalMoveSequenceDistance(MoveSequence, NowQueenSolve.ChessLocationList, NowQueenSolve.QueenLocationList);
             MoveSequence = NowQueenSolve.SearchResult_ForMinDistance(ref disall, ShowPoint);
 
+            InfoPrintTB.Text = "模拟退火参数：" + System.Environment.NewLine;
+            InfoPrintTB.Text += "T0 = " + InitTemp.ToString()+ System.Environment.NewLine;
+            InfoPrintTB.Text += "a = " + alpha.ToString() + System.Environment.NewLine;
+            InfoPrintTB.Text += "L = " + SALenght.ToString() + System.Environment.NewLine;
+            InfoPrintTB.Text += "本次最优距离为：" + System.Environment.NewLine;
+            InfoPrintTB.Text += disall.ToString() + System.Environment.NewLine;
+            InfoPrintTB.Text += "初始解为：" + System.Environment.NewLine;
+            InfoPrintTB.Text += dis_init.ToString();
         }
     }
 }
