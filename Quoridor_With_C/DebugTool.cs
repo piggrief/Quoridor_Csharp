@@ -426,7 +426,7 @@ namespace Quoridor_With_C
             ReceiveTB.Text = "";
         }
         public Queen.QueenSolve NowQueenSolve = new Queen.QueenSolve(Queen.QueenSolve.DistanceCalMethod.ManhattanDistance
-                                                         , Queen.QueenSolve.InitResultMethod.Dijkstra);
+                                                         , Queen.QueenSolve.InitResultMethod.Dijkstra, 30);
         DataPointCollection ShowPoint;///用来显示的点集
         DataPointCollection ShowPoint2;///用来显示的点集2
 
@@ -524,10 +524,6 @@ namespace Quoridor_With_C
             List<int> MoveSequence = new List<int>();
             double disall = 0;
             MoveSequence = NowQueenSolve.SearchResult_ForOverall(ref disall, ref BestResult_QueenLocation, ShowPoint);
-
-            NowQueenSolve.Queen92Dis.Sort();
-            double GridBuff = NowQueenSolve.Queen92Dis[92 - 30];
-            Chart1.ChartAreas[0].AxisY.MajorGrid.Interval = GridBuff - 30;
 
             #region 92组解评估
             List<double> ResultEve = new List<double>();

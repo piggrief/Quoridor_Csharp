@@ -18,7 +18,7 @@ namespace Queen
     {
         public List<Point> ChessLocationList = new List<Point>();//棋子位置列表
         public List<Point> QueenLocationList = new List<Point>();//八皇后结果列表
-        public int SelectedQueenResultNum = 92;
+        public static int SelectedQueenResultNum = 92;
         public enum DistanceCalMethod
         {
             ManhattanDistance,
@@ -411,18 +411,21 @@ namespace Queen
         {
             if (ChessLocationList.Count == 0)
                 return new List<int>();
-
+            #region 生成待搜索的八皇后解列表
+            SelectQueenResult(SelectedQueenResultNum);
+            #endregion
             double OverallBest_Distance = 999999;//全局最优解的距离
             List<int> OverallBest_Sequence = new List<int>();//全局最优解
 
             List<Point> QueenLocationBuff = new List<Point>();
 
-            for (int i = 0; i < 92; i++)
+            for (int i = 0; i < SelectedQueenResultNum; i++)
             {
+                int index = EightQueenResult_Effective[i];
                 QueenLocationList = new List<Point>();
                 for (int j = 0; j < 8; j++)
                 {
-                    QueenLocationList.Add(new Point(j, EightQueenResult[i, j] - 1));
+                    QueenLocationList.Add(new Point(j, EightQueenResult[index, j] - 1));
                 }
 
                 double PartBest_Distance = 999999;//全局最优解的距离
@@ -497,6 +500,9 @@ namespace Queen
             long PointIndex = 0;
             if (ChessLocationList.Count == 0)
                 return new List<int>();
+            #region 生成待搜索的八皇后解列表
+            SelectQueenResult(SelectedQueenResultNum);
+            #endregion
             DataPoint.Clear();
             double OverallBest_Distance = 999999;//全局最优解的距离
             List<int> OverallBest_Sequence = new List<int>();//全局最优解
@@ -504,12 +510,13 @@ namespace Queen
             List<Point> QueenLocationBuff = new List<Point>();
 
             Queen92Dis.Clear();
-            for (int i = 0; i < 92; i++)
+            for (int i = 0; i < SelectedQueenResultNum; i++)
             {
+                int index = EightQueenResult_Effective[i];
                 QueenLocationList = new List<Point>();
                 for (int j = 0; j < 8; j++)
                 {
-                    QueenLocationList.Add(new Point(j, EightQueenResult[i, j] - 1));
+                    QueenLocationList.Add(new Point(j, EightQueenResult[index, j] - 1));
                 }
 
                 double PartBest_Distance = 999999;//全局最优解的距离
@@ -525,7 +532,7 @@ namespace Queen
                 }
 
                 Queen92Dis.Add(PartBest_Distance);
-                DataPoint.Add(new DataPoint(PointIndex, PartBest_Distance));
+                DataPoint.Add(new DataPoint(index, PartBest_Distance));
                 PointIndex++;
             }
 
