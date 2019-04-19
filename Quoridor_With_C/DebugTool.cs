@@ -530,15 +530,13 @@ namespace Quoridor_With_C
             Chart1.ChartAreas[0].AxisY.MajorGrid.Interval = GridBuff - 30;
 
             #region 92组解评估
-            Dictionary<int,double> ResultEve = new Dictionary<int,double>();
+            List<double> ResultEve = new List<double>();
             ResultEve = NowQueenSolve.QueenResultEvaluation();
 
             ShowPoint2.Clear();
             for (int i = 0; i < 92; i++)
             {
-                double valuebuff = 0;
-                ResultEve.TryGetValue(i, out valuebuff);
-                ShowPoint2.Add(new DataPoint(i,valuebuff));
+                ShowPoint2.Add(new DataPoint(i, ResultEve[i]));
             }
             #endregion
 

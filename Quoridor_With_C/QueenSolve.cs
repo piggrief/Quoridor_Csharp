@@ -18,7 +18,7 @@ namespace Queen
     {
         public List<Point> ChessLocationList = new List<Point>();//棋子位置列表
         public List<Point> QueenLocationList = new List<Point>();//八皇后结果列表
-
+        public int SelectedQueenResultNum = 92;
         public enum DistanceCalMethod
         {
             ManhattanDistance,
@@ -185,10 +185,11 @@ namespace Queen
 
             return dis_all;
         }
-        public QueenSolve(DistanceCalMethod SetCalMethod, InitResultMethod InitMethod)
+        public QueenSolve(DistanceCalMethod SetCalMethod, InitResultMethod InitMethod, int SelectNum = 92)
         {
             UsedCalMethod = SetCalMethod;
             UsedInitResultMethod = InitMethod;
+            SelectedQueenResultNum = SelectNum;
         }
         public void PrintMoveSequence(List<int> MoveSequence, List<Point> ChessList, List<Point> QueenList)
         {
@@ -449,18 +450,23 @@ namespace Queen
         {
             if (ChessLocationList.Count == 0)
                 return new List<int>();
+            #region 生成待搜索的八皇后解列表
+            SelectQueenResult(SelectedQueenResultNum);
+            #endregion
             SPBar.Value = 0;
+            SPBar.Maximum = SelectedQueenResultNum;
             double OverallBest_Distance = 999999;//全局最优解的距离
             List<int> OverallBest_Sequence = new List<int>();//全局最优解
 
             List<Point> QueenLocationBuff = new List<Point>();
 
-            for (int i = 0; i < 92; i++)
+            for (int i = 0; i < SelectedQueenResultNum; i++)
             {
+                int index = EightQueenResult_Effective[i];
                 QueenLocationList = new List<Point>();
                 for (int j = 0; j < 8; j++)
                 {
-                    QueenLocationList.Add(new Point(j, EightQueenResult[i, j] - 1));
+                    QueenLocationList.Add(new Point(j, EightQueenResult[index, j] - 1));
                 }
 
                 double PartBest_Distance = 999999;//全局最优解的距离
@@ -529,10 +535,10 @@ namespace Queen
         /// <summary>
         /// 用初始解质量评估92组解
         /// </summary>
-        /// <returns>评分字典,Key为索引号，Value为评分</returns>
-        public Dictionary<int,double> QueenResultEvaluation()
+        /// <returns>评分列表</returns>
+        public List<double> QueenResultEvaluation()
         {
-            Dictionary<int, double> ResultEvaluation = new Dictionary<int,double>();
+            List<double> ResultEvaluation = new List<double>();
 
             for (int i = 0; i < 92; i++)
             {
@@ -546,17 +552,36 @@ namespace Queen
 
                 Init_Sequence = CreateInitResult(ChessLocationList, QueenLocationList, ref Init_Distance);
 
-                ResultEvaluation.Add(i, Init_Distance);
+                ResultEvaluation.Add(Init_Distance);
             }
 
             return ResultEvaluation;
         }
-        public void SelectQueenResult()
+        /// <summary>
+        /// 选择待寻优的八皇后的解，也就是在92组解中找SelectNum个最有可能是最优解的解
+        /// </summary>
+        /// <param name="SelectNum">要选出几个解</param>
+        public void SelectQueenResult(int SelectNum)
         {
-             
+            Queen92Dis.Clear();
+
+            Queen92Dis = QueenResultEvaluation();
+            Queen92Dis.Sort();
+            double disGateValue = Queen92Dis[SelectNum - 1];
+            EightQueenResult_Effective.Clear();
+
+            for (int i = 0, ResultNum = 0; ResultNum < SelectNum || i < 92 ; i++)
+            {
+                if (Queen92Dis[i] <= disGateValue)
+                {
+                    EightQueenResult_Effective.Add(i);
+                    ResultNum++;
+                }
+            }
+            int a = 0;
         }
         #region 有用的八皇后的解索引
-        public int[] EightQueenResult_Effective = null;
+        public List<int> EightQueenResult_Effective = new List<int>();
         #endregion
         #region 八皇后所有的解
         public int[,] EightQueenResult = new int[92, 8]  {{1,5,8,6,3,7,2,4},

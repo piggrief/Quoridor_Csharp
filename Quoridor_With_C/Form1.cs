@@ -720,7 +720,7 @@ namespace Quoridor_With_C
         }
 
         public static QueenSolve ThisQueenSolve = new QueenSolve(QueenSolve.DistanceCalMethod.ManhattanDistance
-                                                         ,QueenSolve.InitResultMethod.Dijkstra);
+                                                         ,QueenSolve.InitResultMethod.Dijkstra, 30);
         /// <summary>
         /// 显示八皇后位置（在棋盘上显示）
         /// </summary>
@@ -762,8 +762,8 @@ namespace Quoridor_With_C
             {
                 ShowQueenLocation(ThisQueenSolve.QueenLocationList, QueenList);
                 ///100000 0.99 1000 0 SA
-                //ThisQueenSolve.InitSA(1000, 0.9, 90, 0, SimulateAnneal.Annealing.SAMode.SA);
-                ThisQueenSolve.InitSA(1000, 0.9, 90, 0.1, SimulateAnneal.Annealing.SAMode.FastSA);
+                ThisQueenSolve.InitSA(1000, 0.9, 90, 0, SimulateAnneal.Annealing.SAMode.SA);
+                //ThisQueenSolve.InitSA(1000, 0.9, 90, 0.1, SimulateAnneal.Annealing.SAMode.FastSA);
 
                 List<Point> BestResult_QueenLocation = new List<Point>();
                 List<int> MoveSequence = new List<int>();
@@ -774,7 +774,7 @@ namespace Quoridor_With_C
                 //  需要测试的代码 
                 //MoveSequence = ThisQueenSolve.SearchResult_ForOverall(ref disall, ref BestResult_QueenLocation);
                 MoveSequence = ThisQueenSolve.SearchResult_ForOverall(ref disall, ref BestResult_QueenLocation, SearchPB);
-                //
+                
                 stopwatch.Stop(); //  停止监视
                 TimeSpan timespan = stopwatch.Elapsed; //  获取当前实例测量得出的总时间
                 double hours = timespan.TotalHours; // 总小时
