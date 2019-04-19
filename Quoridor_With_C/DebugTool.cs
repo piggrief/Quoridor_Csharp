@@ -85,7 +85,7 @@ namespace Quoridor_With_C
             skinTabControl1.Size = new Size(this.Size.Width - skinMenuStrip1.Location.X * 2, this.Size.Height - skinTabControl1.Location.Y - skinMenuStrip1.Location.Y);
 
             ShowPoint = Chart1.Series.First().Points;
-
+            ShowPoint2 = Chart1.Series[1].Points;
             ShowPoint.Add(new DataPoint(1, 1));
             ShowPoint.Add(new DataPoint(2, 5));
             ShowPoint.Add(new DataPoint(3, -2));
@@ -177,7 +177,8 @@ namespace Quoridor_With_C
             skinTabControl2.Size = new Size(skinTabControl1.Size.Width, 85);
 
             SATest1BTN.Location = new Point(SATest1BTN.Size.Width / 4, (skinTabControl2.Size.Height - SATest1BTN.Size.Width) / 2);
-            
+            TestAllSABTN.Location = new Point(SATest1BTN.Location.X * 2 + SATest1BTN.Size.Width, SATest1BTN.Location.Y);
+
             InfoPrintTB.Size = new System.Drawing.Size(180,
                 skinTabControl1.Size.Height - skinTabControl2.Location.Y - skinTabControl2.Size.Height - 36);
 
@@ -427,6 +428,8 @@ namespace Quoridor_With_C
         public Queen.QueenSolve NowQueenSolve = new Queen.QueenSolve(Queen.QueenSolve.DistanceCalMethod.ManhattanDistance
                                                          , Queen.QueenSolve.InitResultMethod.Dijkstra);
         DataPointCollection ShowPoint;///用来显示的点集
+        DataPointCollection ShowPoint2;///用来显示的点集2
+
         private void SATest1BTN_Click(object sender, EventArgs e)
         {
             ShowPoint.Clear();
@@ -470,6 +473,81 @@ namespace Quoridor_With_C
             InfoPrintTB.Text += disall.ToString() + System.Environment.NewLine;
             InfoPrintTB.Text += "初始解为：" + System.Environment.NewLine;
             InfoPrintTB.Text += dis_init.ToString();
+        }
+
+        private void TestAllSABTN_Click(object sender, EventArgs e)
+        {
+            ShowPoint.Clear();
+
+            NowQueenSolve = Form1.ThisQueenSolve;
+            NowQueenSolve.ChessLocationList = Form1.QueenChessLocation;
+
+            NowQueenSolve.QueenLocationList = new List<Point>();
+            for (int i = 0; i < 8; i++)
+            {
+                NowQueenSolve.QueenLocationList.Add(new Point(i, NowQueenSolve.EightQueenResult[0, i] - 1));
+            }
+
+            double InitTemp = 0, alpha = 0, SALenght = 0;
+            try
+            {
+                InitTemp = Convert.ToDouble(InitTempTB.Text);
+                alpha = Convert.ToDouble(AlphaTB.Text);
+                SALenght = Convert.ToDouble(SALenghtTB.Text);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            Chart1.Series[0].ChartType = SeriesChartType.Point;
+            Chart1.Series[0].IsValueShownAsLabel = true;
+            Chart1.Series[0].ToolTip = "第#VALX组八皇后的解\r\n寻优后的最短路径为：#VAL";
+            Chart1.ChartAreas[0].AxisY.Maximum = 55;
+            Chart1.ChartAreas[0].AxisY.Minimum = 30;
+            Chart1.ChartAreas[0].AxisY.MajorGrid.Enabled = true;
+            Chart1.ChartAreas[0].AxisY.MinorGrid.Enabled = false;
+            Chart1.ChartAreas[0].AxisY.MajorGrid.Interval = 100;
+            Chart1.ChartAreas[0].AxisX.MajorGrid.Enabled = true;
+            Chart1.ChartAreas[0].AxisX.MajorGrid.Interval = 1;
+            Chart1.ChartAreas[0].AxisX.MinorGrid.Enabled = false;
+            Chart1.ChartAreas[0].AxisX.MajorTickMark.Interval = 5;
+            Chart1.ChartAreas[0].AxisX.MinorTickMark.Interval = 1;
+
+
+            //NowQueenSolve.InitSA(InitTemp, alpha, SALenght, 0, SimulateAnneal.Annealing.SAMode.SA);
+            NowQueenSolve.InitSA(1000, 0.9, 90, 0.1, SimulateAnneal.Annealing.SAMode.FastSA);
+            //NowQueenSolve.InitSA(1000, 0.9, 90, 0, SimulateAnneal.Annealing.SAMode.SA);
+
+            List<Point> BestResult_QueenLocation = new List<Point>();
+            List<int> MoveSequence = new List<int>();
+            double disall = 0;
+            MoveSequence = NowQueenSolve.SearchResult_ForOverall(ref disall, ref BestResult_QueenLocation, ShowPoint);
+
+            NowQueenSolve.Queen92Dis.Sort();
+            double GridBuff = NowQueenSolve.Queen92Dis[92 - 30];
+            Chart1.ChartAreas[0].AxisY.MajorGrid.Interval = GridBuff - 30;
+
+            #region 92组解评估
+            Dictionary<int,double> ResultEve = new Dictionary<int,double>();
+            ResultEve = NowQueenSolve.QueenResultEvaluation();
+
+            ShowPoint2.Clear();
+            for (int i = 0; i < 92; i++)
+            {
+                double valuebuff = 0;
+                ResultEve.TryGetValue(i, out valuebuff);
+                ShowPoint2.Add(new DataPoint(i,valuebuff));
+            }
+            #endregion
+
+            InfoPrintTB.Text = "模拟退火参数：" + System.Environment.NewLine;
+            InfoPrintTB.Text += "T0 = " + InitTemp.ToString() + System.Environment.NewLine;
+            InfoPrintTB.Text += "a = " + alpha.ToString() + System.Environment.NewLine;
+            InfoPrintTB.Text += "L = " + SALenght.ToString() + System.Environment.NewLine;
+            InfoPrintTB.Text += "本次最优距离为：" + System.Environment.NewLine;
+            InfoPrintTB.Text += disall.ToString() + System.Environment.NewLine;
         }
     }
 }

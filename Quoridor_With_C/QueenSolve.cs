@@ -233,10 +233,6 @@ namespace Queen
         {
             //if (ChessLocationList.Count == 0 || QueenLocationList.Count == 0)
             //    return new List<int>();
-
-            double OverallBest_Distance = 999999;//全局最优解的距离
-            List<int> OverallBest_Sequence = new List<int>();//全局最优解
-
             #region 创建初始解
             List<int> Init_Sequence = new List<int>();
             double Init_Distance = 999999;
@@ -246,8 +242,11 @@ namespace Queen
 
             #endregion
 
-            double PartBest_Distance = 999999;//局部最优解的距离
-            List<int> PartBest_Sequence = new List<int>();//局部最优解
+            double OverallBest_Distance = Init_Distance;//全局最优解的距离
+            List<int> OverallBest_Sequence = Init_Sequence;//全局最优解
+
+            double PartBest_Distance = Init_Distance;//局部最优解的距离
+            List<int> PartBest_Sequence = Init_Sequence;//局部最优解
 
             #region 模拟退火
             double T = ThisSA.Temp_Init;
@@ -262,6 +261,7 @@ namespace Queen
             //纯模拟退火框架
             while (T > 1)//外循环，退火终止条件
             {
+                l = 0;
                 while (l <= ThisSA.L)//内循环，迭代终止条件
                 {
                     Last_Sequence = New_Sequence;
@@ -298,7 +298,14 @@ namespace Queen
 
                     l = l + 1;//继续迭代
                 }
-                T = ThisSA.SA_Ann_fun(T);//退火
+                if (ThisSAMode == Annealing.SAMode.SA)
+                {
+                    T = ThisSA.SA_Ann_fun(T);//退火                    
+                }
+                else
+                {
+                    T = ThisSA.FSA_Ann_fun();
+                }
             }
             #endregion
             BestDistance = OverallBest_Distance;
@@ -314,9 +321,6 @@ namespace Queen
             long PointIndex = 0;
             DataPoint.Clear();
 
-            double OverallBest_Distance = 999999;//全局最优解的距离
-            List<int> OverallBest_Sequence = new List<int>();//全局最优解
-
             #region 创建初始解
             List<int> Init_Sequence = new List<int>();
             double Init_Distance = 999999;
@@ -326,8 +330,11 @@ namespace Queen
 
             #endregion
 
-            double PartBest_Distance = 999999;//局部最优解的距离
-            List<int> PartBest_Sequence = new List<int>();//局部最优解
+            double OverallBest_Distance = Init_Distance;//全局最优解的距离
+            List<int> OverallBest_Sequence = Init_Sequence;//全局最优解
+
+            double PartBest_Distance = Init_Distance;//局部最优解的距离
+            List<int> PartBest_Sequence = Init_Sequence;//局部最优解
 
             #region 模拟退火
             double T = ThisSA.Temp_Init;
@@ -342,6 +349,7 @@ namespace Queen
             //纯模拟退火框架
             while (T > 1)//外循环，退火终止条件
             {
+                l = 0;
                 while (l <= ThisSA.L)//内循环，迭代终止条件
                 {
                     Last_Sequence = New_Sequence;
@@ -369,20 +377,25 @@ namespace Queen
                     {
                         PartBest_Distance = result_distance_new;
                         PartBest_Sequence = New_Sequence;
-                        DataPoint.Add(new DataPoint(PointIndex, PartBest_Distance));
-                        PointIndex++;
                     }
                     else if (randnum[0] < P)//按概率接受
                     {
                         PartBest_Distance = result_distance_new;
                         PartBest_Sequence = New_Sequence;
-                        DataPoint.Add(new DataPoint(PointIndex, PartBest_Distance));
-                        PointIndex++;
                     }
 
                     l = l + 1;//继续迭代
                 }
-                T = ThisSA.SA_Ann_fun(T);//退火
+                if (ThisSAMode == Annealing.SAMode.SA)
+                {
+                    T = ThisSA.SA_Ann_fun(T);//退火                    
+                }
+                else
+                {
+                    T = ThisSA.FSA_Ann_fun();
+                }
+                DataPoint.Add(new DataPoint(PointIndex, PartBest_Distance));
+                PointIndex++;
             }
             #endregion
             BestDistance = OverallBest_Distance;
@@ -467,6 +480,84 @@ namespace Queen
             BestDistance = OverallBest_Distance;
             return OverallBest_Sequence;
         }
+        public List<double> Queen92Dis = new List<double>();
+        /// <summary>
+        /// 在92个八皇后的解中搜索最短路径问题的解(加入了图表控件点刷新)
+        /// </summary>
+        /// <param name="BestDistance">最优的路径的总距离</param>
+        /// <returns>最优路径序列</returns>
+        public List<int> SearchResult_ForOverall(ref double BestDistance, ref List<Point> QueenLocation, DataPointCollection DataPoint)
+        {
+            long PointIndex = 0;
+            if (ChessLocationList.Count == 0)
+                return new List<int>();
+            DataPoint.Clear();
+            double OverallBest_Distance = 999999;//全局最优解的距离
+            List<int> OverallBest_Sequence = new List<int>();//全局最优解
+
+            List<Point> QueenLocationBuff = new List<Point>();
+
+            Queen92Dis.Clear();
+            for (int i = 0; i < 92; i++)
+            {
+                QueenLocationList = new List<Point>();
+                for (int j = 0; j < 8; j++)
+                {
+                    QueenLocationList.Add(new Point(j, EightQueenResult[i, j] - 1));
+                }
+
+                double PartBest_Distance = 999999;//全局最优解的距离
+                List<int> PartBest_Sequence = new List<int>();//全局最优解
+
+                PartBest_Sequence = SearchResult_ForMinDistance(ref PartBest_Distance);
+
+                if (PartBest_Distance < OverallBest_Distance)
+                {
+                    OverallBest_Distance = PartBest_Distance;
+                    OverallBest_Sequence = PartBest_Sequence;
+                    QueenLocation = QueenLocationList;
+                }
+
+                Queen92Dis.Add(PartBest_Distance);
+                DataPoint.Add(new DataPoint(PointIndex, PartBest_Distance));
+                PointIndex++;
+            }
+
+            BestDistance = OverallBest_Distance;
+            return OverallBest_Sequence;
+        }
+        /// <summary>
+        /// 用初始解质量评估92组解
+        /// </summary>
+        /// <returns>评分字典,Key为索引号，Value为评分</returns>
+        public Dictionary<int,double> QueenResultEvaluation()
+        {
+            Dictionary<int, double> ResultEvaluation = new Dictionary<int,double>();
+
+            for (int i = 0; i < 92; i++)
+            {
+                List<int> Init_Sequence = new List<int>();
+                double Init_Distance = 999999;
+                QueenLocationList = new List<Point>();
+                for (int j = 0; j < 8; j++)
+                {
+                    QueenLocationList.Add(new Point(j, EightQueenResult[i, j] - 1));
+                }
+
+                Init_Sequence = CreateInitResult(ChessLocationList, QueenLocationList, ref Init_Distance);
+
+                ResultEvaluation.Add(i, Init_Distance);
+            }
+
+            return ResultEvaluation;
+        }
+        public void SelectQueenResult()
+        {
+             
+        }
+        #region 有用的八皇后的解索引
+        public int[] EightQueenResult_Effective = null;
+        #endregion
         #region 八皇后所有的解
         public int[,] EightQueenResult = new int[92, 8]  {{1,5,8,6,3,7,2,4},
                                                                 {1,6,8,3,7,4,2,5},

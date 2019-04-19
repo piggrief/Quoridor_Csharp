@@ -56,8 +56,10 @@
             this.SaveDataBTN = new CCWin.SkinControl.SkinButton();
             this.SwitchReceiveBTN = new CCWin.SkinControl.SkinButton();
             this.ChartTabPage = new CCWin.SkinControl.SkinTabPage();
+            this.InfoPrintTB = new CCWin.SkinControl.SkinTextBox();
             this.skinTabControl2 = new CCWin.SkinControl.SkinTabControl();
             this.skinTabPage2 = new CCWin.SkinControl.SkinTabPage();
+            this.TestAllSABTN = new CCWin.SkinControl.SkinButton();
             this.SATest1BTN = new CCWin.SkinControl.SkinButton();
             this.Chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.skinMenuStrip1 = new CCWin.SkinControl.SkinMenuStrip();
@@ -88,7 +90,6 @@
             this.AlphaSetTB = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripMenuItem9 = new System.Windows.Forms.ToolStripMenuItem();
             this.SALenghtSetTB = new System.Windows.Forms.ToolStripTextBox();
-            this.InfoPrintTB = new CCWin.SkinControl.SkinTextBox();
             this.skinTabControl1.SuspendLayout();
             this.PortTabPage.SuspendLayout();
             this.SendGB.SuspendLayout();
@@ -336,6 +337,52 @@
             this.ChartTabPage.TabItemImage = null;
             this.ChartTabPage.Text = "退火图表";
             // 
+            // InfoPrintTB
+            // 
+            this.InfoPrintTB.BackColor = System.Drawing.Color.Transparent;
+            this.InfoPrintTB.DownBack = null;
+            this.InfoPrintTB.Icon = null;
+            this.InfoPrintTB.IconIsButton = false;
+            this.InfoPrintTB.IconMouseState = CCWin.SkinClass.ControlState.Normal;
+            this.InfoPrintTB.IsPasswordChat = '\0';
+            this.InfoPrintTB.IsSystemPasswordChar = false;
+            this.InfoPrintTB.Lines = new string[] {
+        "第一次的解为"};
+            this.InfoPrintTB.Location = new System.Drawing.Point(442, 110);
+            this.InfoPrintTB.Margin = new System.Windows.Forms.Padding(0);
+            this.InfoPrintTB.MaxLength = 32767;
+            this.InfoPrintTB.MinimumSize = new System.Drawing.Size(28, 28);
+            this.InfoPrintTB.MouseBack = null;
+            this.InfoPrintTB.MouseState = CCWin.SkinClass.ControlState.Normal;
+            this.InfoPrintTB.Multiline = true;
+            this.InfoPrintTB.Name = "InfoPrintTB";
+            this.InfoPrintTB.NormlBack = null;
+            this.InfoPrintTB.Padding = new System.Windows.Forms.Padding(5);
+            this.InfoPrintTB.ReadOnly = true;
+            this.InfoPrintTB.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.InfoPrintTB.Size = new System.Drawing.Size(176, 244);
+            // 
+            // 
+            // 
+            this.InfoPrintTB.SkinTxt.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.InfoPrintTB.SkinTxt.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.InfoPrintTB.SkinTxt.Font = new System.Drawing.Font("微软雅黑", 9.75F);
+            this.InfoPrintTB.SkinTxt.Location = new System.Drawing.Point(5, 5);
+            this.InfoPrintTB.SkinTxt.Multiline = true;
+            this.InfoPrintTB.SkinTxt.Name = "BaseText";
+            this.InfoPrintTB.SkinTxt.ReadOnly = true;
+            this.InfoPrintTB.SkinTxt.Size = new System.Drawing.Size(166, 234);
+            this.InfoPrintTB.SkinTxt.TabIndex = 0;
+            this.InfoPrintTB.SkinTxt.Text = "第一次的解为";
+            this.InfoPrintTB.SkinTxt.WaterColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(127)))), ((int)(((byte)(127)))));
+            this.InfoPrintTB.SkinTxt.WaterText = "";
+            this.InfoPrintTB.TabIndex = 4;
+            this.InfoPrintTB.Text = "第一次的解为";
+            this.InfoPrintTB.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.InfoPrintTB.WaterColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(127)))), ((int)(((byte)(127)))));
+            this.InfoPrintTB.WaterText = "";
+            this.InfoPrintTB.WordWrap = true;
+            // 
             // skinTabControl2
             // 
             this.skinTabControl2.AnimatorType = CCWin.SkinControl.AnimationType.HorizSlide;
@@ -362,6 +409,7 @@
             // skinTabPage2
             // 
             this.skinTabPage2.BackColor = System.Drawing.Color.White;
+            this.skinTabPage2.Controls.Add(this.TestAllSABTN);
             this.skinTabPage2.Controls.Add(this.SATest1BTN);
             this.skinTabPage2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.skinTabPage2.Location = new System.Drawing.Point(0, 36);
@@ -371,6 +419,24 @@
             this.skinTabPage2.TabItemImage = null;
             this.skinTabPage2.Text = "单次SA";
             // 
+            // TestAllSABTN
+            // 
+            this.TestAllSABTN.BackColor = System.Drawing.Color.Transparent;
+            this.TestAllSABTN.BaseColor = System.Drawing.Color.Silver;
+            this.TestAllSABTN.BorderColor = System.Drawing.Color.Transparent;
+            this.TestAllSABTN.ControlState = CCWin.SkinClass.ControlState.Normal;
+            this.TestAllSABTN.DownBack = null;
+            this.TestAllSABTN.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.TestAllSABTN.Location = new System.Drawing.Point(130, 3);
+            this.TestAllSABTN.MouseBack = null;
+            this.TestAllSABTN.Name = "TestAllSABTN";
+            this.TestAllSABTN.NormlBack = null;
+            this.TestAllSABTN.Size = new System.Drawing.Size(124, 36);
+            this.TestAllSABTN.TabIndex = 3;
+            this.TestAllSABTN.Text = "测试92组解";
+            this.TestAllSABTN.UseVisualStyleBackColor = false;
+            this.TestAllSABTN.Click += new System.EventHandler(this.TestAllSABTN_Click);
+            // 
             // SATest1BTN
             // 
             this.SATest1BTN.BackColor = System.Drawing.Color.Transparent;
@@ -378,6 +444,7 @@
             this.SATest1BTN.BorderColor = System.Drawing.Color.Transparent;
             this.SATest1BTN.ControlState = CCWin.SkinClass.ControlState.Normal;
             this.SATest1BTN.DownBack = null;
+            this.SATest1BTN.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.SATest1BTN.Location = new System.Drawing.Point(0, 3);
             this.SATest1BTN.MouseBack = null;
             this.SATest1BTN.Name = "SATest1BTN";
@@ -397,13 +464,25 @@
             this.Chart1.Location = new System.Drawing.Point(0, 99);
             this.Chart1.Name = "Chart1";
             series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
+            series1.Font = new System.Drawing.Font("微软雅黑", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            series1.IsValueShownAsLabel = true;
             series1.IsVisibleInLegend = false;
             series1.Legend = "Legend1";
+            series1.MarkerBorderColor = System.Drawing.Color.Black;
+            series1.MarkerColor = System.Drawing.Color.Red;
+            series1.MarkerSize = 6;
+            series1.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Square;
             series1.Name = "Series1";
+            series1.YValuesPerPoint = 4;
             series2.ChartArea = "ChartArea1";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
+            series2.IsValueShownAsLabel = true;
             series2.Legend = "Legend1";
+            series2.MarkerBorderColor = System.Drawing.Color.Black;
+            series2.MarkerColor = System.Drawing.Color.Green;
+            series2.MarkerSize = 6;
+            series2.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
             series2.Name = "Series2";
             this.Chart1.Series.Add(series1);
             this.Chart1.Series.Add(series2);
@@ -680,52 +759,6 @@
             this.SALenghtSetTB.Size = new System.Drawing.Size(100, 27);
             this.SALenghtSetTB.Text = "100";
             // 
-            // InfoPrintTB
-            // 
-            this.InfoPrintTB.BackColor = System.Drawing.Color.Transparent;
-            this.InfoPrintTB.DownBack = null;
-            this.InfoPrintTB.Icon = null;
-            this.InfoPrintTB.IconIsButton = false;
-            this.InfoPrintTB.IconMouseState = CCWin.SkinClass.ControlState.Normal;
-            this.InfoPrintTB.IsPasswordChat = '\0';
-            this.InfoPrintTB.IsSystemPasswordChar = false;
-            this.InfoPrintTB.Lines = new string[] {
-        "第一次的解为"};
-            this.InfoPrintTB.Location = new System.Drawing.Point(442, 110);
-            this.InfoPrintTB.Margin = new System.Windows.Forms.Padding(0);
-            this.InfoPrintTB.MaxLength = 32767;
-            this.InfoPrintTB.MinimumSize = new System.Drawing.Size(28, 28);
-            this.InfoPrintTB.MouseBack = null;
-            this.InfoPrintTB.MouseState = CCWin.SkinClass.ControlState.Normal;
-            this.InfoPrintTB.Multiline = true;
-            this.InfoPrintTB.Name = "InfoPrintTB";
-            this.InfoPrintTB.NormlBack = null;
-            this.InfoPrintTB.Padding = new System.Windows.Forms.Padding(5);
-            this.InfoPrintTB.ReadOnly = true;
-            this.InfoPrintTB.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.InfoPrintTB.Size = new System.Drawing.Size(176, 244);
-            // 
-            // 
-            // 
-            this.InfoPrintTB.SkinTxt.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.InfoPrintTB.SkinTxt.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.InfoPrintTB.SkinTxt.Font = new System.Drawing.Font("微软雅黑", 9.75F);
-            this.InfoPrintTB.SkinTxt.Location = new System.Drawing.Point(5, 5);
-            this.InfoPrintTB.SkinTxt.Multiline = true;
-            this.InfoPrintTB.SkinTxt.Name = "BaseText";
-            this.InfoPrintTB.SkinTxt.ReadOnly = true;
-            this.InfoPrintTB.SkinTxt.Size = new System.Drawing.Size(166, 234);
-            this.InfoPrintTB.SkinTxt.TabIndex = 0;
-            this.InfoPrintTB.SkinTxt.Text = "第一次的解为";
-            this.InfoPrintTB.SkinTxt.WaterColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(127)))), ((int)(((byte)(127)))));
-            this.InfoPrintTB.SkinTxt.WaterText = "";
-            this.InfoPrintTB.TabIndex = 4;
-            this.InfoPrintTB.Text = "第一次的解为";
-            this.InfoPrintTB.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.InfoPrintTB.WaterColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(127)))), ((int)(((byte)(127)))));
-            this.InfoPrintTB.WaterText = "";
-            this.InfoPrintTB.WordWrap = true;
-            // 
             // DebugTool
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -805,5 +838,6 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem12;
         private System.Windows.Forms.ToolStripTextBox SALenghtTB;
         private CCWin.SkinControl.SkinTextBox InfoPrintTB;
+        private CCWin.SkinControl.SkinButton TestAllSABTN;
     }
 }

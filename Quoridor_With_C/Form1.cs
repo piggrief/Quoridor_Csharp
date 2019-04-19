@@ -275,7 +275,9 @@ namespace Quoridor_With_C
 
                 ChessBoardPB.Refresh();
             }
+            this.Location = new Point(0, 0);
             DebugTool DT1 = new DebugTool(this);
+            DT1.Location = new Point(this.Size.Width, 0);
             DT1.Show();
         }
 
@@ -760,7 +762,9 @@ namespace Quoridor_With_C
             {
                 ShowQueenLocation(ThisQueenSolve.QueenLocationList, QueenList);
                 ///100000 0.99 1000 0 SA
-                ThisQueenSolve.InitSA(100000, 0.99, 1000, 0, SimulateAnneal.Annealing.SAMode.SA);
+                //ThisQueenSolve.InitSA(1000, 0.9, 90, 0, SimulateAnneal.Annealing.SAMode.SA);
+                ThisQueenSolve.InitSA(1000, 0.9, 90, 0.1, SimulateAnneal.Annealing.SAMode.FastSA);
+
                 List<Point> BestResult_QueenLocation = new List<Point>();
                 List<int> MoveSequence = new List<int>();
                 double disall = 0;
