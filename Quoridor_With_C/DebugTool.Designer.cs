@@ -1,4 +1,4 @@
-﻿namespace Quoridor_With_C
+﻿namespace DebugToolForm
 {
     partial class DebugTool
     {
@@ -90,6 +90,7 @@
             this.AlphaSetTB = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripMenuItem9 = new System.Windows.Forms.ToolStripMenuItem();
             this.SALenghtSetTB = new System.Windows.Forms.ToolStripTextBox();
+            this.CameraTabPage = new CCWin.SkinControl.SkinTabPage();
             this.skinTabControl1.SuspendLayout();
             this.PortTabPage.SuspendLayout();
             this.SendGB.SuspendLayout();
@@ -108,6 +109,7 @@
             this.skinTabControl1.CloseRect = new System.Drawing.Rectangle(2, 2, 12, 12);
             this.skinTabControl1.Controls.Add(this.PortTabPage);
             this.skinTabControl1.Controls.Add(this.ChartTabPage);
+            this.skinTabControl1.Controls.Add(this.CameraTabPage);
             this.skinTabControl1.HeadBack = null;
             this.skinTabControl1.ImgTxtOffset = new System.Drawing.Point(0, 0);
             this.skinTabControl1.ItemSize = new System.Drawing.Size(70, 36);
@@ -759,6 +761,17 @@
             this.SALenghtSetTB.Size = new System.Drawing.Size(100, 27);
             this.SALenghtSetTB.Text = "100";
             // 
+            // CameraTabPage
+            // 
+            this.CameraTabPage.BackColor = System.Drawing.Color.White;
+            this.CameraTabPage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.CameraTabPage.Location = new System.Drawing.Point(0, 36);
+            this.CameraTabPage.Name = "CameraTabPage";
+            this.CameraTabPage.Size = new System.Drawing.Size(621, 372);
+            this.CameraTabPage.TabIndex = 2;
+            this.CameraTabPage.TabItemImage = null;
+            this.CameraTabPage.Text = "摄像头";
+            // 
             // DebugTool
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -839,5 +852,6 @@
         private System.Windows.Forms.ToolStripTextBox SALenghtTB;
         private CCWin.SkinControl.SkinTextBox InfoPrintTB;
         private CCWin.SkinControl.SkinButton TestAllSABTN;
+        private CCWin.SkinControl.SkinTabPage CameraTabPage;
     }
 }

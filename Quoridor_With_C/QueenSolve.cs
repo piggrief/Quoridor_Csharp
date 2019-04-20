@@ -137,7 +137,7 @@ namespace Queen
             {
                 int t = RandomNumber[0];
                 RandomNumber[0] = RandomNumber[1];
-                RandomNumber[1] = RandomNumber[0];
+                RandomNumber[1] = t;
             }
             #endregion
 
@@ -209,7 +209,21 @@ namespace Queen
                 Console.WriteLine();
             }
         }
-
+        public void PrintResultSequence(List<int> MoveSequence)
+        {
+            Console.Write("棋子序列:");
+            for (int i = 0; i < MoveSequence.Count; i+=2)
+            {
+                Console.Write(MoveSequence[i].ToString() + " ");
+            }
+            Console.WriteLine();
+            Console.Write("皇后序列:");
+            for (int i = 1; i < MoveSequence.Count; i += 2)
+            {
+                Console.Write(MoveSequence[i].ToString() + " ");
+            }
+            Console.WriteLine();
+        }
         Annealing ThisSA;
         Annealing.SAMode ThisSAMode = Annealing.SAMode.SA; 
         /// <summary>
@@ -270,7 +284,9 @@ namespace Queen
                     ///产生新的随机解
                     New_Sequence = new List<int>();
                     New_Sequence = ChangeResult_Reverse(Last_Sequence);
-                    result_distance_new = CalMoveSequenceDistance(New_Sequence, ChessLocationList, QueenLocationList);                    
+                    result_distance_new = CalMoveSequenceDistance(New_Sequence, ChessLocationList, QueenLocationList);
+
+                    //PrintResultSequence(New_Sequence);
 
                     ///搜出最优解要记录保存
                     if (result_distance_new < OverallBest_Distance)
@@ -538,6 +554,45 @@ namespace Queen
 
             BestDistance = OverallBest_Distance;
             return OverallBest_Sequence;
+        }
+
+        public double MeanDistanceResult = 0;
+        public double MinDistanceResult = 0;
+        public double SolveUsedTime = 0;
+        /// <summary>
+        /// 测试模拟退火的某组参数的性能,最终的结果会被保存在MeanDistanceResult，MinDistanceResult，SolveUsedTime
+        /// </summary>
+        /// <param name="InitTemp">初始温度</param>
+        /// <param name="Alpha">衰减常数</param>
+        /// <param name="L">迭代长度</param>
+        /// <param name="FSA_H">FSA的h参数</param>
+        /// <param name="WhichSA">使用SA还是FSA</param>
+        /// <param name="Test_Num">测试次数</param>
+        public void Test_SAParameter(double InitTemp, double Alpha, double L, double FSA_H, Annealing.SAMode WhichSA, int Test_Num)
+        {
+            InitSA(InitTemp, Alpha, L, FSA_H, WhichSA);
+
+            List<Point> BestResult_QueenLocation = new List<Point>();
+            List<int> MoveSequence = new List<int>();
+            List<double> disall = new List<double>();
+            List<double> RunTime_ms = new List<double>();
+            for (int i = 0; i < Test_Num; i++)
+            {
+                double disbuff = 0;
+                System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
+                stopwatch.Start(); //  开始监视代码运行时间
+                stopwatch.Stop(); //  停止监视
+                TimeSpan timespan = stopwatch.Elapsed; //  获取当前实例测量得出的总时间
+                double milliseconds = timespan.TotalMilliseconds;  //  总毫秒数
+
+                MoveSequence = SearchResult_ForMinDistance(ref disbuff);
+                disall.Add(disbuff);
+                RunTime_ms.Add(milliseconds);
+            }
+
+            MeanDistanceResult = disall.Average();
+            MinDistanceResult = disall.Min();
+            SolveUsedTime = RunTime_ms.Average();
         }
         /// <summary>
         /// 用初始解质量评估92组解

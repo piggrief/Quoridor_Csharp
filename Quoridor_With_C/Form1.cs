@@ -11,6 +11,7 @@ using CCWin;
 using System.Runtime.InteropServices;
 using Quoridor;
 using Queen;
+using DebugToolForm;
 
 namespace Quoridor_With_C
 {
@@ -748,6 +749,7 @@ namespace Quoridor_With_C
             }
         }
         bool IsShowQueenFlag = true;
+        
         private void Test2BTN_Click(object sender, EventArgs e)
         {
             ThisQueenSolve.ChessLocationList = QueenChessLocation;
@@ -762,8 +764,8 @@ namespace Quoridor_With_C
             {
                 ShowQueenLocation(ThisQueenSolve.QueenLocationList, QueenList);
                 ///100000 0.99 1000 0 SA
-                ThisQueenSolve.InitSA(1000, 0.9, 90, 0, SimulateAnneal.Annealing.SAMode.SA);
-                //ThisQueenSolve.InitSA(1000, 0.9, 90, 0.1, SimulateAnneal.Annealing.SAMode.FastSA);
+                //ThisQueenSolve.InitSA(1000, 0.98, 90, 0, SimulateAnneal.Annealing.SAMode.SA);
+                ThisQueenSolve.InitSA(1000, 0.9, 90, 0.1, SimulateAnneal.Annealing.SAMode.FastSA);
 
                 List<Point> BestResult_QueenLocation = new List<Point>();
                 List<int> MoveSequence = new List<int>();

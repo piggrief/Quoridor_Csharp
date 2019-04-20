@@ -14,8 +14,9 @@ using System.Threading;
 using UartComunication;
 using System.Windows.Forms.DataVisualization.Charting;
 using Quoridor;
+using Quoridor_With_C;
 
-namespace Quoridor_With_C
+namespace DebugToolForm
 {
     public partial class DebugTool : Skin_Metro
     {
@@ -456,13 +457,25 @@ namespace Quoridor_With_C
 		        throw;
 	        }
 
+            Chart1.Series[0].ChartType = SeriesChartType.Line;
+            Chart1.Series[0].MarkerSize = 0;
+            Chart1.Series[0].IsValueShownAsLabel = false;
+            Chart1.Series[0].ToolTip = "第#VALX次模拟退火中\r\n局部最短路径为：#VAL";
+            //Chart1.ChartAreas[0].AxisY.Maximum = 1;
+            //Chart1.ChartAreas[0].AxisY.Minimum = 30;
+            Chart1.ChartAreas[0].AxisY.MajorGrid.Enabled = false;
+            Chart1.ChartAreas[0].AxisY.MinorGrid.Enabled = false;
+            Chart1.ChartAreas[0].AxisX.MajorGrid.Enabled = false;
+            Chart1.ChartAreas[0].AxisX.MinorGrid.Enabled = false;
+            Chart1.ChartAreas[0].AxisX.MajorTickMark.Interval = 5;
+            Chart1.ChartAreas[0].AxisX.MinorTickMark.Interval = 1;
+
             NowQueenSolve.InitSA(InitTemp, alpha, SALenght, 0, SimulateAnneal.Annealing.SAMode.SA);
             List<Point> BestResult_QueenLocation = new List<Point>();
             List<int> MoveSequence = new List<int>();
             double disall = 0;
             double dis_init = 0;
             MoveSequence = NowQueenSolve.CreateInitResult(NowQueenSolve.ChessLocationList, NowQueenSolve.QueenLocationList, ref dis_init);
-            dis_init = NowQueenSolve.CalMoveSequenceDistance(MoveSequence, NowQueenSolve.ChessLocationList, NowQueenSolve.QueenLocationList);
             MoveSequence = NowQueenSolve.SearchResult_ForMinDistance(ref disall, ShowPoint);
 
             InfoPrintTB.Text = "模拟退火参数：" + System.Environment.NewLine;
@@ -503,6 +516,7 @@ namespace Quoridor_With_C
 
             Chart1.Series[0].ChartType = SeriesChartType.Point;
             Chart1.Series[0].IsValueShownAsLabel = true;
+            Chart1.Series[0].MarkerSize = 6;
             Chart1.Series[0].ToolTip = "第#VALX组八皇后的解\r\n寻优后的最短路径为：#VAL";
             Chart1.ChartAreas[0].AxisY.Maximum = 55;
             Chart1.ChartAreas[0].AxisY.Minimum = 30;
