@@ -765,7 +765,7 @@ namespace Quoridor_With_C
                 ShowQueenLocation(ThisQueenSolve.QueenLocationList, QueenList);
                 ///100000 0.99 1000 0 SA
                 //ThisQueenSolve.InitSA(1000, 0.98, 90, 0, SimulateAnneal.Annealing.SAMode.SA);
-                ThisQueenSolve.InitSA(1000, 0.9, 90, 0.1, SimulateAnneal.Annealing.SAMode.FastSA);
+                //ThisQueenSolve.InitSA(1000, 0.9, 90, 0.1, SimulateAnneal.Annealing.SAMode.FastSA);
 
                 List<Point> BestResult_QueenLocation = new List<Point>();
                 List<int> MoveSequence = new List<int>();
@@ -774,9 +774,10 @@ namespace Quoridor_With_C
                 System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
                 stopwatch.Start(); //  开始监视代码运行时间
                 //  需要测试的代码 
-                //MoveSequence = ThisQueenSolve.SearchResult_ForOverall(ref disall, ref BestResult_QueenLocation);
-                MoveSequence = ThisQueenSolve.SearchResult_ForOverall(ref disall, ref BestResult_QueenLocation, SearchPB);
-                
+                //MoveSequence = ThisQueenSolve.SearchResult_ForOverall(ref disall, ref BestResult_QueenLocation, SearchPB);
+                //ThisQueenSolve.Test_SAParameter(1000, 0.9, 90, 0.1, SimulateAnneal.Annealing.SAMode.FastSA, 50);
+                ThisQueenSolve.Test_SAParameter(1000, 0.9, 90, 0, SimulateAnneal.Annealing.SAMode.SA, 50);
+
                 stopwatch.Stop(); //  停止监视
                 TimeSpan timespan = stopwatch.Elapsed; //  获取当前实例测量得出的总时间
                 double hours = timespan.TotalHours; // 总小时
@@ -788,10 +789,10 @@ namespace Quoridor_With_C
                 //                                              ,ThisQueenSolve.QueenLocationList
                 //                                              ,ref disall);
 
-                ThisQueenSolve.PrintMoveSequence(MoveSequence, ThisQueenSolve.ChessLocationList, ThisQueenSolve.QueenLocationList);
-                Console.WriteLine("总路径长度为" + disall.ToString());
-                Console.WriteLine("用时(s) ：" + seconds.ToString() + "秒");
-                Console.WriteLine("用时(ms)：" + milliseconds.ToString() + "毫秒");
+                //ThisQueenSolve.PrintMoveSequence(MoveSequence, ThisQueenSolve.ChessLocationList, ThisQueenSolve.QueenLocationList);
+                //Console.WriteLine("总路径长度为" + disall.ToString());
+                //Console.WriteLine("用时(s) ：" + seconds.ToString() + "秒");
+                //Console.WriteLine("用时(ms)：" + milliseconds.ToString() + "毫秒");
             }
             else
             {

@@ -581,11 +581,11 @@ namespace Queen
                 double disbuff = 0;
                 System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
                 stopwatch.Start(); //  开始监视代码运行时间
+                MoveSequence = SearchResult_ForMinDistance(ref disbuff);
                 stopwatch.Stop(); //  停止监视
                 TimeSpan timespan = stopwatch.Elapsed; //  获取当前实例测量得出的总时间
                 double milliseconds = timespan.TotalMilliseconds;  //  总毫秒数
 
-                MoveSequence = SearchResult_ForMinDistance(ref disbuff);
                 disall.Add(disbuff);
                 RunTime_ms.Add(milliseconds);
             }
@@ -593,6 +593,31 @@ namespace Queen
             MeanDistanceResult = disall.Average();
             MinDistanceResult = disall.Min();
             SolveUsedTime = RunTime_ms.Average();
+
+            PrintSAParameterTest(Test_Num);
+        }
+
+        public void PrintSAParameterTest(int TestNum)
+        {
+            for (int i = 0; i < 30; i++)
+                Console.Write("*");
+            Console.WriteLine();
+            Console.WriteLine("模拟退火参数：");
+            Console.WriteLine("模拟退火方式：" + ThisSAMode.ToString());
+            Console.WriteLine("初始温度：" + ThisSA.Temp_Init);
+            Console.WriteLine("衰减常数：" + ThisSA.alpha);
+            Console.WriteLine("迭代长度：" + ThisSA.L);
+            if (ThisSAMode == Annealing.SAMode.FastSA)
+            {
+                Console.WriteLine("FSA-h：" + ThisSA.FSA_h); 
+            }
+            Console.WriteLine("进行了" + TestNum.ToString() + "次测试,其结果为:");
+            Console.WriteLine("平均值：" + MeanDistanceResult.ToString());
+            Console.WriteLine("最小值：" + MinDistanceResult.ToString());
+            Console.WriteLine("均用时：" + SolveUsedTime.ToString()+"ms");
+            for (int i = 0; i < 30; i++)
+                Console.Write("*");
+            Console.WriteLine();
         }
         /// <summary>
         /// 用初始解质量评估92组解
