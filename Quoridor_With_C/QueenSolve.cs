@@ -10,6 +10,7 @@ using Quoridor_With_C;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.IO;
 using System.Text;
+using System.Collections.Concurrent;
 
 namespace Queen
 {
@@ -324,7 +325,7 @@ namespace Queen
                 }
                 else
                 {
-                    T = ThisSA.FSA_Ann_fun();
+                    T = ThisSA.FSA_Ann_fun(T);
                 }
             }
             #endregion
@@ -412,7 +413,7 @@ namespace Queen
                 }
                 else
                 {
-                    T = ThisSA.FSA_Ann_fun();
+                    T = ThisSA.FSA_Ann_fun(T);
                 }
                 DataPoint.Add(new DataPoint(PointIndex, PartBest_Distance));
                 PointIndex++;
@@ -562,8 +563,8 @@ namespace Queen
         public double MeanDistanceResult = 0;
         public double MinDistanceResult = 0;
         public double SolveUsedTime = 0;
-        public List<double> TestDisList = new List<double>();
-        public List<double> TestUsedTime = new List<double>();
+        public ConcurrentBag<double> TestDisList = new ConcurrentBag<double>();
+        public ConcurrentBag<double> TestUsedTime = new ConcurrentBag<double>();
         /// <summary>
         /// 测试模拟退火的某组参数的性能,最终的结果会被保存在MeanDistanceResult，MinDistanceResult，SolveUsedTime
         /// </summary>
@@ -573,38 +574,57 @@ namespace Queen
         /// <param name="FSA_H">FSA的h参数</param>
         /// <param name="WhichSA">使用SA还是FSA</param>
         /// <param name="Test_Num">测试次数</param>
-        public void Test_SAParameter(double InitTemp, double Alpha, double L, double FSA_H, Annealing.SAMode WhichSA, int Test_Num)
+        public string Test_SAParameter(double InitTemp, double Alpha, double L, double FSA_H, Annealing.SAMode WhichSA, int Test_Num)
         {
             InitSA(InitTemp, Alpha, L, FSA_H, WhichSA);
 
-            List<Point> BestResult_QueenLocation = new List<Point>();
             List<int> MoveSequence = new List<int>();
-            List<double> disall = new List<double>();
-            List<double> RunTime_ms = new List<double>();
+            ConcurrentBag<double> disall = new ConcurrentBag<double>();
+            ConcurrentBag<double> RunTime_ms = new ConcurrentBag<double>();
+            //var obj = new Object();
+            //Parallel.For(0, Test_Num, i =>
+            //{
+            //    double disbuff = 0;
+            //    System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
+            //    stopwatch.Start(); //  开始监视代码运行时间
+            //    MoveSequence = SearchResult_ForMinDistance(ref disbuff);
+            //    stopwatch.Stop(); //  停止监视
+            //    TimeSpan timespan = stopwatch.Elapsed; //  获取当前实例测量得出的总时间
+            //    double milliseconds = timespan.TotalMilliseconds;  //  总毫秒数
+
+            //    disall.Add(disbuff);
+            //    RunTime_ms.Add(milliseconds);
+
+            //    if ((i + 1) % 100 == 0)
+            //        Console.WriteLine("第" + (i + 1).ToString() + "次测试已完成！");
+            //});
+            
             for (int i = 0; i < Test_Num; i++)
             {
                 double disbuff = 0;
+                List<Point> QueenLocation = new List<Point>();
                 System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
                 stopwatch.Start(); //  开始监视代码运行时间
-                MoveSequence = SearchResult_ForMinDistance(ref disbuff);
+                MoveSequence = SearchResult_ForOverall(ref disbuff,ref QueenLocation);
+                //MoveSequence = SearchResult_ForMinDistance(ref disbuff);
                 stopwatch.Stop(); //  停止监视
                 TimeSpan timespan = stopwatch.Elapsed; //  获取当前实例测量得出的总时间
                 double milliseconds = timespan.TotalMilliseconds;  //  总毫秒数
 
                 disall.Add(disbuff);
                 RunTime_ms.Add(milliseconds);
-                if ((i + 1) % 10 == 0)
-                    Console.WriteLine("第" + (i+1).ToString() +"次测试已完成！");
+                if ((i + 1) % 100 == 0)
+                    Console.WriteLine("第" + (i + 1).ToString() + "次测试已完成！");
             }
 
-            MeanDistanceResult = disall.Average();
-            MinDistanceResult = disall.Min();
-            SolveUsedTime = RunTime_ms.Average();
-
+            MeanDistanceResult = disall.AsParallel().Average();
+            MinDistanceResult = disall.AsParallel().Min();
+            SolveUsedTime = RunTime_ms.AsParallel().Average();
             string buff = PrintSAParameterTest(Test_Num);
-            Console.WriteLine(buff);
             TestDisList = disall;
             TestUsedTime = RunTime_ms;
+
+            return buff;
         }
         public enum WhichSAParameter
         {
@@ -641,13 +661,13 @@ namespace Queen
                 ParaList.Add(i);
             }            
             #endregion
-            double InitTemp = InitSAPara.Temp_Init;
-            double Alpha = InitSAPara.alpha;
-            double L = InitSAPara.L;
-            double FSA_H = InitSAPara.FSA_h;
-
             foreach (double NowPara in ParaList)
             {
+                double InitTemp = InitSAPara.Temp_Init;
+                double Alpha = InitSAPara.alpha;
+                double L = InitSAPara.L;
+                double FSA_H = InitSAPara.FSA_h;
+
                 switch (SelectedPara)
                 {
                     case WhichSAParameter.InitTemp:
@@ -666,13 +686,10 @@ namespace Queen
                         break;
                 }
 
-                Test_SAParameter(InitTemp, Alpha, L, FSA_H, WhichSA, Test_num);
+                string SAResultStrBuff = Test_SAParameter(InitTemp, Alpha, L, FSA_H, WhichSA, Test_num);
 
-                string SAResultStrBuff = PrintSAParameterTest(Test_num);
                 ResultText += SAResultStrBuff;
             }
-
-            Console.WriteLine(ResultText);
 
             #region 读写记录
             DirectoryInfo source = new DirectoryInfo(Environment.CurrentDirectory + "\\Record");
@@ -691,7 +708,6 @@ namespace Queen
                 catch (Exception)
                 {                                       
                 }
-                Console.WriteLine(newstr);
             }
             int FinalRecordIndex = RecordIndexList.Max();
 

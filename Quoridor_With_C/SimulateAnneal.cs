@@ -42,9 +42,9 @@ namespace SimulateAnneal
         /// </summary>
         /// <param name="T"></param>
         /// <returns></returns>
-        public double FSA_Ann_fun()
+        public double FSA_Ann_fun(double T)
         {
-            return Temp_Init * Math.Pow(alpha, Math.Pow(L, FSA_LD));
+            return T * Math.Pow(alpha, Math.Pow(L, FSA_LD));
         }
         public enum SAMode
         {

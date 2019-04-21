@@ -487,14 +487,18 @@ namespace DebugToolForm
             NowQueenSolve.Test_SAParameter(InitTemp, alpha, SALenght, FSAh, UsedSAMode, TestNum);
 
             ShowPoint.Clear();
+
+            List<double> DisList = NowQueenSolve.TestDisList.ToList();
+            List<double> UsedTimeList = NowQueenSolve.TestUsedTime.ToList();
+
             for (int i = 0; i < NowQueenSolve.TestDisList.Count; i++)
             {
-                ShowPoint.Add(new DataPoint(i, NowQueenSolve.TestDisList[i]));
+                ShowPoint.Add(new DataPoint(i, DisList[i]));
             }
             ShowPoint2.Clear();
             for (int i = 0; i < NowQueenSolve.TestUsedTime.Count; i++)
             {
-                ShowPoint2.Add(new DataPoint(i, NowQueenSolve.TestUsedTime[i]));
+                ShowPoint2.Add(new DataPoint(i, UsedTimeList[i]));
             }
 
             InfoPrintTB.Text = "模拟退火参数：" + System.Environment.NewLine;

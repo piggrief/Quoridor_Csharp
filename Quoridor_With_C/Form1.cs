@@ -721,7 +721,7 @@ namespace Quoridor_With_C
         }
 
         public static QueenSolve ThisQueenSolve = new QueenSolve(QueenSolve.DistanceCalMethod.ManhattanDistance
-                                                         ,QueenSolve.InitResultMethod.Dijkstra, 30);
+                                                         ,QueenSolve.InitResultMethod.Dijkstra, 92);
         /// <summary>
         /// 显示八皇后位置（在棋盘上显示）
         /// </summary>
@@ -764,7 +764,9 @@ namespace Quoridor_With_C
             {
                 ShowQueenLocation(ThisQueenSolve.QueenLocationList, QueenList);
                 ///100000 0.99 1000 0 SA
-                //ThisQueenSolve.InitSA(1000, 0.98, 90, 0, SimulateAnneal.Annealing.SAMode.SA);
+                Queen.QueenSolve.SelectedQueenResultNum = 92;
+                ///1000 0.96 64
+                //ThisQueenSolve.InitSA(1000, 0.96, 64, 0, SimulateAnneal.Annealing.SAMode.SA);
                 //ThisQueenSolve.InitSA(1000, 0.9, 90, 0.1, SimulateAnneal.Annealing.SAMode.FastSA);
 
                 List<Point> BestResult_QueenLocation = new List<Point>();
@@ -776,10 +778,10 @@ namespace Quoridor_With_C
                 //  需要测试的代码 
                 //MoveSequence = ThisQueenSolve.SearchResult_ForOverall(ref disall, ref BestResult_QueenLocation, SearchPB);
                 //ThisQueenSolve.Test_SAParameter(1000, 0.9, 90, 0.1, SimulateAnneal.Annealing.SAMode.FastSA, 50);
-                //ThisQueenSolve.Test_SAParameter(1000, 0.9, 90, 0, SimulateAnneal.Annealing.SAMode.SA, 50);
-                ThisQueenSolve.InitSA(1000, 0.9, 32, 0, SimulateAnneal.Annealing.SAMode.SA);
-                ThisQueenSolve.Test_SAParameter_Auto(ThisQueenSolve.ThisSAMode, ThisQueenSolve.ThisSA
-                    , QueenSolve.WhichSAParameter.InitTemp, 50, 5000, 5000, 50);
+                ThisQueenSolve.Test_SAParameter(1000, 0.96, 64, 0, SimulateAnneal.Annealing.SAMode.SA, 10);
+                //ThisQueenSolve.InitSA(200, 0.9, 32, 0, SimulateAnneal.Annealing.SAMode.SA);
+                //ThisQueenSolve.Test_SAParameter_Auto(ThisQueenSolve.ThisSAMode, ThisQueenSolve.ThisSA
+                //    , QueenSolve.WhichSAParameter.Lenght, 2, 4, 50, 20);
 
                 stopwatch.Stop(); //  停止监视
                 TimeSpan timespan = stopwatch.Elapsed; //  获取当前实例测量得出的总时间
@@ -792,10 +794,10 @@ namespace Quoridor_With_C
                 //                                              ,ThisQueenSolve.QueenLocationList
                 //                                              ,ref disall);
 
-                //ThisQueenSolve.PrintMoveSequence(MoveSequence, ThisQueenSolve.ChessLocationList, ThisQueenSolve.QueenLocationList);
-                //Console.WriteLine("总路径长度为" + disall.ToString());
-                //Console.WriteLine("用时(s) ：" + seconds.ToString() + "秒");
-                //Console.WriteLine("用时(ms)：" + milliseconds.ToString() + "毫秒");
+                ThisQueenSolve.PrintMoveSequence(MoveSequence, ThisQueenSolve.ChessLocationList, ThisQueenSolve.QueenLocationList);
+                Console.WriteLine("总路径长度为" + disall.ToString());
+                Console.WriteLine("用时(s) ：" + seconds.ToString() + "秒");
+                Console.WriteLine("用时(ms)：" + milliseconds.ToString() + "毫秒");
             }
             else
             {
