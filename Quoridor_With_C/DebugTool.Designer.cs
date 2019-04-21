@@ -62,6 +62,7 @@
             this.TestAllSABTN = new CCWin.SkinControl.SkinButton();
             this.SATest1BTN = new CCWin.SkinControl.SkinButton();
             this.Chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.CameraTabPage = new CCWin.SkinControl.SkinTabPage();
             this.skinMenuStrip1 = new CCWin.SkinControl.SkinMenuStrip();
             this.串口设置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -90,7 +91,13 @@
             this.AlphaSetTB = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripMenuItem9 = new System.Windows.Forms.ToolStripMenuItem();
             this.SALenghtSetTB = new System.Windows.Forms.ToolStripTextBox();
-            this.CameraTabPage = new CCWin.SkinControl.SkinTabPage();
+            this.toolStripMenuItem13 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem15 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem16 = new System.Windows.Forms.ToolStripMenuItem();
+            this.TestNumSetTB = new System.Windows.Forms.ToolStripTextBox();
+            this.FSAhTB = new System.Windows.Forms.ToolStripTextBox();
+            this.toolStripMenuItem14 = new System.Windows.Forms.ToolStripMenuItem();
+            this.SAModeSetTB = new System.Windows.Forms.ToolStripComboBox();
             this.skinTabControl1.SuspendLayout();
             this.PortTabPage.SuspendLayout();
             this.SendGB.SuspendLayout();
@@ -453,7 +460,7 @@
             this.SATest1BTN.NormlBack = null;
             this.SATest1BTN.Size = new System.Drawing.Size(124, 36);
             this.SATest1BTN.TabIndex = 2;
-            this.SATest1BTN.Text = "测试单次SA";
+            this.SATest1BTN.Text = "测试当前参数";
             this.SATest1BTN.UseVisualStyleBackColor = false;
             this.SATest1BTN.Click += new System.EventHandler(this.SATest1BTN_Click);
             // 
@@ -491,6 +498,17 @@
             this.Chart1.Size = new System.Drawing.Size(618, 274);
             this.Chart1.TabIndex = 0;
             this.Chart1.Text = "chart1";
+            // 
+            // CameraTabPage
+            // 
+            this.CameraTabPage.BackColor = System.Drawing.Color.White;
+            this.CameraTabPage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.CameraTabPage.Location = new System.Drawing.Point(0, 36);
+            this.CameraTabPage.Name = "CameraTabPage";
+            this.CameraTabPage.Size = new System.Drawing.Size(621, 372);
+            this.CameraTabPage.TabIndex = 2;
+            this.CameraTabPage.TabItemImage = null;
+            this.CameraTabPage.Text = "摄像头";
             // 
             // skinMenuStrip1
             // 
@@ -644,7 +662,8 @@
             // 
             this.图表设置ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem6,
-            this.sA参数设定ToolStripMenuItem});
+            this.sA参数设定ToolStripMenuItem,
+            this.toolStripMenuItem15});
             this.图表设置ToolStripMenuItem.Name = "图表设置ToolStripMenuItem";
             this.图表设置ToolStripMenuItem.Size = new System.Drawing.Size(101, 24);
             this.图表设置ToolStripMenuItem.Text = "图表设置(&C)";
@@ -654,7 +673,7 @@
             this.toolStripMenuItem6.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.IfSASelctCB});
             this.toolStripMenuItem6.Name = "toolStripMenuItem6";
-            this.toolStripMenuItem6.Size = new System.Drawing.Size(164, 26);
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(181, 26);
             this.toolStripMenuItem6.Text = "用途";
             // 
             // IfSASelctCB
@@ -669,11 +688,13 @@
             // sA参数设定ToolStripMenuItem
             // 
             this.sA参数设定ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem14,
             this.toolStripMenuItem10,
             this.toolStripMenuItem11,
-            this.toolStripMenuItem12});
+            this.toolStripMenuItem12,
+            this.toolStripMenuItem13});
             this.sA参数设定ToolStripMenuItem.Name = "sA参数设定ToolStripMenuItem";
-            this.sA参数设定ToolStripMenuItem.Size = new System.Drawing.Size(164, 26);
+            this.sA参数设定ToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
             this.sA参数设定ToolStripMenuItem.Text = "SA参数设定";
             // 
             // toolStripMenuItem10
@@ -681,7 +702,7 @@
             this.toolStripMenuItem10.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.InitTempTB});
             this.toolStripMenuItem10.Name = "toolStripMenuItem10";
-            this.toolStripMenuItem10.Size = new System.Drawing.Size(144, 26);
+            this.toolStripMenuItem10.Size = new System.Drawing.Size(181, 26);
             this.toolStripMenuItem10.Text = "初始温度";
             // 
             // InitTempTB
@@ -695,7 +716,7 @@
             this.toolStripMenuItem11.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.AlphaTB});
             this.toolStripMenuItem11.Name = "toolStripMenuItem11";
-            this.toolStripMenuItem11.Size = new System.Drawing.Size(144, 26);
+            this.toolStripMenuItem11.Size = new System.Drawing.Size(181, 26);
             this.toolStripMenuItem11.Text = "衰减常数";
             // 
             // AlphaTB
@@ -709,7 +730,7 @@
             this.toolStripMenuItem12.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.SALenghtTB});
             this.toolStripMenuItem12.Name = "toolStripMenuItem12";
-            this.toolStripMenuItem12.Size = new System.Drawing.Size(144, 26);
+            this.toolStripMenuItem12.Size = new System.Drawing.Size(181, 26);
             this.toolStripMenuItem12.Text = "迭代长度";
             // 
             // SALenghtTB
@@ -761,16 +782,57 @@
             this.SALenghtSetTB.Size = new System.Drawing.Size(100, 27);
             this.SALenghtSetTB.Text = "100";
             // 
-            // CameraTabPage
+            // toolStripMenuItem13
             // 
-            this.CameraTabPage.BackColor = System.Drawing.Color.White;
-            this.CameraTabPage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.CameraTabPage.Location = new System.Drawing.Point(0, 36);
-            this.CameraTabPage.Name = "CameraTabPage";
-            this.CameraTabPage.Size = new System.Drawing.Size(621, 372);
-            this.CameraTabPage.TabIndex = 2;
-            this.CameraTabPage.TabItemImage = null;
-            this.CameraTabPage.Text = "摄像头";
+            this.toolStripMenuItem13.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.FSAhTB});
+            this.toolStripMenuItem13.Name = "toolStripMenuItem13";
+            this.toolStripMenuItem13.Size = new System.Drawing.Size(181, 26);
+            this.toolStripMenuItem13.Text = "FSA-h";
+            // 
+            // toolStripMenuItem15
+            // 
+            this.toolStripMenuItem15.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem16});
+            this.toolStripMenuItem15.Name = "toolStripMenuItem15";
+            this.toolStripMenuItem15.Size = new System.Drawing.Size(181, 26);
+            this.toolStripMenuItem15.Text = "测试设置";
+            // 
+            // toolStripMenuItem16
+            // 
+            this.toolStripMenuItem16.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.TestNumSetTB});
+            this.toolStripMenuItem16.Name = "toolStripMenuItem16";
+            this.toolStripMenuItem16.Size = new System.Drawing.Size(181, 26);
+            this.toolStripMenuItem16.Text = "参数测试次数";
+            // 
+            // TestNumSetTB
+            // 
+            this.TestNumSetTB.Name = "TestNumSetTB";
+            this.TestNumSetTB.Size = new System.Drawing.Size(100, 27);
+            this.TestNumSetTB.Text = "50";
+            // 
+            // FSAhTB
+            // 
+            this.FSAhTB.Name = "FSAhTB";
+            this.FSAhTB.Size = new System.Drawing.Size(100, 27);
+            this.FSAhTB.Text = "5";
+            // 
+            // toolStripMenuItem14
+            // 
+            this.toolStripMenuItem14.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.SAModeSetTB});
+            this.toolStripMenuItem14.Name = "toolStripMenuItem14";
+            this.toolStripMenuItem14.Size = new System.Drawing.Size(181, 26);
+            this.toolStripMenuItem14.Text = "退火方式";
+            // 
+            // SAModeSetTB
+            // 
+            this.SAModeSetTB.Items.AddRange(new object[] {
+            "模拟退火(SA)",
+            "快速模拟退火(FSA)"});
+            this.SAModeSetTB.Name = "SAModeSetTB";
+            this.SAModeSetTB.Size = new System.Drawing.Size(121, 28);
             // 
             // DebugTool
             // 
@@ -853,5 +915,12 @@
         private CCWin.SkinControl.SkinTextBox InfoPrintTB;
         private CCWin.SkinControl.SkinButton TestAllSABTN;
         private CCWin.SkinControl.SkinTabPage CameraTabPage;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem13;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem15;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem16;
+        private System.Windows.Forms.ToolStripTextBox TestNumSetTB;
+        private System.Windows.Forms.ToolStripTextBox FSAhTB;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem14;
+        private System.Windows.Forms.ToolStripComboBox SAModeSetTB;
     }
 }

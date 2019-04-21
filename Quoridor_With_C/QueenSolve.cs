@@ -279,7 +279,8 @@ namespace Queen
                 l = 0;
                 while (l <= ThisSA.L)//内循环，迭代终止条件
                 {
-                    Last_Sequence = New_Sequence;
+                    Last_Sequence = New_Sequence;///随机搜索策略
+                    //Last_Sequence = PartBest_Sequence;//改进搜索策略
                     result_distance_pre = result_distance_new;
                     ///产生新的随机解
                     New_Sequence = new List<int>();
@@ -559,6 +560,8 @@ namespace Queen
         public double MeanDistanceResult = 0;
         public double MinDistanceResult = 0;
         public double SolveUsedTime = 0;
+        public List<double> TestDisList = new List<double>();
+        public List<double> TestUsedTime = new List<double>();
         /// <summary>
         /// 测试模拟退火的某组参数的性能,最终的结果会被保存在MeanDistanceResult，MinDistanceResult，SolveUsedTime
         /// </summary>
@@ -588,6 +591,8 @@ namespace Queen
 
                 disall.Add(disbuff);
                 RunTime_ms.Add(milliseconds);
+                if ((i + 1) % 10 == 0)
+                    Console.WriteLine("第" + (i+1).ToString() +"次测试已完成！");
             }
 
             MeanDistanceResult = disall.Average();
@@ -595,6 +600,9 @@ namespace Queen
             SolveUsedTime = RunTime_ms.Average();
 
             PrintSAParameterTest(Test_Num);
+
+            TestDisList = disall;
+            TestUsedTime = RunTime_ms;
         }
 
         public void PrintSAParameterTest(int TestNum)

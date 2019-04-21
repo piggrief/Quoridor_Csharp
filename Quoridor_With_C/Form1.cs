@@ -276,9 +276,9 @@ namespace Quoridor_With_C
 
                 ChessBoardPB.Refresh();
             }
-            this.Location = new Point(0, 0);
+            //this.Location = new Point(0, 0);
             DebugTool DT1 = new DebugTool(this);
-            DT1.Location = new Point(this.Size.Width, 0);
+            //DT1.Location = new Point(this.Size.Width, 0);
             DT1.Show();
         }
 

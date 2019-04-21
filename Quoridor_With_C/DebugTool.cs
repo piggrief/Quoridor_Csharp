@@ -51,6 +51,7 @@ namespace DebugToolForm
         public void ChartSetInit()
         {
             IfSASelctCB.SelectedIndex = 0;
+            SAModeSetTB.SelectedIndex = 0;
         }
         /// <summary>
         /// 串口端口号Combox刷新
@@ -433,8 +434,6 @@ namespace DebugToolForm
 
         private void SATest1BTN_Click(object sender, EventArgs e)
         {
-            ShowPoint.Clear();
-
             NowQueenSolve = Form1.ThisQueenSolve;
             NowQueenSolve.ChessLocationList = Form1.QueenChessLocation;
 
@@ -444,12 +443,22 @@ namespace DebugToolForm
                 NowQueenSolve.QueenLocationList.Add(new Point(i, NowQueenSolve.EightQueenResult[0, i] - 1));
             }
 
-            double InitTemp = 0, alpha = 0, SALenght = 0;
+            SimulateAnneal.Annealing.SAMode UsedSAMode = SimulateAnneal.Annealing.SAMode.SA;
+            double InitTemp = 0, alpha = 0, SALenght = 0, FSAh = 0;
+            int TestNum = 0;
             try 
 	        {	        
-                 InitTemp = Convert.ToDouble(InitTempTB.Text);
-                 alpha = Convert.ToDouble(AlphaTB.Text);
-                 SALenght = Convert.ToDouble(SALenghtTB.Text);
+                InitTemp = Convert.ToDouble(InitTempTB.Text);
+                alpha = Convert.ToDouble(AlphaTB.Text);
+                SALenght = Convert.ToDouble(SALenghtTB.Text);
+                FSAh = Convert.ToDouble(FSAhTB.Text);
+                TestNum = Convert.ToInt32(TestNumSetTB.Text);
+
+                if (SAModeSetTB.SelectedIndex == 0)//SA
+                    UsedSAMode = SimulateAnneal.Annealing.SAMode.SA;
+                else
+                    UsedSAMode = SimulateAnneal.Annealing.SAMode.FastSA;
+
 	        }
 	        catch (Exception)
 	        {
@@ -470,22 +479,29 @@ namespace DebugToolForm
             Chart1.ChartAreas[0].AxisX.MajorTickMark.Interval = 5;
             Chart1.ChartAreas[0].AxisX.MinorTickMark.Interval = 1;
 
-            NowQueenSolve.InitSA(InitTemp, alpha, SALenght, 0, SimulateAnneal.Annealing.SAMode.SA);
-            List<Point> BestResult_QueenLocation = new List<Point>();
-            List<int> MoveSequence = new List<int>();
-            double disall = 0;
-            double dis_init = 0;
-            MoveSequence = NowQueenSolve.CreateInitResult(NowQueenSolve.ChessLocationList, NowQueenSolve.QueenLocationList, ref dis_init);
-            MoveSequence = NowQueenSolve.SearchResult_ForMinDistance(ref disall, ShowPoint);
+            Chart1.Series[1].ChartType = SeriesChartType.Line;
+            Chart1.Series[1].MarkerSize = 0;
+            Chart1.Series[1].IsValueShownAsLabel = false;
+            Chart1.Series[1].ToolTip = "第#VALX次模拟退火中\r\n局部最短路径为：#VAL";
+
+            NowQueenSolve.Test_SAParameter(InitTemp, alpha, SALenght, FSAh, UsedSAMode, TestNum);
+
+            ShowPoint.Clear();
+            for (int i = 0; i < NowQueenSolve.TestDisList.Count; i++)
+            {
+                ShowPoint.Add(new DataPoint(i, NowQueenSolve.TestDisList[i]));
+            }
+            ShowPoint2.Clear();
+            for (int i = 0; i < NowQueenSolve.TestUsedTime.Count; i++)
+            {
+                ShowPoint2.Add(new DataPoint(i, NowQueenSolve.TestUsedTime[i]));
+            }
 
             InfoPrintTB.Text = "模拟退火参数：" + System.Environment.NewLine;
             InfoPrintTB.Text += "T0 = " + InitTemp.ToString()+ System.Environment.NewLine;
             InfoPrintTB.Text += "a = " + alpha.ToString() + System.Environment.NewLine;
             InfoPrintTB.Text += "L = " + SALenght.ToString() + System.Environment.NewLine;
-            InfoPrintTB.Text += "本次最优距离为：" + System.Environment.NewLine;
-            InfoPrintTB.Text += disall.ToString() + System.Environment.NewLine;
-            InfoPrintTB.Text += "初始解为：" + System.Environment.NewLine;
-            InfoPrintTB.Text += dis_init.ToString();
+
         }
 
         private void TestAllSABTN_Click(object sender, EventArgs e)
@@ -556,6 +572,11 @@ namespace DebugToolForm
             InfoPrintTB.Text += "L = " + SALenght.ToString() + System.Environment.NewLine;
             InfoPrintTB.Text += "本次最优距离为：" + System.Environment.NewLine;
             InfoPrintTB.Text += disall.ToString() + System.Environment.NewLine;
+        }
+
+        private void SAModeSelectCB_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
