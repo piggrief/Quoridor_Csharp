@@ -79,25 +79,25 @@
             this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripMenuItem();
             this.IfSASelctCB = new System.Windows.Forms.ToolStripComboBox();
             this.sA参数设定ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem14 = new System.Windows.Forms.ToolStripMenuItem();
+            this.SAModeSetTB = new System.Windows.Forms.ToolStripComboBox();
             this.toolStripMenuItem10 = new System.Windows.Forms.ToolStripMenuItem();
             this.InitTempTB = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripMenuItem11 = new System.Windows.Forms.ToolStripMenuItem();
             this.AlphaTB = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripMenuItem12 = new System.Windows.Forms.ToolStripMenuItem();
             this.SALenghtTB = new System.Windows.Forms.ToolStripTextBox();
+            this.toolStripMenuItem13 = new System.Windows.Forms.ToolStripMenuItem();
+            this.FSAhTB = new System.Windows.Forms.ToolStripTextBox();
+            this.toolStripMenuItem15 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem16 = new System.Windows.Forms.ToolStripMenuItem();
+            this.TestNumSetTB = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripMenuItem7 = new System.Windows.Forms.ToolStripMenuItem();
             this.InitTempSetTB = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripMenuItem8 = new System.Windows.Forms.ToolStripMenuItem();
             this.AlphaSetTB = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripMenuItem9 = new System.Windows.Forms.ToolStripMenuItem();
             this.SALenghtSetTB = new System.Windows.Forms.ToolStripTextBox();
-            this.toolStripMenuItem13 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem15 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem16 = new System.Windows.Forms.ToolStripMenuItem();
-            this.TestNumSetTB = new System.Windows.Forms.ToolStripTextBox();
-            this.FSAhTB = new System.Windows.Forms.ToolStripTextBox();
-            this.toolStripMenuItem14 = new System.Windows.Forms.ToolStripMenuItem();
-            this.SAModeSetTB = new System.Windows.Forms.ToolStripComboBox();
             this.skinTabControl1.SuspendLayout();
             this.PortTabPage.SuspendLayout();
             this.SendGB.SuspendLayout();
@@ -697,6 +697,22 @@
             this.sA参数设定ToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
             this.sA参数设定ToolStripMenuItem.Text = "SA参数设定";
             // 
+            // toolStripMenuItem14
+            // 
+            this.toolStripMenuItem14.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.SAModeSetTB});
+            this.toolStripMenuItem14.Name = "toolStripMenuItem14";
+            this.toolStripMenuItem14.Size = new System.Drawing.Size(181, 26);
+            this.toolStripMenuItem14.Text = "退火方式";
+            // 
+            // SAModeSetTB
+            // 
+            this.SAModeSetTB.Items.AddRange(new object[] {
+            "模拟退火(SA)",
+            "快速模拟退火(FSA)"});
+            this.SAModeSetTB.Name = "SAModeSetTB";
+            this.SAModeSetTB.Size = new System.Drawing.Size(121, 28);
+            // 
             // toolStripMenuItem10
             // 
             this.toolStripMenuItem10.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -709,7 +725,7 @@
             // 
             this.InitTempTB.Name = "InitTempTB";
             this.InitTempTB.Size = new System.Drawing.Size(100, 27);
-            this.InitTempTB.Text = "10000";
+            this.InitTempTB.Text = "1000";
             // 
             // toolStripMenuItem11
             // 
@@ -723,7 +739,7 @@
             // 
             this.AlphaTB.Name = "AlphaTB";
             this.AlphaTB.Size = new System.Drawing.Size(100, 27);
-            this.AlphaTB.Text = "0.99";
+            this.AlphaTB.Text = "0.9";
             // 
             // toolStripMenuItem12
             // 
@@ -737,7 +753,43 @@
             // 
             this.SALenghtTB.Name = "SALenghtTB";
             this.SALenghtTB.Size = new System.Drawing.Size(100, 27);
-            this.SALenghtTB.Text = "100";
+            this.SALenghtTB.Text = "30";
+            // 
+            // toolStripMenuItem13
+            // 
+            this.toolStripMenuItem13.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.FSAhTB});
+            this.toolStripMenuItem13.Name = "toolStripMenuItem13";
+            this.toolStripMenuItem13.Size = new System.Drawing.Size(181, 26);
+            this.toolStripMenuItem13.Text = "FSA-h";
+            // 
+            // FSAhTB
+            // 
+            this.FSAhTB.Name = "FSAhTB";
+            this.FSAhTB.Size = new System.Drawing.Size(100, 27);
+            this.FSAhTB.Text = "5";
+            // 
+            // toolStripMenuItem15
+            // 
+            this.toolStripMenuItem15.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem16});
+            this.toolStripMenuItem15.Name = "toolStripMenuItem15";
+            this.toolStripMenuItem15.Size = new System.Drawing.Size(181, 26);
+            this.toolStripMenuItem15.Text = "测试设置";
+            // 
+            // toolStripMenuItem16
+            // 
+            this.toolStripMenuItem16.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.TestNumSetTB});
+            this.toolStripMenuItem16.Name = "toolStripMenuItem16";
+            this.toolStripMenuItem16.Size = new System.Drawing.Size(174, 26);
+            this.toolStripMenuItem16.Text = "参数测试次数";
+            // 
+            // TestNumSetTB
+            // 
+            this.TestNumSetTB.Name = "TestNumSetTB";
+            this.TestNumSetTB.Size = new System.Drawing.Size(100, 27);
+            this.TestNumSetTB.Text = "50";
             // 
             // toolStripMenuItem7
             // 
@@ -781,58 +833,6 @@
             this.SALenghtSetTB.Name = "SALenghtSetTB";
             this.SALenghtSetTB.Size = new System.Drawing.Size(100, 27);
             this.SALenghtSetTB.Text = "100";
-            // 
-            // toolStripMenuItem13
-            // 
-            this.toolStripMenuItem13.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.FSAhTB});
-            this.toolStripMenuItem13.Name = "toolStripMenuItem13";
-            this.toolStripMenuItem13.Size = new System.Drawing.Size(181, 26);
-            this.toolStripMenuItem13.Text = "FSA-h";
-            // 
-            // toolStripMenuItem15
-            // 
-            this.toolStripMenuItem15.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem16});
-            this.toolStripMenuItem15.Name = "toolStripMenuItem15";
-            this.toolStripMenuItem15.Size = new System.Drawing.Size(181, 26);
-            this.toolStripMenuItem15.Text = "测试设置";
-            // 
-            // toolStripMenuItem16
-            // 
-            this.toolStripMenuItem16.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.TestNumSetTB});
-            this.toolStripMenuItem16.Name = "toolStripMenuItem16";
-            this.toolStripMenuItem16.Size = new System.Drawing.Size(181, 26);
-            this.toolStripMenuItem16.Text = "参数测试次数";
-            // 
-            // TestNumSetTB
-            // 
-            this.TestNumSetTB.Name = "TestNumSetTB";
-            this.TestNumSetTB.Size = new System.Drawing.Size(100, 27);
-            this.TestNumSetTB.Text = "50";
-            // 
-            // FSAhTB
-            // 
-            this.FSAhTB.Name = "FSAhTB";
-            this.FSAhTB.Size = new System.Drawing.Size(100, 27);
-            this.FSAhTB.Text = "5";
-            // 
-            // toolStripMenuItem14
-            // 
-            this.toolStripMenuItem14.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.SAModeSetTB});
-            this.toolStripMenuItem14.Name = "toolStripMenuItem14";
-            this.toolStripMenuItem14.Size = new System.Drawing.Size(181, 26);
-            this.toolStripMenuItem14.Text = "退火方式";
-            // 
-            // SAModeSetTB
-            // 
-            this.SAModeSetTB.Items.AddRange(new object[] {
-            "模拟退火(SA)",
-            "快速模拟退火(FSA)"});
-            this.SAModeSetTB.Name = "SAModeSetTB";
-            this.SAModeSetTB.Size = new System.Drawing.Size(121, 28);
             // 
             // DebugTool
             // 

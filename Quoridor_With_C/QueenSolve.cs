@@ -8,6 +8,8 @@ using MathNet.Numerics.Random;
 using SimulateAnneal;
 using Quoridor_With_C;
 using System.Windows.Forms.DataVisualization.Charting;
+using System.IO;
+using System.Text;
 
 namespace Queen
 {
@@ -224,8 +226,8 @@ namespace Queen
             }
             Console.WriteLine();
         }
-        Annealing ThisSA;
-        Annealing.SAMode ThisSAMode = Annealing.SAMode.SA; 
+        public Annealing ThisSA;
+        public Annealing.SAMode ThisSAMode = Annealing.SAMode.SA; 
         /// <summary>
         /// 初始化模拟退火（主要为了设定SA算法的初始参数）
         /// </summary>
@@ -599,14 +601,109 @@ namespace Queen
             MinDistanceResult = disall.Min();
             SolveUsedTime = RunTime_ms.Average();
 
-            PrintSAParameterTest(Test_Num);
-
+            string buff = PrintSAParameterTest(Test_Num);
+            Console.WriteLine(buff);
             TestDisList = disall;
             TestUsedTime = RunTime_ms;
         }
-
-        public void PrintSAParameterTest(int TestNum)
+        public enum WhichSAParameter
         {
+            InitTemp,
+            Alpha,
+            Lenght,
+            FSA_h
+        }
+        /// <summary>
+        /// 写入一个txt文件
+        /// </summary>
+        /// <param name="path">文件目录</param>
+        public void Write(string path, string FileStr)
+        {
+            FileStream fs = new FileStream(path, FileMode.Create);
+            StreamWriter sw = new StreamWriter(fs);
+            //开始写入
+            sw.Write(FileStr);
+            //清空缓冲区
+            sw.Flush();
+            //关闭流
+            sw.Close();
+            fs.Close();
+        }
+        public void Test_SAParameter_Auto(Annealing.SAMode WhichSA, Annealing InitSAPara, WhichSAParameter SelectedPara, double Start, double Step, double Stop, int Test_num = 50)
+        {
+            string ResultText = "";
+            //InitSA(InitSAPara.Temp_Init, InitSAPara.alpha, InitSAPara.L, InitSAPara.FSA_h, WhichSA);
+            #region 生成参数调节列表
+            List<double> ParaList = new List<double>();
+
+            for (double i = Start; i <= Stop; i += Step)
+            {
+                ParaList.Add(i);
+            }            
+            #endregion
+            double InitTemp = InitSAPara.Temp_Init;
+            double Alpha = InitSAPara.alpha;
+            double L = InitSAPara.L;
+            double FSA_H = InitSAPara.FSA_h;
+
+            foreach (double NowPara in ParaList)
+            {
+                switch (SelectedPara)
+                {
+                    case WhichSAParameter.InitTemp:
+                        InitTemp = NowPara;
+                        break;
+                    case WhichSAParameter.Alpha:
+                        Alpha = NowPara;
+                        break;
+                    case WhichSAParameter.Lenght:
+                        L = NowPara;
+                        break;
+                    case WhichSAParameter.FSA_h:
+                        FSA_H = NowPara;
+                        break;
+                    default:
+                        break;
+                }
+
+                Test_SAParameter(InitTemp, Alpha, L, FSA_H, WhichSA, Test_num);
+
+                string SAResultStrBuff = PrintSAParameterTest(Test_num);
+                ResultText += SAResultStrBuff;
+            }
+
+            Console.WriteLine(ResultText);
+
+            #region 读写记录
+            DirectoryInfo source = new DirectoryInfo(Environment.CurrentDirectory + "\\Record");
+            List<int> RecordIndexList = new List<int>();
+            foreach (FileInfo diSourceSubDir in source.GetFiles())
+            {
+                //这里进行处理，用diSourceSubDir.Name
+                int count = diSourceSubDir.Name.Count();
+                string newstr = diSourceSubDir.Name.Remove(count - 4);
+                int RecordIndex = 0;
+                try
+                {
+                    RecordIndex = Convert.ToInt32(newstr);
+                    RecordIndexList.Add(RecordIndex);
+                }
+                catch (Exception)
+                {                                       
+                }
+                Console.WriteLine(newstr);
+            }
+            int FinalRecordIndex = RecordIndexList.Max();
+
+            ResultText = ResultText.Insert(0, DateTime.Now.ToLongDateString().ToString() + "  " +DateTime.Now.ToLongTimeString().ToString() + System.Environment.NewLine);
+
+            Write(Environment.CurrentDirectory + "\\Record\\" + (FinalRecordIndex + 1).ToString() + ".txt", ResultText);
+
+            #endregion
+        }
+        public string PrintSAParameterTest(int TestNum)
+        {
+            string RecordData = "";
             for (int i = 0; i < 30; i++)
                 Console.Write("*");
             Console.WriteLine();
@@ -626,6 +723,27 @@ namespace Queen
             for (int i = 0; i < 30; i++)
                 Console.Write("*");
             Console.WriteLine();
+
+            if (ThisSAMode == Annealing.SAMode.SA)
+                RecordData += "\"SA\" ";
+            else
+                RecordData += "\"FSA\" ";
+
+            RecordData += ThisSA.Temp_Init.ToString() + " ";
+            RecordData += ThisSA.alpha.ToString() + " ";
+            RecordData += ThisSA.L.ToString() + " ";
+
+            if (ThisSAMode != Annealing.SAMode.SA)
+                RecordData += ThisSA.FSA_h.ToString() + " ";
+
+            RecordData += TestNum.ToString() + " ";
+            RecordData += MeanDistanceResult.ToString("F2") + " ";
+            RecordData += MinDistanceResult.ToString() + " ";
+            RecordData += SolveUsedTime.ToString("F2") + " ";
+
+            RecordData += System.Environment.NewLine;
+
+            return RecordData;
         }
         /// <summary>
         /// 用初始解质量评估92组解

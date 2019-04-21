@@ -776,7 +776,10 @@ namespace Quoridor_With_C
                 //  需要测试的代码 
                 //MoveSequence = ThisQueenSolve.SearchResult_ForOverall(ref disall, ref BestResult_QueenLocation, SearchPB);
                 //ThisQueenSolve.Test_SAParameter(1000, 0.9, 90, 0.1, SimulateAnneal.Annealing.SAMode.FastSA, 50);
-                ThisQueenSolve.Test_SAParameter(1000, 0.9, 90, 0, SimulateAnneal.Annealing.SAMode.SA, 50);
+                //ThisQueenSolve.Test_SAParameter(1000, 0.9, 90, 0, SimulateAnneal.Annealing.SAMode.SA, 50);
+                ThisQueenSolve.InitSA(1000, 0.9, 32, 0, SimulateAnneal.Annealing.SAMode.SA);
+                ThisQueenSolve.Test_SAParameter_Auto(ThisQueenSolve.ThisSAMode, ThisQueenSolve.ThisSA
+                    , QueenSolve.WhichSAParameter.InitTemp, 50, 5000, 5000, 50);
 
                 stopwatch.Stop(); //  停止监视
                 TimeSpan timespan = stopwatch.Elapsed; //  获取当前实例测量得出的总时间
