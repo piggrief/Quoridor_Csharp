@@ -1578,7 +1578,11 @@ namespace Quoridor
             }
             Console.WriteLine("/****************************************/");
         }
-
+        /// <summary>
+        /// AI落子，使用贪婪算法
+        /// </summary>
+        /// <param name="AIPlayer"></param>
+        /// <returns></returns>
         public QuoridorAction AIAction_Greedy(Form1.EnumNowPlayer AIPlayer)
         {
             ///暂存一些量以便恢复
@@ -1587,8 +1591,9 @@ namespace Quoridor
             Player_Now = AIPlayer;
 
             CreateActionList();
-            ActionListEvaluation();     
+            ActionListEvaluation();
 
+            #region 贪婪思想，找最好的一步
             QuoridorAction BestAction = ActionList.First();
             double MinScore = 99;
             foreach (QuoridorAction AL in ActionList)
@@ -1599,9 +1604,218 @@ namespace Quoridor
                     MinScore = AL.WholeScore;
                 }
             }
+            #endregion
 
             Player_Now = PlayerSave;
             return BestAction;
+        }
+        public enum SearchLevel
+        {
+            MaxLevel,
+            MinLevel
+        }
+        Grid[,] ChessBoardBuff = new Grid[7, 7];
+        Form1.EnumNowPlayer PlayerBuff = Form1.EnumNowPlayer.Player2;
+        public void AlphaBetaPruningInit(Grid[,] ChessBoard_Init, Form1.EnumNowPlayer ToAction_Player)
+        {
+            for (int i = 0; i < 7; i++)
+            {
+                for (int j = 0; j < 7; j++)
+                {
+                    ChessBoardBuff[i, j].GridStatus = ChessBoard_Init[i, j].GridStatus;
+                    ChessBoardBuff[i, j].IfLeftBoard = ChessBoard_Init[i, j].IfLeftBoard;
+                    ChessBoardBuff[i, j].IfUpBoard = ChessBoard_Init[i, j].IfUpBoard;
+                }
+            }
+            PlayerBuff = ToAction_Player;
+        }
+        public Form1.EnumNowPlayer ReversePlayer(Form1.EnumNowPlayer NowPlayer)
+        {
+            if (Player_Now == Form1.EnumNowPlayer.Player1)
+                return Form1.EnumNowPlayer.Player2;
+            else
+                return Form1.EnumNowPlayer.Player1;
+        }
+        public QuoridorAction AlphaBetaPruning(ChessBoard ChessBoardStatus, Form1.EnumNowPlayer NowPlayer, int depth, double alpha, double beta, ref double alphabetabuff)
+        {
+            if (CheckResult() != "No success")
+            {
+                alphabetabuff = 9999;
+                return new QuoridorAction(Form1.NowAction.Action_Move_Player1,new Point(0,0));
+            }
+            if (depth == 0)
+            {
+                ///暂存一些量以便恢复
+                Form1.EnumNowPlayer PlayerSave = Player_Now;
+                Player_Now = NowPlayer;
+
+                CreateActionList();
+                ActionListEvaluation();
+                #region 贪婪思想，找最好的一步
+                QuoridorAction BestAction = ActionList.First();
+                double MinScore = 99;
+                foreach (QuoridorAction AL in ActionList)
+                {
+                    if (MinScore > AL.WholeScore)
+                    {
+                        BestAction = AL;
+                        MinScore = AL.WholeScore;
+                    }
+                }
+                #endregion
+                Player_Now = PlayerSave;
+                alphabetabuff = MinScore;
+                return BestAction;
+            }
+            if (NowPlayer == PlayerBuff)
+            {
+                ///暂存一些量以便恢复
+                Form1.EnumNowPlayer PlayerSave = Player_Now;
+                Player_Now = NowPlayer;
+
+                CreateActionList();
+                QuoridorAction BestAction = ActionList.First();
+
+                foreach (QuoridorAction Action in ActionList)
+                {
+                    #region 保存棋盘状态
+                    ChessBoard ChessBoardBuff = new ChessBoard();
+                    for (int i = 0; i < 7; i++)
+                    {
+                        for (int j = 0; j < 7; j++)
+                        {
+                            ChessBoardBuff.ChessBoardAll[i, j].IfLeftBoard = ChessBoardStatus.ChessBoardAll[i, j].IfLeftBoard;
+                            ChessBoardBuff.ChessBoardAll[i, j].IfUpBoard = ChessBoardStatus.ChessBoardAll[i, j].IfUpBoard;
+                            ChessBoardBuff.ChessBoardAll[i, j].GridStatus = ChessBoardStatus.ChessBoardAll[i, j].GridStatus;
+                        }
+                    }
+                    ChessBoardBuff.Player1Location.X = ChessBoardStatus.Player1Location.X;
+                    ChessBoardBuff.Player1Location.Y = ChessBoardStatus.Player1Location.Y;
+                    ChessBoardBuff.Player2Location.X = ChessBoardStatus.Player2Location.X;
+                    ChessBoardBuff.Player2Location.Y = ChessBoardStatus.Player2Location.Y;
+                    #endregion
+                    #region 模拟落子
+                    string Hint = ChessBoardStatus.Action(Action.ActionPoint.X, Action.ActionPoint.Y, Action.PlayerAction);
+                    try
+                    {
+                        if (Hint != "OK")
+                        {
+                            Exception e = new Exception();
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        throw;
+                    }
+                    #endregion
+                    double alphabuff = 0;
+
+                    QuoridorAction PartAction = ActionList.First();
+                    PartAction = AlphaBetaPruning(ChessBoardStatus, ReversePlayer(NowPlayer), depth - 1, alpha, beta, ref alphabuff);
+                    #region 恢复棋盘状态
+                    for (int i = 0; i < 7; i++)
+                    {
+                        for (int j = 0; j < 7; j++)
+                        {
+                            ChessBoardStatus.ChessBoardAll[i, j].IfLeftBoard = ChessBoardBuff.ChessBoardAll[i, j].IfLeftBoard;
+                            ChessBoardStatus.ChessBoardAll[i, j].IfUpBoard = ChessBoardBuff.ChessBoardAll[i, j].IfUpBoard;
+                            ChessBoardStatus.ChessBoardAll[i, j].GridStatus = ChessBoardBuff.ChessBoardAll[i, j].GridStatus;
+                        }
+                    }
+                    ChessBoardStatus.Player1Location.X = ChessBoardBuff.Player1Location.X;
+                    ChessBoardStatus.Player1Location.Y = ChessBoardBuff.Player1Location.Y;
+                    ChessBoardStatus.Player2Location.X = ChessBoardBuff.Player2Location.X;
+                    ChessBoardStatus.Player2Location.Y = ChessBoardBuff.Player2Location.Y;
+                    #endregion
+
+                    if (alphabuff > alpha)
+                    { 
+                        alpha = alphabuff;
+                        BestAction = PartAction;
+                    }
+
+                    if (beta <= alpha)
+                        break;
+
+                }
+
+                Player_Now = PlayerSave;
+                return BestAction;
+            }
+            else
+            {
+                ///暂存一些量以便恢复
+                Form1.EnumNowPlayer PlayerSave = Player_Now;
+                Player_Now = NowPlayer;
+
+                CreateActionList();
+                QuoridorAction BestAction = ActionList.First();
+
+                foreach (QuoridorAction Action in ActionList)
+                {
+                    #region 保存棋盘状态
+                    ChessBoard ChessBoardBuff = new ChessBoard();
+                    for (int i = 0; i < 7; i++)
+                    {
+                        for (int j = 0; j < 7; j++)
+                        {
+                            ChessBoardBuff.ChessBoardAll[i, j].IfLeftBoard = ChessBoardStatus.ChessBoardAll[i, j].IfLeftBoard;
+                            ChessBoardBuff.ChessBoardAll[i, j].IfUpBoard = ChessBoardStatus.ChessBoardAll[i, j].IfUpBoard;
+                            ChessBoardBuff.ChessBoardAll[i, j].GridStatus = ChessBoardStatus.ChessBoardAll[i, j].GridStatus;
+                        }
+                    }
+                    ChessBoardBuff.Player1Location.X = ChessBoardStatus.Player1Location.X;
+                    ChessBoardBuff.Player1Location.Y = ChessBoardStatus.Player1Location.Y;
+                    ChessBoardBuff.Player2Location.X = ChessBoardStatus.Player2Location.X;
+                    ChessBoardBuff.Player2Location.Y = ChessBoardStatus.Player2Location.Y;
+                    #endregion
+                    #region 模拟落子
+                    string Hint = ChessBoardStatus.Action(Action.ActionPoint.X, Action.ActionPoint.Y, Action.PlayerAction);
+                    try
+                    {
+                        if (Hint != "OK")
+                        {
+                            Exception e = new Exception();
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        throw;
+                    }
+                    #endregion
+                    double betabuff = 0;
+
+                    QuoridorAction PartAction = ActionList.First();
+
+                    PartAction = AlphaBetaPruning(ChessBoardStatus, ReversePlayer(NowPlayer), depth - 1, alpha, beta, ref betabuff);
+                    #region 恢复棋盘状态
+                    for (int i = 0; i < 7; i++)
+                    {
+                        for (int j = 0; j < 7; j++)
+                        {
+                            ChessBoardStatus.ChessBoardAll[i, j].IfLeftBoard = ChessBoardBuff.ChessBoardAll[i, j].IfLeftBoard;
+                            ChessBoardStatus.ChessBoardAll[i, j].IfUpBoard = ChessBoardBuff.ChessBoardAll[i, j].IfUpBoard;
+                            ChessBoardStatus.ChessBoardAll[i, j].GridStatus = ChessBoardBuff.ChessBoardAll[i, j].GridStatus;
+                        }
+                    }
+                    ChessBoardStatus.Player1Location.X = ChessBoardBuff.Player1Location.X;
+                    ChessBoardStatus.Player1Location.Y = ChessBoardBuff.Player1Location.Y;
+                    ChessBoardStatus.Player2Location.X = ChessBoardBuff.Player2Location.X;
+                    ChessBoardStatus.Player2Location.Y = ChessBoardBuff.Player2Location.Y;
+                    #endregion
+                    if (betabuff < beta)
+                    { 
+                        beta = betabuff;
+                        BestAction = PartAction;
+                    }
+
+                    if (beta <= alpha)
+                        break;
+
+                }
+                Player_Now = PlayerSave;
+                return BestAction; 
+            }
         }
     }
 

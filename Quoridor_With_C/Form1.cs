@@ -468,7 +468,9 @@ namespace Quoridor_With_C
             #region AI落子
             if (GameMode == GameModeStatus.SinglePlay)
             {
-                QuoridorAction AIAction = NowQuoridor.AIAction_Greedy(EnumNowPlayer.Player2);
+                double buff = 0;
+                QuoridorAction AIAction = NowQuoridor.AlphaBetaPruning(NowQuoridor.ThisChessBoard, EnumNowPlayer.Player2, 2, -10000, 10000, ref buff);
+                //QuoridorAction AIAction = NowQuoridor.AIAction_Greedy(EnumNowPlayer.Player2);
                 Hint = NowQuoridor.ThisChessBoard.Action(AIAction.ActionPoint.X, AIAction.ActionPoint.Y, AIAction.PlayerAction);
                 PlayerNowAction = AIAction.PlayerAction;
                 if (Hint != "OK")
