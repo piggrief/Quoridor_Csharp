@@ -366,6 +366,7 @@ namespace Quoridor_With_C
 
             # endregion
 
+            #region 玩家落子
             if (!(row >= 0 && row <= 6 && col >= 0 && col <= 6))
             {
                 Hint = "点击越界！";
@@ -462,6 +463,7 @@ namespace Quoridor_With_C
                 PlayerNowAction = NowAction.Action_Move_Player2;
             }
             NowQuoridor.Player_Now = NowPlayer;
+            #endregion
 
             #region AI落子
             if (GameMode == GameModeStatus.SinglePlay)
@@ -631,7 +633,9 @@ namespace Quoridor_With_C
             }
 
         }
-
+        /// <summary>
+        /// 用于步步为营AI的一些算法测试
+        /// </summary>
         private void TestBTN_Click(object sender, EventArgs e)
         {
             //int rowbuff = NowQuoridor.ThisChessBoard.Player1Location.X;
@@ -662,6 +666,9 @@ namespace Quoridor_With_C
             NowQuoridor.TestEvaluation();
         }
         bool IfShowFollow = false;
+        /// <summary>
+        /// 用于在Form窗体上实现挡板跟随效果
+        /// </summary>
         private void Form1_MouseMove(object sender, MouseEventArgs e)
         {
             if (IfShowFollow)
@@ -682,14 +689,18 @@ namespace Quoridor_With_C
 
         }
 
-        int delaycount = 0;
+        int delaycount = 0;//用于挡板跟随延迟计数
+        const int DelayTime_Follow = 3;//挡板跟随延迟总数,可以控制挡板跟随效果的延迟
+        /// <summary>
+        /// 用于挡板跟随
+        /// </summary>
         private void ChessBoardPB_MouseMove(object sender, MouseEventArgs e)
         {
             if (IfShowFollow)
             {
                 delaycount++;
 
-                if (delaycount >= 3)
+                if (delaycount >= DelayTime_Follow)
                 {
                     delaycount = 0;
                     int L_X = e.Location.X;
@@ -749,7 +760,10 @@ namespace Quoridor_With_C
             }
         }
         bool IsShowQueenFlag = true;
-        
+       /// <summary>
+       /// 主要用于测试八皇后寻优
+       /// </summary>
+ 
         private void Test2BTN_Click(object sender, EventArgs e)
         {
             ThisQueenSolve.ChessLocationList = QueenChessLocation;
@@ -763,7 +777,6 @@ namespace Quoridor_With_C
             if (IsShowQueenFlag)
             {
                 ShowQueenLocation(ThisQueenSolve.QueenLocationList, QueenList);
-                ///100000 0.99 1000 0 SA
                 Queen.QueenSolve.SelectedQueenResultNum = 92;
                 ///1000 0.96 64
                 //ThisQueenSolve.InitSA(1000, 0.96, 64, 0, SimulateAnneal.Annealing.SAMode.SA);
@@ -773,6 +786,7 @@ namespace Quoridor_With_C
                 List<int> MoveSequence = new List<int>();
                 double disall = 0;
 
+                #region 算法测试
                 System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
                 stopwatch.Start(); //  开始监视代码运行时间
                 //  需要测试的代码 
@@ -798,6 +812,8 @@ namespace Quoridor_With_C
                 Console.WriteLine("总路径长度为" + disall.ToString());
                 Console.WriteLine("用时(s) ：" + seconds.ToString() + "秒");
                 Console.WriteLine("用时(ms)：" + milliseconds.ToString() + "毫秒");
+
+                #endregion
             }
             else
             {
