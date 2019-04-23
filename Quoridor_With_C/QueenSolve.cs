@@ -282,8 +282,8 @@ namespace Queen
                 l = 0;
                 while (l <= ThisSA.L)//内循环，迭代终止条件
                 {
-                    Last_Sequence = New_Sequence;///随机搜索策略
-                    //Last_Sequence = PartBest_Sequence;//改进搜索策略
+                    //Last_Sequence = New_Sequence;///随机搜索策略
+                    Last_Sequence = PartBest_Sequence;//改进搜索策略
                     result_distance_pre = result_distance_new;
                     ///产生新的随机解
                     New_Sequence = new List<int>();
