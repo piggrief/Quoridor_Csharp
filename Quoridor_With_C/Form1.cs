@@ -22,7 +22,7 @@ namespace Quoridor_With_C
         [DllImport("kernel32.dll")]
         public static extern Boolean FreeConsole(); 
 
-        Graphics Gr;
+        public static Graphics Gr;
         Graphics Gr_Chess1;
 
         Bitmap bmp = new Bitmap(1000, 900);
@@ -469,7 +469,7 @@ namespace Quoridor_With_C
             if (GameMode == GameModeStatus.SinglePlay)
             {
                 double buff = 0;
-                QuoridorAction AIAction = NowQuoridor.AlphaBetaPruning(NowQuoridor.ThisChessBoard, EnumNowPlayer.Player2, 2, -10000, 10000, ref buff);
+                QuoridorAction AIAction = NowQuoridor.AlphaBetaPruning(NowQuoridor.ThisChessBoard, EnumNowPlayer.Player2, 6, -10000, 10000, ref buff);
                 //QuoridorAction AIAction = NowQuoridor.AIAction_Greedy(EnumNowPlayer.Player2);
                 Hint = NowQuoridor.ThisChessBoard.Action(AIAction.ActionPoint.X, AIAction.ActionPoint.Y, AIAction.PlayerAction);
                 PlayerNowAction = AIAction.PlayerAction;

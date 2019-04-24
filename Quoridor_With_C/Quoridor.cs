@@ -71,6 +71,8 @@ namespace Quoridor
         /// <param name="Gr"></param>
         public void DrawNowChessBoard(ref Graphics Gr, CCWin.SkinControl.SkinPictureBox ChessWhite, CCWin.SkinControl.SkinPictureBox ChessBlack)
         {
+            Gr.Clear(Color.Transparent);
+            Gr.DrawImage(Resource1.qipan, 0, 0, Resource1.qipan2019.Width, Resource1.qipan2019.Height);
             Form1._FormDraw FD = new Form1._FormDraw();
             for (int i = 0; i < 7; i++)
             {
@@ -1651,6 +1653,13 @@ namespace Quoridor
 
                 CreateActionList();
                 ActionListEvaluation();
+
+                if (ActionList.Count <= 0)
+                {
+                    Player_Now = PlayerSave;
+                    alphabetabuff = 999999;
+                    return new QuoridorAction(Form1.NowAction.Action_Wait,new Point(-1,-1));
+                }
                 #region 贪婪思想，找最好的一步
                 QuoridorAction BestAction = ActionList.First();
                 double MinScore = 99;
@@ -1674,6 +1683,17 @@ namespace Quoridor
                 Player_Now = NowPlayer;
 
                 CreateActionList();
+                if (ActionList.Count <= 0)
+                {
+                    Player_Now = PlayerSave;
+                    alphabetabuff = 999999;
+                    #region 输出当前棋盘状态
+                    ThisChessBoard.DrawNowChessBoard(ref Form1.Gr, Form1.ChessWhitePB, Form1.ChessBlackPB);
+                    Form1.ChessBoardPB.Refresh();
+                    #endregion
+
+                    return new QuoridorAction(Form1.NowAction.Action_Wait, new Point(-1, -1));
+                }
                 QuoridorAction BestAction = ActionList.First();
 
                 foreach (QuoridorAction Action in ActionList)
@@ -1708,9 +1728,14 @@ namespace Quoridor
                         throw;
                     }
                     #endregion
+                    //#region 输出当前棋盘状态
+                    //ThisChessBoard.DrawNowChessBoard(ref Form1.Gr, Form1.ChessWhitePB, Form1.ChessBlackPB);
+                    //Form1.ChessBoardPB.Refresh();
+                    //#endregion
+
                     double alphabuff = 0;
 
-                    QuoridorAction PartAction = ActionList.First();
+                    QuoridorAction PartAction = Action;
                     PartAction = AlphaBetaPruning(ChessBoardStatus, ReversePlayer(NowPlayer), depth - 1, alpha, beta, ref alphabuff);
                     #region 恢复棋盘状态
                     for (int i = 0; i < 7; i++)
@@ -1728,10 +1753,15 @@ namespace Quoridor
                     ChessBoardStatus.Player2Location.Y = ChessBoardBuff.Player2Location.Y;
                     #endregion
 
+                    if (depth == 2)
+                    {
+                        int a = 0;
+                    }
+
                     if (alphabuff > alpha)
                     { 
                         alpha = alphabuff;
-                        BestAction = PartAction;
+                        BestAction = Action;
                     }
 
                     if (beta <= alpha)
@@ -1749,6 +1779,17 @@ namespace Quoridor
                 Player_Now = NowPlayer;
 
                 CreateActionList();
+                if (ActionList.Count <= 0)
+                {
+                    Player_Now = PlayerSave;
+                    alphabetabuff = 999999;
+                    #region 输出当前棋盘状态
+                    ThisChessBoard.DrawNowChessBoard(ref Form1.Gr, Form1.ChessWhitePB, Form1.ChessBlackPB);
+                    Form1.ChessBoardPB.Refresh();
+                    #endregion
+
+                    return new QuoridorAction(Form1.NowAction.Action_Wait, new Point(-1, -1));
+                }
                 QuoridorAction BestAction = ActionList.First();
 
                 foreach (QuoridorAction Action in ActionList)
@@ -1782,10 +1823,16 @@ namespace Quoridor
                     {
                         throw;
                     }
+
                     #endregion
+                    //#region 输出当前棋盘状态
+                    //ThisChessBoard.DrawNowChessBoard(ref Form1.Gr, Form1.ChessWhitePB, Form1.ChessBlackPB);
+                    //Form1.ChessBoardPB.Refresh();
+                    //#endregion
+
                     double betabuff = 0;
 
-                    QuoridorAction PartAction = ActionList.First();
+                    QuoridorAction PartAction = Action;
 
                     PartAction = AlphaBetaPruning(ChessBoardStatus, ReversePlayer(NowPlayer), depth - 1, alpha, beta, ref betabuff);
                     #region 恢复棋盘状态
@@ -1806,7 +1853,7 @@ namespace Quoridor
                     if (betabuff < beta)
                     { 
                         beta = betabuff;
-                        BestAction = PartAction;
+                        BestAction = Action;
                     }
 
                     if (beta <= alpha)
