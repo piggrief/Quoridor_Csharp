@@ -473,7 +473,7 @@ namespace Quoridor_With_C
                 Root.NodePlayer = EnumNowPlayer.Player1;
                 count_AIAction++;
                 Console.WriteLine(count_AIAction.ToString() + ":");
-                GameTreeNode.CreateGameTree(Root, NowQuoridor.ThisChessBoard, 5, false);//可以改变最大深度来提高算法强度,一定要是奇数
+                GameTreeNode.CreateGameTree(Root, NowQuoridor.ThisChessBoard, 3, false);//可以改变最大深度来提高算法强度,一定要是奇数
                 Console.WriteLine("*************");
                 
                 //NowQuoridor.AlphaBetaPruningInit(NowQuoridor.ThisChessBoard.ChessBoardAll, EnumNowPlayer.Player2);

@@ -2300,7 +2300,7 @@ namespace Quoridor
                         {
                             ThisNode.ActionLocation = ThisNode.SonNode.Last().ActionLocation;
                             ThisNode.NodeAction = ThisNode.SonNode.Last().NodeAction;
-                            ThisNode.NodePlayer = ThisNode.SonNode.Last().NodePlayer;
+                            //ThisNode.NodePlayer = ThisNode.SonNode.Last().NodePlayer;
                         }
                     }
 
