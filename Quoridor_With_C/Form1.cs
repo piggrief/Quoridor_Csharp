@@ -469,11 +469,17 @@ namespace Quoridor_With_C
             if (GameMode == GameModeStatus.SinglePlay)
             {
                 double buff = 0;
-                NowQuoridor.AlphaBetaPruningInit(NowQuoridor.ThisChessBoard.ChessBoardAll, EnumNowPlayer.Player2);
-                QuoridorAction AIAction = NowQuoridor.AlphaBetaPruning(NowQuoridor.ThisChessBoard, EnumNowPlayer.Player2, 4, -10000, 10000, ref buff);
+
+                GameTreeNode Root = new GameTreeNode();
+                Root.NodePlayer = EnumNowPlayer.Player1;
+                GameTreeNode.CreateGameTree(Root, NowQuoridor.ThisChessBoard, 3);//可以改变最大深度来提高算法强度,一定要是奇数
+
+                
+                //NowQuoridor.AlphaBetaPruningInit(NowQuoridor.ThisChessBoard.ChessBoardAll, EnumNowPlayer.Player2);
+                //QuoridorAction AIAction = NowQuoridor.AlphaBetaPruning(NowQuoridor.ThisChessBoard, EnumNowPlayer.Player2, 4, -10000, 10000, ref buff);
                 //QuoridorAction AIAction = NowQuoridor.AIAction_Greedy(EnumNowPlayer.Player2);
-                Hint = NowQuoridor.QuoridorRule.Action(ref NowQuoridor.ThisChessBoard, AIAction.ActionPoint.X, AIAction.ActionPoint.Y, AIAction.PlayerAction);
-                PlayerNowAction = AIAction.PlayerAction;
+                Hint = NowQuoridor.QuoridorRule.Action(ref NowQuoridor.ThisChessBoard, Root.ActionLocation.X, Root.ActionLocation.Y, Root.NodeAction);
+                PlayerNowAction = Root.NodeAction;
                 if (Hint != "OK")
                 {
                     MessageBox.Show(Hint);
@@ -642,7 +648,7 @@ namespace Quoridor_With_C
         private void TestBTN_Click(object sender, EventArgs e)
         {
             GameTreeNode Root = new GameTreeNode();
-            Root.NodePlayer = EnumNowPlayer.Player2;
+            Root.NodePlayer = EnumNowPlayer.Player1;
             GameTreeNode.CreateGameTree(Root, NowQuoridor.ThisChessBoard, 1);
         }
         bool IfShowFollow = false;
