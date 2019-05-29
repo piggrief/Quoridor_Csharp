@@ -1668,7 +1668,133 @@ namespace Quoridor
         /// <summary>
         /// AB剪枝博弈树根节点
         /// </summary>
-        public GameTreeNode RootNode = new GameTreeNode();
+        //public double AlphaBetaPruningForGameNode(ChessBoard ChessBoardStatus, GameTreeNode NowNode)
+        //{
+        //    double alphabetabuff = 0;
+        //    ///暂存一些量以便恢复
+        //    Player_Now = NowNode.NodePlayer;
+        //    Form1.EnumNowPlayer PlayerSave = Player_Now;
+        //    List<QuoridorAction> QABuff = ActionList;
+        //    QuoridorAction BestAction = new QuoridorAction(Form1.NowAction.Action_Wait, new Point(-1, -1));
+
+        //    if (NowNode.depth == 0)
+        //    {
+        //        QABuff = CreateActionList();
+        //        ActionListEvaluation(ref QABuff);
+
+        //        if (ActionList.Count <= 0)
+        //        {
+        //            Player_Now = PlayerSave;
+        //            alphabetabuff = 999999;
+        //            NowNode.CreateNewSon(new GameTreeNode(Form1.NowAction.Action_Wait, new Point(-1, -1)
+        //                , ReversePlayer(NowNode.NodePlayer), -1, -alphabetabuff, alphabetabuff));
+        //            return alphabetabuff;
+        //        }
+        //        #region 贪婪思想，找最好的一步
+        //        BestAction = QABuff.First();
+        //        double MaxScore = -100;
+        //        foreach (QuoridorAction AL in QABuff)
+        //        {
+        //            if (MaxScore < 100 - AL.WholeScore)
+        //            {
+        //                BestAction = AL;
+        //                MaxScore = 100 - AL.WholeScore;
+        //            }
+        //        }
+        //        #endregion
+        //        Player_Now = PlayerSave;
+        //        alphabetabuff = MaxScore;
+
+        //        NowNode.CreateNewSon(new GameTreeNode(BestAction.PlayerAction, BestAction.ActionPoint
+        //        , ReversePlayer(NowNode.NodePlayer), -1, -alphabetabuff, alphabetabuff));
+
+        //        return alphabetabuff;
+        //    }
+        //    PlayerSave = Player_Now;
+        //    Player_Now = NowNode.NodePlayer;
+
+        //    QABuff = ActionList;
+
+        //    QABuff = CreateActionList();
+
+        //    BestAction = QABuff.First();
+
+        //    foreach (QuoridorAction Action in QABuff)
+        //    {
+        //        #region 保存棋盘状态
+        //        ChessBoard ChessBoardBuff = new ChessBoard();
+        //        for (int i = 0; i < 7; i++)
+        //        {
+        //            for (int j = 0; j < 7; j++)
+        //            {
+        //                ChessBoardBuff.ChessBoardAll[i, j].IfLeftBoard = ChessBoardStatus.ChessBoardAll[i, j].IfLeftBoard;
+        //                ChessBoardBuff.ChessBoardAll[i, j].IfUpBoard = ChessBoardStatus.ChessBoardAll[i, j].IfUpBoard;
+        //                ChessBoardBuff.ChessBoardAll[i, j].GridStatus = ChessBoardStatus.ChessBoardAll[i, j].GridStatus;
+        //            }
+        //        }
+        //        ChessBoardBuff.Player1Location.X = ChessBoardStatus.Player1Location.X;
+        //        ChessBoardBuff.Player1Location.Y = ChessBoardStatus.Player1Location.Y;
+        //        ChessBoardBuff.Player2Location.X = ChessBoardStatus.Player2Location.X;
+        //        ChessBoardBuff.Player2Location.Y = ChessBoardStatus.Player2Location.Y;
+        //        #endregion
+        //        #region 模拟落子
+        //        string Hint = QuoridorRule.Action(ref ChessBoardStatus, Action.ActionPoint.X, Action.ActionPoint.Y, Action.PlayerAction);
+        //        try
+        //        {
+        //            if (Hint != "OK")
+        //            {
+        //                Exception e = new Exception();
+        //            }
+        //        }
+        //        catch (Exception)
+        //        {
+        //            throw;
+        //        }
+        //        #endregion
+        //        //#region 输出当前棋盘状态
+        //        //ThisChessBoard.DrawNowChessBoard(ref Form1.Gr, Form1.ChessWhitePB, Form1.ChessBlackPB);
+        //        //Form1.ChessBoardPB.Refresh();
+        //        //#endregion
+
+        //        double alphabuff = 0;
+
+        //        QuoridorAction PartAction = Action;
+        //        NowNode.CreateNewSon(new GameTreeNode(PartAction.PlayerAction, PartAction.ActionPoint
+        //            , ReversePlayer(NowNode.NodePlayer), NowNode.depth - 1, -alphabetabuff, alphabetabuff));
+        //        alphabuff = AlphaBetaPruningForGameNode(ChessBoardStatus, NowNode.SonNode.Last());
+        //        #region 恢复棋盘状态
+        //        for (int i = 0; i < 7; i++)
+        //        {
+        //            for (int j = 0; j < 7; j++)
+        //            {
+        //                ChessBoardStatus.ChessBoardAll[i, j].IfLeftBoard = ChessBoardBuff.ChessBoardAll[i, j].IfLeftBoard;
+        //                ChessBoardStatus.ChessBoardAll[i, j].IfUpBoard = ChessBoardBuff.ChessBoardAll[i, j].IfUpBoard;
+        //                ChessBoardStatus.ChessBoardAll[i, j].GridStatus = ChessBoardBuff.ChessBoardAll[i, j].GridStatus;
+        //            }
+        //        }
+        //        ChessBoardStatus.Player1Location.X = ChessBoardBuff.Player1Location.X;
+        //        ChessBoardStatus.Player1Location.Y = ChessBoardBuff.Player1Location.Y;
+        //        ChessBoardStatus.Player2Location.X = ChessBoardBuff.Player2Location.X;
+        //        ChessBoardStatus.Player2Location.Y = ChessBoardBuff.Player2Location.Y;
+        //        #endregion
+
+        //        if (NowNode.NodePlayer == PlayerBuff)
+        //        {
+        //            if (alphabuff > NowNode.alpha)
+        //            {
+        //                NowNode.alpha = alphabuff;
+        //                BestAction = Action;
+        //            }
+
+        //            if (NowNode.beta <= NowNode.alpha)
+        //                break;
+        //        }
+
+        //    }
+
+        //    Player_Now = PlayerSave;
+        //    return -90909;
+        //}
         public QuoridorAction AlphaBetaPruning(ChessBoard ChessBoardStatus, Form1.EnumNowPlayer NowPlayer, int depth, double alpha, double beta, ref double alphabetabuff)
         {
             //#region 输出当前棋盘状态
@@ -1723,17 +1849,7 @@ namespace Quoridor
                 List<QuoridorAction> QABuff = ActionList;
 
                 QABuff = CreateActionList();
-                //if (ActionList.Count <= 0)
-                //{
-                //    Player_Now = PlayerSave;
-                //    alphabetabuff = 999999;
-                //    #region 输出当前棋盘状态
-                //    ThisChessBoard.DrawNowChessBoard(ref Form1.Gr, Form1.ChessWhitePB, Form1.ChessBlackPB);
-                //    Form1.ChessBoardPB.Refresh();
-                //    #endregion
 
-                //    return new QuoridorAction(Form1.NowAction.Action_Wait, new Point(-1, -1));
-                //}
                 QuoridorAction BestAction = QABuff.First();
 
                 foreach (QuoridorAction Action in QABuff)
@@ -1816,17 +1932,7 @@ namespace Quoridor
                 List<QuoridorAction> QABuff = ActionList;
 
                 QABuff = CreateActionList();
-                //if (QABuff.Count <= 0)
-                //{
-                //    Player_Now = PlayerSave;
-                //    alphabetabuff = 999999;
-                //    #region 输出当前棋盘状态
-                //    ThisChessBoard.DrawNowChessBoard(ref Form1.Gr, Form1.ChessWhitePB, Form1.ChessBlackPB);
-                //    Form1.ChessBoardPB.Refresh();
-                //    #endregion
 
-                //    return new QuoridorAction(Form1.NowAction.Action_Wait, new Point(-1, -1));
-                //}
                 QuoridorAction BestAction = QABuff.First();
 
                 foreach (QuoridorAction Action in QABuff)
@@ -1908,36 +2014,130 @@ namespace Quoridor
     /// </summary>
     public class GameTreeNode
     {
-        public Form1.NowAction NodeAction;
-        public Form1.EnumNowPlayer NodePlayer;
-        public List<GameTreeNode> SonNode = new List<GameTreeNode>();
+        public Form1.NowAction NodeAction;///当前节点的动作
+        public Form1.EnumNowPlayer NodePlayer;///当前节点的动作的执行玩家
+        public Point ActionLocation = new Point(-1, -1);///当前节点动作的执行位置
+        public List<GameTreeNode> SonNode = new List<GameTreeNode>();///子节点列表
 
-        public int depth = -1;
+        public int depth = -1;///该节点深度
 
-        public double alpha = -10000;
-        public double beta = 10000;
+        public double alpha = -10000;///该节点的alpha值
+        public double beta = 10000;///该节点的beta值
 
-        public GameTreeNode(Form1.NowAction Action_set, Form1.EnumNowPlayer Player_set, int depth_set, double alpha_set, double beta_set)
+        public static QuoridorAI NowQuoridor = new QuoridorAI();
+
+        /// <summary>
+        /// 构造函数,用来设定该博弈树节点的信息
+        /// </summary>
+        public GameTreeNode(Form1.NowAction Action_set, Point ActionLocation_set, Form1.EnumNowPlayer Player_set, int depth_set, double alpha_set, double beta_set, int DepthMax_set)
         {
             NodeAction = Action_set;
             NodePlayer = Player_set;
             depth = depth_set;
             alpha = alpha_set;
             beta = beta_set;
+            ActionLocation = ActionLocation_set;
+            DepthMax = DepthMax_set;
         }
-        public GameTreeNode()
-        { }
+        public GameTreeNode(GameTreeNode ThisNode)
+        {
+ 
+        }
+        /// <summary>
+        /// 给该节点添加新的子节点
+        /// </summary>
+        /// <param name="NewNode">待添加的子节点</param>
         public void CreateNewSon(GameTreeNode NewNode)
         {
             SonNode.Add(NewNode);
+        }
+        public int DepthMax = 1000;
+        public void ExpandNode(ChessBoard ThisChessBoard, GameTreeNode ThisNode)
+        {
+            if (ThisNode.depth > DepthMax)
+            {
+                ThisNode.CreateNewSon(new GameTreeNode(Form1.NowAction.Action_Wait, new Point(-1, -1)
+                    , ThisNode.NodePlayer, -1, -9999, 9999, DepthMax));
+                return;
+            }
+            ///暂存一些量以便恢复
+            Form1.EnumNowPlayer PlayerSave = ThisNode.NodePlayer;
+            NowQuoridor.Player_Now = NowQuoridor.ReversePlayer(ThisNode.NodePlayer);
+
+            List<QuoridorAction> QABuff = NowQuoridor.ActionList;
+
+            QABuff = NowQuoridor.CreateActionList();
+
+            foreach (QuoridorAction QA in QABuff)
+            {
+                #region 保存棋盘状态
+                ChessBoard ChessBoardBuff = new ChessBoard();
+                for (int i = 0; i < 7; i++)
+                {
+                    for (int j = 0; j < 7; j++)
+                    {
+                        ChessBoardBuff.ChessBoardAll[i, j].IfLeftBoard = ThisChessBoard.ChessBoardAll[i, j].IfLeftBoard;
+                        ChessBoardBuff.ChessBoardAll[i, j].IfUpBoard = ThisChessBoard.ChessBoardAll[i, j].IfUpBoard;
+                        ChessBoardBuff.ChessBoardAll[i, j].GridStatus = ThisChessBoard.ChessBoardAll[i, j].GridStatus;
+                    }
+                }
+                ChessBoardBuff.Player1Location.X = ThisChessBoard.Player1Location.X;
+                ChessBoardBuff.Player1Location.Y = ThisChessBoard.Player1Location.Y;
+                ChessBoardBuff.Player2Location.X = ThisChessBoard.Player2Location.X;
+                ChessBoardBuff.Player2Location.Y = ThisChessBoard.Player2Location.Y;
+                #endregion
+                #region 模拟落子
+                string Hint = NowQuoridor.QuoridorRule.Action(ref ThisChessBoard, QA.ActionPoint.X, QA.ActionPoint.Y, QA.PlayerAction);
+                try
+                {
+                    if (Hint != "OK")
+                    {
+                        Exception e = new Exception();
+                    }
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+                #endregion
+
+                CreateNewSon(new GameTreeNode(QA.PlayerAction, QA.ActionPoint
+                    , ThisNode.NodePlayer, ThisNode.depth + 1, ThisNode.alpha, ThisNode.beta, DepthMax));
+
+                ExpandNode(ThisChessBoard, SonNode.Last());
+
+                #region 恢复棋盘状态
+                for (int i = 0; i < 7; i++)
+                {
+                    for (int j = 0; j < 7; j++)
+                    {
+                        ThisChessBoard.ChessBoardAll[i, j].IfLeftBoard = ChessBoardBuff.ChessBoardAll[i, j].IfLeftBoard;
+                        ThisChessBoard.ChessBoardAll[i, j].IfUpBoard = ChessBoardBuff.ChessBoardAll[i, j].IfUpBoard;
+                        ThisChessBoard.ChessBoardAll[i, j].GridStatus = ChessBoardBuff.ChessBoardAll[i, j].GridStatus;
+                    }
+                }
+                ThisChessBoard.Player1Location.X = ChessBoardBuff.Player1Location.X;
+                ThisChessBoard.Player1Location.Y = ChessBoardBuff.Player1Location.Y;
+                ThisChessBoard.Player2Location.X = ChessBoardBuff.Player2Location.X;
+                ThisChessBoard.Player2Location.Y = ChessBoardBuff.Player2Location.Y;
+                #endregion
+            } 
+        }
+        public static void CreateGameTree(GameTreeNode RootNode, ChessBoard ChessBoard_Init, int DepthMax_Set)
+        {
+            RootNode.DepthMax = DepthMax_Set;
+
+            RootNode.ExpandNode(ChessBoard_Init, RootNode);
+
+            PrintGameTree(RootNode);
         }
         /// <summary>
         /// 控制台输出博弈树调试日志（向下遍历）
         /// </summary>
         /// <param name="NowNode"></param>
-        public void PrintGameTree(GameTreeNode NowNode)
+        public static void PrintGameTree(GameTreeNode NowNode)
         {
-            foreach (GameTreeNode Son in SonNode)
+            foreach (GameTreeNode Son in NowNode.SonNode)
             {
                 if (Son.depth != -1)
                 {
@@ -1948,12 +2148,12 @@ namespace Quoridor
                     break;   
                 }
                 string LogStr = "";
-                LogStr += ("第" + depth.ToString() + "层 ");
-                LogStr += NodePlayer.ToString();
-                LogStr += (" a = " + alpha.ToString());
-                LogStr += (",b = " + beta.ToString());
+                LogStr += ("第" + NowNode.depth.ToString() + "层 ");
+                LogStr += NowNode.NodePlayer.ToString();
+                LogStr += (" a = " + NowNode.alpha.ToString());
+                LogStr += (",b = " + NowNode.beta.ToString());
                 LogStr += "该节点动作：";
-                LogStr += NodeAction.ToString();
+                LogStr += NowNode.NodeAction.ToString();
                 Console.WriteLine(LogStr);
             }
         }

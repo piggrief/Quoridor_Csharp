@@ -641,32 +641,7 @@ namespace Quoridor_With_C
         /// </summary>
         private void TestBTN_Click(object sender, EventArgs e)
         {
-            //int rowbuff = NowQuoridor.ThisChessBoard.Player1Location.X;
-            //int colbuff = NowQuoridor.ThisChessBoard.Player1Location.Y;
-            //int player1dis = NowQuoridor.AstarRestart(EnumNowPlayer.Player1, rowbuff, colbuff);
-            //Console.WriteLine("玩家1最短路径长度：");
-            //Console.WriteLine(player1dis.ToString());
-
-            //rowbuff = NowQuoridor.ThisChessBoard.Player2Location.X;
-            //colbuff = NowQuoridor.ThisChessBoard.Player2Location.Y;
-            //int player2dis = NowQuoridor.AstarRestart(EnumNowPlayer.Player2, rowbuff, colbuff);
-            //Console.WriteLine("玩家2最短路径长度：");
-            //Console.WriteLine(player2dis.ToString());
-
-            //List<Point> Roadbuff = NowQuoridor.Player1MinRoad;
-            //Console.WriteLine("Player1最短路径：");
-   
-            //for (int i = Roadbuff.Count - 1; i >= 0; i--)
-            //{
-            //    Console.WriteLine(Roadbuff[i].X.ToString()+ ", " +Roadbuff[i].Y.ToString());
-            //}
-            //Roadbuff = NowQuoridor.Player2MinRoad;
-            //Console.WriteLine("Player2最短路径：");
-            //for (int i = Roadbuff.Count - 1; i >= 0; i--)
-            //{
-            //    Console.WriteLine(Roadbuff[i].X.ToString() + ", " + Roadbuff[i].Y.ToString());
-            //}
-            NowQuoridor.TestEvaluation();
+            
         }
         bool IfShowFollow = false;
         /// <summary>
