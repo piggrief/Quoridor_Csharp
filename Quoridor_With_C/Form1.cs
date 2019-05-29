@@ -468,8 +468,6 @@ namespace Quoridor_With_C
             #region AI落子
             if (GameMode == GameModeStatus.SinglePlay)
             {
-                double buff = 0;
-
                 GameTreeNode Root = new GameTreeNode();
                 Root.NodePlayer = EnumNowPlayer.Player1;
                 GameTreeNode.CreateGameTree(Root, NowQuoridor.ThisChessBoard, 3);//可以改变最大深度来提高算法强度,一定要是奇数
