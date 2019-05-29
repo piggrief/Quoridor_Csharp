@@ -641,7 +641,9 @@ namespace Quoridor_With_C
         /// </summary>
         private void TestBTN_Click(object sender, EventArgs e)
         {
-            
+            GameTreeNode Root = new GameTreeNode();
+            Root.NodePlayer = EnumNowPlayer.Player2;
+            GameTreeNode.CreateGameTree(Root, NowQuoridor.ThisChessBoard, 1);
         }
         bool IfShowFollow = false;
         /// <summary>

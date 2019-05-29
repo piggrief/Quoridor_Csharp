@@ -1660,7 +1660,7 @@ namespace Quoridor
         }
         public Form1.EnumNowPlayer ReversePlayer(Form1.EnumNowPlayer NowPlayer)
         {
-            if (Player_Now == Form1.EnumNowPlayer.Player1)
+            if (NowPlayer == Form1.EnumNowPlayer.Player1)
                 return Form1.EnumNowPlayer.Player2;
             else
                 return Form1.EnumNowPlayer.Player1;
@@ -2019,17 +2019,17 @@ namespace Quoridor
         public Point ActionLocation = new Point(-1, -1);///当前节点动作的执行位置
         public List<GameTreeNode> SonNode = new List<GameTreeNode>();///子节点列表
 
-        public int depth = -1;///该节点深度
+        public int depth = 0;///该节点深度
 
         public double alpha = -10000;///该节点的alpha值
         public double beta = 10000;///该节点的beta值
 
         public static QuoridorAI NowQuoridor = new QuoridorAI();
-
+        public GameTreeNode() { }
         /// <summary>
         /// 构造函数,用来设定该博弈树节点的信息
         /// </summary>
-        public GameTreeNode(Form1.NowAction Action_set, Point ActionLocation_set, Form1.EnumNowPlayer Player_set, int depth_set, double alpha_set, double beta_set, int DepthMax_set)
+        public GameTreeNode(Form1.NowAction Action_set, Point ActionLocation_set, Form1.EnumNowPlayer Player_set, int depth_set, double alpha_set, double beta_set)
         {
             NodeAction = Action_set;
             NodePlayer = Player_set;
@@ -2037,7 +2037,6 @@ namespace Quoridor
             alpha = alpha_set;
             beta = beta_set;
             ActionLocation = ActionLocation_set;
-            DepthMax = DepthMax_set;
         }
         public GameTreeNode(GameTreeNode ThisNode)
         {
@@ -2047,22 +2046,30 @@ namespace Quoridor
         /// 给该节点添加新的子节点
         /// </summary>
         /// <param name="NewNode">待添加的子节点</param>
-        public void CreateNewSon(GameTreeNode NewNode)
+        public void CreateNewSon(GameTreeNode FatherNode, GameTreeNode NewNode)
         {
-            SonNode.Add(NewNode);
+            try
+            {
+                FatherNode.SonNode.Add(NewNode);
+            }
+            catch (Exception)
+            {
+                
+                throw;
+            }
         }
-        public int DepthMax = 1000;
+        public static int DepthMax = 1000;
         public void ExpandNode(ChessBoard ThisChessBoard, GameTreeNode ThisNode)
         {
             if (ThisNode.depth > DepthMax)
             {
-                ThisNode.CreateNewSon(new GameTreeNode(Form1.NowAction.Action_Wait, new Point(-1, -1)
-                    , ThisNode.NodePlayer, -1, -9999, 9999, DepthMax));
+                //ThisNode.CreateNewSon(ThisNode, new GameTreeNode(Form1.NowAction.Action_Wait, new Point(-1, -1)
+                //    , ThisNode.NodePlayer, -1, -9999, 9999));
                 return;
             }
             ///暂存一些量以便恢复
-            Form1.EnumNowPlayer PlayerSave = ThisNode.NodePlayer;
-            NowQuoridor.Player_Now = NowQuoridor.ReversePlayer(ThisNode.NodePlayer);
+            Form1.EnumNowPlayer PlayerSave = NowQuoridor.ReversePlayer(ThisNode.NodePlayer);
+            NowQuoridor.Player_Now = PlayerSave;
 
             List<QuoridorAction> QABuff = NowQuoridor.ActionList;
 
@@ -2101,10 +2108,20 @@ namespace Quoridor
                 }
                 #endregion
 
-                CreateNewSon(new GameTreeNode(QA.PlayerAction, QA.ActionPoint
-                    , ThisNode.NodePlayer, ThisNode.depth + 1, ThisNode.alpha, ThisNode.beta, DepthMax));
+                if (ThisNode.depth == 0)
+                {
+                    int b = 0;
+                    b = b + 1;
+                }
+                if (ThisNode.depth == 1)
+                {
+                    int a = 0;
+                    a = a + 1;
+                }
+                CreateNewSon(ThisNode, new GameTreeNode(QA.PlayerAction, QA.ActionPoint
+                    , NowQuoridor.ReversePlayer(ThisNode.NodePlayer), ThisNode.depth + 1, ThisNode.alpha, ThisNode.beta));
 
-                ExpandNode(ThisChessBoard, SonNode.Last());
+                ExpandNode(ThisChessBoard, ThisNode.SonNode.Last());
 
                 #region 恢复棋盘状态
                 for (int i = 0; i < 7; i++)
@@ -2125,7 +2142,7 @@ namespace Quoridor
         }
         public static void CreateGameTree(GameTreeNode RootNode, ChessBoard ChessBoard_Init, int DepthMax_Set)
         {
-            RootNode.DepthMax = DepthMax_Set;
+            DepthMax = DepthMax_Set;
 
             RootNode.ExpandNode(ChessBoard_Init, RootNode);
 
@@ -2137,24 +2154,34 @@ namespace Quoridor
         /// <param name="NowNode"></param>
         public static void PrintGameTree(GameTreeNode NowNode)
         {
+            if (NowNode.SonNode.Count <= 0)
+            {
+                Console.Write(("第" + NowNode.depth.ToString() + "层 "));
+                Console.Write(NowNode.NodePlayer.ToString());
+                Console.Write((" a = " + NowNode.alpha.ToString()));
+                Console.Write((",b = " + NowNode.beta.ToString()));
+                Console.Write("动作：");
+                Console.Write(NowNode.NodeAction.ToString());
+                Console.Write(("位置：" + NowNode.ActionLocation.ToString()));
+
+                Console.WriteLine();
+                return;
+            }
             foreach (GameTreeNode Son in NowNode.SonNode)
             {
-                if (Son.depth != -1)
-                {
-                    PrintGameTree(Son);
-                }
-                else
-                {
-                    break;   
-                }
-                string LogStr = "";
-                LogStr += ("第" + NowNode.depth.ToString() + "层 ");
-                LogStr += NowNode.NodePlayer.ToString();
-                LogStr += (" a = " + NowNode.alpha.ToString());
-                LogStr += (",b = " + NowNode.beta.ToString());
-                LogStr += "该节点动作：";
-                LogStr += NowNode.NodeAction.ToString();
-                Console.WriteLine(LogStr);
+                PrintGameTree(Son);
+            }
+            if (NowNode.depth > 0 && NowNode.depth <= DepthMax)
+            {
+                Console.Write(("第" + NowNode.depth.ToString() + "层 "));
+                Console.Write(NowNode.NodePlayer.ToString());
+                Console.Write((" a = " + NowNode.alpha.ToString()));
+                Console.Write((",b = " + NowNode.beta.ToString()));
+                Console.Write("动作：");
+                Console.Write(NowNode.NodeAction.ToString());
+                Console.Write(("位置：" + NowNode.ActionLocation.ToString()));
+
+                Console.WriteLine();
             }
         }
 
