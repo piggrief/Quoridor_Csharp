@@ -337,6 +337,7 @@ namespace Quoridor_With_C
         {
 
         }
+        long count_AIAction = 0;
         /// <summary>
         /// 根据点击坐标执行下棋操作
         /// </summary>
@@ -470,8 +471,10 @@ namespace Quoridor_With_C
             {
                 GameTreeNode Root = new GameTreeNode();
                 Root.NodePlayer = EnumNowPlayer.Player1;
-                GameTreeNode.CreateGameTree(Root, NowQuoridor.ThisChessBoard, 3);//可以改变最大深度来提高算法强度,一定要是奇数
-
+                count_AIAction++;
+                Console.WriteLine(count_AIAction.ToString() + ":");
+                GameTreeNode.CreateGameTree(Root, NowQuoridor.ThisChessBoard, 5, false);//可以改变最大深度来提高算法强度,一定要是奇数
+                Console.WriteLine("*************");
                 
                 //NowQuoridor.AlphaBetaPruningInit(NowQuoridor.ThisChessBoard.ChessBoardAll, EnumNowPlayer.Player2);
                 //QuoridorAction AIAction = NowQuoridor.AlphaBetaPruning(NowQuoridor.ThisChessBoard, EnumNowPlayer.Player2, 4, -10000, 10000, ref buff);
@@ -645,9 +648,18 @@ namespace Quoridor_With_C
         /// </summary>
         private void TestBTN_Click(object sender, EventArgs e)
         {
-            GameTreeNode Root = new GameTreeNode();
-            Root.NodePlayer = EnumNowPlayer.Player1;
-            GameTreeNode.CreateGameTree(Root, NowQuoridor.ThisChessBoard, 1);
+            //GameTreeNode Root = new GameTreeNode();
+            //Root.NodePlayer = EnumNowPlayer.Player1;
+            //GameTreeNode.CreateGameTree(Root, NowQuoridor.ThisChessBoard, 1, true);
+
+            Form1.EnumNowPlayer PlayerSave = EnumNowPlayer.Player2;
+            NowQuoridor.Player_Now = PlayerSave;
+
+            List<QuoridorAction> QABuff = NowQuoridor.ActionList;
+
+            QABuff = NowQuoridor.CreateActionList(NowQuoridor.ThisChessBoard);
+
+            Console.WriteLine("Stop!");
         }
         bool IfShowFollow = false;
         /// <summary>
