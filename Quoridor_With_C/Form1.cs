@@ -469,7 +469,8 @@ namespace Quoridor_With_C
             if (GameMode == GameModeStatus.SinglePlay)
             {
                 double buff = 0;
-                QuoridorAction AIAction = NowQuoridor.AlphaBetaPruning(NowQuoridor.ThisChessBoard, EnumNowPlayer.Player2, 6, -10000, 10000, ref buff);
+                NowQuoridor.AlphaBetaPruningInit(NowQuoridor.ThisChessBoard.ChessBoardAll, EnumNowPlayer.Player2);
+                QuoridorAction AIAction = NowQuoridor.AlphaBetaPruning(NowQuoridor.ThisChessBoard, EnumNowPlayer.Player2, 4, -10000, 10000, ref buff);
                 //QuoridorAction AIAction = NowQuoridor.AIAction_Greedy(EnumNowPlayer.Player2);
                 Hint = NowQuoridor.QuoridorRule.Action(ref NowQuoridor.ThisChessBoard, AIAction.ActionPoint.X, AIAction.ActionPoint.Y, AIAction.PlayerAction);
                 PlayerNowAction = AIAction.PlayerAction;

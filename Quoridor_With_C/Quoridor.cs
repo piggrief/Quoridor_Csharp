@@ -1303,7 +1303,7 @@ namespace Quoridor
         /// <summary>
         /// 对整个动作列表的每个动作评分
         /// </summary>
-        public void ActionListEvaluation()
+        public void ActionListEvaluation(ref List<QuoridorAction> ActionList)
         {
             int dis_player1 = 0, dis_player2 = 0;
             dis_player1 = AstarEngine.AstarRestart(ThisChessBoard,Form1.EnumNowPlayer.Player1
@@ -1425,7 +1425,7 @@ namespace Quoridor
         /// <summary>
         /// 创建可选动作列表（目前只是用挡住对手的最短路径上的挡板动作为主）
         /// </summary>
-        public void CreateActionList()
+        public List<QuoridorAction> CreateActionList()
         {
             ActionList = new List<QuoridorAction>();
 
@@ -1562,14 +1562,16 @@ namespace Quoridor
                 }
             }
             #endregion
+            return ActionList;
         }
         /// <summary>
         /// 测试该动作列表的评分
         /// </summary>
         public void TestEvaluation()
         {
-            CreateActionList();
-            ActionListEvaluation();
+            List<QuoridorAction> QABuff = ActionList;
+            QABuff = CreateActionList();
+            ActionListEvaluation(ref QABuff);
 
             Console.WriteLine("/**********显示"+ (Player_Now).ToString()+"动作评分***********/");
             foreach (QuoridorAction AL in ActionList)
@@ -1603,13 +1605,15 @@ namespace Quoridor
         /// <returns></returns>
         public QuoridorAction AIAction_Greedy(Form1.EnumNowPlayer AIPlayer)
         {
+            List<QuoridorAction> QABuff = ActionList;
+
             ///暂存一些量以便恢复
             Form1.EnumNowPlayer PlayerSave = Player_Now;
 
             Player_Now = AIPlayer;
 
-            CreateActionList();
-            ActionListEvaluation();
+            QABuff = CreateActionList();
+            ActionListEvaluation(ref QABuff);
 
             #region 贪婪思想，找最好的一步
             QuoridorAction BestAction = ActionList.First();
@@ -1632,10 +1636,17 @@ namespace Quoridor
             MaxLevel,
             MinLevel
         }
-        Grid[,] ChessBoardBuff = new Grid[7, 7];
+        public Grid[,] ChessBoardBuff = new Grid[7, 7];
         Form1.EnumNowPlayer PlayerBuff = Form1.EnumNowPlayer.Player2;
         public void AlphaBetaPruningInit(Grid[,] ChessBoard_Init, Form1.EnumNowPlayer ToAction_Player)
         {
+            for (int i = 0; i < 7; i++)
+            {
+                for (int j = 0; j < 7; j++)
+                {
+                    ChessBoardBuff[i, j] = new Grid();
+                }
+            }
             for (int i = 0; i < 7; i++)
             {
                 for (int j = 0; j < 7; j++)
@@ -1654,8 +1665,17 @@ namespace Quoridor
             else
                 return Form1.EnumNowPlayer.Player1;
         }
+        /// <summary>
+        /// AB剪枝博弈树根节点
+        /// </summary>
+        public GameTreeNode RootNode = new GameTreeNode();
         public QuoridorAction AlphaBetaPruning(ChessBoard ChessBoardStatus, Form1.EnumNowPlayer NowPlayer, int depth, double alpha, double beta, ref double alphabetabuff)
         {
+            //#region 输出当前棋盘状态
+            //ThisChessBoard.DrawNowChessBoard(ref Form1.Gr, Form1.ChessWhitePB, Form1.ChessBlackPB);
+            //Form1.ChessBoardPB.Refresh();
+            //#endregion
+
             if (QuoridorRule.CheckResult(ChessBoardStatus) != "No success")
             {
                 alphabetabuff = 9999;
@@ -1666,9 +1686,10 @@ namespace Quoridor
                 ///暂存一些量以便恢复
                 Form1.EnumNowPlayer PlayerSave = Player_Now;
                 Player_Now = NowPlayer;
+                List<QuoridorAction> QABuff = ActionList;
 
-                CreateActionList();
-                ActionListEvaluation();
+                QABuff = CreateActionList();
+                ActionListEvaluation(ref QABuff);
 
                 if (ActionList.Count <= 0)
                 {
@@ -1677,19 +1698,20 @@ namespace Quoridor
                     return new QuoridorAction(Form1.NowAction.Action_Wait,new Point(-1,-1));
                 }
                 #region 贪婪思想，找最好的一步
-                QuoridorAction BestAction = ActionList.First();
-                double MinScore = 99;
-                foreach (QuoridorAction AL in ActionList)
+                QuoridorAction BestAction = QABuff.First();
+                double MaxScore = -100;
+                foreach (QuoridorAction AL in QABuff)
                 {
-                    if (MinScore > AL.WholeScore)
+                    if (MaxScore < 100 - AL.WholeScore)
                     {
                         BestAction = AL;
-                        MinScore = AL.WholeScore;
+                        MaxScore = 100 - AL.WholeScore;
                     }
                 }
                 #endregion
                 Player_Now = PlayerSave;
-                alphabetabuff = MinScore;
+                alphabetabuff = MaxScore;
+
                 return BestAction;
             }
             if (NowPlayer == PlayerBuff)
@@ -1698,21 +1720,23 @@ namespace Quoridor
                 Form1.EnumNowPlayer PlayerSave = Player_Now;
                 Player_Now = NowPlayer;
 
-                CreateActionList();
-                if (ActionList.Count <= 0)
-                {
-                    Player_Now = PlayerSave;
-                    alphabetabuff = 999999;
-                    #region 输出当前棋盘状态
-                    ThisChessBoard.DrawNowChessBoard(ref Form1.Gr, Form1.ChessWhitePB, Form1.ChessBlackPB);
-                    Form1.ChessBoardPB.Refresh();
-                    #endregion
+                List<QuoridorAction> QABuff = ActionList;
 
-                    return new QuoridorAction(Form1.NowAction.Action_Wait, new Point(-1, -1));
-                }
-                QuoridorAction BestAction = ActionList.First();
+                QABuff = CreateActionList();
+                //if (ActionList.Count <= 0)
+                //{
+                //    Player_Now = PlayerSave;
+                //    alphabetabuff = 999999;
+                //    #region 输出当前棋盘状态
+                //    ThisChessBoard.DrawNowChessBoard(ref Form1.Gr, Form1.ChessWhitePB, Form1.ChessBlackPB);
+                //    Form1.ChessBoardPB.Refresh();
+                //    #endregion
 
-                foreach (QuoridorAction Action in ActionList)
+                //    return new QuoridorAction(Form1.NowAction.Action_Wait, new Point(-1, -1));
+                //}
+                QuoridorAction BestAction = QABuff.First();
+
+                foreach (QuoridorAction Action in QABuff)
                 {
                     #region 保存棋盘状态
                     ChessBoard ChessBoardBuff = new ChessBoard();
@@ -1769,11 +1793,6 @@ namespace Quoridor
                     ChessBoardStatus.Player2Location.Y = ChessBoardBuff.Player2Location.Y;
                     #endregion
 
-                    if (depth == 2)
-                    {
-                        int a = 0;
-                    }
-
                     if (alphabuff > alpha)
                     { 
                         alpha = alphabuff;
@@ -1786,6 +1805,7 @@ namespace Quoridor
                 }
 
                 Player_Now = PlayerSave;
+
                 return BestAction;
             }
             else
@@ -1793,22 +1813,23 @@ namespace Quoridor
                 ///暂存一些量以便恢复
                 Form1.EnumNowPlayer PlayerSave = Player_Now;
                 Player_Now = NowPlayer;
+                List<QuoridorAction> QABuff = ActionList;
 
-                CreateActionList();
-                if (ActionList.Count <= 0)
-                {
-                    Player_Now = PlayerSave;
-                    alphabetabuff = 999999;
-                    #region 输出当前棋盘状态
-                    ThisChessBoard.DrawNowChessBoard(ref Form1.Gr, Form1.ChessWhitePB, Form1.ChessBlackPB);
-                    Form1.ChessBoardPB.Refresh();
-                    #endregion
+                QABuff = CreateActionList();
+                //if (QABuff.Count <= 0)
+                //{
+                //    Player_Now = PlayerSave;
+                //    alphabetabuff = 999999;
+                //    #region 输出当前棋盘状态
+                //    ThisChessBoard.DrawNowChessBoard(ref Form1.Gr, Form1.ChessWhitePB, Form1.ChessBlackPB);
+                //    Form1.ChessBoardPB.Refresh();
+                //    #endregion
 
-                    return new QuoridorAction(Form1.NowAction.Action_Wait, new Point(-1, -1));
-                }
-                QuoridorAction BestAction = ActionList.First();
+                //    return new QuoridorAction(Form1.NowAction.Action_Wait, new Point(-1, -1));
+                //}
+                QuoridorAction BestAction = QABuff.First();
 
-                foreach (QuoridorAction Action in ActionList)
+                foreach (QuoridorAction Action in QABuff)
                 {
                     #region 保存棋盘状态
                     ChessBoard ChessBoardBuff = new ChessBoard();
@@ -1877,10 +1898,65 @@ namespace Quoridor
 
                 }
                 Player_Now = PlayerSave;
+
                 return BestAction; 
             }
         }
     }
+    /// <summary>
+    /// 博弈树节点类
+    /// </summary>
+    public class GameTreeNode
+    {
+        public Form1.NowAction NodeAction;
+        public Form1.EnumNowPlayer NodePlayer;
+        public List<GameTreeNode> SonNode = new List<GameTreeNode>();
 
+        public int depth = -1;
 
+        public double alpha = -10000;
+        public double beta = 10000;
+
+        public GameTreeNode(Form1.NowAction Action_set, Form1.EnumNowPlayer Player_set, int depth_set, double alpha_set, double beta_set)
+        {
+            NodeAction = Action_set;
+            NodePlayer = Player_set;
+            depth = depth_set;
+            alpha = alpha_set;
+            beta = beta_set;
+        }
+        public GameTreeNode()
+        { }
+        public void CreateNewSon(GameTreeNode NewNode)
+        {
+            SonNode.Add(NewNode);
+        }
+        /// <summary>
+        /// 控制台输出博弈树调试日志（向下遍历）
+        /// </summary>
+        /// <param name="NowNode"></param>
+        public void PrintGameTree(GameTreeNode NowNode)
+        {
+            foreach (GameTreeNode Son in SonNode)
+            {
+                if (Son.depth != -1)
+                {
+                    PrintGameTree(Son);
+                }
+                else
+                {
+                    break;   
+                }
+                string LogStr = "";
+                LogStr += ("第" + depth.ToString() + "层 ");
+                LogStr += NodePlayer.ToString();
+                LogStr += (" a = " + alpha.ToString());
+                LogStr += (",b = " + beta.ToString());
+                LogStr += "该节点动作：";
+                LogStr += NodeAction.ToString();
+                Console.WriteLine(LogStr);
+            }
+        }
+
+    }
 }
