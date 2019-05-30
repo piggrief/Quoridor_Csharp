@@ -469,11 +469,29 @@ namespace Quoridor_With_C
             #region AI落子
             if (GameMode == GameModeStatus.SinglePlay)
             {
+                QuoridorAI.AIRunTime.AstarNum = 0;
+                QuoridorAI.AIRunTime.Astar_s = 0;
+
                 GameTreeNode Root = new GameTreeNode();
                 Root.NodePlayer = EnumNowPlayer.Player1;
                 count_AIAction++;
-                Console.WriteLine(count_AIAction.ToString() + ":");
-                GameTreeNode.CreateGameTree(Root, NowQuoridor.ThisChessBoard, 3, false);//可以改变最大深度来提高算法强度,一定要是奇数
+                Console.WriteLine("第" + count_AIAction.ToString() + "次落子:");
+                System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
+                stopwatch.Start(); //  开始监视代码运行时间
+                /***************待测代码段****************/
+                GameTreeNode.CreateGameTree(Root, NowQuoridor.ThisChessBoard, 1, false);//skinCheckBox1.Checked);//可以改变最大深度来提高算法强度,一定要是奇数
+                /***************待测代码段****************/
+                stopwatch.Stop(); //  停止监视
+                TimeSpan timespan = stopwatch.Elapsed; //  获取当前实例测量得出的总时间
+                double milliseconds = timespan.TotalMilliseconds;  //  总毫秒数
+                double seconds = timespan.TotalSeconds;
+                Console.WriteLine("算法用时：" + seconds.ToString() + "s");
+                GameTreeNode.NodeNum = 0;
+                GameTreeNode.CalGameTreeNodeNum(Root);
+                Console.WriteLine("博弈树节点总数：" + GameTreeNode.NodeNum.ToString() + "个");
+                Console.WriteLine("Astar平均用时：" + QuoridorAI.AIRunTime.Astar_s.ToString() + "ms");
+                Console.WriteLine("Astar次数：" + QuoridorAI.AIRunTime.AstarNum.ToString() + "次");
+                Console.WriteLine("Astar总用时：" + (QuoridorAI.AIRunTime.Astar_s * QuoridorAI.AIRunTime.AstarNum).ToString() + "ms");
                 Console.WriteLine("*************");
                 
                 //NowQuoridor.AlphaBetaPruningInit(NowQuoridor.ThisChessBoard.ChessBoardAll, EnumNowPlayer.Player2);

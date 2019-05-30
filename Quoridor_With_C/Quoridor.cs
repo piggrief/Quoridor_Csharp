@@ -707,6 +707,10 @@ namespace Quoridor
         /// <returns></returns>
         public int AstarRestart(ChessBoard ToAstarSearch, Form1.EnumNowPlayer Player, int Location_row, int Location_col)
         {
+            System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
+            stopwatch.Start(); //  开始监视代码运行时间
+            /***************待测代码段****************/
+
             Min_DistanceLength = 0;
             List<AstarList> InitAList = new List<AstarList>();
             Astar_Stop = false;
@@ -716,6 +720,21 @@ namespace Quoridor
 
             int distance = LookupRoad_Astar(ToAstarSearch, Player, InitGrid, 1,
                 new List<AstarList>(), InitAList);
+
+            /***************待测代码段****************/
+            stopwatch.Stop(); //  停止监视
+            TimeSpan timespan = stopwatch.Elapsed; //  获取当前实例测量得出的总时间
+
+            if (QuoridorAI.AIRunTime.Astar_s == 0)
+            { 
+                QuoridorAI.AIRunTime.Astar_s = timespan.TotalMilliseconds;
+            }
+            else
+            {
+                QuoridorAI.AIRunTime.Astar_s += timespan.TotalMilliseconds;
+                QuoridorAI.AIRunTime.Astar_s /= 2;
+            }
+            QuoridorAI.AIRunTime.AstarNum++;
 
             return Min_DistanceLength;
 
@@ -1135,6 +1154,13 @@ namespace Quoridor
         public List<QuoridorAction> ActionList = new List<QuoridorAction>();
         public Form1.EnumNowPlayer Player_Now = Form1.EnumNowPlayer.Player1;
 
+        public class RunTime
+        {
+            public bool IfMeassureTime = false;
+            public double Astar_s = 0;
+            public long AstarNum = 0;
+        }
+        public static RunTime AIRunTime = new RunTime();
         /// <summary>
         /// 检测该挡板对该玩家有何影响
         /// </summary>
@@ -1427,6 +1453,7 @@ namespace Quoridor
         /// </summary>
         public List<QuoridorAction> CreateActionList(ChessBoard ThisChessBoard)
         {
+            List<QuoridorAction> ActionListBuff = new List<QuoridorAction>();
             ActionList = new List<QuoridorAction>();
 
             Point PlayerLocation = new Point();
@@ -1459,36 +1486,33 @@ namespace Quoridor
 
             ///检测附近的12个可能点
             if (row >= 2 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row - 2, col, MoveAction) == "OK")
-                ActionList.Add(new QuoridorAction(MoveAction, new Point(row - 2, col)));
+                ActionListBuff.Add(new QuoridorAction(MoveAction, new Point(row - 2, col)));
 
             if (row >= 1 && col >= 1 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row - 1, col - 1, MoveAction) == "OK")
-                ActionList.Add(new QuoridorAction(MoveAction, new Point(row - 1, col - 1)));
+                ActionListBuff.Add(new QuoridorAction(MoveAction, new Point(row - 1, col - 1)));
             if (row >= 1 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row - 1, col, MoveAction) == "OK")
-                ActionList.Add(new QuoridorAction(MoveAction, new Point(row - 1, col)));
+                ActionListBuff.Add(new QuoridorAction(MoveAction, new Point(row - 1, col)));
             if (row >= 1 && col <= 5 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row - 1, col + 1, MoveAction) == "OK")
-                ActionList.Add(new QuoridorAction(MoveAction, new Point(row - 1, col + 1)));
+                ActionListBuff.Add(new QuoridorAction(MoveAction, new Point(row - 1, col + 1)));
 
             if (col >= 2 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row, col - 2, MoveAction) == "OK")
-                ActionList.Add(new QuoridorAction(MoveAction, new Point(row, col - 2)));
+                ActionListBuff.Add(new QuoridorAction(MoveAction, new Point(row, col - 2)));
             if (col >= 1 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row, col - 1, MoveAction) == "OK")
-                ActionList.Add(new QuoridorAction(MoveAction, new Point(row, col - 1)));
+                ActionListBuff.Add(new QuoridorAction(MoveAction, new Point(row, col - 1)));
             if (col <= 5 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row, col + 1, MoveAction) == "OK")
-                ActionList.Add(new QuoridorAction(MoveAction, new Point(row, col + 1)));
+                ActionListBuff.Add(new QuoridorAction(MoveAction, new Point(row, col + 1)));
             if (col <= 4 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row, col + 2, MoveAction) == "OK")
-                ActionList.Add(new QuoridorAction(MoveAction, new Point(row, col + 2)));
+                ActionListBuff.Add(new QuoridorAction(MoveAction, new Point(row, col + 2)));
 
             if (row <= 5 && col >= 1 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row + 1, col - 1, MoveAction) == "OK")
-                ActionList.Add(new QuoridorAction(MoveAction, new Point(row + 1, col - 1)));
+                ActionListBuff.Add(new QuoridorAction(MoveAction, new Point(row + 1, col - 1)));
             if (row <= 5 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row + 1, col, MoveAction) == "OK")
-                ActionList.Add(new QuoridorAction(MoveAction, new Point(row + 1, col)));
+                ActionListBuff.Add(new QuoridorAction(MoveAction, new Point(row + 1, col)));
             if (row <= 5 && col <= 5 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row + 1, col + 1, MoveAction) == "OK")
-                ActionList.Add(new QuoridorAction(MoveAction, new Point(row + 1, col)));
+                ActionListBuff.Add(new QuoridorAction(MoveAction, new Point(row + 1, col)));
 
             if (row <= 4 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row + 2, col, MoveAction) == "OK")
-                ActionList.Add(new QuoridorAction(MoveAction, new Point(row + 2, col)));
-
-            ///删除目前点
-            ActionList.Remove(new QuoridorAction(MoveAction, new Point(row, col)));
+                ActionListBuff.Add(new QuoridorAction(MoveAction, new Point(row + 2, col)));
 
             #endregion
 
@@ -1496,12 +1520,13 @@ namespace Quoridor
             List<Point> MinRoad = new List<Point>();
             if(Player_Now == Form1.EnumNowPlayer.Player1)
             {
-                AstarEngine.AstarRestart(ThisChessBoard,Form1.EnumNowPlayer.Player2, ThisChessBoard.Player2Location.X, ThisChessBoard.Player2Location.Y);
+                AstarEngine.AstarRestart(ThisChessBoard, Form1.EnumNowPlayer.Player2, ThisChessBoard.Player2Location.X, ThisChessBoard.Player2Location.Y);
                 MinRoad = AstarEngine.Player2MinRoad;
             }
             else
             {
-                AstarEngine.AstarRestart(ThisChessBoard,Form1.EnumNowPlayer.Player1, ThisChessBoard.Player1Location.X, ThisChessBoard.Player1Location.Y);
+                AstarEngine.AstarRestart(ThisChessBoard, Form1.EnumNowPlayer.Player1, ThisChessBoard.Player1Location.X, ThisChessBoard.Player1Location.Y);
+
                 MinRoad = AstarEngine.Player1MinRoad;
             }
 
@@ -1517,22 +1542,22 @@ namespace Quoridor
                     if (row_1 < row_2)//下
                     {
                         if (col_2 <= 5 && !ThisChessBoard.ChessBoardAll[row_2, col_2 + 1].IfUpBoard)
-                            ActionList.Add(new QuoridorAction(
+                            ActionListBuff.Add(new QuoridorAction(
                                                             Form1.NowAction.Action_PlaceHorizontalBoard
                                                             ,new Point(row_2, col_2)));
                         if(col_2 >= 1 && !ThisChessBoard.ChessBoardAll[row_2, col_2 - 1].IfUpBoard)
-                            ActionList.Add(new QuoridorAction(
+                            ActionListBuff.Add(new QuoridorAction(
                                                             Form1.NowAction.Action_PlaceHorizontalBoard
                                                             , new Point(row_2, col_2 - 1)));
                     }
                     else//上
                     {
                         if (col_1 <= 5 && !ThisChessBoard.ChessBoardAll[row_1, col_1 + 1].IfUpBoard)
-                            ActionList.Add(new QuoridorAction(
+                            ActionListBuff.Add(new QuoridorAction(
                                                             Form1.NowAction.Action_PlaceHorizontalBoard
                                                             , new Point(row_1, col_1)));
                         if(col_1 >= 1 && !ThisChessBoard.ChessBoardAll[row_1,col_1 - 1].IfUpBoard)
-                            ActionList.Add(new QuoridorAction(
+                            ActionListBuff.Add(new QuoridorAction(
                                                             Form1.NowAction.Action_PlaceHorizontalBoard
                                                             , new Point(row_1, col_1 - 1)));
 
@@ -1543,27 +1568,39 @@ namespace Quoridor
                     if (col_1 < col_2)//右
                     {
                         if(row_2 <= 5 && !ThisChessBoard.ChessBoardAll[row_2 + 1,col_2].IfLeftBoard)
-                            ActionList.Add(new QuoridorAction(
+                            ActionListBuff.Add(new QuoridorAction(
                                                             Form1.NowAction.Action_PlaceVerticalBoard
                                                             , new Point(row_2, col_2)));
                         if(row_2 >= 1 && !ThisChessBoard.ChessBoardAll[row_2 - 1,col_2].IfLeftBoard)
-                            ActionList.Add(new QuoridorAction(
+                            ActionListBuff.Add(new QuoridorAction(
                                                             Form1.NowAction.Action_PlaceVerticalBoard
                                                             , new Point(row_2 - 1, col_2)));
                     }
                     else//上
                     {
                         if (row_1 <= 5 && !ThisChessBoard.ChessBoardAll[row_1 + 1, col_1].IfLeftBoard)
-                            ActionList.Add(new QuoridorAction(
+                            ActionListBuff.Add(new QuoridorAction(
                                                             Form1.NowAction.Action_PlaceVerticalBoard
                                                             , new Point(row_1, col_1)));
                         if (row_1 >= 1 && !ThisChessBoard.ChessBoardAll[row_1 - 1, col_1].IfLeftBoard)
-                            ActionList.Add(new QuoridorAction(
+                            ActionListBuff.Add(new QuoridorAction(
                                                             Form1.NowAction.Action_PlaceVerticalBoard
                                                             , new Point(row_1 - 1, col_1)));
                     } 
                 }
             }
+            #endregion
+            #region 校验生成的ActionList是否合法
+
+            foreach (QuoridorAction QA in ActionListBuff)
+            {
+                if (QuoridorRule.CheckBoard(ThisChessBoard, QA.PlayerAction, Player_Now,
+                    QA.ActionPoint.X, QA.ActionPoint.Y) == "OK")
+                {
+                    ActionList.Add(QA);
+                }
+            }
+
             #endregion
             return ActionList;
         }
@@ -1668,136 +1705,6 @@ namespace Quoridor
             else
                 return Form1.EnumNowPlayer.Player1;
         }
-        /// <summary>
-        /// AB剪枝博弈树根节点
-        /// </summary>
-        //public double AlphaBetaPruningForGameNode(ChessBoard ChessBoardStatus, GameTreeNode NowNode)
-        //{
-        //    double alphabetabuff = 0;
-        //    ///暂存一些量以便恢复
-        //    Player_Now = NowNode.NodePlayer;
-        //    Form1.EnumNowPlayer PlayerSave = Player_Now;
-        //    List<QuoridorAction> QABuff = ActionList;
-        //    QuoridorAction BestAction = new QuoridorAction(Form1.NowAction.Action_Wait, new Point(-1, -1));
-
-        //    if (NowNode.depth == 0)
-        //    {
-        //        QABuff = CreateActionList();
-        //        ActionListEvaluation(ref QABuff);
-
-        //        if (ActionList.Count <= 0)
-        //        {
-        //            Player_Now = PlayerSave;
-        //            alphabetabuff = 999999;
-        //            NowNode.CreateNewSon(new GameTreeNode(Form1.NowAction.Action_Wait, new Point(-1, -1)
-        //                , ReversePlayer(NowNode.NodePlayer), -1, -alphabetabuff, alphabetabuff));
-        //            return alphabetabuff;
-        //        }
-        //        #region 贪婪思想，找最好的一步
-        //        BestAction = QABuff.First();
-        //        double MaxScore = -100;
-        //        foreach (QuoridorAction AL in QABuff)
-        //        {
-        //            if (MaxScore < 100 - AL.WholeScore)
-        //            {
-        //                BestAction = AL;
-        //                MaxScore = 100 - AL.WholeScore;
-        //            }
-        //        }
-        //        #endregion
-        //        Player_Now = PlayerSave;
-        //        alphabetabuff = MaxScore;
-
-        //        NowNode.CreateNewSon(new GameTreeNode(BestAction.PlayerAction, BestAction.ActionPoint
-        //        , ReversePlayer(NowNode.NodePlayer), -1, -alphabetabuff, alphabetabuff));
-
-        //        return alphabetabuff;
-        //    }
-        //    PlayerSave = Player_Now;
-        //    Player_Now = NowNode.NodePlayer;
-
-        //    QABuff = ActionList;
-
-        //    QABuff = CreateActionList();
-
-        //    BestAction = QABuff.First();
-
-        //    foreach (QuoridorAction Action in QABuff)
-        //    {
-        //        #region 保存棋盘状态
-        //        ChessBoard ChessBoardBuff = new ChessBoard();
-        //        for (int i = 0; i < 7; i++)
-        //        {
-        //            for (int j = 0; j < 7; j++)
-        //            {
-        //                ChessBoardBuff.ChessBoardAll[i, j].IfLeftBoard = ChessBoardStatus.ChessBoardAll[i, j].IfLeftBoard;
-        //                ChessBoardBuff.ChessBoardAll[i, j].IfUpBoard = ChessBoardStatus.ChessBoardAll[i, j].IfUpBoard;
-        //                ChessBoardBuff.ChessBoardAll[i, j].GridStatus = ChessBoardStatus.ChessBoardAll[i, j].GridStatus;
-        //            }
-        //        }
-        //        ChessBoardBuff.Player1Location.X = ChessBoardStatus.Player1Location.X;
-        //        ChessBoardBuff.Player1Location.Y = ChessBoardStatus.Player1Location.Y;
-        //        ChessBoardBuff.Player2Location.X = ChessBoardStatus.Player2Location.X;
-        //        ChessBoardBuff.Player2Location.Y = ChessBoardStatus.Player2Location.Y;
-        //        #endregion
-        //        #region 模拟落子
-        //        string Hint = QuoridorRule.Action(ref ChessBoardStatus, Action.ActionPoint.X, Action.ActionPoint.Y, Action.PlayerAction);
-        //        try
-        //        {
-        //            if (Hint != "OK")
-        //            {
-        //                Exception e = new Exception();
-        //            }
-        //        }
-        //        catch (Exception)
-        //        {
-        //            throw;
-        //        }
-        //        #endregion
-        //        //#region 输出当前棋盘状态
-        //        //ThisChessBoard.DrawNowChessBoard(ref Form1.Gr, Form1.ChessWhitePB, Form1.ChessBlackPB);
-        //        //Form1.ChessBoardPB.Refresh();
-        //        //#endregion
-
-        //        double alphabuff = 0;
-
-        //        QuoridorAction PartAction = Action;
-        //        NowNode.CreateNewSon(new GameTreeNode(PartAction.PlayerAction, PartAction.ActionPoint
-        //            , ReversePlayer(NowNode.NodePlayer), NowNode.depth - 1, -alphabetabuff, alphabetabuff));
-        //        alphabuff = AlphaBetaPruningForGameNode(ChessBoardStatus, NowNode.SonNode.Last());
-        //        #region 恢复棋盘状态
-        //        for (int i = 0; i < 7; i++)
-        //        {
-        //            for (int j = 0; j < 7; j++)
-        //            {
-        //                ChessBoardStatus.ChessBoardAll[i, j].IfLeftBoard = ChessBoardBuff.ChessBoardAll[i, j].IfLeftBoard;
-        //                ChessBoardStatus.ChessBoardAll[i, j].IfUpBoard = ChessBoardBuff.ChessBoardAll[i, j].IfUpBoard;
-        //                ChessBoardStatus.ChessBoardAll[i, j].GridStatus = ChessBoardBuff.ChessBoardAll[i, j].GridStatus;
-        //            }
-        //        }
-        //        ChessBoardStatus.Player1Location.X = ChessBoardBuff.Player1Location.X;
-        //        ChessBoardStatus.Player1Location.Y = ChessBoardBuff.Player1Location.Y;
-        //        ChessBoardStatus.Player2Location.X = ChessBoardBuff.Player2Location.X;
-        //        ChessBoardStatus.Player2Location.Y = ChessBoardBuff.Player2Location.Y;
-        //        #endregion
-
-        //        if (NowNode.NodePlayer == PlayerBuff)
-        //        {
-        //            if (alphabuff > NowNode.alpha)
-        //            {
-        //                NowNode.alpha = alphabuff;
-        //                BestAction = Action;
-        //            }
-
-        //            if (NowNode.beta <= NowNode.alpha)
-        //                break;
-        //        }
-
-        //    }
-
-        //    Player_Now = PlayerSave;
-        //    return -90909;
-        //}
         public QuoridorAction AlphaBetaPruning(ChessBoard ChessBoardStatus, Form1.EnumNowPlayer NowPlayer, int depth, double alpha, double beta, ref double alphabetabuff)
         {
             //#region 输出当前棋盘状态
@@ -2029,6 +1936,7 @@ namespace Quoridor
         public double score = 10000;///该节点的评分值
 
         public static QuoridorAI NowQuoridor = new QuoridorAI();
+        public static long NodeNum = 0;
         public GameTreeNode() { }
         /// <summary>
         /// 构造函数,用来设定该博弈树节点的信息
@@ -2343,13 +2251,25 @@ namespace Quoridor
             }
             DepthMax = DepthMax_Set;
 
-            //RootNode.ExpandNode_MinMax(ChessBoard_Init, RootNode);
-            RootNode.ExpandNode_ABPruning(ChessBoard_Init, RootNode);
+            //RootNode.ExpandNode_MinMax(ChessBoard_Init, RootNode);//9W数量级节点数
+            RootNode.ExpandNode_ABPruning(ChessBoard_Init, RootNode);//500数量级节点数
 
             if(IfShowDebugLog)
                 PrintGameTree(RootNode);
         }
 
+        public static void CalGameTreeNodeNum(GameTreeNode NowNode)
+        {
+            if (NowNode.SonNode.Count <= 0)
+            {
+                return;
+            }
+            foreach (GameTreeNode Son in NowNode.SonNode)
+            {
+                NodeNum++;
+                CalGameTreeNodeNum(Son);
+            }
+        }
         /// <summary>
         /// 控制台输出博弈树调试日志（向下遍历）
         /// </summary>
