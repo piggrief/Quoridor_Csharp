@@ -247,6 +247,15 @@ namespace Quoridor_With_C
 
                 HideQueen(QueenList);
 
+                #region 配置初始棋盘
+                NowQuoridor.ThisChessBoard.ChessBoardAll[1, 0].IfUpBoard = true;
+                NowQuoridor.ThisChessBoard.ChessBoardAll[1, 1].IfUpBoard = true;
+                NowQuoridor.ThisChessBoard.ChessBoardAll[1, 2].IfUpBoard = true;
+                NowQuoridor.ThisChessBoard.ChessBoardAll[1, 3].IfUpBoard = true;
+                NowQuoridor.ThisChessBoard.ChessBoardAll[1, 4].IfUpBoard = true;
+                NowQuoridor.ThisChessBoard.ChessBoardAll[1, 5].IfUpBoard = true;
+                #endregion
+
                 //刷新初始棋盘
                 NowQuoridor.ThisChessBoard.DrawNowChessBoard(ref Gr, ChessWhitePB, ChessBlackPB);
                 ChessBoardPB.Refresh();
@@ -485,6 +494,7 @@ namespace Quoridor_With_C
                 TimeSpan timespan = stopwatch.Elapsed; //  获取当前实例测量得出的总时间
                 double milliseconds = timespan.TotalMilliseconds;  //  总毫秒数
                 double seconds = timespan.TotalSeconds;
+
                 Console.WriteLine("算法用时：" + seconds.ToString() + "s");
                 GameTreeNode.NodeNum = 0;
                 GameTreeNode.CalGameTreeNodeNum(Root);
@@ -493,7 +503,8 @@ namespace Quoridor_With_C
                 Console.WriteLine("Astar次数：" + QuoridorAI.AIRunTime.AstarNum.ToString() + "次");
                 Console.WriteLine("Astar总用时：" + (QuoridorAI.AIRunTime.Astar_s * QuoridorAI.AIRunTime.AstarNum).ToString() + "ms");
                 Console.WriteLine("*************");
-                
+
+                NowQuoridor.TestEvaluation();
                 //NowQuoridor.AlphaBetaPruningInit(NowQuoridor.ThisChessBoard.ChessBoardAll, EnumNowPlayer.Player2);
                 //QuoridorAction AIAction = NowQuoridor.AlphaBetaPruning(NowQuoridor.ThisChessBoard, EnumNowPlayer.Player2, 4, -10000, 10000, ref buff);
                 //QuoridorAction AIAction = NowQuoridor.AIAction_Greedy(EnumNowPlayer.Player2);

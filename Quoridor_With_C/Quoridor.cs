@@ -530,6 +530,26 @@ namespace Quoridor
 
             //假设能放挡板
             string Hint = Action(ref ThisChessBoard,Location_row, Location_col, WhichBoard);
+            if (Hint == "OK")
+            {
+                int disbuff1 = 0, disbuff2 = 0;
+                disbuff1 = AstarEngine.AstarRestart(ThisChessBoard, Form1.EnumNowPlayer.Player1
+                        , ThisChessBoard.Player1Location.X, ThisChessBoard.Player1Location.Y);
+                disbuff2 = AstarEngine.AstarRestart(ThisChessBoard, Form1.EnumNowPlayer.Player2
+                        , ThisChessBoard.Player2Location.X, ThisChessBoard.Player2Location.Y);
+                if (disbuff1 >= 999 && disbuff2 < 999)
+                {
+                    Hint = "Player1 No Road!";
+                }
+                else if (disbuff2 >= 999 && disbuff1 < 999)
+                {
+                    Hint = "Player2 No Road!";
+                }
+                else if (disbuff1 >= 999 && disbuff2 >= 999)
+                {
+                    Hint = "Player1&Player2 No Road!";
+                }
+            }
             if (Hint != "OK")
             {
                 for (int i = 0; i < 7; i++)
@@ -549,36 +569,36 @@ namespace Quoridor
                 return Hint;
             }
 
-            int disbuff = 0;
-            List<LookupRoadAlgorithm.AstarList> InitAList = new List<LookupRoadAlgorithm.AstarList>();
-            AstarEngine.Astar_Stop = false;
-            AstarEngine.Min_DistanceLength = 0;
-            if (Player == Form1.EnumNowPlayer.Player1)
-            {
-                //disbuff = LookupRoad_Greedy(Player
-                //    , ThisChessBoard.Player1Location.X, ThisChessBoard.Player1Location.Y
-                //    , Moved);
-                LookupRoadAlgorithm.AstarList InitGrid = new LookupRoadAlgorithm.AstarList(6, 0, 6, ThisChessBoard.Player1Location.X, ThisChessBoard.Player1Location.Y);
+            //int disbuff = 0;
+            //List<LookupRoadAlgorithm.AstarList> InitAList = new List<LookupRoadAlgorithm.AstarList>();
+            //AstarEngine.Astar_Stop = false;
+            //AstarEngine.Min_DistanceLength = 0;
+            //if (Player == Form1.EnumNowPlayer.Player1)
+            //{
+            //    disbuff = LookupRoad_Greedy(Player
+            //        , ThisChessBoard.Player1Location.X, ThisChessBoard.Player1Location.Y
+            //        , Moved);
+            //    LookupRoadAlgorithm.AstarList InitGrid = new LookupRoadAlgorithm.AstarList(6, 0, 6, ThisChessBoard.Player1Location.X, ThisChessBoard.Player1Location.Y);
 
-                InitAList.Add(InitGrid);
-                disbuff = AstarEngine.LookupRoad_Astar(ChessBoard_ToCheck,Player
-                    , InitGrid
-                    , 1, new List<LookupRoadAlgorithm.AstarList>()
-                    , InitAList);
-            }
-            else
-            {
-                //disbuff = LookupRoad_Greedy(Player
-                //    , ThisChessBoard.Player2Location.X, ThisChessBoard.Player2Location.Y
-                //    , Moved); 
-                LookupRoadAlgorithm.AstarList InitGrid = new LookupRoadAlgorithm.AstarList(6, 0, 6, ThisChessBoard.Player2Location.X, ThisChessBoard.Player2Location.Y);
+            //    InitAList.Add(InitGrid);
+            //    disbuff = AstarEngine.LookupRoad_Astar(ChessBoard_ToCheck, Player
+            //        , InitGrid
+            //        , 1, new List<LookupRoadAlgorithm.AstarList>()
+            //        , InitAList);
+            //}
+            //else
+            //{
+            //    disbuff = LookupRoad_Greedy(Player
+            //        , ThisChessBoard.Player2Location.X, ThisChessBoard.Player2Location.Y
+            //        , Moved);
+            //    LookupRoadAlgorithm.AstarList InitGrid = new LookupRoadAlgorithm.AstarList(6, 0, 6, ThisChessBoard.Player2Location.X, ThisChessBoard.Player2Location.Y);
 
-                InitAList.Add(InitGrid);
-                disbuff = AstarEngine.LookupRoad_Astar(ChessBoard_ToCheck,Player
-                    , InitGrid
-                    , 1, new List<LookupRoadAlgorithm.AstarList>()
-                    , InitAList);
-            }
+            //    InitAList.Add(InitGrid);
+            //    disbuff = AstarEngine.LookupRoad_Astar(ChessBoard_ToCheck, Player
+            //        , InitGrid
+            //        , 1, new List<LookupRoadAlgorithm.AstarList>()
+            //        , InitAList);
+            //}
 
             for (int i = 0; i < 7; i++)
             {
@@ -594,14 +614,9 @@ namespace Quoridor
             ThisChessBoard.Player2Location.X = ChessBoardBuff.Player2Location.X;
             ThisChessBoard.Player2Location.Y = ChessBoardBuff.Player2Location.Y;
 
-            if (disbuff >= 999)
-            {
-                return "No Road";
-            }
-            else
-            {
-                return "OK";
-            }
+
+            return "OK";
+
         }
         /// <summary>
         /// 检测游戏是否结束
