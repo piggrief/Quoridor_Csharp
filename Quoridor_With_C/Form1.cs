@@ -248,12 +248,12 @@ namespace Quoridor_With_C
                 HideQueen(QueenList);
 
                 #region 配置初始棋盘
-                NowQuoridor.ThisChessBoard.ChessBoardAll[1, 0].IfUpBoard = true;
-                NowQuoridor.ThisChessBoard.ChessBoardAll[1, 1].IfUpBoard = true;
-                NowQuoridor.ThisChessBoard.ChessBoardAll[1, 2].IfUpBoard = true;
-                NowQuoridor.ThisChessBoard.ChessBoardAll[1, 3].IfUpBoard = true;
-                NowQuoridor.ThisChessBoard.ChessBoardAll[1, 4].IfUpBoard = true;
-                NowQuoridor.ThisChessBoard.ChessBoardAll[1, 5].IfUpBoard = true;
+                //NowQuoridor.ThisChessBoard.ChessBoardAll[1, 0].IfUpBoard = true;
+                //NowQuoridor.ThisChessBoard.ChessBoardAll[1, 1].IfUpBoard = true;
+                //NowQuoridor.ThisChessBoard.ChessBoardAll[1, 2].IfUpBoard = true;
+                //NowQuoridor.ThisChessBoard.ChessBoardAll[1, 3].IfUpBoard = true;
+                //NowQuoridor.ThisChessBoard.ChessBoardAll[1, 4].IfUpBoard = true;
+                //NowQuoridor.ThisChessBoard.ChessBoardAll[1, 5].IfUpBoard = true;
                 #endregion
 
                 //刷新初始棋盘
@@ -488,7 +488,7 @@ namespace Quoridor_With_C
                 System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
                 stopwatch.Start(); //  开始监视代码运行时间
                 /***************待测代码段****************/
-                GameTreeNode.CreateGameTree(Root, NowQuoridor.ThisChessBoard, 1, false);//skinCheckBox1.Checked);//可以改变最大深度来提高算法强度,一定要是奇数
+                GameTreeNode.CreateGameTree(Root, NowQuoridor.ThisChessBoard, 3, false);//skinCheckBox1.Checked);//可以改变最大深度来提高算法强度,一定要是奇数
                 /***************待测代码段****************/
                 stopwatch.Stop(); //  停止监视
                 TimeSpan timespan = stopwatch.Elapsed; //  获取当前实例测量得出的总时间
@@ -504,7 +504,7 @@ namespace Quoridor_With_C
                 Console.WriteLine("Astar总用时：" + (QuoridorAI.AIRunTime.Astar_s * QuoridorAI.AIRunTime.AstarNum).ToString() + "ms");
                 Console.WriteLine("*************");
 
-                NowQuoridor.TestEvaluation();
+                //NowQuoridor.TestEvaluation();
                 //NowQuoridor.AlphaBetaPruningInit(NowQuoridor.ThisChessBoard.ChessBoardAll, EnumNowPlayer.Player2);
                 //QuoridorAction AIAction = NowQuoridor.AlphaBetaPruning(NowQuoridor.ThisChessBoard, EnumNowPlayer.Player2, 4, -10000, 10000, ref buff);
                 //QuoridorAction AIAction = NowQuoridor.AIAction_Greedy(EnumNowPlayer.Player2);

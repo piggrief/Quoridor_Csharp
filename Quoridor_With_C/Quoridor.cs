@@ -726,7 +726,7 @@ namespace Quoridor
             stopwatch.Start(); //  开始监视代码运行时间
             /***************待测代码段****************/
 
-            Min_DistanceLength = 0;
+            Min_DistanceLength = 999;
             List<AstarList> InitAList = new List<AstarList>();
             Astar_Stop = false;
 
