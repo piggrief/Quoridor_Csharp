@@ -66,10 +66,13 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Quridor Class\GameTree.cs" />
+    <Compile Include="Quridor Class\LookupRoad.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueenSolve.cs" />
-    <Compile Include="Quoridor.cs" />
+    <Compile Include="Quridor Class\Quoridor.cs" />
+    <Compile Include="Quridor Class\QuoridorRule.cs" />
     <Compile Include="Resource1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

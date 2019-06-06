@@ -12,6 +12,11 @@ using System.Runtime.InteropServices;
 using Quoridor;
 using Queen;
 using DebugToolForm;
+using QuoridorRule;
+using GameTree;
+using NowAction = QuoridorRule.QuoridorRuleEngine.NowAction;
+using EnumNowPlayer = QuoridorRule.QuoridorRuleEngine.EnumNowPlayer;
+
 
 namespace Quoridor_With_C
 {
@@ -33,20 +38,8 @@ namespace Quoridor_With_C
             Queen8
         }
         public GameModeStatus GameMode;
-        public enum EnumNowPlayer
-        {
-            Player1,
-            Player2
-        }
+
         EnumNowPlayer NowPlayer = EnumNowPlayer.Player1;
-        public enum NowAction
-        {
-            Action_PlaceVerticalBoard,
-            Action_PlaceHorizontalBoard,
-            Action_Move_Player1,
-            Action_Move_Player2,
-            Action_Wait
-        }
 
         NowAction PlayerNowAction = NowAction.Action_Move_Player1;
 
@@ -683,7 +676,7 @@ namespace Quoridor_With_C
             //Root.NodePlayer = EnumNowPlayer.Player1;
             //GameTreeNode.CreateGameTree(Root, NowQuoridor.ThisChessBoard, 1, true);
 
-            Form1.EnumNowPlayer PlayerSave = EnumNowPlayer.Player2;
+            EnumNowPlayer PlayerSave = EnumNowPlayer.Player2;
             NowQuoridor.Player_Now = PlayerSave;
 
             List<QuoridorAction> QABuff = NowQuoridor.ActionList;
