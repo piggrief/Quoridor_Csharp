@@ -2132,7 +2132,6 @@ namespace Quoridor
             if (ThisNode.depth > DepthMax)
             {
                 NowQuoridor.ActionListEvaluation(ThisChessBoard, ref QABuff);
-
                 if (NowQuoridor.ActionList.Count <= 0)
                 {
                     NowQuoridor.Player_Now = PlayerSave;
@@ -2142,6 +2141,14 @@ namespace Quoridor
                     ThisNode.score = score;
                     return;
                 }
+
+//                QuoridorAction AIAction = NowQuoridor.AIAction_Greedy(PlayerSave);//
+//                double alphabetabuff = AIAction.WholeScore;
+//                ThisNode.CreateNewSon(ThisNode, new GameTreeNode(AIAction.PlayerAction, AIAction.ActionPoint
+//, PlayerSave, ThisNode.depth + 1, -alphabetabuff, alphabetabuff, alphabetabuff));
+//                ThisNode.score = alphabetabuff;
+
+
                 #region 贪婪思想，找最好的一步
                 QuoridorAction BestAction = new QuoridorAction(Form1.NowAction.Action_Wait, new Point(-1, -1));
                 BestAction = QABuff.First();
