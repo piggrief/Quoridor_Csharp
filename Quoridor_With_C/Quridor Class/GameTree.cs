@@ -92,10 +92,10 @@ namespace GameTree
                 double MaxScore = -100;
                 foreach (QuoridorAction AL in QABuff)
                 {
-                    if (MaxScore < 100 - AL.WholeScore)
+                    if (MaxScore < AL.WholeScore)
                     {
                         BestAction = AL;
-                        MaxScore = 100 - AL.WholeScore;
+                        MaxScore = AL.WholeScore;
                     }
                 }
                 #endregion
@@ -234,10 +234,10 @@ namespace GameTree
                 double MaxScore = -100;
                 foreach (QuoridorAction AL in QABuff)
                 {
-                    if (MaxScore < 100 - AL.WholeScore)
+                    if (MaxScore < AL.WholeScore)
                     {
                         BestAction = AL;
-                        MaxScore = 100 - AL.WholeScore;
+                        MaxScore = AL.WholeScore;
                     }
                 }
                 #endregion
