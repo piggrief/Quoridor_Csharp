@@ -127,17 +127,24 @@ namespace Quoridor
         /// </summary>
         /// <param name="Action_Once">本次动作</param>
         /// <param name="Player">做该动作的玩家</param>
-        public void ActionEvaluation(int RoadDis_Player1, int RoadDis_Player2, QuoridorAction Action_Once, EnumNowPlayer Player)
+        public void ActionEvaluation(ChessBoard ThisChessBoard, int RoadDis_Player1, int RoadDis_Player2, QuoridorAction Action_Once, EnumNowPlayer Player)
         {
             int SelfDis = RoadDis_Player1;
             int OpponentDis = RoadDis_Player2;
+            
+            ChessBoard ChessBoardSave = new ChessBoard();
+            ChessBoard.SaveChessBoard(ref ChessBoardSave, ThisChessBoard);
             if (Action_Once.PlayerAction == NowAction.Action_Move_Player1)
             {
-                Action_Once.SelfScore = RoadDis_Player1 - Convert.ToDouble(AstarEngine.AstarRestart(ThisChessBoard, EnumNowPlayer.Player1, Action_Once.ActionPoint.X, Action_Once.ActionPoint.Y));
+                QuoridorRule.Action(ref ThisChessBoard, Action_Once.ActionPoint.X, Action_Once.ActionPoint.Y, Action_Once.PlayerAction);
+                Action_Once.SelfScore = RoadDis_Player1 - Convert.ToDouble(AstarEngine.AstarRestart(ThisChessBoard, EnumNowPlayer.Player1, ThisChessBoard.Player1Location.X, ThisChessBoard.Player1Location.Y));
+                ChessBoard.ResumeChessBoard(ref ThisChessBoard, ChessBoardSave);
             }
             else if (Action_Once.PlayerAction == NowAction.Action_Move_Player2)
             {
-                Action_Once.SelfScore = RoadDis_Player2 - Convert.ToDouble(AstarEngine.AstarRestart(ThisChessBoard, EnumNowPlayer.Player2, Action_Once.ActionPoint.X, Action_Once.ActionPoint.Y)); 
+                QuoridorRule.Action(ref ThisChessBoard, Action_Once.ActionPoint.X, Action_Once.ActionPoint.Y, Action_Once.PlayerAction);
+                Action_Once.SelfScore = RoadDis_Player2 - Convert.ToDouble(AstarEngine.AstarRestart(ThisChessBoard, EnumNowPlayer.Player2, ThisChessBoard.Player2Location.X, ThisChessBoard.Player2Location.Y));
+                ChessBoard.ResumeChessBoard(ref ThisChessBoard, ChessBoardSave);
             }
             else if (Action_Once.PlayerAction == NowAction.Action_PlaceHorizontalBoard
                 || Action_Once.PlayerAction == NowAction.Action_PlaceVerticalBoard)
@@ -176,7 +183,7 @@ namespace Quoridor
         /// <summary>
         /// 对整个动作列表的每个动作评分
         /// </summary>
-        public void ActionListEvaluation(ChessBoard ThisChessBoard, ref List<QuoridorAction> ActionList)
+        public void ActionListEvaluation(ChessBoard ThisChessBoard, ref List<QuoridorAction> ActionList, EnumNowPlayer Player_ToEva)
         {
             int dis_player1 = 0, dis_player2 = 0;
             dis_player1 = AstarEngine.AstarRestart(ThisChessBoard,EnumNowPlayer.Player1
@@ -187,36 +194,48 @@ namespace Quoridor
             for (int i = ActionList.Count - 1; i >= 0 ; i--)
             {
                 QuoridorAction Action = ActionList[i];
-                ActionEvaluation(dis_player1, dis_player2, Action, Player_Now);
+                ActionEvaluation(ThisChessBoard, dis_player1, dis_player2, Action, Player_ToEva);
 
                 if (Action.SelfScore >= 100 || Action.OpponentScore >= 100)
                 {
                     ActionList.Remove(ActionList[i]);
                     continue;
                 }
-
                 # region 计算整体评分
                 //移动
                 if (Action.PlayerAction == NowAction.Action_Move_Player1
                     || Action.PlayerAction == NowAction.Action_Move_Player2)
                 {
                     if (Action.PlayerAction == NowAction.Action_Move_Player1)
-                        Action.WholeScore = Action.SelfScore + 1;
+                    { 
+                        Action.WholeScore = Action.SelfScore + 0;
+                        if (Action.ActionPoint.X >= 6)
+                            Action.WholeScore = 99;
+                    }
                     else
-                        Action.WholeScore = Action.SelfScore + 1;
+                    {
+                        Action.WholeScore = Action.SelfScore + 0;
+                        if (Action.ActionPoint.X <= 0)
+                            Action.WholeScore = 99;
+                    }
 
                     #region 检测是前走还是后走
-                    //if (Action.PlayerAction == NowAction.Action_Move_Player1)
-                    //{
-                    //    if (Action.ActionPoint.X < ThisChessBoard.Player1Location.X)
-                    //        Action.WholeScore -= 0.5;
-                    //}
-                    //else
-                    //{
-                    //    if (Action.ActionPoint.X > ThisChessBoard.Player1Location.X)
-                    //        Action.WholeScore -= 0.5; 
-                    //}
+                    if (Action.PlayerAction == NowAction.Action_Move_Player1)
+                    {
+                        if (Action.ActionPoint.X < ThisChessBoard.Player1Location.X)
+                            Action.WholeScore -= 0.5;
+                    }
+                    else
+                    {
+                        if (Action.ActionPoint.X > ThisChessBoard.Player1Location.X)
+                            Action.WholeScore -= 0.5;
+                            
+                    }
                     //Action.WholeScore += 1;
+                    #endregion
+                    #region 检测是左走还是右走
+                    if(Action.ActionPoint.Y > ThisChessBoard.Player1Location.Y)//右走
+                        Action.WholeScore -= 0.1;
                     #endregion
                 }
                 //放挡板
@@ -275,7 +294,16 @@ namespace Quoridor
 
                 #endregion
 
-
+                #region 根据评分剪枝
+                if (Action.PlayerAction == NowAction.Action_Move_Player2 || Action.PlayerAction == NowAction.Action_Move_Player1)
+                {
+                    if (Action.WholeScore <= 0)
+                    { 
+                        ActionList.Remove(ActionList[i]);
+                        continue;
+                    }
+                }
+                #endregion
             }
         }
         /// <summary>
@@ -310,9 +338,9 @@ namespace Quoridor
             { 
                 ActionListBuff.Add(new QuoridorAction(MoveAction, new Point(row - 2, col)));
                 if (Player_Now == EnumNowPlayer.Player1)
-                    ActionListBuff.Last().SkipChessScore = 1;
-                else
                     ActionListBuff.Last().SkipChessScore = -1;
+                else
+                    ActionListBuff.Last().SkipChessScore = 1;
             }
 
             if (row >= 1 && col >= 1 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row - 1, col - 1, MoveAction) == "OK")
@@ -339,7 +367,13 @@ namespace Quoridor
                 ActionListBuff.Add(new QuoridorAction(MoveAction, new Point(row + 1, col)));
 
             if (row <= 4 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row + 2, col, MoveAction) == "OK")
+            { 
                 ActionListBuff.Add(new QuoridorAction(MoveAction, new Point(row + 2, col)));
+                if (Player_Now == EnumNowPlayer.Player1)
+                    ActionListBuff.Last().SkipChessScore = 1;
+                else
+                    ActionListBuff.Last().SkipChessScore = -1;
+            }
 
             #endregion
 
@@ -424,10 +458,22 @@ namespace Quoridor
                 if (QuoridorRule.CheckBoard(ThisChessBoard, QA.PlayerAction, Player_Now,
                     QA.ActionPoint.X, QA.ActionPoint.Y) == "OK")
                 {
-                    ActionList.Add(QA);
+                    if (QA.PlayerAction == NowAction.Action_Move_Player1 || QA.PlayerAction == NowAction.Action_Move_Player2)
+                    {
+                        if (QuoridorRule.CheckMove_NoChange(ThisChessBoard, QA.ActionPoint.X, QA.ActionPoint.Y, QA.PlayerAction) == "OK")
+                        {                        
+                            ActionList.Add(QA);
+                        }
+                    }
+                    else
+                        ActionList.Add(QA);
                 }
             }
 
+            #endregion
+
+            # region 评估加剪裁列表
+            ActionListEvaluation(ThisChessBoard, ref ActionList, Player_Now);
             #endregion
             return ActionList;
         }
@@ -438,7 +484,7 @@ namespace Quoridor
         {
             List<QuoridorAction> QABuff = ActionList;
             QABuff = CreateActionList(ThisChessBoard);
-            ActionListEvaluation(ThisChessBoard,ref QABuff);
+            ActionListEvaluation(ThisChessBoard, ref QABuff, Player_Now);
 
             Console.WriteLine("/**********显示"+ (Player_Now).ToString()+"动作评分***********/");
             foreach (QuoridorAction AL in ActionList)
@@ -485,7 +531,7 @@ namespace Quoridor
             Player_Now = AIPlayer;
 
             QABuff = CreateActionList(ThisChessBoard);
-            ActionListEvaluation(ThisChessBoard, ref QABuff);
+            ActionListEvaluation(ThisChessBoard, ref QABuff, Player_Now);
 
             #region 贪婪思想，找最好的一步
             QuoridorAction BestAction = ActionList.First();

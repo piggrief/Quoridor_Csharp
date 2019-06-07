@@ -240,24 +240,31 @@ namespace Quoridor_With_C
 
                 HideQueen(QueenList);
 
+                TestTB.Location = new Point(ChessBoardPB.Location.X, ChessBoardPB.Size.Height + ChessBoardPB.Location.Y);
+
                 #region 配置初始棋盘
-                //NowQuoridor.ThisChessBoard.ChessBoardAll[1, 0].IfUpBoard = true;
-                //NowQuoridor.ThisChessBoard.ChessBoardAll[1, 1].IfUpBoard = true;
-                //NowQuoridor.ThisChessBoard.ChessBoardAll[1, 2].IfUpBoard = true;
-                //NowQuoridor.ThisChessBoard.ChessBoardAll[1, 3].IfUpBoard = true;
-                //NowQuoridor.ThisChessBoard.ChessBoardAll[1, 4].IfUpBoard = true;
-                //NowQuoridor.ThisChessBoard.ChessBoardAll[1, 5].IfUpBoard = true;
+                NowQuoridor.ThisChessBoard.ChessBoardAll[0, 3].GridStatus = Grid.GridInsideStatus.Empty;
+                NowQuoridor.ThisChessBoard.ChessBoardAll[1, 3].GridStatus = Grid.GridInsideStatus.Have_Player1;
+                NowQuoridor.ThisChessBoard.ChessBoardAll[6, 3].GridStatus = Grid.GridInsideStatus.Empty;
+                NowQuoridor.ThisChessBoard.ChessBoardAll[5, 3].GridStatus = Grid.GridInsideStatus.Have_Player2;
+
+                NowQuoridor.ThisChessBoard.ChessBoardAll[1, 3].IfUpBoard = true;
+                NowQuoridor.ThisChessBoard.ChessBoardAll[1, 4].IfUpBoard = true;
+                NowQuoridor.ThisChessBoard.ChessBoardAll[6, 2].IfUpBoard = true;
+                NowQuoridor.ThisChessBoard.ChessBoardAll[6, 3].IfUpBoard = true;
+
+                NowQuoridor.ThisChessBoard.Player1Location = new Point(1, 3);
+                NowQuoridor.ThisChessBoard.Player2Location = new Point(5, 3);
+
                 #endregion
 
                 //刷新初始棋盘
                 NowQuoridor.ThisChessBoard.DrawNowChessBoard(ref Gr, ChessWhitePB, ChessBlackPB);
                 ChessBoardPB.Refresh();
 
-                TestTB.Text = "当前行动玩家：白子";
-                TestTB.Text += System.Environment.NewLine;
-                TestTB.Text += "白子剩余挡板：" + QuoridorRuleEngine.NumPlayer1Board.ToString();
-                TestTB.Text += System.Environment.NewLine;
-                TestTB.Text += "黑子剩余挡板：" + QuoridorRuleEngine.NumPlayer2Board.ToString(); 
+                BlackBoardNumLB.Text = QuoridorRuleEngine.NumPlayer2Board.ToString();
+                WhiteBoardNumLB.Text = QuoridorRuleEngine.NumPlayer1Board.ToString();
+
             }
             else
             {
@@ -340,6 +347,7 @@ namespace Quoridor_With_C
 
         }
         long count_AIAction = 0;
+        GameTreeNode Root = new GameTreeNode();
         /// <summary>
         /// 根据点击坐标执行下棋操作
         /// </summary>
@@ -445,23 +453,17 @@ namespace Quoridor_With_C
 
             if (NowPlayer == EnumNowPlayer.Player1)
             {
-                //MessageBox.Show("现在轮到玩家1操作！");
-                TestTB.Text = "当前行动玩家：白子";
-                TestTB.Text += System.Environment.NewLine;
-                TestTB.Text += "白子剩余挡板：" + QuoridorRuleEngine.NumPlayer1Board.ToString();
-                TestTB.Text += System.Environment.NewLine;
-                TestTB.Text += "黑子剩余挡板：" + QuoridorRuleEngine.NumPlayer2Board.ToString();
+                ActionPlayerLabel.Text = "白子";
+                BlackBoardNumLB.Text = QuoridorRuleEngine.NumPlayer2Board.ToString();
+                WhiteBoardNumLB.Text = QuoridorRuleEngine.NumPlayer1Board.ToString();
 
                 PlayerNowAction = NowAction.Action_Move_Player1;
             }
             if (NowPlayer == EnumNowPlayer.Player2)
             {
-                //MessageBox.Show("现在轮到玩家2操作！");
-                TestTB.Text = "当前行动玩家：黑子";
-                TestTB.Text += System.Environment.NewLine;
-                TestTB.Text += "白子剩余挡板：" + QuoridorRuleEngine.NumPlayer1Board.ToString();
-                TestTB.Text += System.Environment.NewLine;
-                TestTB.Text += "黑子剩余挡板：" + QuoridorRuleEngine.NumPlayer2Board.ToString();
+                ActionPlayerLabel.Text = "黑子";
+                BlackBoardNumLB.Text = QuoridorRuleEngine.NumPlayer2Board.ToString();
+                WhiteBoardNumLB.Text = QuoridorRuleEngine.NumPlayer1Board.ToString();
 
                 PlayerNowAction = NowAction.Action_Move_Player2;
             }
@@ -473,15 +475,15 @@ namespace Quoridor_With_C
             {
                 QuoridorAI.AIRunTime.AstarNum = 0;
                 QuoridorAI.AIRunTime.Astar_s = 0;
+                Root = new GameTreeNode();
 
-                GameTreeNode Root = new GameTreeNode();
                 Root.NodePlayer = EnumNowPlayer.Player1;
                 count_AIAction++;
                 Console.WriteLine("第" + count_AIAction.ToString() + "次落子:");
                 System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
                 stopwatch.Start(); //  开始监视代码运行时间
                 /***************待测代码段****************/
-                GameTreeNode.CreateGameTree(Root, NowQuoridor.ThisChessBoard, 1, false);//skinCheckBox1.Checked);//可以改变最大深度来提高算法强度,一定要是奇数
+                GameTreeNode.CreateGameTree(Root, NowQuoridor.ThisChessBoard, 3, DebugSelectCB.Checked);//skinCheckBox1.Checked);//可以改变最大深度来提高算法强度,一定要是奇数
                 /***************待测代码段****************/
                 stopwatch.Stop(); //  停止监视
                 TimeSpan timespan = stopwatch.Elapsed; //  获取当前实例测量得出的总时间
@@ -676,8 +678,8 @@ namespace Quoridor_With_C
             //Root.NodePlayer = EnumNowPlayer.Player1;
             //GameTreeNode.CreateGameTree(Root, NowQuoridor.ThisChessBoard, 1, true);
 
-            //EnumNowPlayer PlayerSave = EnumNowPlayer.Player2;
-            //NowQuoridor.Player_Now = PlayerSave;
+            EnumNowPlayer PlayerSave = EnumNowPlayer.Player2;
+            NowQuoridor.Player_Now = PlayerSave;
 
             List<QuoridorAction> QABuff = NowQuoridor.ActionList;
 
@@ -851,6 +853,16 @@ namespace Quoridor_With_C
         private void SearchPB_Click(object sender, EventArgs e)
         {
             
+        }
+
+        private void skinToolTip1_Popup(object sender, PopupEventArgs e)
+        {
+
+        }
+
+        private void toolStripLabel1_Click(object sender, EventArgs e)
+        {
+
         }
 
     }

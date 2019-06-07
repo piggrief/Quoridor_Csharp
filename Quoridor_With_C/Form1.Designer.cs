@@ -29,11 +29,13 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            ChessBoardPB = new CCWin.SkinControl.SkinPictureBox();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("根节点");
+            this.ChessBoardPB = new CCWin.SkinControl.SkinPictureBox();
             this.PlaceVerticalBoardBTN = new CCWin.SkinControl.SkinButton();
             this.TestTB = new CCWin.SkinControl.SkinTextBox();
-            ChessWhitePB = new CCWin.SkinControl.SkinPictureBox();
-            ChessBlackPB = new CCWin.SkinControl.SkinPictureBox();
+            this.ChessWhitePB = new CCWin.SkinControl.SkinPictureBox();
+            this.ChessBlackPB = new CCWin.SkinControl.SkinPictureBox();
             this.PlaceHorizontalBoardBTN = new CCWin.SkinControl.SkinButton();
             this.TestBTN = new CCWin.SkinControl.SkinButton();
             this.RandomPlaceBTN = new CCWin.SkinControl.SkinButton();
@@ -58,9 +60,18 @@
             this.Queen7PB = new CCWin.SkinControl.SkinPictureBox();
             this.Queen8PB = new CCWin.SkinControl.SkinPictureBox();
             this.SearchPB = new CCWin.SkinControl.SkinProgressBar();
-            ((System.ComponentModel.ISupportInitialize)(ChessBoardPB)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(ChessWhitePB)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(ChessBlackPB)).BeginInit();
+            this.skinToolStrip1 = new CCWin.SkinControl.SkinToolStrip();
+            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
+            this.ActionPlayerLabel = new System.Windows.Forms.ToolStripLabel();
+            this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
+            this.WhiteBoardNumLB = new System.Windows.Forms.ToolStripLabel();
+            this.toolStripLabel4 = new System.Windows.Forms.ToolStripLabel();
+            this.BlackBoardNumLB = new System.Windows.Forms.ToolStripLabel();
+            this.treeView1 = new System.Windows.Forms.TreeView();
+            this.DebugSelectCB = new System.Windows.Forms.CheckBox();
+            ((System.ComponentModel.ISupportInitialize)(this.ChessBoardPB)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ChessWhitePB)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ChessBlackPB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.HBoardPB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.VBoardPB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.QueenChess1PB)).BeginInit();
@@ -79,20 +90,21 @@
             ((System.ComponentModel.ISupportInitialize)(this.Queen6PB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Queen7PB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Queen8PB)).BeginInit();
+            this.skinToolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // ChessBoardPB
             // 
-            ChessBoardPB.BackColor = System.Drawing.Color.Transparent;
-            ChessBoardPB.Image = global::Quoridor_With_C.Resource1.qipan2019;
-            ChessBoardPB.Location = new System.Drawing.Point(11, 33);
-            ChessBoardPB.Name = "ChessBoardPB";
-            ChessBoardPB.Size = new System.Drawing.Size(630, 630);
-            ChessBoardPB.TabIndex = 0;
-            ChessBoardPB.TabStop = false;
-            ChessBoardPB.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ChessBoardPB_MouseClick);
-            ChessBoardPB.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ChessBoardPB_MouseDown);
-            ChessBoardPB.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ChessBoardPB_MouseMove);
+            this.ChessBoardPB.BackColor = System.Drawing.Color.Transparent;
+            this.ChessBoardPB.Image = global::Quoridor_With_C.Resource1.qipan2019;
+            this.ChessBoardPB.Location = new System.Drawing.Point(11, 33);
+            this.ChessBoardPB.Name = "ChessBoardPB";
+            this.ChessBoardPB.Size = new System.Drawing.Size(630, 630);
+            this.ChessBoardPB.TabIndex = 0;
+            this.ChessBoardPB.TabStop = false;
+            this.ChessBoardPB.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ChessBoardPB_MouseClick);
+            this.ChessBoardPB.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ChessBoardPB_MouseDown);
+            this.ChessBoardPB.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ChessBoardPB_MouseMove);
             // 
             // PlaceVerticalBoardBTN
             // 
@@ -123,7 +135,7 @@
             this.TestTB.IsPasswordChat = '\0';
             this.TestTB.IsSystemPasswordChar = false;
             this.TestTB.Lines = new string[0];
-            this.TestTB.Location = new System.Drawing.Point(898, 454);
+            this.TestTB.Location = new System.Drawing.Point(11, 718);
             this.TestTB.Margin = new System.Windows.Forms.Padding(0);
             this.TestTB.MaxLength = 32767;
             this.TestTB.MinimumSize = new System.Drawing.Size(28, 28);
@@ -135,7 +147,7 @@
             this.TestTB.Padding = new System.Windows.Forms.Padding(5);
             this.TestTB.ReadOnly = false;
             this.TestTB.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.TestTB.Size = new System.Drawing.Size(250, 209);
+            this.TestTB.Size = new System.Drawing.Size(626, 55);
             // 
             // 
             // 
@@ -145,7 +157,7 @@
             this.TestTB.SkinTxt.Location = new System.Drawing.Point(5, 5);
             this.TestTB.SkinTxt.Multiline = true;
             this.TestTB.SkinTxt.Name = "BaseText";
-            this.TestTB.SkinTxt.Size = new System.Drawing.Size(240, 199);
+            this.TestTB.SkinTxt.Size = new System.Drawing.Size(616, 45);
             this.TestTB.SkinTxt.TabIndex = 0;
             this.TestTB.SkinTxt.WaterColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(127)))), ((int)(((byte)(127)))));
             this.TestTB.SkinTxt.WaterText = "";
@@ -157,24 +169,24 @@
             // 
             // ChessWhitePB
             // 
-            ChessWhitePB.BackColor = System.Drawing.Color.Transparent;
-            ChessWhitePB.Image = global::Quoridor_With_C.Resource1.ChessWhite;
-            ChessWhitePB.Location = new System.Drawing.Point(297, 66);
-            ChessWhitePB.Name = "ChessWhitePB";
-            ChessWhitePB.Size = new System.Drawing.Size(58, 58);
-            ChessWhitePB.TabIndex = 4;
-            ChessWhitePB.TabStop = false;
-            ChessWhitePB.Click += new System.EventHandler(this.ChessWhitePB_Click);
+            this.ChessWhitePB.BackColor = System.Drawing.Color.Transparent;
+            this.ChessWhitePB.Image = global::Quoridor_With_C.Resource1.ChessWhite;
+            this.ChessWhitePB.Location = new System.Drawing.Point(297, 66);
+            this.ChessWhitePB.Name = "ChessWhitePB";
+            this.ChessWhitePB.Size = new System.Drawing.Size(58, 58);
+            this.ChessWhitePB.TabIndex = 4;
+            this.ChessWhitePB.TabStop = false;
+            this.ChessWhitePB.Click += new System.EventHandler(this.ChessWhitePB_Click);
             // 
             // ChessBlackPB
             // 
-            ChessBlackPB.BackColor = System.Drawing.Color.Transparent;
-            ChessBlackPB.Image = global::Quoridor_With_C.Resource1.ChessBlack;
-            ChessBlackPB.Location = new System.Drawing.Point(297, 569);
-            ChessBlackPB.Name = "ChessBlackPB";
-            ChessBlackPB.Size = new System.Drawing.Size(58, 58);
-            ChessBlackPB.TabIndex = 5;
-            ChessBlackPB.TabStop = false;
+            this.ChessBlackPB.BackColor = System.Drawing.Color.Transparent;
+            this.ChessBlackPB.Image = global::Quoridor_With_C.Resource1.ChessBlack;
+            this.ChessBlackPB.Location = new System.Drawing.Point(297, 569);
+            this.ChessBlackPB.Name = "ChessBlackPB";
+            this.ChessBlackPB.Size = new System.Drawing.Size(58, 58);
+            this.ChessBlackPB.TabIndex = 5;
+            this.ChessBlackPB.TabStop = false;
             // 
             // PlaceHorizontalBoardBTN
             // 
@@ -464,11 +476,133 @@
             this.SearchPB.TabIndex = 29;
             this.SearchPB.Click += new System.EventHandler(this.SearchPB_Click);
             // 
+            // skinToolStrip1
+            // 
+            this.skinToolStrip1.Arrow = System.Drawing.Color.Black;
+            this.skinToolStrip1.Back = System.Drawing.Color.White;
+            this.skinToolStrip1.BackRadius = 4;
+            this.skinToolStrip1.BackRectangle = new System.Drawing.Rectangle(10, 10, 10, 10);
+            this.skinToolStrip1.Base = System.Drawing.Color.LightGray;
+            this.skinToolStrip1.BaseFore = System.Drawing.Color.Black;
+            this.skinToolStrip1.BaseForeAnamorphosis = false;
+            this.skinToolStrip1.BaseForeAnamorphosisBorder = 4;
+            this.skinToolStrip1.BaseForeAnamorphosisColor = System.Drawing.Color.White;
+            this.skinToolStrip1.BaseForeOffset = new System.Drawing.Point(0, 0);
+            this.skinToolStrip1.BaseHoverFore = System.Drawing.Color.White;
+            this.skinToolStrip1.BaseItemAnamorphosis = true;
+            this.skinToolStrip1.BaseItemBorder = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(148)))), ((int)(((byte)(212)))));
+            this.skinToolStrip1.BaseItemBorderShow = true;
+            this.skinToolStrip1.BaseItemDown = ((System.Drawing.Image)(resources.GetObject("skinToolStrip1.BaseItemDown")));
+            this.skinToolStrip1.BaseItemHover = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(148)))), ((int)(((byte)(212)))));
+            this.skinToolStrip1.BaseItemMouse = ((System.Drawing.Image)(resources.GetObject("skinToolStrip1.BaseItemMouse")));
+            this.skinToolStrip1.BaseItemNorml = null;
+            this.skinToolStrip1.BaseItemPressed = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(148)))), ((int)(((byte)(212)))));
+            this.skinToolStrip1.BaseItemRadius = 4;
+            this.skinToolStrip1.BaseItemRadiusStyle = CCWin.SkinClass.RoundStyle.All;
+            this.skinToolStrip1.BaseItemSplitter = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(148)))), ((int)(((byte)(212)))));
+            this.skinToolStrip1.BindTabControl = null;
+            this.skinToolStrip1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.skinToolStrip1.DropDownImageSeparator = System.Drawing.Color.FromArgb(((int)(((byte)(197)))), ((int)(((byte)(197)))), ((int)(((byte)(197)))));
+            this.skinToolStrip1.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.skinToolStrip1.Fore = System.Drawing.Color.Red;
+            this.skinToolStrip1.GripMargin = new System.Windows.Forms.Padding(2, 2, 4, 2);
+            this.skinToolStrip1.HoverFore = System.Drawing.Color.White;
+            this.skinToolStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.skinToolStrip1.ItemAnamorphosis = true;
+            this.skinToolStrip1.ItemBorder = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(148)))), ((int)(((byte)(212)))));
+            this.skinToolStrip1.ItemBorderShow = true;
+            this.skinToolStrip1.ItemHover = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(148)))), ((int)(((byte)(212)))));
+            this.skinToolStrip1.ItemPressed = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(148)))), ((int)(((byte)(212)))));
+            this.skinToolStrip1.ItemRadius = 4;
+            this.skinToolStrip1.ItemRadiusStyle = CCWin.SkinClass.RoundStyle.All;
+            this.skinToolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripLabel1,
+            this.ActionPlayerLabel,
+            this.toolStripLabel2,
+            this.WhiteBoardNumLB,
+            this.toolStripLabel4,
+            this.BlackBoardNumLB});
+            this.skinToolStrip1.Location = new System.Drawing.Point(8, 802);
+            this.skinToolStrip1.Name = "skinToolStrip1";
+            this.skinToolStrip1.RadiusStyle = CCWin.SkinClass.RoundStyle.All;
+            this.skinToolStrip1.Size = new System.Drawing.Size(1264, 30);
+            this.skinToolStrip1.SkinAllColor = true;
+            this.skinToolStrip1.TabIndex = 31;
+            this.skinToolStrip1.Text = "skinToolStrip1";
+            this.skinToolStrip1.TitleAnamorphosis = true;
+            this.skinToolStrip1.TitleColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(228)))), ((int)(((byte)(236)))));
+            this.skinToolStrip1.TitleRadius = 4;
+            this.skinToolStrip1.TitleRadiusStyle = CCWin.SkinClass.RoundStyle.All;
+            // 
+            // toolStripLabel1
+            // 
+            this.toolStripLabel1.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.toolStripLabel1.ForeColor = System.Drawing.Color.Red;
+            this.toolStripLabel1.Name = "toolStripLabel1";
+            this.toolStripLabel1.Size = new System.Drawing.Size(152, 27);
+            this.toolStripLabel1.Text = "当前行动玩家：";
+            this.toolStripLabel1.Click += new System.EventHandler(this.toolStripLabel1_Click);
+            // 
+            // ActionPlayerLabel
+            // 
+            this.ActionPlayerLabel.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.ActionPlayerLabel.Name = "ActionPlayerLabel";
+            this.ActionPlayerLabel.Size = new System.Drawing.Size(52, 27);
+            this.ActionPlayerLabel.Text = "白子";
+            // 
+            // toolStripLabel2
+            // 
+            this.toolStripLabel2.Name = "toolStripLabel2";
+            this.toolStripLabel2.Size = new System.Drawing.Size(152, 27);
+            this.toolStripLabel2.Text = "白子剩余挡板：";
+            // 
+            // WhiteBoardNumLB
+            // 
+            this.WhiteBoardNumLB.Name = "WhiteBoardNumLB";
+            this.WhiteBoardNumLB.Size = new System.Drawing.Size(36, 27);
+            this.WhiteBoardNumLB.Text = "16";
+            // 
+            // toolStripLabel4
+            // 
+            this.toolStripLabel4.Name = "toolStripLabel4";
+            this.toolStripLabel4.Size = new System.Drawing.Size(152, 27);
+            this.toolStripLabel4.Text = "黑子剩余挡板：";
+            // 
+            // BlackBoardNumLB
+            // 
+            this.BlackBoardNumLB.Name = "BlackBoardNumLB";
+            this.BlackBoardNumLB.Size = new System.Drawing.Size(36, 27);
+            this.BlackBoardNumLB.Text = "16";
+            // 
+            // treeView1
+            // 
+            this.treeView1.Location = new System.Drawing.Point(898, 448);
+            this.treeView1.Name = "treeView1";
+            treeNode1.Name = "节点0";
+            treeNode1.Text = "根节点";
+            this.treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
+            treeNode1});
+            this.treeView1.Size = new System.Drawing.Size(316, 325);
+            this.treeView1.TabIndex = 32;
+            // 
+            // DebugSelectCB
+            // 
+            this.DebugSelectCB.AutoSize = true;
+            this.DebugSelectCB.Location = new System.Drawing.Point(898, 323);
+            this.DebugSelectCB.Name = "DebugSelectCB";
+            this.DebugSelectCB.Size = new System.Drawing.Size(119, 19);
+            this.DebugSelectCB.TabIndex = 33;
+            this.DebugSelectCB.Text = "开启调试日志";
+            this.DebugSelectCB.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1280, 840);
+            this.Controls.Add(this.DebugSelectCB);
+            this.Controls.Add(this.treeView1);
+            this.Controls.Add(this.skinToolStrip1);
             this.Controls.Add(this.SearchPB);
             this.Controls.Add(this.Queen8PB);
             this.Controls.Add(this.Queen7PB);
@@ -493,11 +627,11 @@
             this.Controls.Add(this.RandomPlaceBTN);
             this.Controls.Add(this.TestBTN);
             this.Controls.Add(this.PlaceHorizontalBoardBTN);
-            this.Controls.Add(ChessBlackPB);
-            this.Controls.Add(ChessWhitePB);
+            this.Controls.Add(this.ChessBlackPB);
+            this.Controls.Add(this.ChessWhitePB);
             this.Controls.Add(this.TestTB);
             this.Controls.Add(this.PlaceVerticalBoardBTN);
-            this.Controls.Add(ChessBoardPB);
+            this.Controls.Add(this.ChessBoardPB);
             this.Name = "Form1";
             this.Radius = 35;
             this.RoundStyle = CCWin.SkinClass.RoundStyle.All;
@@ -507,9 +641,9 @@
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseClick);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseMove);
-            ((System.ComponentModel.ISupportInitialize)(ChessBoardPB)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(ChessWhitePB)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(ChessBlackPB)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ChessBoardPB)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ChessWhitePB)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ChessBlackPB)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.HBoardPB)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.VBoardPB)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.QueenChess1PB)).EndInit();
@@ -528,7 +662,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.Queen6PB)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Queen7PB)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Queen8PB)).EndInit();
+            this.skinToolStrip1.ResumeLayout(false);
+            this.skinToolStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -562,6 +699,15 @@
         private CCWin.SkinControl.SkinPictureBox Queen7PB;
         private CCWin.SkinControl.SkinPictureBox Queen8PB;
         public CCWin.SkinControl.SkinProgressBar SearchPB;
+        private CCWin.SkinControl.SkinToolStrip skinToolStrip1;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel1;
+        private System.Windows.Forms.ToolStripLabel ActionPlayerLabel;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel2;
+        private System.Windows.Forms.ToolStripLabel WhiteBoardNumLB;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel4;
+        private System.Windows.Forms.ToolStripLabel BlackBoardNumLB;
+        private System.Windows.Forms.TreeView treeView1;
+        private System.Windows.Forms.CheckBox DebugSelectCB;
 
     }
 }
