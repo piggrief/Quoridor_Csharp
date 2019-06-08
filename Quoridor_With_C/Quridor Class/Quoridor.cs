@@ -9,6 +9,7 @@ using LookupRoad;
 using QuoridorRule;
 using NowAction = QuoridorRule.QuoridorRuleEngine.NowAction;
 using EnumNowPlayer = QuoridorRule.QuoridorRuleEngine.EnumNowPlayer;
+using System.Collections;
 
 namespace Quoridor
 {
@@ -265,7 +266,7 @@ namespace Quoridor
                         }
 
 
-                        Action.WholeScore = disbuff_1 - disbuff_2;// + disbuff_3 + disbuff_4; 
+                        Action.WholeScore = disbuff_1 - disbuff_2 + disbuff_3 + disbuff_4; 
                     }
                     else
                     {
@@ -288,7 +289,7 @@ namespace Quoridor
                             disbuff_4 = Math.Abs(Action.ActionPoint.X - ThisChessBoard.Player2Location.X);
                         }
 
-                        Action.WholeScore = disbuff_1 - disbuff_2;// +disbuff_3 + disbuff_4;
+                        Action.WholeScore = disbuff_1 - disbuff_2 +disbuff_3 + disbuff_4;
                     }
                 }
 
@@ -306,6 +307,29 @@ namespace Quoridor
                 #endregion
             }
         }
+        /// <summary>
+        /// 动作列表按WholeScore降序排序
+        /// </summary>
+        /// <param name="ActionListToSort">待排序动作列表</param>
+        public void SortActionList(ref List<QuoridorAction> ActionListToSort)
+        {
+            SortedList SL1 = new SortedList();
+            int SortedIndex = 0;
+
+            foreach (QuoridorAction QA in ActionListToSort)
+            {
+                SL1.Add(QA.WholeScore, SortedIndex);
+                SortedIndex++;
+            }
+            List<QuoridorAction> SortedActionList = new List<QuoridorAction>();
+            ICollection ScoreList = SL1.Keys;
+            foreach (double Score in ScoreList)
+            {               
+                SortedActionList.Add(ActionListToSort[Convert.ToInt16(SL1[Score])]);
+            }
+            ActionListToSort = SortedActionList;
+        }
+        public static bool ActionListIfSort = false;
         /// <summary>
         /// 创建可选动作列表（目前只是用挡住对手的最短路径上的挡板动作为主）
         /// </summary>
@@ -474,6 +498,14 @@ namespace Quoridor
 
             # region 评估加剪裁列表
             ActionListEvaluation(ThisChessBoard, ref ActionList, Player_Now);
+            #endregion
+            #region 对动作列表按照评分排序
+            
+            if (ActionListIfSort)
+            {
+                //对动作列表按整体评分升序排列,因为后续是倒序遍历OrderByDescending
+                ActionList = ActionList.OrderByDescending(a => a.WholeScore).ToList();
+            }
             #endregion
             return ActionList;
         }

@@ -314,6 +314,13 @@ namespace GameTree
                 #endregion
             }
         }
+        public enum Enum_GameTreeSearchFrameWork
+        {
+            MinMax,
+            ABPurning_Normal,
+            ABPurning_ScoreSort
+        }
+        public static Enum_GameTreeSearchFrameWork SearchFrameWork = Enum_GameTreeSearchFrameWork.ABPurning_ScoreSort;
         /// <summary>
         /// 创建一棵博弈树
         /// </summary>
@@ -337,8 +344,19 @@ namespace GameTree
             }
             DepthMax = DepthMax_Set;
 
-            //RootNode.ExpandNode_MinMax(ChessBoard_Init, RootNode);//9W数量级节点数
-            RootNode.ExpandNode_ABPruning(ChessBoard_Init, RootNode);//500数量级节点数
+            if (SearchFrameWork == Enum_GameTreeSearchFrameWork.MinMax)
+            {
+                RootNode.ExpandNode_MinMax(ChessBoard_Init, RootNode);//3W数量级节点数                
+            }
+            else if (SearchFrameWork == Enum_GameTreeSearchFrameWork.ABPurning_Normal)
+            {
+                RootNode.ExpandNode_ABPruning(ChessBoard_Init, RootNode);//5k数量级节点数
+            }
+            else if (SearchFrameWork == Enum_GameTreeSearchFrameWork.ABPurning_ScoreSort)
+            {
+                QuoridorAI.ActionListIfSort = true;
+                RootNode.ExpandNode_ABPruning(ChessBoard_Init, RootNode);//5k数量级节点数
+            }
 
             if (IfShowDebugLog)
                 PrintGameTree(RootNode);

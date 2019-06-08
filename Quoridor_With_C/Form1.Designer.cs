@@ -584,6 +584,7 @@
             treeNode1});
             this.treeView1.Size = new System.Drawing.Size(316, 325);
             this.treeView1.TabIndex = 32;
+            this.treeView1.Visible = false;
             // 
             // DebugSelectCB
             // 
@@ -594,6 +595,7 @@
             this.DebugSelectCB.TabIndex = 33;
             this.DebugSelectCB.Text = "开启调试日志";
             this.DebugSelectCB.UseVisualStyleBackColor = true;
+            this.DebugSelectCB.Visible = false;
             // 
             // Form1
             // 
