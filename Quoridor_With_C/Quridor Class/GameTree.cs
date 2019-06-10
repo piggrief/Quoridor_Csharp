@@ -276,7 +276,7 @@ namespace GameTree
                     }
 
                     if (ThisNode.beta <= ThisNode.alpha)
-                        break;
+                        ;//break;
                 }
                 else
                 {
@@ -294,7 +294,7 @@ namespace GameTree
 
                     if (ThisNode.beta <= ThisNode.alpha)
                     {
-                        break;
+                        //break;
                     }
                 }
                 #region 恢复棋盘状态
@@ -385,7 +385,50 @@ namespace GameTree
             }
             foreach (GameTreeNode Son in NowNode.SonNode)
             {
-                string SonTextbuff = Son.NodeAction.ToString();
+                string SonTextbuff = "D:";
+                SonTextbuff += Son.depth.ToString() + " P";
+
+                switch (Son.NodePlayer)
+                {
+                    case EnumNowPlayer.Player1:
+                        SonTextbuff += "1";
+                        break;
+                    case EnumNowPlayer.Player2:
+                        SonTextbuff += "2";
+                        break;
+                    default:
+                        SonTextbuff += "Error";
+                        break;
+                }
+                switch (Son.NodeAction)
+                {
+                    case NowAction.Action_PlaceVerticalBoard:
+                        SonTextbuff += "PV";
+                        break;
+                    case NowAction.Action_PlaceHorizontalBoard:
+                        SonTextbuff += "PH";
+                        break;
+                    case NowAction.Action_Move_Player1:
+                        SonTextbuff += "M1";
+                        break;
+                    case NowAction.Action_Move_Player2:
+                        SonTextbuff += "M2";
+                        break;
+                    case NowAction.Action_Wait:
+                        SonTextbuff += "Error";
+                        break;
+                    default:
+                        SonTextbuff += "Error";
+                        break;
+                }
+
+                SonTextbuff += " A:";
+                SonTextbuff += Son.alpha.ToString();
+                SonTextbuff += ",B:";
+                SonTextbuff += Son.beta.ToString();
+                SonTextbuff += ",S:";
+                SonTextbuff += Son.score.ToString();
+
                 TreeNode SonTreeNode = new TreeNode(SonTextbuff);
 
                 NowTreeNode.Nodes.Add(SonTreeNode);

@@ -30,7 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("根节点");
             this.ChessBoardPB = new CCWin.SkinControl.SkinPictureBox();
             this.PlaceVerticalBoardBTN = new CCWin.SkinControl.SkinButton();
             this.TestTB = new CCWin.SkinControl.SkinTextBox();
@@ -67,8 +66,8 @@
             this.WhiteBoardNumLB = new System.Windows.Forms.ToolStripLabel();
             this.toolStripLabel4 = new System.Windows.Forms.ToolStripLabel();
             this.BlackBoardNumLB = new System.Windows.Forms.ToolStripLabel();
-            this.treeView1 = new System.Windows.Forms.TreeView();
             this.DebugSelectCB = new System.Windows.Forms.CheckBox();
+            this.OpenDebugFormBTN = new CCWin.SkinControl.SkinButton();
             ((System.ComponentModel.ISupportInitialize)(this.ChessBoardPB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ChessWhitePB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ChessBlackPB)).BeginInit();
@@ -574,18 +573,6 @@
             this.BlackBoardNumLB.Size = new System.Drawing.Size(36, 27);
             this.BlackBoardNumLB.Text = "16";
             // 
-            // treeView1
-            // 
-            this.treeView1.Location = new System.Drawing.Point(898, 448);
-            this.treeView1.Name = "treeView1";
-            treeNode1.Name = "节点0";
-            treeNode1.Text = "根节点";
-            this.treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1});
-            this.treeView1.Size = new System.Drawing.Size(316, 325);
-            this.treeView1.TabIndex = 32;
-            this.treeView1.Visible = false;
-            // 
             // DebugSelectCB
             // 
             this.DebugSelectCB.AutoSize = true;
@@ -597,13 +584,31 @@
             this.DebugSelectCB.UseVisualStyleBackColor = true;
             this.DebugSelectCB.Visible = false;
             // 
+            // OpenDebugFormBTN
+            // 
+            this.OpenDebugFormBTN.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.OpenDebugFormBTN.BackColor = System.Drawing.Color.Transparent;
+            this.OpenDebugFormBTN.BaseColor = System.Drawing.Color.AliceBlue;
+            this.OpenDebugFormBTN.ControlState = CCWin.SkinClass.ControlState.Normal;
+            this.OpenDebugFormBTN.DownBack = null;
+            this.OpenDebugFormBTN.Font = new System.Drawing.Font("微软雅黑", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.OpenDebugFormBTN.Location = new System.Drawing.Point(898, 642);
+            this.OpenDebugFormBTN.MouseBack = null;
+            this.OpenDebugFormBTN.Name = "OpenDebugFormBTN";
+            this.OpenDebugFormBTN.NormlBack = null;
+            this.OpenDebugFormBTN.Size = new System.Drawing.Size(194, 54);
+            this.OpenDebugFormBTN.TabIndex = 34;
+            this.OpenDebugFormBTN.Text = "打开调试窗";
+            this.OpenDebugFormBTN.UseVisualStyleBackColor = false;
+            this.OpenDebugFormBTN.Click += new System.EventHandler(this.OpenDebugFormBTN_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1280, 840);
+            this.Controls.Add(this.OpenDebugFormBTN);
             this.Controls.Add(this.DebugSelectCB);
-            this.Controls.Add(this.treeView1);
             this.Controls.Add(this.skinToolStrip1);
             this.Controls.Add(this.SearchPB);
             this.Controls.Add(this.Queen8PB);
@@ -708,8 +713,8 @@
         private System.Windows.Forms.ToolStripLabel WhiteBoardNumLB;
         private System.Windows.Forms.ToolStripLabel toolStripLabel4;
         private System.Windows.Forms.ToolStripLabel BlackBoardNumLB;
-        private System.Windows.Forms.TreeView treeView1;
         private System.Windows.Forms.CheckBox DebugSelectCB;
+        private CCWin.SkinControl.SkinButton OpenDebugFormBTN;
 
     }
 }

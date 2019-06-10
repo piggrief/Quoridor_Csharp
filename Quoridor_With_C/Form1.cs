@@ -164,6 +164,7 @@ namespace Quoridor_With_C
             form1 = this;
 
         }
+        public DebugView DV;
         QuoridorAI NowQuoridor = new QuoridorAI();
         List<CCWin.SkinControl.SkinPictureBox> QueenChessList = new List<CCWin.SkinControl.SkinPictureBox>();
         List<CCWin.SkinControl.SkinPictureBox> QueenList = new List<CCWin.SkinControl.SkinPictureBox>();      
@@ -264,6 +265,16 @@ namespace Quoridor_With_C
 
                 BlackBoardNumLB.Text = QuoridorRuleEngine.NumPlayer2Board.ToString();
                 WhiteBoardNumLB.Text = QuoridorRuleEngine.NumPlayer1Board.ToString();
+
+                #region 打开DebugView窗体
+                IfOpenDebugViewForm = true;
+                Rectangle rect = new Rectangle();
+                rect = Screen.GetWorkingArea(this);
+
+                DV = new DebugView();
+                DV.Size = new System.Drawing.Size(rect.Width, rect.Height);
+                DV.Show();
+                #endregion
 
             }
             else
@@ -485,6 +496,14 @@ namespace Quoridor_With_C
                 /***************待测代码段****************/
                 GameTreeNode.SearchFrameWork = GameTreeNode.Enum_GameTreeSearchFrameWork.ABPurning_ScoreSort;
                 GameTreeNode.CreateGameTree(Root, NowQuoridor.ThisChessBoard, 1, DebugSelectCB.Checked);//skinCheckBox1.Checked);//可以改变最大深度来提高算法强度,一定要是奇数
+                if (IfOpenDebugViewForm)
+                {
+                    if (DV.treeView1.Nodes[DV.treeView1.Nodes.Count - 1].Text != "Root")
+                        DV.treeView1.Nodes.Add(new TreeNode("第" + count_AIAction.ToString() + "次落子:"));
+                    else
+                        DV.treeView1.Nodes[0] = new TreeNode("第" + count_AIAction.ToString() + "次落子:");
+                    GameTreeNode.GameTreeView(Root, DV.treeView1.Nodes[DV.treeView1.Nodes.Count - 1]);
+                }
                 /***************待测代码段****************/
                 stopwatch.Stop(); //  停止监视
                 TimeSpan timespan = stopwatch.Elapsed; //  获取当前实例测量得出的总时间
@@ -864,6 +883,15 @@ namespace Quoridor_With_C
         private void toolStripLabel1_Click(object sender, EventArgs e)
         {
 
+        }
+        public bool IfOpenDebugViewForm = true;
+        /// <summary>
+        /// 打开调试窗体
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OpenDebugFormBTN_Click(object sender, EventArgs e)
+        {
         }
 
     }
