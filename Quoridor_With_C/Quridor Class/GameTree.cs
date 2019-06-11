@@ -131,7 +131,7 @@ namespace GameTree
                 #endregion
 
                 CreateNewSon(ThisNode, new GameTreeNode(QA.PlayerAction, QA.ActionPoint
-                    , NowQuoridor.ReversePlayer(ThisNode.NodePlayer), ThisNode.depth + 1, ThisNode.alpha, ThisNode.beta, ThisNode.beta));
+                    , PlayerSave, ThisNode.depth + 1, ThisNode.alpha, ThisNode.beta, ThisNode.beta));
 
                 ExpandNode_MinMax(ThisChessBoard, ThisNode.SonNode.Last());
                 #region 恢复棋盘状态
@@ -159,7 +159,7 @@ namespace GameTree
                     {
                         maxvalue = Son.score;
                         ThisNode.score = maxvalue;
-                        if (depth == 0)//根节点层
+                        if (ThisNode.depth == 0)//根节点层
                         {
                             ThisNode.ActionLocation = Son.ActionLocation;
                             ThisNode.NodeAction = Son.NodeAction;
@@ -195,6 +195,7 @@ namespace GameTree
                     ThisNode.CreateNewSon(ThisNode, new GameTreeNode(NowAction.Action_Wait, new Point(-1, -1)
                         , PlayerSave, ThisNode.depth + 1, score, score, score));
                     ThisNode.score = score;
+                    ThisNode.beta = score;
                     return;
                 }
 
@@ -224,8 +225,8 @@ namespace GameTree
                 ThisNode.CreateNewSon(ThisNode, new GameTreeNode(BestAction.PlayerAction, BestAction.ActionPoint
                 , PlayerSave, ThisNode.depth + 1, -alphabetabuff, alphabetabuff, alphabetabuff));
                 ThisNode.score = alphabetabuff;
-                ThisNode.alpha = ThisNode.SonNode.Last().alpha;
-                ThisNode.alpha = ThisNode.SonNode.Last().beta;
+                //ThisNode.alpha = ThisNode.SonNode.Last().alpha;
+                ThisNode.beta = ThisNode.SonNode.Last().beta;
                 return;
             }
 
@@ -233,19 +234,7 @@ namespace GameTree
             {
                 #region 保存棋盘状态
                 ChessBoard ChessBoardBuff = new ChessBoard();
-                for (int i = 0; i < 7; i++)
-                {
-                    for (int j = 0; j < 7; j++)
-                    {
-                        ChessBoardBuff.ChessBoardAll[i, j].IfLeftBoard = ThisChessBoard.ChessBoardAll[i, j].IfLeftBoard;
-                        ChessBoardBuff.ChessBoardAll[i, j].IfUpBoard = ThisChessBoard.ChessBoardAll[i, j].IfUpBoard;
-                        ChessBoardBuff.ChessBoardAll[i, j].GridStatus = ThisChessBoard.ChessBoardAll[i, j].GridStatus;
-                    }
-                }
-                ChessBoardBuff.Player1Location.X = ThisChessBoard.Player1Location.X;
-                ChessBoardBuff.Player1Location.Y = ThisChessBoard.Player1Location.Y;
-                ChessBoardBuff.Player2Location.X = ThisChessBoard.Player2Location.X;
-                ChessBoardBuff.Player2Location.Y = ThisChessBoard.Player2Location.Y;
+                ChessBoard.SaveChessBoard(ref ChessBoardBuff, ThisChessBoard);
                 #endregion
                 #region 模拟落子
                 string Hint = NowQuoridor.QuoridorRule.Action(ref ThisChessBoard, QA.ActionPoint.X, QA.ActionPoint.Y, QA.PlayerAction);
@@ -263,9 +252,11 @@ namespace GameTree
                 #endregion
 
                 CreateNewSon(ThisNode, new GameTreeNode(QA.PlayerAction, QA.ActionPoint
-                    , NowQuoridor.ReversePlayer(ThisNode.NodePlayer), ThisNode.depth + 1, ThisNode.alpha, ThisNode.beta, ThisNode.score));
+                    , PlayerSave, ThisNode.depth + 1, ThisNode.alpha, ThisNode.beta, ThisNode.score));
 
                 ExpandNode_ABPruning(ThisChessBoard, ThisNode.SonNode.Last());
+
+                ChessBoard.ResumeChessBoard(ref ThisChessBoard, ChessBoardBuff);
 
                 if (ThisNode.NodePlayer == NowQuoridor.PlayerBuff)//MIN层
                 {
@@ -276,7 +267,9 @@ namespace GameTree
                     }
 
                     if (ThisNode.beta <= ThisNode.alpha)
-                        ;//break;
+                    {
+                        //break; 
+                    }
                 }
                 else
                 {
@@ -284,11 +277,11 @@ namespace GameTree
                     {
                         ThisNode.alpha = ThisNode.SonNode.Last().score;
                         ThisNode.score = ThisNode.SonNode.Last().score;
-                        if (depth == 0)//根节点层
+                        if (ThisNode.depth == 0)//根节点层
                         {
                             ThisNode.ActionLocation = ThisNode.SonNode.Last().ActionLocation;
                             ThisNode.NodeAction = ThisNode.SonNode.Last().NodeAction;
-                            //ThisNode.NodePlayer = ThisNode.SonNode.Last().NodePlayer;
+                            ThisNode.NodePlayer = ThisNode.SonNode.Last().NodePlayer;
                         }
                     }
 
@@ -297,21 +290,6 @@ namespace GameTree
                         //break;
                     }
                 }
-                #region 恢复棋盘状态
-                for (int i = 0; i < 7; i++)
-                {
-                    for (int j = 0; j < 7; j++)
-                    {
-                        ThisChessBoard.ChessBoardAll[i, j].IfLeftBoard = ChessBoardBuff.ChessBoardAll[i, j].IfLeftBoard;
-                        ThisChessBoard.ChessBoardAll[i, j].IfUpBoard = ChessBoardBuff.ChessBoardAll[i, j].IfUpBoard;
-                        ThisChessBoard.ChessBoardAll[i, j].GridStatus = ChessBoardBuff.ChessBoardAll[i, j].GridStatus;
-                    }
-                }
-                ThisChessBoard.Player1Location.X = ChessBoardBuff.Player1Location.X;
-                ThisChessBoard.Player1Location.Y = ChessBoardBuff.Player1Location.Y;
-                ThisChessBoard.Player2Location.X = ChessBoardBuff.Player2Location.X;
-                ThisChessBoard.Player2Location.Y = ChessBoardBuff.Player2Location.Y;
-                #endregion
             }
         }
         public enum Enum_GameTreeSearchFrameWork
@@ -344,6 +322,17 @@ namespace GameTree
             }
             DepthMax = DepthMax_Set;
 
+            if (SearchFrameWork == Enum_GameTreeSearchFrameWork.ABPurning_ScoreSort
+                || SearchFrameWork == Enum_GameTreeSearchFrameWork.MinMax)
+            {
+                QuoridorAI.ActionListIfSort = true;
+                RootNode.ExpandNode_ABPruning(ChessBoard_Init, RootNode);//5k数量级节点数
+            }
+            else
+            {
+                QuoridorAI.ActionListIfSort = false;
+            }
+
             if (SearchFrameWork == Enum_GameTreeSearchFrameWork.MinMax)
             {
                 RootNode.ExpandNode_MinMax(ChessBoard_Init, RootNode);//3W数量级节点数                
@@ -352,12 +341,19 @@ namespace GameTree
             {
                 RootNode.ExpandNode_ABPruning(ChessBoard_Init, RootNode);//5k数量级节点数
             }
-            else if (SearchFrameWork == Enum_GameTreeSearchFrameWork.ABPurning_ScoreSort)
-            {
-                QuoridorAI.ActionListIfSort = true;
-                RootNode.ExpandNode_ABPruning(ChessBoard_Init, RootNode);//5k数量级节点数
-            }
 
+            //double MaxScore = -1000;
+            //foreach (GameTreeNode GTN in RootNode.SonNode)
+            //{
+            //    if (MaxScore < GTN.score)
+            //    {
+            //        MaxScore = GTN.score;
+            //        RootNode.NodePlayer = GTN.NodePlayer;
+            //        RootNode.NodeAction = GTN.NodeAction;
+            //        RootNode.ActionLocation = GTN.ActionLocation;
+            //        RootNode.score = MaxScore;
+            //    }
+            //}
             if (IfShowDebugLog)
                 PrintGameTree(RootNode);
         }
