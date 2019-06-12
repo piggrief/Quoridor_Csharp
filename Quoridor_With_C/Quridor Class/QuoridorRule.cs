@@ -583,6 +583,10 @@ namespace QuoridorRule
             else if (Player == EnumNowPlayer.Player2 && NumPlayer2Board <= 0)
                 return "Player2 No Board";
 
+            # region 检测该点是否已经有挡板了
+            
+            #endregion
+
             ///为了不改变原状态而暂存原状态以便后续恢复
             ChessBoard ChessBoardBuff = new ChessBoard();
             ChessBoard.SaveChessBoard(ref ChessBoardBuff, ThisChessBoard);

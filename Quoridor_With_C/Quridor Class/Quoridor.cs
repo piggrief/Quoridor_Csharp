@@ -9,6 +9,7 @@ using LookupRoad;
 using QuoridorRule;
 using NowAction = QuoridorRule.QuoridorRuleEngine.NowAction;
 using EnumNowPlayer = QuoridorRule.QuoridorRuleEngine.EnumNowPlayer;
+using System.Collections;
 
 namespace Quoridor
 {
@@ -265,7 +266,7 @@ namespace Quoridor
                         }
 
 
-                        Action.WholeScore = disbuff_1 - disbuff_2;// + disbuff_3 + disbuff_4; 
+                        Action.WholeScore = disbuff_1 - disbuff_2 + disbuff_3 + disbuff_4; 
                     }
                     else
                     {
@@ -288,7 +289,7 @@ namespace Quoridor
                             disbuff_4 = Math.Abs(Action.ActionPoint.X - ThisChessBoard.Player2Location.X);
                         }
 
-                        Action.WholeScore = disbuff_1 - disbuff_2;// +disbuff_3 + disbuff_4;
+                        Action.WholeScore = disbuff_1 - disbuff_2 +disbuff_3 + disbuff_4;
                     }
                 }
 
@@ -306,6 +307,29 @@ namespace Quoridor
                 #endregion
             }
         }
+        /// <summary>
+        /// 动作列表按WholeScore降序排序
+        /// </summary>
+        /// <param name="ActionListToSort">待排序动作列表</param>
+        public void SortActionList(ref List<QuoridorAction> ActionListToSort)
+        {
+            SortedList SL1 = new SortedList();
+            int SortedIndex = 0;
+
+            foreach (QuoridorAction QA in ActionListToSort)
+            {
+                SL1.Add(QA.WholeScore, SortedIndex);
+                SortedIndex++;
+            }
+            List<QuoridorAction> SortedActionList = new List<QuoridorAction>();
+            ICollection ScoreList = SL1.Keys;
+            foreach (double Score in ScoreList)
+            {               
+                SortedActionList.Add(ActionListToSort[Convert.ToInt16(SL1[Score])]);
+            }
+            ActionListToSort = SortedActionList;
+        }
+        public static bool ActionListIfSort = false;
         /// <summary>
         /// 创建可选动作列表（目前只是用挡住对手的最短路径上的挡板动作为主）
         /// </summary>
@@ -475,29 +499,37 @@ namespace Quoridor
             # region 评估加剪裁列表
             ActionListEvaluation(ThisChessBoard, ref ActionList, Player_Now);
             #endregion
+            #region 对动作列表按照评分排序
+            
+            if (ActionListIfSort)
+            {
+                //Console.WriteLine("排序前：");
+                //PrintActionList(ActionList);
+                //对动作列表按整体评分升序排列,因为后续是倒序遍历OrderByDescending
+                ActionList = ActionList.OrderByDescending(a => a.WholeScore).ToList();
+                //Console.WriteLine("排序后：");
+                //PrintActionList(ActionList);
+            }
+            #endregion
             return ActionList;
         }
         /// <summary>
-        /// 测试该动作列表的评分
+        /// 控制台输出动作列表的信息
         /// </summary>
-        public void TestEvaluation()
+        public void PrintActionList(List<QuoridorAction> ActionListBuff)
         {
-            List<QuoridorAction> QABuff = ActionList;
-            QABuff = CreateActionList(ThisChessBoard);
-            ActionListEvaluation(ThisChessBoard, ref QABuff, Player_Now);
-
-            Console.WriteLine("/**********显示"+ (Player_Now).ToString()+"动作评分***********/");
-            foreach (QuoridorAction AL in ActionList)
+            Console.WriteLine("/**********显示" + (Player_Now).ToString() + "动作评分***********/");
+            foreach (QuoridorAction AL in ActionListBuff)
             {
                 string actionstr = "";
                 switch (AL.PlayerAction)
                 {
                     case NowAction.Action_PlaceVerticalBoard:
-                        Console.Write("在" + ((AL.ActionPoint.X) * 8 + AL.ActionPoint.Y + 1).ToString() + "点和"+
+                        Console.Write("在" + ((AL.ActionPoint.X) * 8 + AL.ActionPoint.Y + 1).ToString() + "点和" +
                             ((AL.ActionPoint.X + 1) * 8 + AL.ActionPoint.Y + 1).ToString() + "点左侧");
-                        actionstr = "放置竖挡板";break;
+                        actionstr = "放置竖挡板"; break;
                     case NowAction.Action_PlaceHorizontalBoard:
-                        Console.Write("在" + ((AL.ActionPoint.X) * 8 + AL.ActionPoint.Y + 1).ToString() + "点和"+
+                        Console.Write("在" + ((AL.ActionPoint.X) * 8 + AL.ActionPoint.Y + 1).ToString() + "点和" +
                             ((AL.ActionPoint.X) * 8 + AL.ActionPoint.Y + 1 + 1).ToString() + "点上侧");
                         actionstr = "放置横挡板"; break;
                     case NowAction.Action_Move_Player1:
@@ -514,7 +546,17 @@ namespace Quoridor
                 Console.WriteLine("对手：" + AL.OpponentScore.ToString() + ",自己" + AL.SelfScore.ToString() + ",总分" + AL.WholeScore.ToString());
 
             }
-            Console.WriteLine("/****************************************/");
+            Console.WriteLine("/****************************************/"); 
+        }
+        /// <summary>
+        /// 测试该动作列表的评分
+        /// </summary>
+        public void TestEvaluation()
+        {
+            List<QuoridorAction> QABuff = ActionList;
+            QABuff = CreateActionList(ThisChessBoard);
+            ActionListEvaluation(ThisChessBoard, ref QABuff, Player_Now);
+            PrintActionList(QABuff);
         }
         /// <summary>
         /// AI落子，使用贪婪算法

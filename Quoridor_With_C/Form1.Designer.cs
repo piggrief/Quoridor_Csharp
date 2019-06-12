@@ -30,7 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("根节点");
             this.ChessBoardPB = new CCWin.SkinControl.SkinPictureBox();
             this.PlaceVerticalBoardBTN = new CCWin.SkinControl.SkinButton();
             this.TestTB = new CCWin.SkinControl.SkinTextBox();
@@ -67,8 +66,16 @@
             this.WhiteBoardNumLB = new System.Windows.Forms.ToolStripLabel();
             this.toolStripLabel4 = new System.Windows.Forms.ToolStripLabel();
             this.BlackBoardNumLB = new System.Windows.Forms.ToolStripLabel();
-            this.treeView1 = new System.Windows.Forms.TreeView();
             this.DebugSelectCB = new System.Windows.Forms.CheckBox();
+            this.skinTabControl1 = new CCWin.SkinControl.SkinTabControl();
+            this.skinTabPage1 = new CCWin.SkinControl.SkinTabPage();
+            this.skinLabel1 = new CCWin.SkinControl.SkinLabel();
+            this.AlgorithmSelectCB = new CCWin.SkinControl.SkinComboBox();
+            this.IfUseTreeViewCB = new CCWin.SkinControl.SkinCheckBox();
+            this.skinLabel2 = new CCWin.SkinControl.SkinLabel();
+            this.CompareAlgorithmCB = new CCWin.SkinControl.SkinComboBox();
+            this.skinLabel3 = new CCWin.SkinControl.SkinLabel();
+            this.DepthSelectCB = new CCWin.SkinControl.SkinComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.ChessBoardPB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ChessWhitePB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ChessBlackPB)).BeginInit();
@@ -91,6 +98,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.Queen7PB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Queen8PB)).BeginInit();
             this.skinToolStrip1.SuspendLayout();
+            this.skinTabControl1.SuspendLayout();
+            this.skinTabPage1.SuspendLayout();
             this.SuspendLayout();
             // 
             // ChessBoardPB
@@ -574,17 +583,6 @@
             this.BlackBoardNumLB.Size = new System.Drawing.Size(36, 27);
             this.BlackBoardNumLB.Text = "16";
             // 
-            // treeView1
-            // 
-            this.treeView1.Location = new System.Drawing.Point(898, 448);
-            this.treeView1.Name = "treeView1";
-            treeNode1.Name = "节点0";
-            treeNode1.Text = "根节点";
-            this.treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1});
-            this.treeView1.Size = new System.Drawing.Size(316, 325);
-            this.treeView1.TabIndex = 32;
-            // 
             // DebugSelectCB
             // 
             this.DebugSelectCB.AutoSize = true;
@@ -594,14 +592,158 @@
             this.DebugSelectCB.TabIndex = 33;
             this.DebugSelectCB.Text = "开启调试日志";
             this.DebugSelectCB.UseVisualStyleBackColor = true;
+            this.DebugSelectCB.Visible = false;
+            // 
+            // skinTabControl1
+            // 
+            this.skinTabControl1.AnimatorType = CCWin.SkinControl.AnimationType.HorizSlide;
+            this.skinTabControl1.CloseRect = new System.Drawing.Rectangle(2, 2, 12, 12);
+            this.skinTabControl1.Controls.Add(this.skinTabPage1);
+            this.skinTabControl1.HeadBack = null;
+            this.skinTabControl1.ImgTxtOffset = new System.Drawing.Point(0, 0);
+            this.skinTabControl1.ItemSize = new System.Drawing.Size(70, 36);
+            this.skinTabControl1.Location = new System.Drawing.Point(898, 470);
+            this.skinTabControl1.Name = "skinTabControl1";
+            this.skinTabControl1.PageArrowDown = ((System.Drawing.Image)(resources.GetObject("skinTabControl1.PageArrowDown")));
+            this.skinTabControl1.PageArrowHover = ((System.Drawing.Image)(resources.GetObject("skinTabControl1.PageArrowHover")));
+            this.skinTabControl1.PageCloseHover = ((System.Drawing.Image)(resources.GetObject("skinTabControl1.PageCloseHover")));
+            this.skinTabControl1.PageCloseNormal = ((System.Drawing.Image)(resources.GetObject("skinTabControl1.PageCloseNormal")));
+            this.skinTabControl1.PageDown = ((System.Drawing.Image)(resources.GetObject("skinTabControl1.PageDown")));
+            this.skinTabControl1.PageHover = ((System.Drawing.Image)(resources.GetObject("skinTabControl1.PageHover")));
+            this.skinTabControl1.PageImagePosition = CCWin.SkinControl.SkinTabControl.ePageImagePosition.Left;
+            this.skinTabControl1.PageNorml = null;
+            this.skinTabControl1.SelectedIndex = 0;
+            this.skinTabControl1.Size = new System.Drawing.Size(317, 290);
+            this.skinTabControl1.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
+            this.skinTabControl1.TabIndex = 35;
+            // 
+            // skinTabPage1
+            // 
+            this.skinTabPage1.BackColor = System.Drawing.Color.White;
+            this.skinTabPage1.Controls.Add(this.DepthSelectCB);
+            this.skinTabPage1.Controls.Add(this.skinLabel3);
+            this.skinTabPage1.Controls.Add(this.CompareAlgorithmCB);
+            this.skinTabPage1.Controls.Add(this.skinLabel2);
+            this.skinTabPage1.Controls.Add(this.IfUseTreeViewCB);
+            this.skinTabPage1.Controls.Add(this.AlgorithmSelectCB);
+            this.skinTabPage1.Controls.Add(this.skinLabel1);
+            this.skinTabPage1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.skinTabPage1.Location = new System.Drawing.Point(0, 36);
+            this.skinTabPage1.Name = "skinTabPage1";
+            this.skinTabPage1.Size = new System.Drawing.Size(317, 254);
+            this.skinTabPage1.TabIndex = 0;
+            this.skinTabPage1.TabItemImage = null;
+            this.skinTabPage1.Text = "AI算法参数";
+            // 
+            // skinLabel1
+            // 
+            this.skinLabel1.AutoSize = true;
+            this.skinLabel1.BackColor = System.Drawing.Color.Transparent;
+            this.skinLabel1.BorderColor = System.Drawing.Color.White;
+            this.skinLabel1.Font = new System.Drawing.Font("微软雅黑", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.skinLabel1.Location = new System.Drawing.Point(0, 4);
+            this.skinLabel1.Name = "skinLabel1";
+            this.skinLabel1.Size = new System.Drawing.Size(107, 25);
+            this.skinLabel1.TabIndex = 0;
+            this.skinLabel1.Text = "AI决策算法";
+            // 
+            // AlgorithmSelectCB
+            // 
+            this.AlgorithmSelectCB.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.AlgorithmSelectCB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.AlgorithmSelectCB.FormattingEnabled = true;
+            this.AlgorithmSelectCB.Items.AddRange(new object[] {
+            "Alpha-Beta剪枝(有列表排序)",
+            "Alpha-Beta剪枝(无列表排序)",
+            "极大极小搜索"});
+            this.AlgorithmSelectCB.Location = new System.Drawing.Point(113, 4);
+            this.AlgorithmSelectCB.Name = "AlgorithmSelectCB";
+            this.AlgorithmSelectCB.Size = new System.Drawing.Size(201, 26);
+            this.AlgorithmSelectCB.TabIndex = 1;
+            this.AlgorithmSelectCB.WaterText = "";
+            // 
+            // IfUseTreeViewCB
+            // 
+            this.IfUseTreeViewCB.AutoSize = true;
+            this.IfUseTreeViewCB.BackColor = System.Drawing.Color.Transparent;
+            this.IfUseTreeViewCB.ControlState = CCWin.SkinClass.ControlState.Normal;
+            this.IfUseTreeViewCB.DownBack = null;
+            this.IfUseTreeViewCB.Font = new System.Drawing.Font("微软雅黑", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.IfUseTreeViewCB.Location = new System.Drawing.Point(5, 157);
+            this.IfUseTreeViewCB.MouseBack = null;
+            this.IfUseTreeViewCB.Name = "IfUseTreeViewCB";
+            this.IfUseTreeViewCB.NormlBack = null;
+            this.IfUseTreeViewCB.SelectedDownBack = null;
+            this.IfUseTreeViewCB.SelectedMouseBack = null;
+            this.IfUseTreeViewCB.SelectedNormlBack = null;
+            this.IfUseTreeViewCB.Size = new System.Drawing.Size(308, 29);
+            this.IfUseTreeViewCB.TabIndex = 2;
+            this.IfUseTreeViewCB.Text = "是否使用TreeView来观察博弈树";
+            this.IfUseTreeViewCB.UseVisualStyleBackColor = false;
+            // 
+            // skinLabel2
+            // 
+            this.skinLabel2.AutoSize = true;
+            this.skinLabel2.BackColor = System.Drawing.Color.Transparent;
+            this.skinLabel2.BorderColor = System.Drawing.Color.White;
+            this.skinLabel2.Font = new System.Drawing.Font("微软雅黑", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.skinLabel2.Location = new System.Drawing.Point(3, 96);
+            this.skinLabel2.Name = "skinLabel2";
+            this.skinLabel2.Size = new System.Drawing.Size(88, 25);
+            this.skinLabel2.TabIndex = 3;
+            this.skinLabel2.Text = "对比算法";
+            // 
+            // CompareAlgorithmCB
+            // 
+            this.CompareAlgorithmCB.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.CompareAlgorithmCB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.CompareAlgorithmCB.FormattingEnabled = true;
+            this.CompareAlgorithmCB.Items.AddRange(new object[] {
+            "不选择对比算法",
+            "Alpha-Beta剪枝(有列表排序)",
+            "Alpha-Beta剪枝(无列表排序)",
+            "极大极小搜索"});
+            this.CompareAlgorithmCB.Location = new System.Drawing.Point(116, 96);
+            this.CompareAlgorithmCB.Name = "CompareAlgorithmCB";
+            this.CompareAlgorithmCB.Size = new System.Drawing.Size(201, 26);
+            this.CompareAlgorithmCB.TabIndex = 4;
+            this.CompareAlgorithmCB.WaterText = "";
+            // 
+            // skinLabel3
+            // 
+            this.skinLabel3.AutoSize = true;
+            this.skinLabel3.BackColor = System.Drawing.Color.Transparent;
+            this.skinLabel3.BorderColor = System.Drawing.Color.White;
+            this.skinLabel3.Font = new System.Drawing.Font("微软雅黑", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.skinLabel3.Location = new System.Drawing.Point(0, 49);
+            this.skinLabel3.Name = "skinLabel3";
+            this.skinLabel3.Size = new System.Drawing.Size(107, 25);
+            this.skinLabel3.TabIndex = 5;
+            this.skinLabel3.Text = "博弈树深度";
+            // 
+            // DepthSelectCB
+            // 
+            this.DepthSelectCB.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.DepthSelectCB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.DepthSelectCB.FormattingEnabled = true;
+            this.DepthSelectCB.Items.AddRange(new object[] {
+            "0",
+            "2",
+            "4",
+            "6"});
+            this.DepthSelectCB.Location = new System.Drawing.Point(113, 48);
+            this.DepthSelectCB.Name = "DepthSelectCB";
+            this.DepthSelectCB.Size = new System.Drawing.Size(201, 26);
+            this.DepthSelectCB.TabIndex = 6;
+            this.DepthSelectCB.WaterText = "";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1280, 840);
+            this.Controls.Add(this.skinTabControl1);
             this.Controls.Add(this.DebugSelectCB);
-            this.Controls.Add(this.treeView1);
             this.Controls.Add(this.skinToolStrip1);
             this.Controls.Add(this.SearchPB);
             this.Controls.Add(this.Queen8PB);
@@ -664,6 +806,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.Queen8PB)).EndInit();
             this.skinToolStrip1.ResumeLayout(false);
             this.skinToolStrip1.PerformLayout();
+            this.skinTabControl1.ResumeLayout(false);
+            this.skinTabPage1.ResumeLayout(false);
+            this.skinTabPage1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -706,8 +851,16 @@
         private System.Windows.Forms.ToolStripLabel WhiteBoardNumLB;
         private System.Windows.Forms.ToolStripLabel toolStripLabel4;
         private System.Windows.Forms.ToolStripLabel BlackBoardNumLB;
-        private System.Windows.Forms.TreeView treeView1;
         private System.Windows.Forms.CheckBox DebugSelectCB;
+        private CCWin.SkinControl.SkinTabControl skinTabControl1;
+        private CCWin.SkinControl.SkinTabPage skinTabPage1;
+        private CCWin.SkinControl.SkinComboBox CompareAlgorithmCB;
+        private CCWin.SkinControl.SkinLabel skinLabel2;
+        private CCWin.SkinControl.SkinCheckBox IfUseTreeViewCB;
+        private CCWin.SkinControl.SkinComboBox AlgorithmSelectCB;
+        private CCWin.SkinControl.SkinLabel skinLabel1;
+        private CCWin.SkinControl.SkinComboBox DepthSelectCB;
+        private CCWin.SkinControl.SkinLabel skinLabel3;
 
     }
 }
