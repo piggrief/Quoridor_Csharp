@@ -22,7 +22,10 @@ namespace Quoridor_With_C
         private void DebugView_Load(object sender, EventArgs e)
         {
             treeView1.Location = new Point(skinMenuStrip1.Location.X, skinMenuStrip1.Location.Y+skinMenuStrip1.Size.Height);
-            treeView1.Size = new Size(skinMenuStrip1.Size.Width, this.Size.Height - treeView1.Location.Y);
+            treeView1.Size = new Size(skinMenuStrip1.Size.Width / 2, this.Size.Height - treeView1.Location.Y);
+            treeView2.Location = new Point(skinMenuStrip1.Location.X + treeView1.Size.Width, skinMenuStrip1.Location.Y + skinMenuStrip1.Size.Height);
+            treeView2.Size = new Size(skinMenuStrip1.Size.Width / 2, this.Size.Height - treeView1.Location.Y);
+        
         }
     }
 }

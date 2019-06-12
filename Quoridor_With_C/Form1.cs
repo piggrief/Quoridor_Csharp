@@ -267,7 +267,7 @@ namespace Quoridor_With_C
                 WhiteBoardNumLB.Text = QuoridorRuleEngine.NumPlayer1Board.ToString();
 
                 #region 打开DebugView窗体
-                IfOpenDebugViewForm = true;
+                //IfOpenDebugViewForm = true;
                 Rectangle rect = new Rectangle();
                 rect = Screen.GetWorkingArea(this);
 
@@ -276,6 +276,9 @@ namespace Quoridor_With_C
                 DV.Show();
                 #endregion
 
+                CompareAlgorithmCB.SelectedIndex = 0;
+                AlgorithmSelectCB.SelectedIndex = 0;
+                DepthSelectCB.SelectedIndex = 1;
             }
             else
             {
@@ -487,82 +490,81 @@ namespace Quoridor_With_C
 
                 count_AIAction++;
                 Console.WriteLine("第" + count_AIAction.ToString() + "次落子:");
-                #region MinMax测试
-                QuoridorAI.AIRunTime.AstarNum = 0;
-                QuoridorAI.AIRunTime.Astar_s = 0;
-                Root = new GameTreeNode();
 
-                Root.NodePlayer = EnumNowPlayer.Player1;
                 System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
-                stopwatch.Start(); //  开始监视代码运行时间
-                /***************待测代码段****************/
-                GameTreeNode.SearchFrameWork = GameTreeNode.Enum_GameTreeSearchFrameWork.MinMax;
-                GameTreeNode.CreateGameTree(Root, NowQuoridor.ThisChessBoard, 2, DebugSelectCB.Checked);//skinCheckBox1.Checked);//可以改变最大深度来提高算法强度,一定要是奇数
-                if (IfOpenDebugViewForm)
-                {
-                    if (DV.treeView1.Nodes[DV.treeView1.Nodes.Count - 1].Text != "Root")
-                        DV.treeView1.Nodes.Add(new TreeNode("第" + count_AIAction.ToString() + "次落子:"));
-                    else
-                        DV.treeView1.Nodes[0] = new TreeNode("第" + count_AIAction.ToString() + "次落子:");
-                    GameTreeNode.GameTreeView(Root, DV.treeView1.Nodes[DV.treeView1.Nodes.Count - 1]);
-                }
-                Console.WriteLine(GameTreeNode.SearchFrameWork.ToString() + "结果：");
-                Console.WriteLine(Root.NodeAction.ToString() + "(" + Root.ActionLocation.X.ToString() + "," + Root.ActionLocation.Y.ToString() + ")");
-
-                /***************待测代码段****************/
-                stopwatch.Stop(); //  停止监视
                 TimeSpan timespan = stopwatch.Elapsed; //  获取当前实例测量得出的总时间
                 double milliseconds = timespan.TotalMilliseconds;  //  总毫秒数
                 double seconds = timespan.TotalSeconds;
 
-                Console.WriteLine("算法用时：" + seconds.ToString() + "s");
-                GameTreeNode.NodeNum = 0;
-                GameTreeNode.CalGameTreeNodeNum(Root);
-                Console.WriteLine("博弈树节点总数：" + GameTreeNode.NodeNum.ToString() + "个");
-                Console.WriteLine("Astar平均用时：" + QuoridorAI.AIRunTime.Astar_s.ToString() + "ms");
-                Console.WriteLine("Astar次数：" + QuoridorAI.AIRunTime.AstarNum.ToString() + "次");
-                Console.WriteLine("Astar总用时：" + (QuoridorAI.AIRunTime.Astar_s * QuoridorAI.AIRunTime.AstarNum).ToString() + "ms");
-                Console.WriteLine("*************");
+                IfUseViewFormDebug = IfUseTreeViewCB.Checked;
+                int TreeDepth = Convert.ToInt16(DepthSelectCB.Text);
 
-                #endregion
-                #region ABPruning_Normal测试
-                QuoridorAI.AIRunTime.AstarNum = 0;
-                QuoridorAI.AIRunTime.Astar_s = 0;
-                Root = new GameTreeNode();
-
-                Root.NodePlayer = EnumNowPlayer.Player1;
-                stopwatch = new System.Diagnostics.Stopwatch();
-                stopwatch.Start(); //  开始监视代码运行时间
-                /***************待测代码段****************/
-                GameTreeNode.SearchFrameWork = GameTreeNode.Enum_GameTreeSearchFrameWork.ABPurning_Normal;
-                GameTreeNode.CreateGameTree(Root, NowQuoridor.ThisChessBoard, 2, DebugSelectCB.Checked);//skinCheckBox1.Checked);//可以改变最大深度来提高算法强度,一定要是奇数
-                if (IfOpenDebugViewForm)
+                if (CompareAlgorithmCB.SelectedIndex != 0)
                 {
-                    if (DV.treeView1.Nodes[DV.treeView1.Nodes.Count - 1].Text != "Root")
-                        DV.treeView1.Nodes.Add(new TreeNode("第" + count_AIAction.ToString() + "次落子:"));
-                    else
-                        DV.treeView1.Nodes[0] = new TreeNode("第" + count_AIAction.ToString() + "次落子:");
-                    GameTreeNode.GameTreeView(Root, DV.treeView1.Nodes[DV.treeView1.Nodes.Count - 1]);
+                    if (CompareAlgorithmCB.SelectedIndex == 1)
+                    {
+                        GameTreeNode.SearchFrameWork = GameTreeNode.Enum_GameTreeSearchFrameWork.ABPurning_ScoreSort;
+                    }
+                    else if (CompareAlgorithmCB.SelectedIndex == 2)
+                    {
+                        GameTreeNode.SearchFrameWork = GameTreeNode.Enum_GameTreeSearchFrameWork.ABPurning_Normal;
+                    }
+                    else if (CompareAlgorithmCB.SelectedIndex == 3)
+                    {
+                        GameTreeNode.SearchFrameWork = GameTreeNode.Enum_GameTreeSearchFrameWork.MinMax;
+                    }
+                    #region 对比算法测试
+                    QuoridorAI.AIRunTime.AstarNum = 0;
+                    QuoridorAI.AIRunTime.Astar_s = 0;
+                    Root = new GameTreeNode();
+
+                    Root.NodePlayer = EnumNowPlayer.Player1;
+                    stopwatch = new System.Diagnostics.Stopwatch();
+                    stopwatch.Start(); //  开始监视代码运行时间
+                    /***************待测代码段****************/
+                    GameTreeNode.CreateGameTree(Root, NowQuoridor.ThisChessBoard, TreeDepth, DebugSelectCB.Checked);//skinCheckBox1.Checked);//可以改变最大深度来提高算法强度,一定要是奇数
+                    if (IfUseViewFormDebug)
+                    {
+                        if (DV.treeView2.Nodes[DV.treeView2.Nodes.Count - 1].Text != "Root")
+                            DV.treeView2.Nodes.Add(new TreeNode("第" + count_AIAction.ToString() + "次落子:"));
+                        else
+                            DV.treeView2.Nodes[0] = new TreeNode("第" + count_AIAction.ToString() + "次落子:");
+                        GameTreeNode.GameTreeView(Root, DV.treeView2.Nodes[DV.treeView2.Nodes.Count - 1]);
+                    }
+
+                    Console.WriteLine(GameTreeNode.SearchFrameWork.ToString() + "结果：");
+                    Console.WriteLine(Root.NodeAction.ToString() + "(" + Root.ActionLocation.X.ToString() + "," + Root.ActionLocation.Y.ToString() + ")");
+
+                    /***************待测代码段****************/
+                    stopwatch.Stop(); //  停止监视
+                    timespan = stopwatch.Elapsed; //  获取当前实例测量得出的总时间
+                    milliseconds = timespan.TotalMilliseconds;  //  总毫秒数
+                    seconds = timespan.TotalSeconds;
+
+                    Console.WriteLine("算法用时：" + seconds.ToString() + "s");
+                    GameTreeNode.NodeNum = 0;
+                    GameTreeNode.CalGameTreeNodeNum(Root);
+                    Console.WriteLine("博弈树节点总数：" + GameTreeNode.NodeNum.ToString() + "个");
+                    Console.WriteLine("Astar平均用时：" + QuoridorAI.AIRunTime.Astar_s.ToString() + "ms");
+                    Console.WriteLine("Astar次数：" + QuoridorAI.AIRunTime.AstarNum.ToString() + "次");
+                    Console.WriteLine("Astar总用时：" + (QuoridorAI.AIRunTime.Astar_s * QuoridorAI.AIRunTime.AstarNum).ToString() + "ms");
+                    Console.WriteLine("*************");
+
+                    #endregion
                 }
-                Console.WriteLine(GameTreeNode.SearchFrameWork.ToString() + "结果：");
-                Console.WriteLine(Root.NodeAction.ToString() + "(" + Root.ActionLocation.X.ToString() + "," + Root.ActionLocation.Y.ToString() + ")");
 
-                /***************待测代码段****************/
-                stopwatch.Stop(); //  停止监视
-                timespan = stopwatch.Elapsed; //  获取当前实例测量得出的总时间
-                milliseconds = timespan.TotalMilliseconds;  //  总毫秒数
-                seconds = timespan.TotalSeconds;
-
-                Console.WriteLine("算法用时：" + seconds.ToString() + "s");
-                GameTreeNode.NodeNum = 0;
-                GameTreeNode.CalGameTreeNodeNum(Root);
-                Console.WriteLine("博弈树节点总数：" + GameTreeNode.NodeNum.ToString() + "个");
-                Console.WriteLine("Astar平均用时：" + QuoridorAI.AIRunTime.Astar_s.ToString() + "ms");
-                Console.WriteLine("Astar次数：" + QuoridorAI.AIRunTime.AstarNum.ToString() + "次");
-                Console.WriteLine("Astar总用时：" + (QuoridorAI.AIRunTime.Astar_s * QuoridorAI.AIRunTime.AstarNum).ToString() + "ms");
-                Console.WriteLine("*************");
-
-                #endregion
+                if (CompareAlgorithmCB.SelectedIndex == 0)
+                {
+                    GameTreeNode.SearchFrameWork = GameTreeNode.Enum_GameTreeSearchFrameWork.ABPurning_ScoreSort;
+                }
+                else if (CompareAlgorithmCB.SelectedIndex == 1)
+                {
+                    GameTreeNode.SearchFrameWork = GameTreeNode.Enum_GameTreeSearchFrameWork.ABPurning_Normal;
+                }
+                else if (CompareAlgorithmCB.SelectedIndex == 2)
+                {
+                    GameTreeNode.SearchFrameWork = GameTreeNode.Enum_GameTreeSearchFrameWork.MinMax;
+                }
 
                 #region AI博弈树决策
                 QuoridorAI.AIRunTime.AstarNum = 0;
@@ -573,9 +575,8 @@ namespace Quoridor_With_C
                 stopwatch = new System.Diagnostics.Stopwatch();
                 stopwatch.Start(); //  开始监视代码运行时间
                 /***************待测代码段****************/
-                GameTreeNode.SearchFrameWork = GameTreeNode.Enum_GameTreeSearchFrameWork.ABPurning_ScoreSort;
-                GameTreeNode.CreateGameTree(Root, NowQuoridor.ThisChessBoard, 2, DebugSelectCB.Checked);//skinCheckBox1.Checked);//可以改变最大深度来提高算法强度,一定要是奇数
-                if (IfOpenDebugViewForm)
+                GameTreeNode.CreateGameTree(Root, NowQuoridor.ThisChessBoard, TreeDepth, DebugSelectCB.Checked);//skinCheckBox1.Checked);//可以改变最大深度来提高算法强度,一定要是奇数
+                if (IfUseViewFormDebug)
                 {
                     if (DV.treeView1.Nodes[DV.treeView1.Nodes.Count - 1].Text != "Root")
                         DV.treeView1.Nodes.Add(new TreeNode("第" + count_AIAction.ToString() + "次落子:"));
@@ -967,12 +968,7 @@ namespace Quoridor_With_C
         {
 
         }
-        public bool IfOpenDebugViewForm = true;
-        /// <summary>
-        /// 打开调试窗体
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        public bool IfUseViewFormDebug = true;
         private void OpenDebugFormBTN_Click(object sender, EventArgs e)
         {
         }

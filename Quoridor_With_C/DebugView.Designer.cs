@@ -30,9 +30,11 @@
         {
             System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Root");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DebugView));
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Root");
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.skinMenuStrip1 = new CCWin.SkinControl.SkinMenuStrip();
             this.test1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.treeView2 = new System.Windows.Forms.TreeView();
             this.skinMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -45,7 +47,7 @@
             treeNode1.Text = "Root";
             this.treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode1});
-            this.treeView1.Size = new System.Drawing.Size(716, 473);
+            this.treeView1.Size = new System.Drawing.Size(307, 473);
             this.treeView1.TabIndex = 0;
             // 
             // skinMenuStrip1
@@ -101,11 +103,24 @@
             this.test1ToolStripMenuItem.Size = new System.Drawing.Size(61, 24);
             this.test1ToolStripMenuItem.Text = "Test1";
             // 
+            // treeView2
+            // 
+            this.treeView2.Font = new System.Drawing.Font("微软雅黑", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.treeView2.Location = new System.Drawing.Point(344, 98);
+            this.treeView2.Name = "treeView2";
+            treeNode2.Name = "节点0";
+            treeNode2.Text = "Root";
+            this.treeView2.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
+            treeNode2});
+            this.treeView2.Size = new System.Drawing.Size(307, 473);
+            this.treeView2.TabIndex = 2;
+            // 
             // DebugView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(750, 582);
+            this.Controls.Add(this.treeView2);
             this.Controls.Add(this.treeView1);
             this.Controls.Add(this.skinMenuStrip1);
             this.MainMenuStrip = this.skinMenuStrip1;
@@ -124,5 +139,6 @@
         public System.Windows.Forms.TreeView treeView1;
         private CCWin.SkinControl.SkinMenuStrip skinMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem test1ToolStripMenuItem;
+        public System.Windows.Forms.TreeView treeView2;
     }
 }

@@ -74,41 +74,6 @@ namespace GameTree
 
             QABuff = NowQuoridor.CreateActionList(ThisChessBoard);
 
-            if (ThisNode.depth > DepthMax)
-            {
-                //NowQuoridor.ActionListEvaluation(ThisChessBoard, ref QABuff, ThisNode.NodePlayer);
-
-                if (NowQuoridor.ActionList.Count <= 0)
-                {
-                    NowQuoridor.Player_Now = PlayerSave;
-                    double score = 999999;
-                    ThisNode.CreateNewSon(ThisNode, new GameTreeNode(NowAction.Action_Wait, new Point(-1, -1)
-                        , PlayerSave, ThisNode.depth + 1, score, score, score));
-                    ThisNode.score = score;
-                    return;
-                }
-                #region 贪婪思想，找最好的一步
-                QuoridorAction BestAction = new QuoridorAction(NowAction.Action_Wait, new Point(-1, -1));
-                BestAction = QABuff.First();
-                double MaxScore = -100;
-                foreach (QuoridorAction AL in QABuff)
-                {
-                    if (MaxScore < AL.WholeScore)
-                    {
-                        BestAction = AL;
-                        MaxScore = AL.WholeScore;
-                    }
-                }
-                #endregion
-                NowQuoridor.Player_Now = PlayerSave;
-                double alphabetabuff = MaxScore;
-
-                ThisNode.CreateNewSon(ThisNode, new GameTreeNode(BestAction.PlayerAction, BestAction.ActionPoint
-                , PlayerSave, ThisNode.depth + 1, -alphabetabuff, alphabetabuff, alphabetabuff));
-                ThisNode.score = alphabetabuff;
-                return;
-            }
-
             foreach (QuoridorAction QA in QABuff)
             {
                 #region 保存棋盘状态
@@ -130,10 +95,18 @@ namespace GameTree
                 }
                 #endregion
 
-                CreateNewSon(ThisNode, new GameTreeNode(QA.PlayerAction, QA.ActionPoint
-                    , PlayerSave, ThisNode.depth + 1, ThisNode.alpha, ThisNode.beta, ThisNode.beta));
+                if (ThisNode.depth <= DepthMax)
+                {
+                    CreateNewSon(ThisNode, new GameTreeNode(QA.PlayerAction, QA.ActionPoint
+                        , PlayerSave, ThisNode.depth + 1, ThisNode.alpha, ThisNode.beta, ThisNode.beta));
 
-                ExpandNode_MinMax(ThisChessBoard, ThisNode.SonNode.Last());
+                    ExpandNode_MinMax(ThisChessBoard, ThisNode.SonNode.Last());
+                }
+                else
+                {
+                    CreateNewSon(ThisNode, new GameTreeNode(QA.PlayerAction, QA.ActionPoint
+                        , PlayerSave, ThisNode.depth + 1, QA.WholeScore, QA.WholeScore, QA.WholeScore)); 
+                }
                 #region 恢复棋盘状态
                 ChessBoard.ResumeChessBoard(ref ThisChessBoard, ChessBoardBuff);
                 #endregion
@@ -260,7 +233,7 @@ namespace GameTree
 
                 if (ThisNode.NodePlayer == NowQuoridor.PlayerBuff)//MIN层
                 {
-                    if (ThisNode.SonNode.Last().score < ThisNode.beta)
+                    if (ThisNode.SonNode.Last().alpha < ThisNode.beta)
                     {
                         ThisNode.beta = ThisNode.SonNode.Last().score;
                         ThisNode.score = ThisNode.SonNode.Last().score;
@@ -268,12 +241,12 @@ namespace GameTree
 
                     if (ThisNode.beta <= ThisNode.alpha)
                     {
-                        //break; 
+                        break; 
                     }
                 }
                 else
                 {
-                    if (ThisNode.SonNode.Last().score > ThisNode.alpha)
+                    if (ThisNode.SonNode.Last().beta > ThisNode.alpha)
                     {
                         ThisNode.alpha = ThisNode.SonNode.Last().score;
                         ThisNode.score = ThisNode.SonNode.Last().score;
@@ -287,11 +260,98 @@ namespace GameTree
 
                     if (ThisNode.beta <= ThisNode.alpha)
                     {
-                        //break;
+                        break;
                     }
                 }
             }
         }
+
+        /// <summary>
+        /// 以Alpha-Beta剪枝框架生成博弈树
+        /// </summary>
+        /// <param name="ThisChessBoard">当前棋盘状态</param>
+        /// <param name="ThisNode">当前博弈树节点</param>
+        public void ExpandNode_ABPruning_New(ChessBoard ThisChessBoard, GameTreeNode ThisNode)
+        {
+            ///暂存一些量以便恢复
+            EnumNowPlayer PlayerSave = NowQuoridor.ReversePlayer(ThisNode.NodePlayer);
+            NowQuoridor.Player_Now = PlayerSave;
+
+            List<QuoridorAction> QABuff = NowQuoridor.ActionList;
+
+            QABuff = NowQuoridor.CreateActionList(ThisChessBoard);
+
+            foreach (QuoridorAction QA in QABuff)
+            {
+                #region 保存棋盘状态
+                ChessBoard ChessBoardBuff = new ChessBoard();
+                ChessBoard.SaveChessBoard(ref ChessBoardBuff, ThisChessBoard);
+                #endregion
+                #region 模拟落子
+                string Hint = NowQuoridor.QuoridorRule.Action(ref ThisChessBoard, QA.ActionPoint.X, QA.ActionPoint.Y, QA.PlayerAction);
+                try
+                {
+                    if (Hint != "OK")
+                    {
+                        Exception e = new Exception();
+                    }
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+                #endregion
+
+                if (ThisNode.depth <= DepthMax)
+                {
+
+                    CreateNewSon(ThisNode, new GameTreeNode(QA.PlayerAction, QA.ActionPoint
+                    , PlayerSave, ThisNode.depth + 1, ThisNode.alpha, ThisNode.beta, ThisNode.score));
+                    ExpandNode_ABPruning_New(ThisChessBoard, ThisNode.SonNode.Last());
+                }
+                else
+                {
+                    CreateNewSon(ThisNode, new GameTreeNode(QA.PlayerAction, QA.ActionPoint
+                    , PlayerSave, ThisNode.depth + 1, QA.WholeScore, ThisNode.beta, QA.WholeScore)); 
+
+                }
+
+                ChessBoard.ResumeChessBoard(ref ThisChessBoard, ChessBoardBuff);
+
+                if (ThisNode.NodePlayer == NowQuoridor.PlayerBuff)//MIN层
+                {
+                    if (ThisNode.SonNode.Last().alpha < ThisNode.beta)
+                    {
+                        ThisNode.beta = ThisNode.SonNode.Last().alpha;
+                        ThisNode.score = ThisNode.SonNode.Last().alpha;
+                    }
+
+                    if (ThisNode.beta <= ThisNode.alpha)
+                    {
+                        break;
+                    }
+                }
+                else
+                {
+                        if (ThisNode.SonNode.Last().beta > ThisNode.alpha)
+                        {
+                            ThisNode.alpha = ThisNode.SonNode.Last().beta;
+                            ThisNode.score = ThisNode.SonNode.Last().beta;
+                            //if (ThisNode.depth == 0)//根节点层
+                            //{
+                            //    ThisNode.ActionLocation = ThisNode.SonNode.Last().ActionLocation;
+                            //    ThisNode.NodeAction = ThisNode.SonNode.Last().NodeAction;
+                            //    ThisNode.NodePlayer = ThisNode.SonNode.Last().NodePlayer;
+                            //}
+                        }
+                    if (ThisNode.beta <= ThisNode.alpha)
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+
         public enum Enum_GameTreeSearchFrameWork
         {
             MinMax,
@@ -326,7 +386,6 @@ namespace GameTree
                 || SearchFrameWork == Enum_GameTreeSearchFrameWork.MinMax)
             {
                 QuoridorAI.ActionListIfSort = true;
-                RootNode.ExpandNode_ABPruning(ChessBoard_Init, RootNode);//5k数量级节点数
             }
             else
             {
@@ -335,25 +394,40 @@ namespace GameTree
 
             if (SearchFrameWork == Enum_GameTreeSearchFrameWork.MinMax)
             {
-                RootNode.ExpandNode_MinMax(ChessBoard_Init, RootNode);//3W数量级节点数                
+                RootNode.ExpandNode_MinMax(ChessBoard_Init, RootNode);//3W数量级节点数  
+                double MaxScore = -1000;
+                foreach (GameTreeNode GTN in RootNode.SonNode)
+                {
+                    if (MaxScore < GTN.score)
+                    {
+                        MaxScore = GTN.score;
+                        RootNode.NodePlayer = GTN.NodePlayer;
+                        RootNode.NodeAction = GTN.NodeAction;
+                        RootNode.ActionLocation = GTN.ActionLocation;
+                        RootNode.score = MaxScore;
+                    }
+                }
             }
-            else if (SearchFrameWork == Enum_GameTreeSearchFrameWork.ABPurning_Normal)
+            else if (SearchFrameWork == Enum_GameTreeSearchFrameWork.ABPurning_ScoreSort 
+                ||SearchFrameWork == Enum_GameTreeSearchFrameWork.ABPurning_Normal)
             {
-                RootNode.ExpandNode_ABPruning(ChessBoard_Init, RootNode);//5k数量级节点数
+                RootNode.ExpandNode_ABPruning_New(ChessBoard_Init, RootNode);
+                double MaxScore = -1000;
+                foreach (GameTreeNode GTN in RootNode.SonNode)
+                {
+                    if (MaxScore < GTN.beta)
+                    {
+                        MaxScore = GTN.beta;
+                        RootNode.NodePlayer = GTN.NodePlayer;
+                        RootNode.NodeAction = GTN.NodeAction;
+                        RootNode.ActionLocation = GTN.ActionLocation;
+                        RootNode.score = MaxScore;
+                    }
+                }
+                //RootNode.ExpandNode_ABPruning(ChessBoard_Init, RootNode);//5k数量级节点数
             }
 
-            //double MaxScore = -1000;
-            //foreach (GameTreeNode GTN in RootNode.SonNode)
-            //{
-            //    if (MaxScore < GTN.score)
-            //    {
-            //        MaxScore = GTN.score;
-            //        RootNode.NodePlayer = GTN.NodePlayer;
-            //        RootNode.NodeAction = GTN.NodeAction;
-            //        RootNode.ActionLocation = GTN.ActionLocation;
-            //        RootNode.score = MaxScore;
-            //    }
-            //}
+
             if (IfShowDebugLog)
                 PrintGameTree(RootNode);
         }
@@ -373,6 +447,61 @@ namespace GameTree
                 CalGameTreeNodeNum(Son);
             }
         }
+        /// <summary>
+        /// 获得博弈树节点在TreeView控件上应有的Text属性字符串
+        /// </summary>
+        /// <param name="NowNode">当前待生成的节点</param>
+        /// <returns></returns>
+        public static string GetGameTreeNodeViewText(GameTreeNode NowNode)
+        {
+            string SonTextbuff = "D:";
+            SonTextbuff += NowNode.depth.ToString() + " P";
+
+            switch (NowNode.NodePlayer)
+            {
+                case EnumNowPlayer.Player1:
+                    SonTextbuff += "1";
+                    break;
+                case EnumNowPlayer.Player2:
+                    SonTextbuff += "2";
+                    break;
+                default:
+                    SonTextbuff += "Error";
+                    break;
+            }
+            switch (NowNode.NodeAction)
+            {
+                case NowAction.Action_PlaceVerticalBoard:
+                    SonTextbuff += ((NowNode.ActionLocation.X) * 8 + NowNode.ActionLocation.Y + 1).ToString() + "点和" +
+                        ((NowNode.ActionLocation.X + 1) * 8 + NowNode.ActionLocation.Y + 1).ToString() + "点;";
+                    break;
+                case NowAction.Action_PlaceHorizontalBoard:
+                    SonTextbuff += ((NowNode.ActionLocation.X) * 8 + NowNode.ActionLocation.Y + 1).ToString() + "点和" +
+                        ((NowNode.ActionLocation.X) * 8 + NowNode.ActionLocation.Y + 1 + 1).ToString() + "点";
+                    break;
+                case NowAction.Action_Move_Player1:
+                    SonTextbuff += ((NowNode.ActionLocation.X) * 8 + NowNode.ActionLocation.Y + 1).ToString() + "点";
+                    break;
+                case NowAction.Action_Move_Player2:
+                    SonTextbuff += ((NowNode.ActionLocation.X) * 8 + NowNode.ActionLocation.Y + 1).ToString() + "点";
+                    break;
+                case NowAction.Action_Wait:
+                    SonTextbuff += "Error";
+                    break;
+                default:
+                    SonTextbuff += "Error";
+                    break;
+            }
+
+            SonTextbuff += " A:";
+            SonTextbuff += NowNode.alpha.ToString();
+            SonTextbuff += ",B:";
+            SonTextbuff += NowNode.beta.ToString();
+            SonTextbuff += ",S:";
+            SonTextbuff += NowNode.score.ToString();
+                
+            return SonTextbuff;
+        }
         public static void GameTreeView(GameTreeNode NowNode, TreeNode NowTreeNode)
         {
             if (NowNode.SonNode.Count <= 0)//叶节点
@@ -381,54 +510,17 @@ namespace GameTree
             }
             foreach (GameTreeNode Son in NowNode.SonNode)
             {
-                string SonTextbuff = "D:";
-                SonTextbuff += Son.depth.ToString() + " P";
-
-                switch (Son.NodePlayer)
-                {
-                    case EnumNowPlayer.Player1:
-                        SonTextbuff += "1";
-                        break;
-                    case EnumNowPlayer.Player2:
-                        SonTextbuff += "2";
-                        break;
-                    default:
-                        SonTextbuff += "Error";
-                        break;
-                }
-                switch (Son.NodeAction)
-                {
-                    case NowAction.Action_PlaceVerticalBoard:
-                        SonTextbuff += "PV";
-                        break;
-                    case NowAction.Action_PlaceHorizontalBoard:
-                        SonTextbuff += "PH";
-                        break;
-                    case NowAction.Action_Move_Player1:
-                        SonTextbuff += "M1";
-                        break;
-                    case NowAction.Action_Move_Player2:
-                        SonTextbuff += "M2";
-                        break;
-                    case NowAction.Action_Wait:
-                        SonTextbuff += "Error";
-                        break;
-                    default:
-                        SonTextbuff += "Error";
-                        break;
-                }
-
-                SonTextbuff += " A:";
-                SonTextbuff += Son.alpha.ToString();
-                SonTextbuff += ",B:";
-                SonTextbuff += Son.beta.ToString();
-                SonTextbuff += ",S:";
-                SonTextbuff += Son.score.ToString();
-
+                string SonTextbuff = GetGameTreeNodeViewText(Son);
                 TreeNode SonTreeNode = new TreeNode(SonTextbuff);
 
                 NowTreeNode.Nodes.Add(SonTreeNode);
                 GameTreeView(Son, SonTreeNode);
+                if (NowNode.depth == 0)
+                {
+                    SonTextbuff = GetGameTreeNodeViewText(NowNode);
+
+                    NowTreeNode.Text = SonTextbuff;
+                }
             } 
         }
         /// <summary>
