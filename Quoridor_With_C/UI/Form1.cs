@@ -16,7 +16,7 @@ using QuoridorRule;
 using GameTree;
 using NowAction = QuoridorRule.QuoridorRuleEngine.NowAction;
 using EnumNowPlayer = QuoridorRule.QuoridorRuleEngine.EnumNowPlayer;
-
+using System.Diagnostics;
 
 namespace Quoridor_With_C
 {
@@ -210,7 +210,6 @@ namespace Quoridor_With_C
                 SPB.BackColor = Color.Transparent;
             }
 
-
             if (GameMode == GameModeStatus.DoublePlay || GameMode == GameModeStatus.SinglePlay)
             {
                 this.Text = "步步为营游戏_" + GameMode.ToString() + "模式_上海海事大学";
@@ -276,9 +275,24 @@ namespace Quoridor_With_C
                 DV.Show();
                 #endregion
 
+                #region 配置算法选择控件
+                CompareAlgorithmCB.Items.Add("None");
+                CompareAlgorithmCB.Items.Add(GameTreeNode.Enum_GameTreeSearchFrameWork.ABPurning_Normal);
+                AlgorithmSelectCB.Items.Add(GameTreeNode.Enum_GameTreeSearchFrameWork.ABPurning_Normal);
+
+                CompareAlgorithmCB.Items.Add(GameTreeNode.Enum_GameTreeSearchFrameWork.ABPurning_ScoreSort);
+                AlgorithmSelectCB.Items.Add(GameTreeNode.Enum_GameTreeSearchFrameWork.ABPurning_ScoreSort);
+
+                CompareAlgorithmCB.Items.Add(GameTreeNode.Enum_GameTreeSearchFrameWork.ABPurning_UseTranslationTable);
+                AlgorithmSelectCB.Items.Add(GameTreeNode.Enum_GameTreeSearchFrameWork.ABPurning_UseTranslationTable);
+
+                CompareAlgorithmCB.Items.Add(GameTreeNode.Enum_GameTreeSearchFrameWork.MinMax);
+                AlgorithmSelectCB.Items.Add(GameTreeNode.Enum_GameTreeSearchFrameWork.MinMax);
+
                 CompareAlgorithmCB.SelectedIndex = 0;
                 AlgorithmSelectCB.SelectedIndex = 0;
                 DepthSelectCB.SelectedIndex = 1;
+                #endregion
             }
             else
             {
@@ -397,6 +411,7 @@ namespace Quoridor_With_C
                 Hint = "点击越界！";
                 return Hint;
             }
+
             string Hint1 = "";
             string Hint2 = "";
             Hint1 = NowQuoridor.QuoridorRule.CheckBoard(NowQuoridor.ThisChessBoard, PlayerNowAction, EnumNowPlayer.Player1, row, col);
@@ -412,15 +427,15 @@ namespace Quoridor_With_C
                     return Hint1;
                 }
             }
-            else if (Hint2 == "Player2 No Board")
-            {
-                if (PlayerNowAction == NowAction.Action_PlaceHorizontalBoard
-                    || PlayerNowAction == NowAction.Action_PlaceVerticalBoard)
-                {
-                    MessageBox.Show(Hint2);
-                    return Hint2;
-                }
-            }
+            //else if (Hint2 == "Player2 No Board")
+            //{
+            //    if (PlayerNowAction == NowAction.Action_PlaceHorizontalBoard
+            //        || PlayerNowAction == NowAction.Action_PlaceVerticalBoard)
+            //    {
+            //        MessageBox.Show(Hint2);
+            //        return Hint2;
+            //    }
+            //}
 
             if ((Hint1 != "Player1 No Board" && Hint2 != "Player2 No Board")
                 && (Hint1 != "OK" || Hint2 != "OK"))
@@ -432,6 +447,13 @@ namespace Quoridor_With_C
                 else if (Hint2 != "OK" && Hint1 != "OK")
                     MessageBox.Show("P1:" + Hint1 + " P2:" + Hint2);
                 return Hint1 + Hint2;
+            }
+
+            long HashBuff = 0;
+            if (GameTreeNode.SearchFrameWork == GameTreeNode.Enum_GameTreeSearchFrameWork.ABPurning_UseTranslationTable)
+            {
+                QuoridorAction QA = new QuoridorAction(PlayerNowAction, new Point(row,col));
+                HashBuff = GameTreeNode.NodeTranslationTable.NodeGetHashCode(Root.NodeHashCode, QA, NowQuoridor.ThisChessBoard);
             }
 
             Hint = NowQuoridor.QuoridorRule.Action(ref NowQuoridor.ThisChessBoard,row, col, PlayerNowAction);
@@ -482,6 +504,8 @@ namespace Quoridor_With_C
                 PlayerNowAction = NowAction.Action_Move_Player2;
             }
             NowQuoridor.Player_Now = NowPlayer;
+
+            GameTreeNode.InitChessBoardHashCode = GameTreeNode.InitChessBoardHashCode ^ HashBuff;
             #endregion
 
             #region AI落子
@@ -499,19 +523,23 @@ namespace Quoridor_With_C
                 IfUseViewFormDebug = IfUseTreeViewCB.Checked;
                 int TreeDepth = Convert.ToInt16(DepthSelectCB.Text);
 
-                if (CompareAlgorithmCB.SelectedIndex != 0)
+                if (CompareAlgorithmCB.SelectedItem.ToString() != "None")
                 {
-                    if (CompareAlgorithmCB.SelectedIndex == 1)
+                    if (CompareAlgorithmCB.SelectedItem.ToString() == GameTreeNode.Enum_GameTreeSearchFrameWork.ABPurning_ScoreSort.ToString())
                     {
                         GameTreeNode.SearchFrameWork = GameTreeNode.Enum_GameTreeSearchFrameWork.ABPurning_ScoreSort;
                     }
-                    else if (CompareAlgorithmCB.SelectedIndex == 2)
+                    else if (CompareAlgorithmCB.SelectedItem.ToString() == GameTreeNode.Enum_GameTreeSearchFrameWork.ABPurning_Normal.ToString())
                     {
                         GameTreeNode.SearchFrameWork = GameTreeNode.Enum_GameTreeSearchFrameWork.ABPurning_Normal;
                     }
-                    else if (CompareAlgorithmCB.SelectedIndex == 3)
+                    else if (CompareAlgorithmCB.SelectedItem.ToString() == GameTreeNode.Enum_GameTreeSearchFrameWork.MinMax.ToString())
                     {
                         GameTreeNode.SearchFrameWork = GameTreeNode.Enum_GameTreeSearchFrameWork.MinMax;
+                    }
+                    else if (CompareAlgorithmCB.SelectedItem.ToString() == GameTreeNode.Enum_GameTreeSearchFrameWork.ABPurning_UseTranslationTable.ToString())
+                    {
+                        GameTreeNode.SearchFrameWork = GameTreeNode.Enum_GameTreeSearchFrameWork.ABPurning_UseTranslationTable;
                     }
                     #region 对比算法测试
                     QuoridorAI.AIRunTime.AstarNum = 0;
@@ -553,19 +581,24 @@ namespace Quoridor_With_C
                     #endregion
                 }
 
-                if (CompareAlgorithmCB.SelectedIndex == 0)
+                if (AlgorithmSelectCB.SelectedItem.ToString() == GameTreeNode.Enum_GameTreeSearchFrameWork.ABPurning_ScoreSort.ToString())
                 {
                     GameTreeNode.SearchFrameWork = GameTreeNode.Enum_GameTreeSearchFrameWork.ABPurning_ScoreSort;
                 }
-                else if (CompareAlgorithmCB.SelectedIndex == 1)
+                else if (AlgorithmSelectCB.SelectedItem.ToString() == GameTreeNode.Enum_GameTreeSearchFrameWork.ABPurning_Normal.ToString())
                 {
                     GameTreeNode.SearchFrameWork = GameTreeNode.Enum_GameTreeSearchFrameWork.ABPurning_Normal;
                 }
-                else if (CompareAlgorithmCB.SelectedIndex == 2)
+                else if (AlgorithmSelectCB.SelectedItem.ToString() == GameTreeNode.Enum_GameTreeSearchFrameWork.MinMax.ToString())
                 {
                     GameTreeNode.SearchFrameWork = GameTreeNode.Enum_GameTreeSearchFrameWork.MinMax;
                 }
+                else if (AlgorithmSelectCB.SelectedItem.ToString() == GameTreeNode.Enum_GameTreeSearchFrameWork.ABPurning_UseTranslationTable.ToString())
+                {
+                    GameTreeNode.SearchFrameWork = GameTreeNode.Enum_GameTreeSearchFrameWork.ABPurning_UseTranslationTable;
+                }
 
+                
                 #region AI博弈树决策
                 QuoridorAI.AIRunTime.AstarNum = 0;
                 QuoridorAI.AIRunTime.Astar_s = 0;

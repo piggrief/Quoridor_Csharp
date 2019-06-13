@@ -160,8 +160,8 @@ namespace QuoridorRule
             Action_Wait
         }
 
-        public static int NumPlayer1Board = 16;//玩家1剩余挡板数
-        public static int NumPlayer2Board = 16;//玩家2剩余挡板数
+        public static int NumPlayer1Board = 2;//玩家1剩余挡板数
+        public static int NumPlayer2Board = 2;//玩家2剩余挡板数
         LookupRoadAlgorithm AstarEngine = new LookupRoadAlgorithm();
         /// <summary>
         /// 检测能否执行移动，No Change代表检测成功后不会执行这次移动，不会改变棋盘ChessBoard_ToCheck
