@@ -427,15 +427,6 @@ namespace Quoridor_With_C
                     return Hint1;
                 }
             }
-            //else if (Hint2 == "Player2 No Board")
-            //{
-            //    if (PlayerNowAction == NowAction.Action_PlaceHorizontalBoard
-            //        || PlayerNowAction == NowAction.Action_PlaceVerticalBoard)
-            //    {
-            //        MessageBox.Show(Hint2);
-            //        return Hint2;
-            //    }
-            //}
 
             if ((Hint1 != "Player1 No Board" && Hint2 != "Player2 No Board")
                 && (Hint1 != "OK" || Hint2 != "OK"))
