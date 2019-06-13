@@ -39,14 +39,14 @@ namespace GameTree
         public static long NodeNum = 0;
         public void InitTranslationTable()
         {
-            bool BuffBool = false;
+            ChessBoard InitCB = new ChessBoard();
 
-            NodeTranslationTable = new TranslationTable(2, 13, 13);
+            InitChessBoardHashCode = NodeTranslationTable.ZobristList[0, 0, 3];
+            InitChessBoardHashCode = InitChessBoardHashCode ^ NodeTranslationTable.ZobristList[1, 6, 3];
+
             TranslationTable.GameTreeNodeForHash NodeBuff = new TranslationTable.GameTreeNodeForHash();
-            InitChessBoardHashCode = NodeTranslationTable.NodeGetHashCode(0, 0, new Point(6, 0), ref BuffBool);            
-            NodeTranslationTable.Add(0, 0, new Point(6, 0), NodeBuff, true);
-            NodeTranslationTable.Add(InitChessBoardHashCode, 1, new Point(6, 12), NodeBuff);
-            InitChessBoardHashCode = NodeTranslationTable.NodeGetHashCode(InitChessBoardHashCode, 1, new Point(6, 12), ref BuffBool);
+
+            NodeTranslationTable.ChessBoardTT.Add(InitChessBoardHashCode, NodeBuff);
         }
         public GameTreeNode() 
         {
@@ -243,64 +243,7 @@ namespace GameTree
                 }
             }
         }
-        /// <summary>
-        /// 将QuoridorAction动作类里存储的信息转换到HashNode去
-        /// </summary>
-        /// <param name="QA"></param>
-        /// <param name="ActionIndex"></param>
-        /// <param name="ActionLocation"></param>
-        public void QuoridorActionToHashNode(QuoridorAction QA, ref int ActionIndex, ref Point ActionLocation)
-        {
-            switch (QA.PlayerAction)
-            {
-                case NowAction.Action_PlaceVerticalBoard:
-                    ActionIndex = 1;
-                    ActionLocation.X = 2 * (QA.ActionPoint.Y - 1) + 1;
-                    ActionLocation.Y = 2 * (QA.ActionPoint.X);
-                    break;
-                case NowAction.Action_PlaceHorizontalBoard:
-                    ActionIndex = 1;
-                    ActionLocation.Y = 2 * (QA.ActionPoint.X - 1) + 1;
-                    ActionLocation.X = 2 * (QA.ActionPoint.Y);
-                    break;
-                case NowAction.Action_Move_Player1:
-                    ActionIndex = 0;
-                    ActionLocation.X = QA.ActionPoint.Y * 2;
-                    ActionLocation.Y = QA.ActionPoint.X * 2;
-                    break;
-                case NowAction.Action_Move_Player2:
-                    ActionIndex = 1;
-                    ActionLocation.X = QA.ActionPoint.Y * 2;
-                    ActionLocation.Y = QA.ActionPoint.X * 2;
-                    break;
-                case NowAction.Action_Wait:                   
-                    break;
-                default:
-                    break;
-            }
-        }
-        public void TranslationTableAddTreeNode(GameTreeNode LastNode, QuoridorAction NextQA)
-        {
-            if (NextQA.PlayerAction == NowAction.Action_Move_Player1)
-            {
-                int ActionIndexBuff = 0;
-                Point ActionLocationBuff = new Point();
 
-                if (NextQA.PlayerAction == NowAction.Action_PlaceHorizontalBoard)
-                {
-                    QuoridorActionToHashNode(NextQA, ref ActionIndexBuff, ref ActionLocationBuff);
-                    bool BoolBuff = true;
-                    long HashBuff = NodeTranslationTable.NodeGetHashCode(LastNode.NodeHashCode, ActionIndexBuff, ActionLocationBuff, ref BoolBuff);
-                    TranslationTable.GameTreeNodeForHash NodeBuff = new TranslationTable.GameTreeNodeForHash();
-                    NodeTranslationTable.Add(HashBuff, ActionIndexBuff, new Point(ActionLocationBuff.X + 2, ActionLocationBuff.Y),);
-                }
-                //撤销前一次移动
-                //long HashCode_Cancel = NodeTranslationTable.NodeGetHashCode(0, LastNode);
-
-                //NodeTranslationTable.Add(ThisNode.NodeHashCode, 0, new Point())
-            }
-            //
-        }
         public long NodeHashCode = 0;
         /// <summary>
         /// 以Alpha-Beta剪枝框架并使用TranslationTable生成博弈树
@@ -309,6 +252,15 @@ namespace GameTree
         /// <param name="ThisNode">当前博弈树节点</param>
         public void ExpandNode_ABPruning_UseTT(ChessBoard ThisChessBoard, GameTreeNode ThisNode)
         {
+            bool IfInTT = false;
+            TranslationTable.GameTreeNodeForHash HashNode1 = new TranslationTable.GameTreeNodeForHash();
+            HashNode1 = NodeTranslationTable.Search(ThisNode.NodeHashCode, ref IfInTT);
+            if (IfInTT && ThisNode.depth == HashNode1.depth)
+            {
+                ThisNode.alpha = HashNode1.alpha;
+                ThisNode.beta = HashNode1.beta;
+                return;
+            }
             ///暂存一些量以便恢复
             EnumNowPlayer PlayerSave = NowQuoridor.ReversePlayer(ThisNode.NodePlayer);
             NowQuoridor.Player_Now = PlayerSave;
@@ -342,8 +294,9 @@ namespace GameTree
                 {
                     CreateNewSon(ThisNode, new GameTreeNode(QA.PlayerAction, QA.ActionPoint
                     , PlayerSave, ThisNode.depth + 1, ThisNode.alpha, ThisNode.beta, ThisNode.score));
-                    
-                    //NodeTranslationTable.Add(ThisNode.NodeHashCode, )
+
+                    long HashCodeBuff = NodeTranslationTable.NodeGetHashCode(ThisNode.NodeHashCode, QA, ThisChessBoard);
+                    ThisNode.SonNode.Last().NodeHashCode = HashCodeBuff;
 
                     ExpandNode_ABPruning(ThisChessBoard, ThisNode.SonNode.Last());
                 }
@@ -351,7 +304,6 @@ namespace GameTree
                 {
                     CreateNewSon(ThisNode, new GameTreeNode(QA.PlayerAction, QA.ActionPoint
                     , PlayerSave, ThisNode.depth + 1, QA.WholeScore, ThisNode.beta, QA.WholeScore));
-
                 }
 
                 ChessBoard.ResumeChessBoard(ref ThisChessBoard, ChessBoardBuff);
@@ -376,11 +328,30 @@ namespace GameTree
                     }
                 }
                 #endregion
+
                 if (ThisNode.beta <= ThisNode.alpha)//剪枝
                 {
+                    #region 存入置换表
+                    /*剪枝break前这个时刻该节点已经遍历完毕，可以加入置换表*/
+                    TranslationTable.GameTreeNodeForHash HashNodeBuff = new TranslationTable.GameTreeNodeForHash();
+                    HashNodeBuff.alpha = ThisNode.alpha;
+                    HashNodeBuff.beta = ThisNode.beta;
+                    HashNodeBuff.depth = ThisNode.depth;
+
+                    NodeTranslationTable.Add(ThisNode.NodeHashCode, HashNodeBuff);
+                    #endregion
                     break;
                 }
             }
+            #region 存入置换表
+            /*遍历完整个动作列表后可以加入置换表*/
+            TranslationTable.GameTreeNodeForHash HashNodeBuff2 = new TranslationTable.GameTreeNodeForHash();
+            HashNodeBuff2.alpha = ThisNode.alpha;
+            HashNodeBuff2.beta = ThisNode.beta;
+            HashNodeBuff2.depth = ThisNode.depth;
+
+            NodeTranslationTable.Add(ThisNode.NodeHashCode, HashNodeBuff2);
+            #endregion
         }
 
         public enum Enum_GameTreeSearchFrameWork
@@ -614,48 +585,30 @@ namespace GameTree
         public Hashtable ChessBoardTT = new Hashtable();
 
         CryptoRandomSource rnd = new CryptoRandomSource();
-
-        public long[, ,] ZobristList = new long[1, 1, 1];
-
-        public TranslationTable() { }
         /// <summary>
-        /// 获得一个哈希值
+        /// Zobrist决策映射表，对于第一维度的数定义为动作索引，具体定义如下：
+        /// <para>0 -> P1玩家的移动</para>
+        /// <para>1 -> P2玩家的移动</para>
+        /// <para>2 -> 横档板（决策点，不是是否有挡板的意思）</para>
+        /// <para>3 -> 竖档板（决策点，不是是否有挡板的意思）</para>
         /// </summary>
-        /// <param name="HashCode">前一步棋盘的哈希值</param>
-        /// <param name="ActionIndex">动作索引</param>
-        /// <param name="ActionLocation">动作位置</param>
-        /// <param name="IfInitNode">是否是初始节点</param>
-        /// <returns></returns>
-        public long NodeGetHashCode(long HashCode, int ActionIndex, Point ActionLocation, ref bool IfInitNode)
-        {
-            long HashBuff = ZobristList[ActionIndex, ActionLocation.X, ActionLocation.Y];
-
-            if (IfInitNode)
-            {
-                return HashBuff;
-            }
-            else
-            {
-                HashBuff = HashCode ^ HashBuff;
-                return HashBuff;
-            }
-        }
+        public long[, ,] ZobristList = new long[4, 7, 7];
         /// <summary>
         /// 初始化当前置换表
         /// </summary>
         /// <param name="ChessBoardSize_Width">棋盘宽度（格）</param>
         /// <param name="ChessBoardSize_Height">棋盘高度（格）</param>
         /// <param name="ActionNum">行动类型总数</param>
-        public TranslationTable(int ActionNum, int ChessBoardSize_Width, int ChessBoardSize_Height)
+        public TranslationTable()
         {
-            ZobristList = new long[ActionNum, ChessBoardSize_Width, ChessBoardSize_Height];
+            ZobristList = new long[4, 7, 7];
 
             #region 生成随机码
-            for (int i = 0; i < ActionNum; i++)
+            for (int i = 0; i < 4; i++)
             {
-                for (int j = 0; j < ChessBoardSize_Width; j++)
+                for (int j = 0; j < 7; j++)
                 {
-                    for (int k = 0; k < ChessBoardSize_Height; k++)
+                    for (int k = 0; k < 7; k++)
                     {
                         ZobristList[i, j, k] = rnd.NextInt64();
                     }
@@ -663,17 +616,82 @@ namespace GameTree
             }
             #endregion
         }
+
+        /// <summary>
+        /// 获得一个哈希值
+        /// </summary>
+        /// <param name="HashCode">前一步棋盘的哈希值</param>
+        /// <param name="QA">动作对象</param>
+        /// <param name="IfInitNode">是否是初始节点</param>
+        /// <returns></returns>
+        public long NodeGetHashCode(long HashCode, QuoridorAction QA, ChessBoard NowCB, bool IfInitNode = false)
+        {
+            int ActionIndexBuff = 0;
+            switch (QA.PlayerAction)
+            {
+                case NowAction.Action_PlaceVerticalBoard:
+                    ActionIndexBuff = 3;
+                    break;
+                case NowAction.Action_PlaceHorizontalBoard:
+                    ActionIndexBuff = 2;
+                    break;
+                case NowAction.Action_Move_Player1:
+                    ActionIndexBuff = 0;
+                    break;
+                case NowAction.Action_Move_Player2:
+                    ActionIndexBuff = 1;
+                    break;
+                default:
+                    ActionIndexBuff = 0;
+                    break;
+            }
+            long HashBuff = ZobristList[ActionIndexBuff, QA.ActionPoint.X, QA.ActionPoint.Y];
+
+            if (IfInitNode)
+            {
+                return HashBuff;
+            }
+            else
+            {
+                #region 撤销玩家的移动位置
+                if (QA.PlayerAction == NowAction.Action_Move_Player1)
+                {
+                    int CancelLocation_X = NowCB.Player1Location.X;
+                    int CancelLocation_Y = NowCB.Player1Location.Y;
+
+                    QuoridorAction QABuff = new QuoridorAction(NowAction.Action_Move_Player1, new Point(CancelLocation_X, CancelLocation_Y));
+                    long HashCode_Cancel = 
+                        ZobristList[0, QABuff.ActionPoint.X, QABuff.ActionPoint.Y];
+
+                    HashBuff = HashBuff ^ HashCode_Cancel;
+                }
+                else if (QA.PlayerAction == NowAction.Action_Move_Player2)
+                {
+                    int CancelLocation_X = NowCB.Player2Location.X;
+                    int CancelLocation_Y = NowCB.Player2Location.Y;
+
+                    QuoridorAction QABuff = new QuoridorAction(NowAction.Action_Move_Player2, new Point(CancelLocation_X, CancelLocation_Y));
+
+                    long HashCode_Cancel =
+                        ZobristList[1, QABuff.ActionPoint.X, QABuff.ActionPoint.Y];
+
+                    HashBuff = HashBuff ^ HashCode_Cancel;
+                }
+                #endregion
+
+                HashBuff = HashCode ^ HashBuff;
+                return HashBuff;
+            }
+        }
         /// <summary>
         /// 添加一个散列映射
         /// </summary>
-        /// <param name="HashCode">前一步棋盘的哈希值</param>
-        /// <param name="ActionIndex">动作索引</param>
-        /// <param name="ActionLocation">动作位置</param>
+        /// <param name="HashCode">要添加的哈希值</param>
         /// <param name="NodeToSave">待保存的节点信息</param>
         /// <param name="IfInitNode">是否是初始节点（即前一步棋盘是未进行任何行动的时候的棋盘）</param>
-        public void Add(long HashCode, int ActionIndex, Point ActionLocation, GameTreeNodeForHash NodeToSave, bool IfInitNode = false)
+        public void Add(long HashCode, GameTreeNodeForHash NodeToSave, bool IfInitNode = false)
         {
-            long HashCodeBuff = NodeGetHashCode(HashCode, ActionIndex, ActionLocation, ref IfInitNode);
+            long HashCodeBuff = HashCode;
 
             if (IfInitNode)
             {
@@ -685,10 +703,12 @@ namespace GameTree
                 bool IfHaveThisNode = false;
                 Search(HashCodeBuff, ref IfHaveThisNode);
                 #endregion
+                #region 随时替换策略
                 if (!IfHaveThisNode)
                     ChessBoardTT.Add(HashCodeBuff, NodeToSave);
                 else
                     ChessBoardTT[HashCodeBuff] = NodeToSave;
+                #endregion
             }
         }
         /// <summary>
