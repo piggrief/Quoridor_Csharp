@@ -63,10 +63,10 @@ namespace Quoridor
         {
             if (WhichBoard == NowAction.Action_Move_Player1 || WhichBoard == NowAction.Action_Move_Player2)
                 return 993;
-            if (Player == EnumNowPlayer.Player1 && QuoridorRuleEngine.NumPlayer1Board <= 0)
-                return 993;
-            else if (Player == EnumNowPlayer.Player2 && QuoridorRuleEngine.NumPlayer2Board <= 0)
-                return 993;
+            //if (Player == EnumNowPlayer.Player1 && QuoridorRuleEngine.NumPlayer1Board <= 0)
+            //    return 993;
+            //else if (Player == EnumNowPlayer.Player2 && QuoridorRuleEngine.NumPlayer2Board <= 0)
+            //    return 993;
 
             ///为了不改变原状态而暂存原状态以便后续恢复
             ChessBoard ChessBoardBuff = new ChessBoard();
@@ -296,14 +296,14 @@ namespace Quoridor
                 #endregion
 
                 #region 根据评分剪枝
-                if (Action.PlayerAction == NowAction.Action_Move_Player2 || Action.PlayerAction == NowAction.Action_Move_Player1)
-                {
-                    if (Action.WholeScore <= 0)
-                    { 
-                        ActionList.Remove(ActionList[i]);
-                        continue;
-                    }
-                }
+                //if (Action.PlayerAction == NowAction.Action_Move_Player2 || Action.PlayerAction == NowAction.Action_Move_Player1)
+                //{
+                //    if (Action.WholeScore <= 0)
+                //    { 
+                //        ActionList.Remove(ActionList[i]);
+                //        continue;
+                //    }
+                //}
                 #endregion
             }
         }
