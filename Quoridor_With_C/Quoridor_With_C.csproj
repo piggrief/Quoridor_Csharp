@@ -36,8 +36,9 @@
     <Reference Include="CSkin">
       <HintPath>..\packages\cskin.16.1.14.3\lib\net40\CSkin.dll</HintPath>
     </Reference>
-    <Reference Include="MathNet.Numerics">
-      <HintPath>..\packages\MathNet.Numerics.4.7.0\lib\net461\MathNet.Numerics.dll</HintPath>
+    <Reference Include="MathNet.Numerics, Version=4.8.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\MathNet.Numerics.4.8.1\lib\net461\MathNet.Numerics.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -54,29 +55,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DebugTool.cs">
+    <Compile Include="UI\DebugTool.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DebugTool.Designer.cs">
+    <Compile Include="UI\DebugTool.Designer.cs">
       <DependentUpon>DebugTool.cs</DependentUpon>
     </Compile>
-    <Compile Include="DebugView.cs">
+    <Compile Include="UI\DebugView.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DebugView.Designer.cs">
+    <Compile Include="UI\DebugView.Designer.cs">
       <DependentUpon>DebugView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form1.cs">
+    <Compile Include="UI\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
+    <Compile Include="UI\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Quridor Class\GameTree.cs" />
     <Compile Include="Quridor Class\LookupRoad.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="QueenSolve.cs" />
+    <Compile Include="QueenSolve Class\QueenSolve.cs" />
     <Compile Include="Quridor Class\Quoridor.cs" />
     <Compile Include="Quridor Class\QuoridorRule.cs" />
     <Compile Include="Resource1.Designer.cs">
@@ -84,21 +85,21 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resource1.resx</DependentUpon>
     </Compile>
-    <Compile Include="SimulateAnneal.cs" />
-    <Compile Include="Start.cs">
+    <Compile Include="QueenSolve Class\SimulateAnneal.cs" />
+    <Compile Include="UI\Start.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Start.Designer.cs">
+    <Compile Include="UI\Start.Designer.cs">
       <DependentUpon>Start.cs</DependentUpon>
     </Compile>
-    <Compile Include="UART.cs" />
-    <EmbeddedResource Include="DebugTool.resx">
+    <Compile Include="QueenSolve Class\UART.cs" />
+    <EmbeddedResource Include="UI\DebugTool.resx">
       <DependentUpon>DebugTool.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DebugView.resx">
+    <EmbeddedResource Include="UI\DebugView.resx">
       <DependentUpon>DebugView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form1.resx">
+    <EmbeddedResource Include="UI\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -114,7 +115,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resource1.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Start.resx">
+    <EmbeddedResource Include="UI\Start.resx">
       <DependentUpon>Start.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />

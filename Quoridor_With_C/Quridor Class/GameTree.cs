@@ -11,6 +11,9 @@ using Quoridor;
 using NowAction = QuoridorRule.QuoridorRuleEngine.NowAction;
 using EnumNowPlayer = QuoridorRule.QuoridorRuleEngine.EnumNowPlayer;
 using System.Windows.Forms;
+using MathNet.Numerics.Random;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace GameTree
 {
@@ -30,9 +33,25 @@ namespace GameTree
         public double beta = 10000;///该节点的beta值
         public double score = 10000;///该节点的评分值
 
+        public static TranslationTable NodeTranslationTable = new TranslationTable();
+        public static long InitChessBoardHashCode = 0;
         public static QuoridorAI NowQuoridor = new QuoridorAI();
         public static long NodeNum = 0;
-        public GameTreeNode() { }
+        public void InitTranslationTable()
+        {
+            bool BuffBool = false;
+
+            NodeTranslationTable = new TranslationTable(2, 13, 13);
+            TranslationTable.GameTreeNodeForHash NodeBuff = new TranslationTable.GameTreeNodeForHash();
+            InitChessBoardHashCode = NodeTranslationTable.NodeGetHashCode(0, 0, new Point(6, 0), ref BuffBool);            
+            NodeTranslationTable.Add(0, 0, new Point(6, 0), NodeBuff, true);
+            NodeTranslationTable.Add(InitChessBoardHashCode, 1, new Point(6, 12), NodeBuff);
+            InitChessBoardHashCode = NodeTranslationTable.NodeGetHashCode(InitChessBoardHashCode, 1, new Point(6, 12), ref BuffBool);            
+        }
+        public GameTreeNode() 
+        {
+            InitTranslationTable();
+        }
         /// <summary>
         /// 构造函数,用来设定该博弈树节点的信息
         /// </summary>
@@ -45,10 +64,7 @@ namespace GameTree
             beta = beta_set;
             score = score_set;
             ActionLocation = ActionLocation_set;
-        }
-        public GameTreeNode(GameTreeNode ThisNode)
-        {
-
+            InitTranslationTable();
         }
         /// <summary>
         /// 给该节点添加新的子节点
@@ -575,4 +591,118 @@ namespace GameTree
         }
 
     }
+
+    /// <summary>
+    /// Zobrist哈希算法
+    /// </summary>
+    public class TranslationTable
+    {
+        public Hashtable ChessBoardTT = new Hashtable();
+
+        CryptoRandomSource rnd = new CryptoRandomSource();
+
+        public long[, ,] ZobristList = new long[1, 1, 1];
+
+        public TranslationTable() { }
+        /// <summary>
+        /// 获得一个哈希值
+        /// </summary>
+        /// <param name="HashCode">前一步棋盘的哈希值</param>
+        /// <param name="ActionIndex">动作索引</param>
+        /// <param name="ActionLocation">动作位置</param>
+        /// <param name="IfInitNode">是否是初始节点</param>
+        /// <returns></returns>
+        public long NodeGetHashCode(long HashCode, int ActionIndex, Point ActionLocation, ref bool IfInitNode)
+        {
+            long HashBuff = ZobristList[ActionIndex, ActionLocation.X, ActionLocation.Y];
+
+            if (IfInitNode)
+            {
+                return HashBuff;
+            }
+            else
+            {
+                HashBuff = HashCode ^ HashBuff;
+                return HashBuff;
+            }
+        }
+        /// <summary>
+        /// 初始化当前置换表
+        /// </summary>
+        /// <param name="ChessBoardSize_Width">棋盘宽度（格）</param>
+        /// <param name="ChessBoardSize_Height">棋盘高度（格）</param>
+        /// <param name="ActionNum">行动类型总数</param>
+        public TranslationTable(int ActionNum, int ChessBoardSize_Width, int ChessBoardSize_Height)
+        {
+            ZobristList = new long[ActionNum, ChessBoardSize_Width, ChessBoardSize_Height];
+
+            #region 生成随机码
+            for (int i = 0; i < ActionNum; i++)
+            {
+                for (int j = 0; j < ChessBoardSize_Width; j++)
+                {
+                    for (int k = 0; k < ChessBoardSize_Height; k++)
+                    {
+                        ZobristList[i, j, k] = rnd.NextInt64();
+                    }
+                }
+            }
+            #endregion
+        }
+        /// <summary>
+        /// 添加一个散列映射
+        /// </summary>
+        /// <param name="HashCode">前一步棋盘的哈希值</param>
+        /// <param name="ActionIndex">动作索引</param>
+        /// <param name="ActionLocation">动作位置</param>
+        /// <param name="NodeToSave">待保存的节点信息</param>
+        /// <param name="IfInitNode">是否是初始节点（即前一步棋盘是未进行任何行动的时候的棋盘）</param>
+        public void Add(long HashCode, int ActionIndex, Point ActionLocation, GameTreeNodeForHash NodeToSave, bool IfInitNode = false)
+        {
+            long HashCodeBuff = NodeGetHashCode(HashCode, ActionIndex, ActionLocation, ref IfInitNode);
+
+            if (IfInitNode)
+            {
+                ChessBoardTT.Add(HashCodeBuff, NodeToSave);
+            }
+            else
+            {
+                #region 置换表中已包含的话替换该节点
+                bool IfHaveThisNode = false;
+                Search(HashCodeBuff, ref IfHaveThisNode);
+                #endregion
+                if (!IfHaveThisNode)
+                    ChessBoardTT.Add(HashCodeBuff, NodeToSave);
+                else
+                    ChessBoardTT[HashCodeBuff] = NodeToSave;
+            }
+        }
+        /// <summary>
+        /// 通过一个哈希值检索出置换表所存的节点，如果没有该哈希值的话则为默认节点，是否包含该哈希值由IfContain变量给出
+        /// </summary>
+        /// <param name="HashCode">哈希值</param>
+        /// <param name="IfContain">是否包含此哈希值</param>
+        /// <returns>检索出的节点对象</returns>
+        public GameTreeNodeForHash Search(long HashCode, ref bool IfContain)
+        {
+            GameTreeNodeForHash ReturnNode = new GameTreeNodeForHash();
+            if (ChessBoardTT.Contains(HashCode))
+            {
+                IfContain = true;
+                ReturnNode = (GameTreeNodeForHash)ChessBoardTT[HashCode];
+            }
+            else
+            {
+                IfContain = false;
+            }
+            return ReturnNode;
+        }
+        public class GameTreeNodeForHash
+        {
+            public double alpha = -10000;
+            public double beta = 10000;
+            public int depth = -1;
+        }
+    }
+
 }
