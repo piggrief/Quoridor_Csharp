@@ -162,6 +162,7 @@ namespace GameTree
         }
 
         public long NodeHashCode = 0;
+        public static bool IfUseTanslationTable = true;
         /// <summary>
         /// 以Alpha-Beta剪枝框架并使用TranslationTable生成博弈树
         /// </summary>
@@ -285,11 +286,9 @@ namespace GameTree
         public enum Enum_GameTreeSearchFrameWork
         {
             MinMax,
-            ABPurning_Normal,
-            ABPurning_ScoreSort,
-            ABPurning_UseTranslationTable
+            AlphaBetaPurning
         }
-        public static Enum_GameTreeSearchFrameWork SearchFrameWork = Enum_GameTreeSearchFrameWork.ABPurning_ScoreSort;
+        public static Enum_GameTreeSearchFrameWork SearchFrameWork = Enum_GameTreeSearchFrameWork.AlphaBetaPurning;
         /// <summary>
         /// 创建一棵博弈树
         /// </summary>
@@ -313,15 +312,6 @@ namespace GameTree
             }
             DepthMax = DepthMax_Set;
 
-            if (SearchFrameWork != Enum_GameTreeSearchFrameWork.ABPurning_Normal)
-            {
-                QuoridorAI.ActionListIfSort = true;
-            }
-            else
-            {
-                QuoridorAI.ActionListIfSort = false;
-            }
-
             if (SearchFrameWork == Enum_GameTreeSearchFrameWork.MinMax)
             {
                 RootNode.ExpandNode_MinMax(ChessBoard_Init, RootNode);//3W数量级节点数  
@@ -340,17 +330,10 @@ namespace GameTree
             }
             else
             {
-                # region 全局期望窗口
-                RootNode.alpha = -1;
-                RootNode.beta = 1;
-                #endregion
-                if (SearchFrameWork == Enum_GameTreeSearchFrameWork.ABPurning_UseTranslationTable)
-                {
-                    RootNode.NodeHashCode = GameTreeNode.InitChessBoardHashCode;
-                    RootNode.ExpandNode_ABPruning(ChessBoard_Init, RootNode, true); 
-                }
-                else
-                    RootNode.ExpandNode_ABPruning(ChessBoard_Init, RootNode, false);
+
+
+                RootNode.NodeHashCode = GameTreeNode.InitChessBoardHashCode;
+                RootNode.ExpandNode_ABPruning(ChessBoard_Init, RootNode, GameTreeNode.IfUseTanslationTable); 
 
                 double MaxScore = -1000;
                 foreach (GameTreeNode GTN in RootNode.SonNode)
@@ -441,7 +424,7 @@ namespace GameTree
             SonTextbuff += ",S:";
             SonTextbuff += NowNode.score.ToString();
 
-            if (SearchFrameWork == Enum_GameTreeSearchFrameWork.ABPurning_UseTranslationTable)
+            if (GameTreeNode.IfUseTanslationTable)
             {
                 SonTextbuff += " ";
                 SonTextbuff += NowNode.NodeHashCode.ToString();                
