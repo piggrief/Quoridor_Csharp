@@ -243,18 +243,18 @@ namespace Quoridor_With_C
                 TestTB.Location = new Point(ChessBoardPB.Location.X, ChessBoardPB.Size.Height + ChessBoardPB.Location.Y);
 
                 #region 配置初始棋盘
-                NowQuoridor.ThisChessBoard.ChessBoardAll[0, 3].GridStatus = Grid.GridInsideStatus.Empty;
-                NowQuoridor.ThisChessBoard.ChessBoardAll[1, 3].GridStatus = Grid.GridInsideStatus.Have_Player1;
-                NowQuoridor.ThisChessBoard.ChessBoardAll[6, 3].GridStatus = Grid.GridInsideStatus.Empty;
-                NowQuoridor.ThisChessBoard.ChessBoardAll[5, 3].GridStatus = Grid.GridInsideStatus.Have_Player2;
+                //NowQuoridor.ThisChessBoard.ChessBoardAll[0, 3].GridStatus = Grid.GridInsideStatus.Empty;
+                //NowQuoridor.ThisChessBoard.ChessBoardAll[1, 3].GridStatus = Grid.GridInsideStatus.Have_Player1;
+                //NowQuoridor.ThisChessBoard.ChessBoardAll[6, 3].GridStatus = Grid.GridInsideStatus.Empty;
+                //NowQuoridor.ThisChessBoard.ChessBoardAll[5, 3].GridStatus = Grid.GridInsideStatus.Have_Player2;
 
-                NowQuoridor.ThisChessBoard.ChessBoardAll[1, 3].IfUpBoard = true;
-                NowQuoridor.ThisChessBoard.ChessBoardAll[1, 4].IfUpBoard = true;
-                NowQuoridor.ThisChessBoard.ChessBoardAll[6, 2].IfUpBoard = true;
-                NowQuoridor.ThisChessBoard.ChessBoardAll[6, 3].IfUpBoard = true;
+                //NowQuoridor.ThisChessBoard.ChessBoardAll[1, 3].IfUpBoard = true;
+                //NowQuoridor.ThisChessBoard.ChessBoardAll[1, 4].IfUpBoard = true;
+                //NowQuoridor.ThisChessBoard.ChessBoardAll[6, 2].IfUpBoard = true;
+                //NowQuoridor.ThisChessBoard.ChessBoardAll[6, 3].IfUpBoard = true;
 
-                NowQuoridor.ThisChessBoard.Player1Location = new Point(1, 3);
-                NowQuoridor.ThisChessBoard.Player2Location = new Point(5, 3);
+                //NowQuoridor.ThisChessBoard.Player1Location = new Point(1, 3);
+                //NowQuoridor.ThisChessBoard.Player2Location = new Point(5, 3);
 
                 #endregion
 
@@ -290,9 +290,11 @@ namespace Quoridor_With_C
                 AlgorithmSelectCB.Items.Add(GameTreeNode.Enum_GameTreeSearchFrameWork.MinMax);
 
                 CompareAlgorithmCB.SelectedIndex = 0;
-                AlgorithmSelectCB.SelectedIndex = 0;
+                AlgorithmSelectCB.SelectedIndex = 2;
                 DepthSelectCB.SelectedIndex = 1;
                 #endregion
+
+                Console.WriteLine("棋盘HashCode为：" + GameTreeNode.InitChessBoardHashCode.ToString());
             }
             else
             {
@@ -375,6 +377,7 @@ namespace Quoridor_With_C
 
         }
         long count_AIAction = 0;
+        bool PlayerFirstAction = true;
         GameTreeNode Root = new GameTreeNode();
         /// <summary>
         /// 根据点击坐标执行下棋操作
@@ -441,8 +444,16 @@ namespace Quoridor_With_C
             }
 
             long HashBuff = 0;
-            if (GameTreeNode.SearchFrameWork == GameTreeNode.Enum_GameTreeSearchFrameWork.ABPurning_UseTranslationTable)
+
+            if (PlayerFirstAction)
             {
+                GameTreeNode.InitTranslationTable();
+                PlayerFirstAction = false;
+                QuoridorAction QA = new QuoridorAction(PlayerNowAction, new Point(row, col));
+                HashBuff = GameTreeNode.NodeTranslationTable.NodeGetHashCode(GameTreeNode.InitChessBoardHashCode, QA, NowQuoridor.ThisChessBoard);
+            }
+            else
+            { 
                 QuoridorAction QA = new QuoridorAction(PlayerNowAction, new Point(row,col));
                 HashBuff = GameTreeNode.NodeTranslationTable.NodeGetHashCode(Root.NodeHashCode, QA, NowQuoridor.ThisChessBoard);
             }
@@ -496,7 +507,7 @@ namespace Quoridor_With_C
             }
             NowQuoridor.Player_Now = NowPlayer;
 
-            GameTreeNode.InitChessBoardHashCode = GameTreeNode.InitChessBoardHashCode ^ HashBuff;
+            GameTreeNode.InitChessBoardHashCode = HashBuff;
             #endregion
 
             #region AI落子

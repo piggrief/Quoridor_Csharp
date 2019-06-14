@@ -691,6 +691,8 @@
             // 
             this.IfUseTreeViewCB.AutoSize = true;
             this.IfUseTreeViewCB.BackColor = System.Drawing.Color.Transparent;
+            this.IfUseTreeViewCB.Checked = true;
+            this.IfUseTreeViewCB.CheckState = System.Windows.Forms.CheckState.Checked;
             this.IfUseTreeViewCB.ControlState = CCWin.SkinClass.ControlState.Normal;
             this.IfUseTreeViewCB.DownBack = null;
             this.IfUseTreeViewCB.Font = new System.Drawing.Font("微软雅黑", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
