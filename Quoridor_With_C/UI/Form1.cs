@@ -637,6 +637,9 @@ namespace Quoridor_With_C
                 Console.WriteLine("Astar总用时：" + (QuoridorAI.AIRunTime.Astar_s * QuoridorAI.AIRunTime.AstarNum).ToString() + "ms");
                 Console.WriteLine("*************");
 
+                /*更新根节点深度*/
+                GameTreeNode.RootDepth += 2;
+
                 #endregion
                 //NowQuoridor.TestEvaluation();
                 //NowQuoridor.AlphaBetaPruningInit(NowQuoridor.ThisChessBoard.ChessBoardAll, EnumNowPlayer.Player2);                

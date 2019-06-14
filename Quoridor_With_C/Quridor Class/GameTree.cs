@@ -35,6 +35,7 @@ namespace GameTree
 
         public static TranslationTable NodeTranslationTable = new TranslationTable();
         public static long InitChessBoardHashCode = 0;
+        public static int RootDepth = 1;///根节点的深度，在一步一步落子后需要+2更新
         public static QuoridorAI NowQuoridor = new QuoridorAI();
         public static long NodeNum = 0;
         public static void InitTranslationTable()
@@ -173,7 +174,7 @@ namespace GameTree
                 bool IfInTT = false;
                 TranslationTable.GameTreeNodeForHash HashNode1 = new TranslationTable.GameTreeNodeForHash();
                 HashNode1 = NodeTranslationTable.Search(ThisNode.NodeHashCode, ref IfInTT);
-                if (ThisNode.depth != 0 && IfInTT && ThisNode.depth == HashNode1.depth)
+                if (ThisNode.depth != 0 && IfInTT && ThisNode.depth + RootDepth <= HashNode1.depth)
                 {
                     ThisNode.alpha = HashNode1.alpha;
                     ThisNode.beta = HashNode1.beta;
@@ -259,7 +260,7 @@ namespace GameTree
                         TranslationTable.GameTreeNodeForHash HashNodeBuff = new TranslationTable.GameTreeNodeForHash();
                         HashNodeBuff.alpha = ThisNode.alpha;
                         HashNodeBuff.beta = ThisNode.beta;
-                        HashNodeBuff.depth = ThisNode.depth;
+                        HashNodeBuff.depth = ThisNode.depth + RootDepth;
 
                         NodeTranslationTable.Add(ThisNode.NodeHashCode, HashNodeBuff);
                     }
@@ -274,7 +275,7 @@ namespace GameTree
                 TranslationTable.GameTreeNodeForHash HashNodeBuff2 = new TranslationTable.GameTreeNodeForHash();
                 HashNodeBuff2.alpha = ThisNode.alpha;
                 HashNodeBuff2.beta = ThisNode.beta;
-                HashNodeBuff2.depth = ThisNode.depth;
+                HashNodeBuff2.depth = ThisNode.depth + RootDepth;
 
                 NodeTranslationTable.Add(ThisNode.NodeHashCode, HashNodeBuff2);
             }
@@ -339,6 +340,10 @@ namespace GameTree
             }
             else
             {
+                # region 全局期望窗口
+                RootNode.alpha = -1;
+                RootNode.beta = 1;
+                #endregion
                 if (SearchFrameWork == Enum_GameTreeSearchFrameWork.ABPurning_UseTranslationTable)
                 {
                     RootNode.NodeHashCode = GameTreeNode.InitChessBoardHashCode;
@@ -391,7 +396,7 @@ namespace GameTree
         public static string GetGameTreeNodeViewText(GameTreeNode NowNode)
         {
             string SonTextbuff = "D:";
-            SonTextbuff += NowNode.depth.ToString() + " P";
+            SonTextbuff += (NowNode.depth + RootDepth).ToString() + " P";
 
             switch (NowNode.NodePlayer)
             {
@@ -551,9 +556,9 @@ namespace GameTree
                 {
                     for (int k = 0; k < 7; k++)
                     {
-                        //ZobristList[i, j, k] = rnd.NextInt64();
+                        ZobristList[i, j, k] = rnd.NextInt64();
                         /*调试用：*/
-                        ZobristList[i, j, k] = 100 * i + 10 * j + k;
+                        //ZobristList[i, j, k] = 100 * i + 10 * j + k;
                         //ZobristList[i, j, k] = rnd.NextInt32s(1)[0];
                     }
                 }
