@@ -67,7 +67,7 @@
             this.toolStripLabel4 = new System.Windows.Forms.ToolStripLabel();
             this.BlackBoardNumLB = new System.Windows.Forms.ToolStripLabel();
             this.DebugSelectCB = new System.Windows.Forms.CheckBox();
-            this.skinTabControl1 = new CCWin.SkinControl.SkinTabControl();
+            this.IfUseTT_CopareCB = new CCWin.SkinControl.SkinTabControl();
             this.skinTabPage1 = new CCWin.SkinControl.SkinTabPage();
             this.DepthSelectCB = new CCWin.SkinControl.SkinComboBox();
             this.skinLabel3 = new CCWin.SkinControl.SkinLabel();
@@ -77,6 +77,24 @@
             this.AlgorithmSelectCB = new CCWin.SkinControl.SkinComboBox();
             this.skinLabel1 = new CCWin.SkinControl.SkinLabel();
             this.MemoryPB = new CCWin.SkinControl.SkinProgressBar();
+            this.skinTabPage2 = new CCWin.SkinControl.SkinTabPage();
+            this.DepthCompareCB = new CCWin.SkinControl.SkinComboBox();
+            this.skinLabel4 = new CCWin.SkinControl.SkinLabel();
+            this.CompareIfUseTreeViewCB = new CCWin.SkinControl.SkinCheckBox();
+            this.IfUseTTCB = new CCWin.SkinControl.SkinCheckBox();
+            this.IfUseTT_CompareCB = new CCWin.SkinControl.SkinCheckBox();
+            this.skinLabel5 = new CCWin.SkinControl.SkinLabel();
+            this.skinLabel6 = new CCWin.SkinControl.SkinLabel();
+            this.AlphaSetTB = new CCWin.SkinControl.SkinTextBox();
+            this.BetaSetTB = new CCWin.SkinControl.SkinTextBox();
+            this.skinLabel7 = new CCWin.SkinControl.SkinLabel();
+            this.BetaSet_CompareCB = new CCWin.SkinControl.SkinTextBox();
+            this.skinLabel8 = new CCWin.SkinControl.SkinLabel();
+            this.AlphaSet_CompareCB = new CCWin.SkinControl.SkinTextBox();
+            this.skinLabel9 = new CCWin.SkinControl.SkinLabel();
+            this.skinLabel10 = new CCWin.SkinControl.SkinLabel();
+            this.IfSortedCB = new CCWin.SkinControl.SkinCheckBox();
+            this.IfSorted_CompareCB = new CCWin.SkinControl.SkinCheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.ChessBoardPB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ChessWhitePB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ChessBlackPB)).BeginInit();
@@ -99,8 +117,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.Queen7PB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Queen8PB)).BeginInit();
             this.skinToolStrip1.SuspendLayout();
-            this.skinTabControl1.SuspendLayout();
+            this.IfUseTT_CopareCB.SuspendLayout();
             this.skinTabPage1.SuspendLayout();
+            this.skinTabPage2.SuspendLayout();
             this.SuspendLayout();
             // 
             // ChessBoardPB
@@ -595,43 +614,49 @@
             this.DebugSelectCB.UseVisualStyleBackColor = true;
             this.DebugSelectCB.Visible = false;
             // 
-            // skinTabControl1
+            // IfUseTT_CopareCB
             // 
-            this.skinTabControl1.AnimatorType = CCWin.SkinControl.AnimationType.HorizSlide;
-            this.skinTabControl1.CloseRect = new System.Drawing.Rectangle(2, 2, 12, 12);
-            this.skinTabControl1.Controls.Add(this.skinTabPage1);
-            this.skinTabControl1.HeadBack = null;
-            this.skinTabControl1.ImgTxtOffset = new System.Drawing.Point(0, 0);
-            this.skinTabControl1.ItemSize = new System.Drawing.Size(70, 36);
-            this.skinTabControl1.Location = new System.Drawing.Point(898, 470);
-            this.skinTabControl1.Name = "skinTabControl1";
-            this.skinTabControl1.PageArrowDown = ((System.Drawing.Image)(resources.GetObject("skinTabControl1.PageArrowDown")));
-            this.skinTabControl1.PageArrowHover = ((System.Drawing.Image)(resources.GetObject("skinTabControl1.PageArrowHover")));
-            this.skinTabControl1.PageCloseHover = ((System.Drawing.Image)(resources.GetObject("skinTabControl1.PageCloseHover")));
-            this.skinTabControl1.PageCloseNormal = ((System.Drawing.Image)(resources.GetObject("skinTabControl1.PageCloseNormal")));
-            this.skinTabControl1.PageDown = ((System.Drawing.Image)(resources.GetObject("skinTabControl1.PageDown")));
-            this.skinTabControl1.PageHover = ((System.Drawing.Image)(resources.GetObject("skinTabControl1.PageHover")));
-            this.skinTabControl1.PageImagePosition = CCWin.SkinControl.SkinTabControl.ePageImagePosition.Left;
-            this.skinTabControl1.PageNorml = null;
-            this.skinTabControl1.SelectedIndex = 0;
-            this.skinTabControl1.Size = new System.Drawing.Size(317, 290);
-            this.skinTabControl1.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
-            this.skinTabControl1.TabIndex = 35;
+            this.IfUseTT_CopareCB.AnimatorType = CCWin.SkinControl.AnimationType.HorizSlide;
+            this.IfUseTT_CopareCB.CloseRect = new System.Drawing.Rectangle(2, 2, 12, 12);
+            this.IfUseTT_CopareCB.Controls.Add(this.skinTabPage1);
+            this.IfUseTT_CopareCB.Controls.Add(this.skinTabPage2);
+            this.IfUseTT_CopareCB.HeadBack = null;
+            this.IfUseTT_CopareCB.ImgTxtOffset = new System.Drawing.Point(0, 0);
+            this.IfUseTT_CopareCB.ItemSize = new System.Drawing.Size(70, 36);
+            this.IfUseTT_CopareCB.Location = new System.Drawing.Point(898, 470);
+            this.IfUseTT_CopareCB.Name = "IfUseTT_CopareCB";
+            this.IfUseTT_CopareCB.PageArrowDown = ((System.Drawing.Image)(resources.GetObject("IfUseTT_CopareCB.PageArrowDown")));
+            this.IfUseTT_CopareCB.PageArrowHover = ((System.Drawing.Image)(resources.GetObject("IfUseTT_CopareCB.PageArrowHover")));
+            this.IfUseTT_CopareCB.PageCloseHover = ((System.Drawing.Image)(resources.GetObject("IfUseTT_CopareCB.PageCloseHover")));
+            this.IfUseTT_CopareCB.PageCloseNormal = ((System.Drawing.Image)(resources.GetObject("IfUseTT_CopareCB.PageCloseNormal")));
+            this.IfUseTT_CopareCB.PageDown = ((System.Drawing.Image)(resources.GetObject("IfUseTT_CopareCB.PageDown")));
+            this.IfUseTT_CopareCB.PageHover = ((System.Drawing.Image)(resources.GetObject("IfUseTT_CopareCB.PageHover")));
+            this.IfUseTT_CopareCB.PageImagePosition = CCWin.SkinControl.SkinTabControl.ePageImagePosition.Left;
+            this.IfUseTT_CopareCB.PageNorml = null;
+            this.IfUseTT_CopareCB.SelectedIndex = 1;
+            this.IfUseTT_CopareCB.Size = new System.Drawing.Size(371, 329);
+            this.IfUseTT_CopareCB.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
+            this.IfUseTT_CopareCB.TabIndex = 35;
             // 
             // skinTabPage1
             // 
             this.skinTabPage1.BackColor = System.Drawing.Color.White;
+            this.skinTabPage1.Controls.Add(this.IfSortedCB);
+            this.skinTabPage1.Controls.Add(this.BetaSetTB);
+            this.skinTabPage1.Controls.Add(this.skinLabel7);
+            this.skinTabPage1.Controls.Add(this.AlphaSetTB);
+            this.skinTabPage1.Controls.Add(this.skinLabel6);
+            this.skinTabPage1.Controls.Add(this.skinLabel5);
+            this.skinTabPage1.Controls.Add(this.IfUseTTCB);
             this.skinTabPage1.Controls.Add(this.DepthSelectCB);
             this.skinTabPage1.Controls.Add(this.skinLabel3);
-            this.skinTabPage1.Controls.Add(this.CompareAlgorithmCB);
-            this.skinTabPage1.Controls.Add(this.skinLabel2);
             this.skinTabPage1.Controls.Add(this.IfUseTreeViewCB);
             this.skinTabPage1.Controls.Add(this.AlgorithmSelectCB);
             this.skinTabPage1.Controls.Add(this.skinLabel1);
             this.skinTabPage1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.skinTabPage1.Location = new System.Drawing.Point(0, 36);
             this.skinTabPage1.Name = "skinTabPage1";
-            this.skinTabPage1.Size = new System.Drawing.Size(317, 254);
+            this.skinTabPage1.Size = new System.Drawing.Size(371, 293);
             this.skinTabPage1.TabIndex = 0;
             this.skinTabPage1.TabItemImage = null;
             this.skinTabPage1.Text = "AI算法参数";
@@ -646,7 +671,7 @@
             "2",
             "4",
             "6"});
-            this.DepthSelectCB.Location = new System.Drawing.Point(113, 48);
+            this.DepthSelectCB.Location = new System.Drawing.Point(116, 50);
             this.DepthSelectCB.Name = "DepthSelectCB";
             this.DepthSelectCB.Size = new System.Drawing.Size(201, 26);
             this.DepthSelectCB.TabIndex = 6;
@@ -658,7 +683,7 @@
             this.skinLabel3.BackColor = System.Drawing.Color.Transparent;
             this.skinLabel3.BorderColor = System.Drawing.Color.White;
             this.skinLabel3.Font = new System.Drawing.Font("微软雅黑", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.skinLabel3.Location = new System.Drawing.Point(0, 49);
+            this.skinLabel3.Location = new System.Drawing.Point(3, 51);
             this.skinLabel3.Name = "skinLabel3";
             this.skinLabel3.Size = new System.Drawing.Size(107, 25);
             this.skinLabel3.TabIndex = 5;
@@ -669,7 +694,7 @@
             this.CompareAlgorithmCB.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.CompareAlgorithmCB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.CompareAlgorithmCB.FormattingEnabled = true;
-            this.CompareAlgorithmCB.Location = new System.Drawing.Point(116, 96);
+            this.CompareAlgorithmCB.Location = new System.Drawing.Point(116, 12);
             this.CompareAlgorithmCB.Name = "CompareAlgorithmCB";
             this.CompareAlgorithmCB.Size = new System.Drawing.Size(201, 26);
             this.CompareAlgorithmCB.TabIndex = 4;
@@ -681,7 +706,7 @@
             this.skinLabel2.BackColor = System.Drawing.Color.Transparent;
             this.skinLabel2.BorderColor = System.Drawing.Color.White;
             this.skinLabel2.Font = new System.Drawing.Font("微软雅黑", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.skinLabel2.Location = new System.Drawing.Point(3, 96);
+            this.skinLabel2.Location = new System.Drawing.Point(3, 12);
             this.skinLabel2.Name = "skinLabel2";
             this.skinLabel2.Size = new System.Drawing.Size(88, 25);
             this.skinLabel2.TabIndex = 3;
@@ -691,10 +716,12 @@
             // 
             this.IfUseTreeViewCB.AutoSize = true;
             this.IfUseTreeViewCB.BackColor = System.Drawing.Color.Transparent;
+            this.IfUseTreeViewCB.Checked = true;
+            this.IfUseTreeViewCB.CheckState = System.Windows.Forms.CheckState.Checked;
             this.IfUseTreeViewCB.ControlState = CCWin.SkinClass.ControlState.Normal;
             this.IfUseTreeViewCB.DownBack = null;
             this.IfUseTreeViewCB.Font = new System.Drawing.Font("微软雅黑", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.IfUseTreeViewCB.Location = new System.Drawing.Point(5, 157);
+            this.IfUseTreeViewCB.Location = new System.Drawing.Point(0, 261);
             this.IfUseTreeViewCB.MouseBack = null;
             this.IfUseTreeViewCB.Name = "IfUseTreeViewCB";
             this.IfUseTreeViewCB.NormlBack = null;
@@ -711,7 +738,7 @@
             this.AlgorithmSelectCB.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.AlgorithmSelectCB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.AlgorithmSelectCB.FormattingEnabled = true;
-            this.AlgorithmSelectCB.Location = new System.Drawing.Point(113, 4);
+            this.AlgorithmSelectCB.Location = new System.Drawing.Point(116, 12);
             this.AlgorithmSelectCB.Name = "AlgorithmSelectCB";
             this.AlgorithmSelectCB.Size = new System.Drawing.Size(201, 26);
             this.AlgorithmSelectCB.TabIndex = 1;
@@ -723,7 +750,7 @@
             this.skinLabel1.BackColor = System.Drawing.Color.Transparent;
             this.skinLabel1.BorderColor = System.Drawing.Color.White;
             this.skinLabel1.Font = new System.Drawing.Font("微软雅黑", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.skinLabel1.Location = new System.Drawing.Point(0, 4);
+            this.skinLabel1.Location = new System.Drawing.Point(3, 12);
             this.skinLabel1.Name = "skinLabel1";
             this.skinLabel1.Size = new System.Drawing.Size(107, 25);
             this.skinLabel1.TabIndex = 0;
@@ -745,13 +772,419 @@
             this.MemoryPB.TextFormat = CCWin.SkinControl.SkinProgressBar.TxtFormat.Proportion;
             this.MemoryPB.TrackBack = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             // 
+            // skinTabPage2
+            // 
+            this.skinTabPage2.BackColor = System.Drawing.Color.White;
+            this.skinTabPage2.Controls.Add(this.IfSorted_CompareCB);
+            this.skinTabPage2.Controls.Add(this.BetaSet_CompareCB);
+            this.skinTabPage2.Controls.Add(this.IfUseTT_CompareCB);
+            this.skinTabPage2.Controls.Add(this.skinLabel8);
+            this.skinTabPage2.Controls.Add(this.CompareIfUseTreeViewCB);
+            this.skinTabPage2.Controls.Add(this.AlphaSet_CompareCB);
+            this.skinTabPage2.Controls.Add(this.DepthCompareCB);
+            this.skinTabPage2.Controls.Add(this.skinLabel9);
+            this.skinTabPage2.Controls.Add(this.skinLabel2);
+            this.skinTabPage2.Controls.Add(this.skinLabel10);
+            this.skinTabPage2.Controls.Add(this.skinLabel4);
+            this.skinTabPage2.Controls.Add(this.CompareAlgorithmCB);
+            this.skinTabPage2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.skinTabPage2.Location = new System.Drawing.Point(0, 36);
+            this.skinTabPage2.Name = "skinTabPage2";
+            this.skinTabPage2.Size = new System.Drawing.Size(371, 293);
+            this.skinTabPage2.TabIndex = 1;
+            this.skinTabPage2.TabItemImage = null;
+            this.skinTabPage2.Text = "对比算法选择";
+            // 
+            // DepthCompareCB
+            // 
+            this.DepthCompareCB.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.DepthCompareCB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.DepthCompareCB.FormattingEnabled = true;
+            this.DepthCompareCB.Items.AddRange(new object[] {
+            "0",
+            "2",
+            "4",
+            "6"});
+            this.DepthCompareCB.Location = new System.Drawing.Point(116, 52);
+            this.DepthCompareCB.Name = "DepthCompareCB";
+            this.DepthCompareCB.Size = new System.Drawing.Size(201, 26);
+            this.DepthCompareCB.TabIndex = 38;
+            this.DepthCompareCB.WaterText = "";
+            this.DepthCompareCB.SelectedIndexChanged += new System.EventHandler(this.DepthCompareCB_SelectedIndexChanged);
+            // 
+            // skinLabel4
+            // 
+            this.skinLabel4.AutoSize = true;
+            this.skinLabel4.BackColor = System.Drawing.Color.Transparent;
+            this.skinLabel4.BorderColor = System.Drawing.Color.White;
+            this.skinLabel4.Font = new System.Drawing.Font("微软雅黑", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.skinLabel4.Location = new System.Drawing.Point(3, 53);
+            this.skinLabel4.Name = "skinLabel4";
+            this.skinLabel4.Size = new System.Drawing.Size(107, 25);
+            this.skinLabel4.TabIndex = 37;
+            this.skinLabel4.Text = "博弈树深度";
+            this.skinLabel4.Click += new System.EventHandler(this.skinLabel4_Click);
+            // 
+            // CompareIfUseTreeViewCB
+            // 
+            this.CompareIfUseTreeViewCB.AutoSize = true;
+            this.CompareIfUseTreeViewCB.BackColor = System.Drawing.Color.Transparent;
+            this.CompareIfUseTreeViewCB.Checked = true;
+            this.CompareIfUseTreeViewCB.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.CompareIfUseTreeViewCB.ControlState = CCWin.SkinClass.ControlState.Normal;
+            this.CompareIfUseTreeViewCB.DownBack = null;
+            this.CompareIfUseTreeViewCB.Font = new System.Drawing.Font("微软雅黑", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.CompareIfUseTreeViewCB.Location = new System.Drawing.Point(0, 261);
+            this.CompareIfUseTreeViewCB.MouseBack = null;
+            this.CompareIfUseTreeViewCB.Name = "CompareIfUseTreeViewCB";
+            this.CompareIfUseTreeViewCB.NormlBack = null;
+            this.CompareIfUseTreeViewCB.SelectedDownBack = null;
+            this.CompareIfUseTreeViewCB.SelectedMouseBack = null;
+            this.CompareIfUseTreeViewCB.SelectedNormlBack = null;
+            this.CompareIfUseTreeViewCB.Size = new System.Drawing.Size(308, 29);
+            this.CompareIfUseTreeViewCB.TabIndex = 37;
+            this.CompareIfUseTreeViewCB.Text = "是否使用TreeView来观察博弈树";
+            this.CompareIfUseTreeViewCB.UseVisualStyleBackColor = false;
+            // 
+            // IfUseTTCB
+            // 
+            this.IfUseTTCB.AutoSize = true;
+            this.IfUseTTCB.BackColor = System.Drawing.Color.Transparent;
+            this.IfUseTTCB.Checked = true;
+            this.IfUseTTCB.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.IfUseTTCB.ControlState = CCWin.SkinClass.ControlState.Normal;
+            this.IfUseTTCB.DownBack = null;
+            this.IfUseTTCB.Font = new System.Drawing.Font("微软雅黑", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.IfUseTTCB.Location = new System.Drawing.Point(0, 226);
+            this.IfUseTTCB.MouseBack = null;
+            this.IfUseTTCB.Name = "IfUseTTCB";
+            this.IfUseTTCB.NormlBack = null;
+            this.IfUseTTCB.SelectedDownBack = null;
+            this.IfUseTTCB.SelectedMouseBack = null;
+            this.IfUseTTCB.SelectedNormlBack = null;
+            this.IfUseTTCB.Size = new System.Drawing.Size(167, 29);
+            this.IfUseTTCB.TabIndex = 7;
+            this.IfUseTTCB.Text = "是否使用置换表";
+            this.IfUseTTCB.UseVisualStyleBackColor = false;
+            // 
+            // IfUseTT_CompareCB
+            // 
+            this.IfUseTT_CompareCB.AutoSize = true;
+            this.IfUseTT_CompareCB.BackColor = System.Drawing.Color.Transparent;
+            this.IfUseTT_CompareCB.Checked = true;
+            this.IfUseTT_CompareCB.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.IfUseTT_CompareCB.ControlState = CCWin.SkinClass.ControlState.Normal;
+            this.IfUseTT_CompareCB.DownBack = null;
+            this.IfUseTT_CompareCB.Font = new System.Drawing.Font("微软雅黑", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.IfUseTT_CompareCB.Location = new System.Drawing.Point(0, 226);
+            this.IfUseTT_CompareCB.MouseBack = null;
+            this.IfUseTT_CompareCB.Name = "IfUseTT_CompareCB";
+            this.IfUseTT_CompareCB.NormlBack = null;
+            this.IfUseTT_CompareCB.SelectedDownBack = null;
+            this.IfUseTT_CompareCB.SelectedMouseBack = null;
+            this.IfUseTT_CompareCB.SelectedNormlBack = null;
+            this.IfUseTT_CompareCB.Size = new System.Drawing.Size(167, 29);
+            this.IfUseTT_CompareCB.TabIndex = 37;
+            this.IfUseTT_CompareCB.Text = "是否使用置换表";
+            this.IfUseTT_CompareCB.UseVisualStyleBackColor = false;
+            // 
+            // skinLabel5
+            // 
+            this.skinLabel5.AutoSize = true;
+            this.skinLabel5.BackColor = System.Drawing.Color.Transparent;
+            this.skinLabel5.BorderColor = System.Drawing.Color.White;
+            this.skinLabel5.Font = new System.Drawing.Font("微软雅黑", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.skinLabel5.Location = new System.Drawing.Point(3, 96);
+            this.skinLabel5.Name = "skinLabel5";
+            this.skinLabel5.Size = new System.Drawing.Size(325, 25);
+            this.skinLabel5.TabIndex = 8;
+            this.skinLabel5.Text = "期望窗大小，大于+-50即代表+-无穷";
+            // 
+            // skinLabel6
+            // 
+            this.skinLabel6.AutoSize = true;
+            this.skinLabel6.BackColor = System.Drawing.Color.Transparent;
+            this.skinLabel6.BorderColor = System.Drawing.Color.White;
+            this.skinLabel6.Font = new System.Drawing.Font("微软雅黑", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.skinLabel6.Location = new System.Drawing.Point(3, 142);
+            this.skinLabel6.Name = "skinLabel6";
+            this.skinLabel6.Size = new System.Drawing.Size(70, 25);
+            this.skinLabel6.TabIndex = 9;
+            this.skinLabel6.Text = "Alpha:";
+            // 
+            // AlphaSetTB
+            // 
+            this.AlphaSetTB.BackColor = System.Drawing.Color.Transparent;
+            this.AlphaSetTB.DownBack = null;
+            this.AlphaSetTB.Icon = null;
+            this.AlphaSetTB.IconIsButton = false;
+            this.AlphaSetTB.IconMouseState = CCWin.SkinClass.ControlState.Normal;
+            this.AlphaSetTB.IsPasswordChat = '\0';
+            this.AlphaSetTB.IsSystemPasswordChar = false;
+            this.AlphaSetTB.Lines = new string[] {
+        "-1"};
+            this.AlphaSetTB.Location = new System.Drawing.Point(76, 139);
+            this.AlphaSetTB.Margin = new System.Windows.Forms.Padding(0);
+            this.AlphaSetTB.MaxLength = 32767;
+            this.AlphaSetTB.MinimumSize = new System.Drawing.Size(28, 28);
+            this.AlphaSetTB.MouseBack = null;
+            this.AlphaSetTB.MouseState = CCWin.SkinClass.ControlState.Normal;
+            this.AlphaSetTB.Multiline = false;
+            this.AlphaSetTB.Name = "AlphaSetTB";
+            this.AlphaSetTB.NormlBack = null;
+            this.AlphaSetTB.Padding = new System.Windows.Forms.Padding(5);
+            this.AlphaSetTB.ReadOnly = false;
+            this.AlphaSetTB.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.AlphaSetTB.Size = new System.Drawing.Size(82, 28);
+            // 
+            // 
+            // 
+            this.AlphaSetTB.SkinTxt.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.AlphaSetTB.SkinTxt.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.AlphaSetTB.SkinTxt.Font = new System.Drawing.Font("微软雅黑", 9.75F);
+            this.AlphaSetTB.SkinTxt.Location = new System.Drawing.Point(5, 5);
+            this.AlphaSetTB.SkinTxt.Name = "BaseText";
+            this.AlphaSetTB.SkinTxt.Size = new System.Drawing.Size(72, 22);
+            this.AlphaSetTB.SkinTxt.TabIndex = 0;
+            this.AlphaSetTB.SkinTxt.Text = "-1";
+            this.AlphaSetTB.SkinTxt.WaterColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(127)))), ((int)(((byte)(127)))));
+            this.AlphaSetTB.SkinTxt.WaterText = "";
+            this.AlphaSetTB.TabIndex = 10;
+            this.AlphaSetTB.Text = "-1";
+            this.AlphaSetTB.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.AlphaSetTB.WaterColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(127)))), ((int)(((byte)(127)))));
+            this.AlphaSetTB.WaterText = "";
+            this.AlphaSetTB.WordWrap = true;
+            // 
+            // BetaSetTB
+            // 
+            this.BetaSetTB.BackColor = System.Drawing.Color.Transparent;
+            this.BetaSetTB.DownBack = null;
+            this.BetaSetTB.Icon = null;
+            this.BetaSetTB.IconIsButton = false;
+            this.BetaSetTB.IconMouseState = CCWin.SkinClass.ControlState.Normal;
+            this.BetaSetTB.IsPasswordChat = '\0';
+            this.BetaSetTB.IsSystemPasswordChar = false;
+            this.BetaSetTB.Lines = new string[] {
+        "1"};
+            this.BetaSetTB.Location = new System.Drawing.Point(234, 139);
+            this.BetaSetTB.Margin = new System.Windows.Forms.Padding(0);
+            this.BetaSetTB.MaxLength = 32767;
+            this.BetaSetTB.MinimumSize = new System.Drawing.Size(28, 28);
+            this.BetaSetTB.MouseBack = null;
+            this.BetaSetTB.MouseState = CCWin.SkinClass.ControlState.Normal;
+            this.BetaSetTB.Multiline = false;
+            this.BetaSetTB.Name = "BetaSetTB";
+            this.BetaSetTB.NormlBack = null;
+            this.BetaSetTB.Padding = new System.Windows.Forms.Padding(5);
+            this.BetaSetTB.ReadOnly = false;
+            this.BetaSetTB.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.BetaSetTB.Size = new System.Drawing.Size(82, 28);
+            // 
+            // 
+            // 
+            this.BetaSetTB.SkinTxt.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.BetaSetTB.SkinTxt.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.BetaSetTB.SkinTxt.Font = new System.Drawing.Font("微软雅黑", 9.75F);
+            this.BetaSetTB.SkinTxt.Location = new System.Drawing.Point(5, 5);
+            this.BetaSetTB.SkinTxt.Name = "BaseText";
+            this.BetaSetTB.SkinTxt.Size = new System.Drawing.Size(72, 22);
+            this.BetaSetTB.SkinTxt.TabIndex = 0;
+            this.BetaSetTB.SkinTxt.Text = "1";
+            this.BetaSetTB.SkinTxt.WaterColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(127)))), ((int)(((byte)(127)))));
+            this.BetaSetTB.SkinTxt.WaterText = "";
+            this.BetaSetTB.TabIndex = 12;
+            this.BetaSetTB.Text = "1";
+            this.BetaSetTB.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.BetaSetTB.WaterColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(127)))), ((int)(((byte)(127)))));
+            this.BetaSetTB.WaterText = "";
+            this.BetaSetTB.WordWrap = true;
+            // 
+            // skinLabel7
+            // 
+            this.skinLabel7.AutoSize = true;
+            this.skinLabel7.BackColor = System.Drawing.Color.Transparent;
+            this.skinLabel7.BorderColor = System.Drawing.Color.White;
+            this.skinLabel7.Font = new System.Drawing.Font("微软雅黑", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.skinLabel7.Location = new System.Drawing.Point(161, 142);
+            this.skinLabel7.Name = "skinLabel7";
+            this.skinLabel7.Size = new System.Drawing.Size(58, 25);
+            this.skinLabel7.TabIndex = 11;
+            this.skinLabel7.Text = "Beta:";
+            // 
+            // BetaSet_CompareCB
+            // 
+            this.BetaSet_CompareCB.BackColor = System.Drawing.Color.Transparent;
+            this.BetaSet_CompareCB.DownBack = null;
+            this.BetaSet_CompareCB.Icon = null;
+            this.BetaSet_CompareCB.IconIsButton = false;
+            this.BetaSet_CompareCB.IconMouseState = CCWin.SkinClass.ControlState.Normal;
+            this.BetaSet_CompareCB.IsPasswordChat = '\0';
+            this.BetaSet_CompareCB.IsSystemPasswordChar = false;
+            this.BetaSet_CompareCB.Lines = new string[] {
+        "1"};
+            this.BetaSet_CompareCB.Location = new System.Drawing.Point(234, 139);
+            this.BetaSet_CompareCB.Margin = new System.Windows.Forms.Padding(0);
+            this.BetaSet_CompareCB.MaxLength = 32767;
+            this.BetaSet_CompareCB.MinimumSize = new System.Drawing.Size(28, 28);
+            this.BetaSet_CompareCB.MouseBack = null;
+            this.BetaSet_CompareCB.MouseState = CCWin.SkinClass.ControlState.Normal;
+            this.BetaSet_CompareCB.Multiline = false;
+            this.BetaSet_CompareCB.Name = "BetaSet_CompareCB";
+            this.BetaSet_CompareCB.NormlBack = null;
+            this.BetaSet_CompareCB.Padding = new System.Windows.Forms.Padding(5);
+            this.BetaSet_CompareCB.ReadOnly = false;
+            this.BetaSet_CompareCB.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.BetaSet_CompareCB.Size = new System.Drawing.Size(82, 28);
+            // 
+            // 
+            // 
+            this.BetaSet_CompareCB.SkinTxt.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.BetaSet_CompareCB.SkinTxt.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.BetaSet_CompareCB.SkinTxt.Font = new System.Drawing.Font("微软雅黑", 9.75F);
+            this.BetaSet_CompareCB.SkinTxt.Location = new System.Drawing.Point(5, 5);
+            this.BetaSet_CompareCB.SkinTxt.Name = "BaseText";
+            this.BetaSet_CompareCB.SkinTxt.Size = new System.Drawing.Size(72, 22);
+            this.BetaSet_CompareCB.SkinTxt.TabIndex = 0;
+            this.BetaSet_CompareCB.SkinTxt.Text = "1";
+            this.BetaSet_CompareCB.SkinTxt.WaterColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(127)))), ((int)(((byte)(127)))));
+            this.BetaSet_CompareCB.SkinTxt.WaterText = "";
+            this.BetaSet_CompareCB.TabIndex = 41;
+            this.BetaSet_CompareCB.Text = "1";
+            this.BetaSet_CompareCB.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.BetaSet_CompareCB.WaterColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(127)))), ((int)(((byte)(127)))));
+            this.BetaSet_CompareCB.WaterText = "";
+            this.BetaSet_CompareCB.WordWrap = true;
+            // 
+            // skinLabel8
+            // 
+            this.skinLabel8.AutoSize = true;
+            this.skinLabel8.BackColor = System.Drawing.Color.Transparent;
+            this.skinLabel8.BorderColor = System.Drawing.Color.White;
+            this.skinLabel8.Font = new System.Drawing.Font("微软雅黑", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.skinLabel8.Location = new System.Drawing.Point(161, 142);
+            this.skinLabel8.Name = "skinLabel8";
+            this.skinLabel8.Size = new System.Drawing.Size(58, 25);
+            this.skinLabel8.TabIndex = 40;
+            this.skinLabel8.Text = "Beta:";
+            // 
+            // AlphaSet_CompareCB
+            // 
+            this.AlphaSet_CompareCB.BackColor = System.Drawing.Color.Transparent;
+            this.AlphaSet_CompareCB.DownBack = null;
+            this.AlphaSet_CompareCB.Icon = null;
+            this.AlphaSet_CompareCB.IconIsButton = false;
+            this.AlphaSet_CompareCB.IconMouseState = CCWin.SkinClass.ControlState.Normal;
+            this.AlphaSet_CompareCB.IsPasswordChat = '\0';
+            this.AlphaSet_CompareCB.IsSystemPasswordChar = false;
+            this.AlphaSet_CompareCB.Lines = new string[] {
+        "-1"};
+            this.AlphaSet_CompareCB.Location = new System.Drawing.Point(76, 139);
+            this.AlphaSet_CompareCB.Margin = new System.Windows.Forms.Padding(0);
+            this.AlphaSet_CompareCB.MaxLength = 32767;
+            this.AlphaSet_CompareCB.MinimumSize = new System.Drawing.Size(28, 28);
+            this.AlphaSet_CompareCB.MouseBack = null;
+            this.AlphaSet_CompareCB.MouseState = CCWin.SkinClass.ControlState.Normal;
+            this.AlphaSet_CompareCB.Multiline = false;
+            this.AlphaSet_CompareCB.Name = "AlphaSet_CompareCB";
+            this.AlphaSet_CompareCB.NormlBack = null;
+            this.AlphaSet_CompareCB.Padding = new System.Windows.Forms.Padding(5);
+            this.AlphaSet_CompareCB.ReadOnly = false;
+            this.AlphaSet_CompareCB.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.AlphaSet_CompareCB.Size = new System.Drawing.Size(82, 28);
+            // 
+            // 
+            // 
+            this.AlphaSet_CompareCB.SkinTxt.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.AlphaSet_CompareCB.SkinTxt.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.AlphaSet_CompareCB.SkinTxt.Font = new System.Drawing.Font("微软雅黑", 9.75F);
+            this.AlphaSet_CompareCB.SkinTxt.Location = new System.Drawing.Point(5, 5);
+            this.AlphaSet_CompareCB.SkinTxt.Name = "BaseText";
+            this.AlphaSet_CompareCB.SkinTxt.Size = new System.Drawing.Size(72, 22);
+            this.AlphaSet_CompareCB.SkinTxt.TabIndex = 0;
+            this.AlphaSet_CompareCB.SkinTxt.Text = "-1";
+            this.AlphaSet_CompareCB.SkinTxt.WaterColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(127)))), ((int)(((byte)(127)))));
+            this.AlphaSet_CompareCB.SkinTxt.WaterText = "";
+            this.AlphaSet_CompareCB.TabIndex = 39;
+            this.AlphaSet_CompareCB.Text = "-1";
+            this.AlphaSet_CompareCB.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.AlphaSet_CompareCB.WaterColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(127)))), ((int)(((byte)(127)))));
+            this.AlphaSet_CompareCB.WaterText = "";
+            this.AlphaSet_CompareCB.WordWrap = true;
+            // 
+            // skinLabel9
+            // 
+            this.skinLabel9.AutoSize = true;
+            this.skinLabel9.BackColor = System.Drawing.Color.Transparent;
+            this.skinLabel9.BorderColor = System.Drawing.Color.White;
+            this.skinLabel9.Font = new System.Drawing.Font("微软雅黑", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.skinLabel9.Location = new System.Drawing.Point(3, 142);
+            this.skinLabel9.Name = "skinLabel9";
+            this.skinLabel9.Size = new System.Drawing.Size(70, 25);
+            this.skinLabel9.TabIndex = 38;
+            this.skinLabel9.Text = "Alpha:";
+            // 
+            // skinLabel10
+            // 
+            this.skinLabel10.AutoSize = true;
+            this.skinLabel10.BackColor = System.Drawing.Color.Transparent;
+            this.skinLabel10.BorderColor = System.Drawing.Color.White;
+            this.skinLabel10.Font = new System.Drawing.Font("微软雅黑", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.skinLabel10.Location = new System.Drawing.Point(3, 96);
+            this.skinLabel10.Name = "skinLabel10";
+            this.skinLabel10.Size = new System.Drawing.Size(325, 25);
+            this.skinLabel10.TabIndex = 37;
+            this.skinLabel10.Text = "期望窗大小，大于+-50即代表+-无穷";
+            // 
+            // IfSortedCB
+            // 
+            this.IfSortedCB.AutoSize = true;
+            this.IfSortedCB.BackColor = System.Drawing.Color.Transparent;
+            this.IfSortedCB.Checked = true;
+            this.IfSortedCB.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.IfSortedCB.ControlState = CCWin.SkinClass.ControlState.Normal;
+            this.IfSortedCB.DownBack = null;
+            this.IfSortedCB.Font = new System.Drawing.Font("微软雅黑", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.IfSortedCB.Location = new System.Drawing.Point(0, 191);
+            this.IfSortedCB.MouseBack = null;
+            this.IfSortedCB.Name = "IfSortedCB";
+            this.IfSortedCB.NormlBack = null;
+            this.IfSortedCB.SelectedDownBack = null;
+            this.IfSortedCB.SelectedMouseBack = null;
+            this.IfSortedCB.SelectedNormlBack = null;
+            this.IfSortedCB.Size = new System.Drawing.Size(243, 29);
+            this.IfSortedCB.TabIndex = 13;
+            this.IfSortedCB.Text = "是否对子节点排序后遍历";
+            this.IfSortedCB.UseVisualStyleBackColor = false;
+            // 
+            // IfSorted_CompareCB
+            // 
+            this.IfSorted_CompareCB.AutoSize = true;
+            this.IfSorted_CompareCB.BackColor = System.Drawing.Color.Transparent;
+            this.IfSorted_CompareCB.Checked = true;
+            this.IfSorted_CompareCB.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.IfSorted_CompareCB.ControlState = CCWin.SkinClass.ControlState.Normal;
+            this.IfSorted_CompareCB.DownBack = null;
+            this.IfSorted_CompareCB.Font = new System.Drawing.Font("微软雅黑", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.IfSorted_CompareCB.Location = new System.Drawing.Point(0, 191);
+            this.IfSorted_CompareCB.MouseBack = null;
+            this.IfSorted_CompareCB.Name = "IfSorted_CompareCB";
+            this.IfSorted_CompareCB.NormlBack = null;
+            this.IfSorted_CompareCB.SelectedDownBack = null;
+            this.IfSorted_CompareCB.SelectedMouseBack = null;
+            this.IfSorted_CompareCB.SelectedNormlBack = null;
+            this.IfSorted_CompareCB.Size = new System.Drawing.Size(243, 29);
+            this.IfSorted_CompareCB.TabIndex = 37;
+            this.IfSorted_CompareCB.Text = "是否对子节点排序后遍历";
+            this.IfSorted_CompareCB.UseVisualStyleBackColor = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1280, 840);
             this.Controls.Add(this.MemoryPB);
-            this.Controls.Add(this.skinTabControl1);
+            this.Controls.Add(this.IfUseTT_CopareCB);
             this.Controls.Add(this.DebugSelectCB);
             this.Controls.Add(this.skinToolStrip1);
             this.Controls.Add(this.SearchPB);
@@ -815,9 +1248,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.Queen8PB)).EndInit();
             this.skinToolStrip1.ResumeLayout(false);
             this.skinToolStrip1.PerformLayout();
-            this.skinTabControl1.ResumeLayout(false);
+            this.IfUseTT_CopareCB.ResumeLayout(false);
             this.skinTabPage1.ResumeLayout(false);
             this.skinTabPage1.PerformLayout();
+            this.skinTabPage2.ResumeLayout(false);
+            this.skinTabPage2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -861,7 +1296,7 @@
         private System.Windows.Forms.ToolStripLabel toolStripLabel4;
         private System.Windows.Forms.ToolStripLabel BlackBoardNumLB;
         private System.Windows.Forms.CheckBox DebugSelectCB;
-        private CCWin.SkinControl.SkinTabControl skinTabControl1;
+        private CCWin.SkinControl.SkinTabControl IfUseTT_CopareCB;
         private CCWin.SkinControl.SkinTabPage skinTabPage1;
         private CCWin.SkinControl.SkinComboBox CompareAlgorithmCB;
         private CCWin.SkinControl.SkinLabel skinLabel2;
@@ -871,6 +1306,24 @@
         private CCWin.SkinControl.SkinComboBox DepthSelectCB;
         private CCWin.SkinControl.SkinLabel skinLabel3;
         private CCWin.SkinControl.SkinProgressBar MemoryPB;
+        private CCWin.SkinControl.SkinCheckBox IfUseTTCB;
+        private CCWin.SkinControl.SkinTabPage skinTabPage2;
+        private CCWin.SkinControl.SkinCheckBox IfUseTT_CompareCB;
+        private CCWin.SkinControl.SkinCheckBox CompareIfUseTreeViewCB;
+        private CCWin.SkinControl.SkinComboBox DepthCompareCB;
+        private CCWin.SkinControl.SkinLabel skinLabel4;
+        private CCWin.SkinControl.SkinTextBox BetaSetTB;
+        private CCWin.SkinControl.SkinLabel skinLabel7;
+        private CCWin.SkinControl.SkinTextBox AlphaSetTB;
+        private CCWin.SkinControl.SkinLabel skinLabel6;
+        private CCWin.SkinControl.SkinLabel skinLabel5;
+        private CCWin.SkinControl.SkinTextBox BetaSet_CompareCB;
+        private CCWin.SkinControl.SkinLabel skinLabel8;
+        private CCWin.SkinControl.SkinTextBox AlphaSet_CompareCB;
+        private CCWin.SkinControl.SkinLabel skinLabel9;
+        private CCWin.SkinControl.SkinLabel skinLabel10;
+        private CCWin.SkinControl.SkinCheckBox IfSortedCB;
+        private CCWin.SkinControl.SkinCheckBox IfSorted_CompareCB;
 
     }
 }

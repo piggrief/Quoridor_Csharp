@@ -243,18 +243,18 @@ namespace Quoridor_With_C
                 TestTB.Location = new Point(ChessBoardPB.Location.X, ChessBoardPB.Size.Height + ChessBoardPB.Location.Y);
 
                 #region 配置初始棋盘
-                NowQuoridor.ThisChessBoard.ChessBoardAll[0, 3].GridStatus = Grid.GridInsideStatus.Empty;
-                NowQuoridor.ThisChessBoard.ChessBoardAll[1, 3].GridStatus = Grid.GridInsideStatus.Have_Player1;
-                NowQuoridor.ThisChessBoard.ChessBoardAll[6, 3].GridStatus = Grid.GridInsideStatus.Empty;
-                NowQuoridor.ThisChessBoard.ChessBoardAll[5, 3].GridStatus = Grid.GridInsideStatus.Have_Player2;
+                //NowQuoridor.ThisChessBoard.ChessBoardAll[0, 3].GridStatus = Grid.GridInsideStatus.Empty;
+                //NowQuoridor.ThisChessBoard.ChessBoardAll[1, 3].GridStatus = Grid.GridInsideStatus.Have_Player1;
+                //NowQuoridor.ThisChessBoard.ChessBoardAll[6, 3].GridStatus = Grid.GridInsideStatus.Empty;
+                //NowQuoridor.ThisChessBoard.ChessBoardAll[5, 3].GridStatus = Grid.GridInsideStatus.Have_Player2;
 
-                NowQuoridor.ThisChessBoard.ChessBoardAll[1, 3].IfUpBoard = true;
-                NowQuoridor.ThisChessBoard.ChessBoardAll[1, 4].IfUpBoard = true;
-                NowQuoridor.ThisChessBoard.ChessBoardAll[6, 2].IfUpBoard = true;
-                NowQuoridor.ThisChessBoard.ChessBoardAll[6, 3].IfUpBoard = true;
+                //NowQuoridor.ThisChessBoard.ChessBoardAll[1, 3].IfUpBoard = true;
+                //NowQuoridor.ThisChessBoard.ChessBoardAll[1, 4].IfUpBoard = true;
+                //NowQuoridor.ThisChessBoard.ChessBoardAll[6, 2].IfUpBoard = true;
+                //NowQuoridor.ThisChessBoard.ChessBoardAll[6, 3].IfUpBoard = true;
 
-                NowQuoridor.ThisChessBoard.Player1Location = new Point(1, 3);
-                NowQuoridor.ThisChessBoard.Player2Location = new Point(5, 3);
+                //NowQuoridor.ThisChessBoard.Player1Location = new Point(1, 3);
+                //NowQuoridor.ThisChessBoard.Player2Location = new Point(5, 3);
 
                 #endregion
 
@@ -277,14 +277,8 @@ namespace Quoridor_With_C
 
                 #region 配置算法选择控件
                 CompareAlgorithmCB.Items.Add("None");
-                CompareAlgorithmCB.Items.Add(GameTreeNode.Enum_GameTreeSearchFrameWork.ABPurning_Normal);
-                AlgorithmSelectCB.Items.Add(GameTreeNode.Enum_GameTreeSearchFrameWork.ABPurning_Normal);
-
-                CompareAlgorithmCB.Items.Add(GameTreeNode.Enum_GameTreeSearchFrameWork.ABPurning_ScoreSort);
-                AlgorithmSelectCB.Items.Add(GameTreeNode.Enum_GameTreeSearchFrameWork.ABPurning_ScoreSort);
-
-                CompareAlgorithmCB.Items.Add(GameTreeNode.Enum_GameTreeSearchFrameWork.ABPurning_UseTranslationTable);
-                AlgorithmSelectCB.Items.Add(GameTreeNode.Enum_GameTreeSearchFrameWork.ABPurning_UseTranslationTable);
+                CompareAlgorithmCB.Items.Add(GameTreeNode.Enum_GameTreeSearchFrameWork.AlphaBetaPurning);
+                AlgorithmSelectCB.Items.Add(GameTreeNode.Enum_GameTreeSearchFrameWork.AlphaBetaPurning);
 
                 CompareAlgorithmCB.Items.Add(GameTreeNode.Enum_GameTreeSearchFrameWork.MinMax);
                 AlgorithmSelectCB.Items.Add(GameTreeNode.Enum_GameTreeSearchFrameWork.MinMax);
@@ -292,7 +286,10 @@ namespace Quoridor_With_C
                 CompareAlgorithmCB.SelectedIndex = 0;
                 AlgorithmSelectCB.SelectedIndex = 0;
                 DepthSelectCB.SelectedIndex = 1;
+                DepthCompareCB.SelectedIndex = 1;
                 #endregion
+
+                Console.WriteLine("棋盘HashCode为：" + GameTreeNode.InitChessBoardHashCode.ToString());
             }
             else
             {
@@ -375,6 +372,7 @@ namespace Quoridor_With_C
 
         }
         long count_AIAction = 0;
+        bool PlayerFirstAction = true;
         GameTreeNode Root = new GameTreeNode();
         /// <summary>
         /// 根据点击坐标执行下棋操作
@@ -441,8 +439,16 @@ namespace Quoridor_With_C
             }
 
             long HashBuff = 0;
-            if (GameTreeNode.SearchFrameWork == GameTreeNode.Enum_GameTreeSearchFrameWork.ABPurning_UseTranslationTable)
+
+            if (PlayerFirstAction)
             {
+                GameTreeNode.InitTranslationTable();
+                PlayerFirstAction = false;
+                QuoridorAction QA = new QuoridorAction(PlayerNowAction, new Point(row, col));
+                HashBuff = GameTreeNode.NodeTranslationTable.NodeGetHashCode(GameTreeNode.InitChessBoardHashCode, QA, NowQuoridor.ThisChessBoard);
+            }
+            else
+            { 
                 QuoridorAction QA = new QuoridorAction(PlayerNowAction, new Point(row,col));
                 HashBuff = GameTreeNode.NodeTranslationTable.NodeGetHashCode(Root.NodeHashCode, QA, NowQuoridor.ThisChessBoard);
             }
@@ -496,7 +502,7 @@ namespace Quoridor_With_C
             }
             NowQuoridor.Player_Now = NowPlayer;
 
-            GameTreeNode.InitChessBoardHashCode = GameTreeNode.InitChessBoardHashCode ^ HashBuff;
+            GameTreeNode.InitChessBoardHashCode = HashBuff;
             #endregion
 
             #region AI落子
@@ -516,28 +522,46 @@ namespace Quoridor_With_C
 
                 if (CompareAlgorithmCB.SelectedItem.ToString() != "None")
                 {
-                    if (CompareAlgorithmCB.SelectedItem.ToString() == GameTreeNode.Enum_GameTreeSearchFrameWork.ABPurning_ScoreSort.ToString())
+                    if (CompareAlgorithmCB.SelectedItem.ToString() == GameTreeNode.Enum_GameTreeSearchFrameWork.AlphaBetaPurning.ToString())
                     {
-                        GameTreeNode.SearchFrameWork = GameTreeNode.Enum_GameTreeSearchFrameWork.ABPurning_ScoreSort;
-                    }
-                    else if (CompareAlgorithmCB.SelectedItem.ToString() == GameTreeNode.Enum_GameTreeSearchFrameWork.ABPurning_Normal.ToString())
-                    {
-                        GameTreeNode.SearchFrameWork = GameTreeNode.Enum_GameTreeSearchFrameWork.ABPurning_Normal;
+                        GameTreeNode.SearchFrameWork = GameTreeNode.Enum_GameTreeSearchFrameWork.AlphaBetaPurning;
                     }
                     else if (CompareAlgorithmCB.SelectedItem.ToString() == GameTreeNode.Enum_GameTreeSearchFrameWork.MinMax.ToString())
                     {
                         GameTreeNode.SearchFrameWork = GameTreeNode.Enum_GameTreeSearchFrameWork.MinMax;
                     }
-                    else if (CompareAlgorithmCB.SelectedItem.ToString() == GameTreeNode.Enum_GameTreeSearchFrameWork.ABPurning_UseTranslationTable.ToString())
-                    {
-                        GameTreeNode.SearchFrameWork = GameTreeNode.Enum_GameTreeSearchFrameWork.ABPurning_UseTranslationTable;
-                    }
-                    #region 对比算法测试
-                    QuoridorAI.AIRunTime.AstarNum = 0;
-                    QuoridorAI.AIRunTime.Astar_s = 0;
+
                     Root = new GameTreeNode();
 
                     Root.NodePlayer = EnumNowPlayer.Player1;
+                   
+                    try
+                    {
+                        double AlphaInit = Convert.ToDouble(AlphaSet_CompareCB.Text);
+                        double BetaInit = Convert.ToDouble(BetaSet_CompareCB.Text);
+                        if (AlphaInit > BetaInit)
+                        {
+                            MessageBox.Show("Alpha值必须小于等于Beta值");
+                            return "SetError";
+                        }
+                        # region 全局期望窗口
+                        Root.alpha = AlphaInit;
+                        Root.beta = BetaInit;
+                        #endregion
+
+                        QuoridorAI.ActionListIfSort = IfSorted_CompareCB.Checked;
+                        GameTreeNode.IfUseTanslationTable = IfUseTT_CompareCB.Checked;
+                    }
+                    catch (Exception)
+                    {
+                        
+                        throw;
+                    }
+
+                    #region 对比算法测试
+                    QuoridorAI.AIRunTime.AstarNum = 0;
+                    QuoridorAI.AIRunTime.Astar_s = 0;
+
                     stopwatch = new System.Diagnostics.Stopwatch();
                     stopwatch.Start(); //  开始监视代码运行时间
                     /***************待测代码段****************/
@@ -551,7 +575,7 @@ namespace Quoridor_With_C
                         GameTreeNode.GameTreeView(Root, DV.treeView2.Nodes[DV.treeView2.Nodes.Count - 1]);
                     }
 
-                    Console.WriteLine(GameTreeNode.SearchFrameWork.ToString() + "结果：");
+                    Console.WriteLine("对比算法结果：");
                     Console.WriteLine(Root.NodeAction.ToString() + "(" + Root.ActionLocation.X.ToString() + "," + Root.ActionLocation.Y.ToString() + ")");
 
                     /***************待测代码段****************/
@@ -564,38 +588,54 @@ namespace Quoridor_With_C
                     GameTreeNode.NodeNum = 0;
                     GameTreeNode.CalGameTreeNodeNum(Root);
                     Console.WriteLine("博弈树节点总数：" + GameTreeNode.NodeNum.ToString() + "个");
-                    Console.WriteLine("Astar平均用时：" + QuoridorAI.AIRunTime.Astar_s.ToString() + "ms");
-                    Console.WriteLine("Astar次数：" + QuoridorAI.AIRunTime.AstarNum.ToString() + "次");
-                    Console.WriteLine("Astar总用时：" + (QuoridorAI.AIRunTime.Astar_s * QuoridorAI.AIRunTime.AstarNum).ToString() + "ms");
+                    //Console.WriteLine("Astar平均用时：" + QuoridorAI.AIRunTime.Astar_s.ToString() + "ms");
+                    //Console.WriteLine("Astar次数：" + QuoridorAI.AIRunTime.AstarNum.ToString() + "次");
+                    //Console.WriteLine("Astar总用时：" + (QuoridorAI.AIRunTime.Astar_s * QuoridorAI.AIRunTime.AstarNum).ToString() + "ms");
                     Console.WriteLine("*************");
 
                     #endregion
                 }
 
-                if (AlgorithmSelectCB.SelectedItem.ToString() == GameTreeNode.Enum_GameTreeSearchFrameWork.ABPurning_ScoreSort.ToString())
+                if (AlgorithmSelectCB.SelectedItem.ToString() == GameTreeNode.Enum_GameTreeSearchFrameWork.AlphaBetaPurning.ToString())
                 {
-                    GameTreeNode.SearchFrameWork = GameTreeNode.Enum_GameTreeSearchFrameWork.ABPurning_ScoreSort;
-                }
-                else if (AlgorithmSelectCB.SelectedItem.ToString() == GameTreeNode.Enum_GameTreeSearchFrameWork.ABPurning_Normal.ToString())
-                {
-                    GameTreeNode.SearchFrameWork = GameTreeNode.Enum_GameTreeSearchFrameWork.ABPurning_Normal;
+                    GameTreeNode.SearchFrameWork = GameTreeNode.Enum_GameTreeSearchFrameWork.AlphaBetaPurning;
                 }
                 else if (AlgorithmSelectCB.SelectedItem.ToString() == GameTreeNode.Enum_GameTreeSearchFrameWork.MinMax.ToString())
                 {
                     GameTreeNode.SearchFrameWork = GameTreeNode.Enum_GameTreeSearchFrameWork.MinMax;
                 }
-                else if (AlgorithmSelectCB.SelectedItem.ToString() == GameTreeNode.Enum_GameTreeSearchFrameWork.ABPurning_UseTranslationTable.ToString())
-                {
-                    GameTreeNode.SearchFrameWork = GameTreeNode.Enum_GameTreeSearchFrameWork.ABPurning_UseTranslationTable;
-                }
 
+                Root = new GameTreeNode();
+
+                Root.NodePlayer = EnumNowPlayer.Player1;
+
+                try
+                {
+                    double AlphaInit = Convert.ToDouble(AlphaSetTB.Text);
+                    double BetaInit = Convert.ToDouble(BetaSetTB.Text);
+                    if (AlphaInit > BetaInit)
+                    {
+                        MessageBox.Show("Alpha值必须小于等于Beta值");
+                        return "SetError";
+                    }
+                    # region 全局期望窗口
+                    Root.alpha = AlphaInit;
+                    Root.beta = BetaInit;
+                    #endregion
+
+                    QuoridorAI.ActionListIfSort = IfSortedCB.Checked;
+                    GameTreeNode.IfUseTanslationTable = IfUseTTCB.Checked;
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
                 
                 #region AI博弈树决策
                 QuoridorAI.AIRunTime.AstarNum = 0;
                 QuoridorAI.AIRunTime.Astar_s = 0;
-                Root = new GameTreeNode();
 
-                Root.NodePlayer = EnumNowPlayer.Player1;
                 stopwatch = new System.Diagnostics.Stopwatch();
                 stopwatch.Start(); //  开始监视代码运行时间
                 /***************待测代码段****************/
@@ -608,7 +648,7 @@ namespace Quoridor_With_C
                         DV.treeView1.Nodes[0] = new TreeNode("第" + count_AIAction.ToString() + "次落子:");
                     GameTreeNode.GameTreeView(Root, DV.treeView1.Nodes[DV.treeView1.Nodes.Count - 1]);
                 }
-                Console.WriteLine(GameTreeNode.SearchFrameWork.ToString() + "结果：");
+                Console.WriteLine("决策算法结果：");
                 Console.WriteLine(Root.NodeAction.ToString() + "(" + Root.ActionLocation.X.ToString() + "," + Root.ActionLocation.Y.ToString() + ")");
 
                 /***************待测代码段****************/
@@ -621,10 +661,13 @@ namespace Quoridor_With_C
                 GameTreeNode.NodeNum = 0;
                 GameTreeNode.CalGameTreeNodeNum(Root);
                 Console.WriteLine("博弈树节点总数：" + GameTreeNode.NodeNum.ToString() + "个");
-                Console.WriteLine("Astar平均用时：" + QuoridorAI.AIRunTime.Astar_s.ToString() + "ms");
-                Console.WriteLine("Astar次数：" + QuoridorAI.AIRunTime.AstarNum.ToString() + "次");
-                Console.WriteLine("Astar总用时：" + (QuoridorAI.AIRunTime.Astar_s * QuoridorAI.AIRunTime.AstarNum).ToString() + "ms");
+                //Console.WriteLine("Astar平均用时：" + QuoridorAI.AIRunTime.Astar_s.ToString() + "ms");
+                //Console.WriteLine("Astar次数：" + QuoridorAI.AIRunTime.AstarNum.ToString() + "次");
+                //Console.WriteLine("Astar总用时：" + (QuoridorAI.AIRunTime.Astar_s * QuoridorAI.AIRunTime.AstarNum).ToString() + "ms");
                 Console.WriteLine("*************");
+
+                /*更新根节点深度*/
+                GameTreeNode.RootDepth += 2;
 
                 #endregion
                 //NowQuoridor.TestEvaluation();
@@ -995,6 +1038,16 @@ namespace Quoridor_With_C
         public bool IfUseViewFormDebug = true;
         private void OpenDebugFormBTN_Click(object sender, EventArgs e)
         {
+        }
+
+        private void DepthCompareCB_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void skinLabel4_Click(object sender, EventArgs e)
+        {
+
         }
 
     }
