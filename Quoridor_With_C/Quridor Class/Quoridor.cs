@@ -209,13 +209,13 @@ namespace Quoridor
                 {
                     if (Action.PlayerAction == NowAction.Action_Move_Player1)
                     { 
-                        Action.WholeScore = Action.SelfScore + 0;
+                        Action.WholeScore = Action.SelfScore + 1;
                         if (Action.ActionPoint.X >= 6)
                             Action.WholeScore = 99;
                     }
                     else
                     {
-                        Action.WholeScore = Action.SelfScore + 0;
+                        Action.WholeScore = Action.SelfScore + 1;
                         if (Action.ActionPoint.X <= 0)
                             Action.WholeScore = 99;
                     }
@@ -296,14 +296,14 @@ namespace Quoridor
                 #endregion
 
                 #region 根据评分剪枝
-                //if (Action.PlayerAction == NowAction.Action_Move_Player2 || Action.PlayerAction == NowAction.Action_Move_Player1)
-                //{
-                //    if (Action.WholeScore <= 0)
-                //    { 
-                //        ActionList.Remove(ActionList[i]);
-                //        continue;
-                //    }
-                //}
+                if (Action.PlayerAction == NowAction.Action_Move_Player2 || Action.PlayerAction == NowAction.Action_Move_Player1)
+                {
+                    if (Action.WholeScore <= 0)
+                    {
+                        ActionList.Remove(ActionList[i]);
+                        continue;
+                    }
+                }
                 #endregion
             }
         }
@@ -503,12 +503,11 @@ namespace Quoridor
             
             if (ActionListIfSort)
             {
-                //Console.WriteLine("排序前：");
-                //PrintActionList(ActionList);
-                //对动作列表按整体评分升序排列,因为后续是倒序遍历OrderByDescending
-                ActionList = ActionList.OrderByDescending(a => a.WholeScore).ToList();
-                //Console.WriteLine("排序后：");
-                //PrintActionList(ActionList);
+
+                //对当前博弈玩家按整体评分降序排列
+                //ActionList = ActionList.OrderByDescending(a => a.WholeScore).ToList();
+                //对当前对手玩家按整体评分升序排列
+                ActionList = ActionList.OrderBy(a => a.WholeScore).ToList();
             }
             #endregion
             return ActionList;
