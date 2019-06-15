@@ -192,6 +192,8 @@ namespace Quoridor
             dis_player2 = AstarEngine.AstarRestart(ThisChessBoard,EnumNowPlayer.Player2
                         , ThisChessBoard.Player2Location.X, ThisChessBoard.Player2Location.Y);
 
+            QuoridorAction BestAction = new QuoridorAction(NowAction.Action_Wait, new Point(0, 0));
+            BestAction.WholeScore = -1000;
             for (int i = ActionList.Count - 1; i >= 0 ; i--)
             {
                 QuoridorAction Action = ActionList[i];
@@ -298,14 +300,24 @@ namespace Quoridor
                 #region 根据评分剪枝
                 if (Action.PlayerAction == NowAction.Action_Move_Player2 || Action.PlayerAction == NowAction.Action_Move_Player1)
                 {
-                    if (Action.WholeScore <= 0)
+                    if (Action.WholeScore > BestAction.WholeScore)
                     {
-                        ActionList.Remove(ActionList[i]);
-                        continue;
+                        BestAction = Action;
                     }
                 }
                 #endregion
             }
+            #region 移动动作中只选最佳移动！
+            for (int i = ActionList.Count - 1; i >= 0; i--)
+            {
+                QuoridorAction Action = ActionList[i];
+                if (Action.PlayerAction == NowAction.Action_Move_Player2 || Action.PlayerAction == NowAction.Action_Move_Player1)
+                {
+                    ActionList.Remove(ActionList[i]);
+                }
+            }
+            ActionList.Add(BestAction);
+            #endregion
         }
         /// <summary>
         /// 动作列表按WholeScore降序排序

@@ -244,18 +244,27 @@ namespace Quoridor_With_C
                 TestTB.Location = new Point(ChessBoardPB.Location.X, ChessBoardPB.Size.Height + ChessBoardPB.Location.Y);
 
                 #region 配置初始棋盘
-                //NowQuoridor.ThisChessBoard.ChessBoardAll[0, 3].GridStatus = Grid.GridInsideStatus.Empty;
-                //NowQuoridor.ThisChessBoard.ChessBoardAll[1, 3].GridStatus = Grid.GridInsideStatus.Have_Player1;
-                //NowQuoridor.ThisChessBoard.ChessBoardAll[6, 3].GridStatus = Grid.GridInsideStatus.Empty;
-                //NowQuoridor.ThisChessBoard.ChessBoardAll[5, 3].GridStatus = Grid.GridInsideStatus.Have_Player2;
+                NowQuoridor.ThisChessBoard.ChessBoardAll[0, 3].GridStatus = Grid.GridInsideStatus.Empty;
+                NowQuoridor.ThisChessBoard.ChessBoardAll[1, 3].GridStatus = Grid.GridInsideStatus.Have_Player1;
+                NowQuoridor.ThisChessBoard.ChessBoardAll[6, 3].GridStatus = Grid.GridInsideStatus.Empty;
+                NowQuoridor.ThisChessBoard.ChessBoardAll[5, 3].GridStatus = Grid.GridInsideStatus.Have_Player2;
 
-                //NowQuoridor.ThisChessBoard.ChessBoardAll[1, 3].IfUpBoard = true;
-                //NowQuoridor.ThisChessBoard.ChessBoardAll[1, 4].IfUpBoard = true;
-                //NowQuoridor.ThisChessBoard.ChessBoardAll[6, 2].IfUpBoard = true;
-                //NowQuoridor.ThisChessBoard.ChessBoardAll[6, 3].IfUpBoard = true;
+                NowQuoridor.ThisChessBoard.ChessBoardAll[1, 3].IfUpBoard = true;
+                NowQuoridor.ThisChessBoard.ChessBoardAll[1, 4].IfUpBoard = true;
+                NowQuoridor.ThisChessBoard.ChessBoardAll[6, 2].IfUpBoard = true;
+                NowQuoridor.ThisChessBoard.ChessBoardAll[6, 3].IfUpBoard = true;
 
-                //NowQuoridor.ThisChessBoard.Player1Location = new Point(1, 3);
-                //NowQuoridor.ThisChessBoard.Player2Location = new Point(5, 3);
+                //NowQuoridor.ThisChessBoard.ChessBoardAll[2, 3].IfLeftBoard = true;
+                //NowQuoridor.ThisChessBoard.ChessBoardAll[3, 3].IfLeftBoard = true;
+                //NowQuoridor.ThisChessBoard.ChessBoardAll[2, 4].IfLeftBoard = true;
+                //NowQuoridor.ThisChessBoard.ChessBoardAll[3, 4].IfLeftBoard = true;
+
+                QuoridorRuleEngine.NumPlayer1Board = 16 - 2;
+                QuoridorRuleEngine.NumPlayer2Board = 16 - 2;
+
+
+                NowQuoridor.ThisChessBoard.Player1Location = new Point(1, 3);
+                NowQuoridor.ThisChessBoard.Player2Location = new Point(5, 3);
 
                 #endregion
 
@@ -376,8 +385,12 @@ namespace Quoridor_With_C
         }
         long count_AIAction = 0;
         bool PlayerFirstAction = true;
+        bool AIFirstAction = true;
         GameTreeNode Root = new GameTreeNode();
         MonteCartoTreeNode MTRoot = new MonteCartoTreeNode();
+        QuoridorAction OpponentAction = new QuoridorAction(NowAction.Action_Wait, new Point(-1, -1));
+        QuoridorAction SelfAction = new QuoridorAction(NowAction.Action_Wait, new Point(-1, -1));
+
         /// <summary>
         /// 根据点击坐标执行下棋操作
         /// </summary>
@@ -443,6 +456,10 @@ namespace Quoridor_With_C
             }
 
             long HashBuff = 0;
+            OpponentAction.ActionPoint.X = row;
+            OpponentAction.ActionPoint.Y = col;
+            OpponentAction.PlayerAction = PlayerNowAction;
+ 
 
             if (PlayerFirstAction)
             {
@@ -486,6 +503,7 @@ namespace Quoridor_With_C
             if (result != "No success")
             {
                 MessageBox.Show(result);
+                System.Environment.Exit(0);
             }
 
             if (NowPlayer == EnumNowPlayer.Player1)
@@ -655,7 +673,18 @@ namespace Quoridor_With_C
                 //}
                 #endregion
                 #region MCTS
-                MonteCartoTreeNode.GetMCTSPolicy(NowQuoridor.ThisChessBoard, MTRoot);
+                if (AIFirstAction)
+                {
+                    MTRoot = new MonteCartoTreeNode();
+                    AIFirstAction = false;
+                }
+                else
+                {
+                    MTRoot = MonteCartoTreeNode.GetNextPolicyRootNode(SelfAction, OpponentAction, MTRoot);
+                }
+                MonteCartoTreeNode._C = 0.0048;//0.0055比较折中
+                MTRoot.NodePlayer = EnumNowPlayer.Player1;
+                QuoridorAction NextAction = MonteCartoTreeNode.GetMCTSPolicy(NowQuoridor.ThisChessBoard, MTRoot, 1000);
                 #endregion
                 Console.WriteLine("决策算法结果：");
                 Console.WriteLine(Root.NodeAction.ToString() + "(" + Root.ActionLocation.X.ToString() + "," + Root.ActionLocation.Y.ToString() + ")");
@@ -690,8 +719,11 @@ namespace Quoridor_With_C
                 //PlayerNowAction = Root.NodeAction;
                 #endregion
                 #region MCTS
-                Hint = NowQuoridor.QuoridorRule.Action(ref NowQuoridor.ThisChessBoard, MTRoot.ActionLocation.X, MTRoot.ActionLocation.Y, MTRoot.NodeAction);
-                PlayerNowAction = MTRoot.NodeAction;
+                NowQuoridor.ThisChessBoard.DrawNowChessBoard(ref Form1.Gr, Form1.form1.ChessWhitePB, Form1.form1.ChessBlackPB);
+                Form1.form1.ChessBoardPB.Refresh();
+
+                Hint = NowQuoridor.QuoridorRule.Action(ref NowQuoridor.ThisChessBoard, NextAction.ActionPoint.X, NextAction.ActionPoint.Y, NextAction.PlayerAction);
+                PlayerNowAction = NextAction.PlayerAction;
                 #endregion
                 if (Hint != "OK")
                 {
@@ -713,6 +745,8 @@ namespace Quoridor_With_C
                     NowPlayer = EnumNowPlayer.Player1;
                 }
 
+                SelfAction = NextAction;
+
                 NowQuoridor.ThisChessBoard.DrawNowChessBoard(ref Gr, ChessWhitePB, ChessBlackPB);
                 ChessBoardPB.Refresh();
 
@@ -720,6 +754,7 @@ namespace Quoridor_With_C
                 if (result != "No success")
                 {
                     MessageBox.Show(result);
+                    System.Environment.Exit(0);
                 }
 
                 if (NowPlayer == EnumNowPlayer.Player1)
