@@ -289,6 +289,7 @@ namespace Quoridor_With_C
                 CompareAlgorithmCB.Items.Add("None");
                 CompareAlgorithmCB.Items.Add(GameTreeNode.Enum_GameTreeSearchFrameWork.AlphaBetaPurning);
                 AlgorithmSelectCB.Items.Add(GameTreeNode.Enum_GameTreeSearchFrameWork.AlphaBetaPurning);
+                AlgorithmSelectCB.Items.Add("蒙特卡洛树搜索");
 
                 CompareAlgorithmCB.Items.Add(GameTreeNode.Enum_GameTreeSearchFrameWork.MinMax);
                 AlgorithmSelectCB.Items.Add(GameTreeNode.Enum_GameTreeSearchFrameWork.MinMax);
@@ -661,31 +662,49 @@ namespace Quoridor_With_C
                 stopwatch = new System.Diagnostics.Stopwatch();
                 stopwatch.Start(); //  开始监视代码运行时间
                 /***************待测代码段****************/
-                #region AB剪枝树
-                //GameTreeNode.CreateGameTree(Root, NowQuoridor.ThisChessBoard, TreeDepth, DebugSelectCB.Checked);//skinCheckBox1.Checked);//可以改变最大深度来提高算法强度,一定要是奇数
-                //if (IfUseViewFormDebug)
-                //{
-                //    if (DV.treeView1.Nodes[DV.treeView1.Nodes.Count - 1].Text != "Root")
-                //        DV.treeView1.Nodes.Add(new TreeNode("第" + count_AIAction.ToString() + "次落子:"));
-                //    else
-                //        DV.treeView1.Nodes[0] = new TreeNode("第" + count_AIAction.ToString() + "次落子:");
-                //    GameTreeNode.GameTreeView(Root, DV.treeView1.Nodes[DV.treeView1.Nodes.Count - 1]);
-                //}
-                #endregion
+                QuoridorAction NextAction = new QuoridorAction(NowAction.Action_Wait,new Point(-1,-1));
                 #region MCTS
-                if (AIFirstAction)
+                if (AlgorithmSelectCB.SelectedItem.ToString() == "蒙特卡洛树搜索")
                 {
-                    MTRoot = new MonteCartoTreeNode();
-                    AIFirstAction = false;
+                    long SimNum = 0;
+                    try
+                    {
+                        SimNum = Convert.ToInt64(SimNumSetTB.Text);
+                        MonteCartoTreeNode._C = Convert.ToDouble(CValueSetTB.Text);
+                    }
+                    catch (Exception)
+                    {
+                        
+                        throw;
+                    }
+                    if (AIFirstAction)
+                    {
+                        MTRoot = new MonteCartoTreeNode();
+                        AIFirstAction = false;
+                    }
+                    else
+                    {
+                        MTRoot = MonteCartoTreeNode.GetNextPolicyRootNode(SelfAction, OpponentAction, MTRoot);
+                    }
+                    MonteCartoTreeNode._C = 0.04;//0.0055比较折中
+                    MTRoot.NodePlayer = EnumNowPlayer.Player1;
+                    NextAction = MonteCartoTreeNode.GetMCTSPolicy(NowQuoridor.ThisChessBoard, MTRoot, 1000);
                 }
+                #endregion
                 else
                 {
-                    MTRoot = MonteCartoTreeNode.GetNextPolicyRootNode(SelfAction, OpponentAction, MTRoot);
+                    #region AB剪枝树
+                    GameTreeNode.CreateGameTree(Root, NowQuoridor.ThisChessBoard, TreeDepth, DebugSelectCB.Checked);//skinCheckBox1.Checked);//可以改变最大深度来提高算法强度,一定要是奇数
+                    if (IfUseViewFormDebug)
+                    {
+                        if (DV.treeView1.Nodes[DV.treeView1.Nodes.Count - 1].Text != "Root")
+                            DV.treeView1.Nodes.Add(new TreeNode("第" + count_AIAction.ToString() + "次落子:"));
+                        else
+                            DV.treeView1.Nodes[0] = new TreeNode("第" + count_AIAction.ToString() + "次落子:");
+                        GameTreeNode.GameTreeView(Root, DV.treeView1.Nodes[DV.treeView1.Nodes.Count - 1]);
+                    }
+                    #endregion 
                 }
-                MonteCartoTreeNode._C = 0.0048;//0.0055比较折中
-                MTRoot.NodePlayer = EnumNowPlayer.Player1;
-                QuoridorAction NextAction = MonteCartoTreeNode.GetMCTSPolicy(NowQuoridor.ThisChessBoard, MTRoot, 1000);
-                #endregion
                 Console.WriteLine("决策算法结果：");
                 Console.WriteLine(Root.NodeAction.ToString() + "(" + Root.ActionLocation.X.ToString() + "," + Root.ActionLocation.Y.ToString() + ")");
 
@@ -714,17 +733,20 @@ namespace Quoridor_With_C
                 //QuoridorAction AIAction = NowQuoridor.AIAction_Greedy(EnumNowPlayer.Player2);
                 //Hint = NowQuoridor.QuoridorRule.Action(ref NowQuoridor.ThisChessBoard, AIAction.ActionPoint.X, AIAction.ActionPoint.Y, AIAction.PlayerAction);
 
-                #region GameTree
-                //Hint = NowQuoridor.QuoridorRule.Action(ref NowQuoridor.ThisChessBoard, Root.ActionLocation.X, Root.ActionLocation.Y, Root.NodeAction);
-                //PlayerNowAction = Root.NodeAction;
-                #endregion
                 #region MCTS
-                NowQuoridor.ThisChessBoard.DrawNowChessBoard(ref Form1.Gr, Form1.form1.ChessWhitePB, Form1.form1.ChessBlackPB);
-                Form1.form1.ChessBoardPB.Refresh();
-
-                Hint = NowQuoridor.QuoridorRule.Action(ref NowQuoridor.ThisChessBoard, NextAction.ActionPoint.X, NextAction.ActionPoint.Y, NextAction.PlayerAction);
-                PlayerNowAction = NextAction.PlayerAction;
+                if (AlgorithmSelectCB.SelectedItem.ToString() == "蒙特卡洛树搜索")
+                {
+                    Hint = NowQuoridor.QuoridorRule.Action(ref NowQuoridor.ThisChessBoard, NextAction.ActionPoint.X, NextAction.ActionPoint.Y, NextAction.PlayerAction);
+                    PlayerNowAction = NextAction.PlayerAction;
+                }
                 #endregion
+                else
+                {
+                    #region GameTree
+                    Hint = NowQuoridor.QuoridorRule.Action(ref NowQuoridor.ThisChessBoard, Root.ActionLocation.X, Root.ActionLocation.Y, Root.NodeAction);
+                    PlayerNowAction = Root.NodeAction;
+                    #endregion 
+                }
                 if (Hint != "OK")
                 {
                     MessageBox.Show(Hint);

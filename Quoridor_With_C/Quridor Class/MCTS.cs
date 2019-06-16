@@ -45,10 +45,14 @@ namespace MCTS
             double UCTBuff = 0;
             double ExploitationComponent = 0, ExplorationComponent = 0;
 
-            ExploitationComponent = SonNode._Q / SonNode._N;
-            ExplorationComponent = _C * Math.Sqrt((Math.Log10(FatherNode._N) / SonNode._N));
-
-            UCTBuff = ExploitationComponent + ExplorationComponent;
+            /*普通的UCT*/
+            //ExploitationComponent = SonNode._Q / SonNode._N;
+            //ExplorationComponent = _C * Math.Sqrt((Math.Log10(FatherNode._N) / SonNode._N));
+            //UCTBuff = ExploitationComponent + ExplorationComponent;
+            
+            /*与P值有关的UCT*/
+            UCTBuff = _C * SonNode._P * Math.Sqrt(FatherNode._N / (1 + SonNode._N));
+ 
             return UCTBuff;
         }
         /// <summary>
@@ -60,13 +64,13 @@ namespace MCTS
         {
             MonteCartoTreeNode MTNode = new MonteCartoTreeNode();
 
-            double MaxUCT = -100;
+            double MaxQUCT = -100;
             foreach (MonteCartoTreeNode NodeBuff in FatherNode.SonNode)
             {
                 NodeBuff._UCT = CalUCTValue_UCT(FatherNode, NodeBuff);
-                if (MaxUCT < NodeBuff._UCT)//选择最大UCT值的节点
+                if (MaxQUCT < NodeBuff._UCT + NodeBuff._Q)//选择最大UCT + Q值的节点
                 {
-                    MaxUCT = NodeBuff._UCT;
+                    MaxQUCT = NodeBuff._UCT + NodeBuff._Q;
                     MTNode = NodeBuff;
                 }
             }
@@ -118,6 +122,7 @@ namespace MCTS
                     MTSonNode.NodeAction = QA.PlayerAction;
                     MTSonNode.ActionLocation.X = QA.ActionPoint.X;
                     MTSonNode.ActionLocation.Y = QA.ActionPoint.Y;
+                    MTSonNode._P = QA.WholeScore;
                     MTSonNode.FatherNode = FatherNode;
                     SonNode.Add(MTSonNode);
                 }
