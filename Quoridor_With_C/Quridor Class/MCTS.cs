@@ -182,9 +182,9 @@ namespace MCTS
                 }
                 #endregion
 
-                SimluationChessBoard.DrawNowChessBoard(ref Form1.Gr, Form1.form1.ChessWhitePB, Form1.form1.ChessBlackPB);
-                Form1.form1.ChessBoardPB.Refresh();
-                System.Threading.Thread.Sleep(500);
+                //SimluationChessBoard.DrawNowChessBoard(ref Form1.Gr, Form1.form1.ChessWhitePB, Form1.form1.ChessBlackPB);
+                //Form1.form1.ChessBoardPB.Refresh();
+                //System.Threading.Thread.Sleep(500);
                 string SucessHint = RuleEngine.CheckResult(SimluationChessBoard);
                 if (SucessHint != "No success")//搜索到胜利节点了
                 {
@@ -201,6 +201,37 @@ namespace MCTS
                     NextExpandNode.BackPropagation(leaf_value);
                     break;
                 }
+                # region 必赢必输局面检测
+                if (SimluationChessBoard.NumPlayer2Board == 0 && SimluationChessBoard.NumPlayer1Board == 0)//搜到终局时刻
+                {
+                    double dis_player1 = RuleEngine.AstarEngine.AstarRestart(SimluationChessBoard, EnumNowPlayer.Player1
+            , SimluationChessBoard.Player1Location.X, SimluationChessBoard.Player1Location.Y);
+                    double dis_player2 = RuleEngine.AstarEngine.AstarRestart(SimluationChessBoard, EnumNowPlayer.Player2
+            , SimluationChessBoard.Player2Location.X, SimluationChessBoard.Player2Location.Y);
+
+                    double leaf_value = -1;
+                    if (JudgePlayer == EnumNowPlayer.Player1)//下一步是P2走
+                    {
+                        #region 是否存在跳棋检测(未写)
+                        #endregion
+                        if (dis_player2 - dis_player1 > 0)
+                        {
+                            leaf_value = 1;
+                        }
+                    }
+                    if (JudgePlayer == EnumNowPlayer.Player2)//下一步是P1走
+                    {
+                        #region 是否存在跳棋检测(未写)
+                        #endregion
+                        if (dis_player1 - dis_player2 > 0)
+                        {
+                            leaf_value = 1;
+                        }
+                    }
+                    NextExpandNode.BackPropagation(leaf_value);
+                    break;
+                }
+                #endregion
                 /*拓展*/
                 NextExpandNode.Expand(SimluationChessBoard, NextExpandNode);
             }

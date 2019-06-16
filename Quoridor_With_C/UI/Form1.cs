@@ -259,8 +259,8 @@ namespace Quoridor_With_C
                 //NowQuoridor.ThisChessBoard.ChessBoardAll[2, 4].IfLeftBoard = true;
                 //NowQuoridor.ThisChessBoard.ChessBoardAll[3, 4].IfLeftBoard = true;
 
-                NowQuoridor.ThisChessBoard.NumPlayer1Board = 4 - 2;
-                NowQuoridor.ThisChessBoard.NumPlayer2Board = 4 - 2;
+                NowQuoridor.ThisChessBoard.NumPlayer1Board = 16 - 2;
+                NowQuoridor.ThisChessBoard.NumPlayer2Board = 16 - 2;
 
 
                 NowQuoridor.ThisChessBoard.Player1Location = new Point(1, 3);
@@ -289,13 +289,14 @@ namespace Quoridor_With_C
                 CompareAlgorithmCB.Items.Add("None");
                 CompareAlgorithmCB.Items.Add(GameTreeNode.Enum_GameTreeSearchFrameWork.AlphaBetaPurning);
                 AlgorithmSelectCB.Items.Add(GameTreeNode.Enum_GameTreeSearchFrameWork.AlphaBetaPurning);
-                AlgorithmSelectCB.Items.Add("蒙特卡洛树搜索");
 
                 CompareAlgorithmCB.Items.Add(GameTreeNode.Enum_GameTreeSearchFrameWork.MinMax);
                 AlgorithmSelectCB.Items.Add(GameTreeNode.Enum_GameTreeSearchFrameWork.MinMax);
 
+                AlgorithmSelectCB.Items.Add("蒙特卡洛树搜索");
+
                 CompareAlgorithmCB.SelectedIndex = 0;
-                AlgorithmSelectCB.SelectedIndex = 0;
+                AlgorithmSelectCB.SelectedIndex = AlgorithmSelectCB.Items.Count - 1;
                 DepthSelectCB.SelectedIndex = 1;
                 DepthCompareCB.SelectedIndex = 1;
                 #endregion
@@ -666,10 +667,10 @@ namespace Quoridor_With_C
                 #region MCTS
                 if (AlgorithmSelectCB.SelectedItem.ToString() == "蒙特卡洛树搜索")
                 {
-                    long SimNum = 0;
+                    int SimNum = 0;
                     try
                     {
-                        SimNum = Convert.ToInt64(SimNumSetTB.Text);
+                        SimNum = Convert.ToInt16(SimNumSetTB.Text);
                         MonteCartoTreeNode._C = Convert.ToDouble(CValueSetTB.Text);
                     }
                     catch (Exception)
@@ -686,9 +687,9 @@ namespace Quoridor_With_C
                     {
                         MTRoot = MonteCartoTreeNode.GetNextPolicyRootNode(SelfAction, OpponentAction, MTRoot);
                     }
-                    MonteCartoTreeNode._C = 0.04;//0.0055比较折中
+                    //MonteCartoTreeNode._C = 0.04;//0.0055比较折中
                     MTRoot.NodePlayer = EnumNowPlayer.Player1;
-                    NextAction = MonteCartoTreeNode.GetMCTSPolicy(NowQuoridor.ThisChessBoard, MTRoot, 1000);
+                    NextAction = MonteCartoTreeNode.GetMCTSPolicy(NowQuoridor.ThisChessBoard, MTRoot, SimNum);
                 }
                 #endregion
                 else

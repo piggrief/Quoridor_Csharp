@@ -166,7 +166,7 @@ namespace QuoridorRule
             Action_Wait
         }
 
-        LookupRoadAlgorithm AstarEngine = new LookupRoadAlgorithm();
+        public LookupRoadAlgorithm AstarEngine = new LookupRoadAlgorithm();
         /// <summary>
         /// 检测能否执行移动，No Change代表检测成功后不会执行这次移动，不会改变棋盘ChessBoard_ToCheck
         /// </summary>
