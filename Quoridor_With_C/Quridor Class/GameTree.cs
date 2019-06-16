@@ -209,6 +209,17 @@ namespace GameTree
                 {
                     throw;
                 }
+                if (QA.PlayerAction == NowAction.Action_PlaceHorizontalBoard || QA.PlayerAction == NowAction.Action_PlaceVerticalBoard)
+                {
+                    if (PlayerSave == EnumNowPlayer.Player1)
+                    {
+                        ThisChessBoard.NumPlayer1Board -= 2;
+                    }
+                    else
+                    {
+                        ThisChessBoard.NumPlayer2Board -= 2;
+                    }
+                }
                 #endregion
 
                 if (ThisNode.depth <= DepthMax)

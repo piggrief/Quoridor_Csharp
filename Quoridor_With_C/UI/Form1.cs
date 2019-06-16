@@ -259,8 +259,8 @@ namespace Quoridor_With_C
                 //NowQuoridor.ThisChessBoard.ChessBoardAll[2, 4].IfLeftBoard = true;
                 //NowQuoridor.ThisChessBoard.ChessBoardAll[3, 4].IfLeftBoard = true;
 
-                QuoridorRuleEngine.NumPlayer1Board = 16 - 2;
-                QuoridorRuleEngine.NumPlayer2Board = 16 - 2;
+                NowQuoridor.ThisChessBoard.NumPlayer1Board = 4 - 2;
+                NowQuoridor.ThisChessBoard.NumPlayer2Board = 4 - 2;
 
 
                 NowQuoridor.ThisChessBoard.Player1Location = new Point(1, 3);
@@ -272,8 +272,8 @@ namespace Quoridor_With_C
                 NowQuoridor.ThisChessBoard.DrawNowChessBoard(ref Gr, ChessWhitePB, ChessBlackPB);
                 ChessBoardPB.Refresh();
 
-                BlackBoardNumLB.Text = QuoridorRuleEngine.NumPlayer2Board.ToString();
-                WhiteBoardNumLB.Text = QuoridorRuleEngine.NumPlayer1Board.ToString();
+                BlackBoardNumLB.Text = NowQuoridor.ThisChessBoard.NumPlayer2Board.ToString();
+                WhiteBoardNumLB.Text = NowQuoridor.ThisChessBoard.NumPlayer1Board.ToString();
 
                 #region 打开DebugView窗体
                 //IfOpenDebugViewForm = true;
@@ -486,14 +486,14 @@ namespace Quoridor_With_C
             {
                 if (PlayerNowAction == NowAction.Action_PlaceVerticalBoard
                     || PlayerNowAction == NowAction.Action_PlaceHorizontalBoard)
-                    QuoridorRuleEngine.NumPlayer1Board -= 2;
+                    NowQuoridor.ThisChessBoard.NumPlayer1Board -= 2;
                 NowPlayer = EnumNowPlayer.Player2;
             }
             else if (NowPlayer == EnumNowPlayer.Player2)
             {
                 if (PlayerNowAction == NowAction.Action_PlaceVerticalBoard
                     || PlayerNowAction == NowAction.Action_PlaceHorizontalBoard)
-                    QuoridorRuleEngine.NumPlayer2Board -= 2;
+                    NowQuoridor.ThisChessBoard.NumPlayer2Board -= 2;
                 NowPlayer = EnumNowPlayer.Player1;
             }
 
@@ -510,16 +510,16 @@ namespace Quoridor_With_C
             if (NowPlayer == EnumNowPlayer.Player1)
             {
                 ActionPlayerLabel.Text = "白子";
-                BlackBoardNumLB.Text = QuoridorRuleEngine.NumPlayer2Board.ToString();
-                WhiteBoardNumLB.Text = QuoridorRuleEngine.NumPlayer1Board.ToString();
+                BlackBoardNumLB.Text = NowQuoridor.ThisChessBoard.NumPlayer2Board.ToString();
+                WhiteBoardNumLB.Text = NowQuoridor.ThisChessBoard.NumPlayer1Board.ToString();
 
                 PlayerNowAction = NowAction.Action_Move_Player1;
             }
             if (NowPlayer == EnumNowPlayer.Player2)
             {
                 ActionPlayerLabel.Text = "黑子";
-                BlackBoardNumLB.Text = QuoridorRuleEngine.NumPlayer2Board.ToString();
-                WhiteBoardNumLB.Text = QuoridorRuleEngine.NumPlayer1Board.ToString();
+                BlackBoardNumLB.Text = NowQuoridor.ThisChessBoard.NumPlayer2Board.ToString();
+                WhiteBoardNumLB.Text = NowQuoridor.ThisChessBoard.NumPlayer1Board.ToString();
 
                 PlayerNowAction = NowAction.Action_Move_Player2;
             }
@@ -756,14 +756,14 @@ namespace Quoridor_With_C
                 {
                     if (PlayerNowAction == NowAction.Action_PlaceVerticalBoard
                         || PlayerNowAction == NowAction.Action_PlaceHorizontalBoard)
-                        QuoridorRuleEngine.NumPlayer1Board -= 2;
+                        NowQuoridor.ThisChessBoard.NumPlayer1Board -= 2;
                     NowPlayer = EnumNowPlayer.Player2;
                 }
                 else if (NowPlayer == EnumNowPlayer.Player2)
                 {
                     if (PlayerNowAction == NowAction.Action_PlaceVerticalBoard
                         || PlayerNowAction == NowAction.Action_PlaceHorizontalBoard)
-                        QuoridorRuleEngine.NumPlayer2Board -= 2;
+                        NowQuoridor.ThisChessBoard.NumPlayer2Board -= 2;
                     NowPlayer = EnumNowPlayer.Player1;
                 }
 
@@ -784,9 +784,9 @@ namespace Quoridor_With_C
                     //MessageBox.Show("现在轮到玩家1操作！");
                     TestTB.Text = "当前行动玩家：白子";
                     TestTB.Text += System.Environment.NewLine;
-                    TestTB.Text += "白子剩余挡板：" + QuoridorRuleEngine.NumPlayer1Board.ToString();
+                    TestTB.Text += "白子剩余挡板：" + NowQuoridor.ThisChessBoard.NumPlayer1Board.ToString();
                     TestTB.Text += System.Environment.NewLine;
-                    TestTB.Text += "黑子剩余挡板：" + QuoridorRuleEngine.NumPlayer2Board.ToString();
+                    TestTB.Text += "黑子剩余挡板：" + NowQuoridor.ThisChessBoard.NumPlayer2Board.ToString();
 
                     PlayerNowAction = NowAction.Action_Move_Player1;
                 }
@@ -795,9 +795,9 @@ namespace Quoridor_With_C
                     //MessageBox.Show("现在轮到玩家2操作！");
                     TestTB.Text = "当前行动玩家：黑子";
                     TestTB.Text += System.Environment.NewLine;
-                    TestTB.Text += "白子剩余挡板：" + QuoridorRuleEngine.NumPlayer1Board.ToString();
+                    TestTB.Text += "白子剩余挡板：" + NowQuoridor.ThisChessBoard.NumPlayer1Board.ToString();
                     TestTB.Text += System.Environment.NewLine;
-                    TestTB.Text += "黑子剩余挡板：" + QuoridorRuleEngine.NumPlayer2Board.ToString();
+                    TestTB.Text += "黑子剩余挡板：" + NowQuoridor.ThisChessBoard.NumPlayer2Board.ToString();
 
                     PlayerNowAction = NowAction.Action_Move_Player2;
                 }
