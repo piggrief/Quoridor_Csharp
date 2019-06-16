@@ -45,10 +45,14 @@ namespace MCTS
             double UCTBuff = 0;
             double ExploitationComponent = 0, ExplorationComponent = 0;
 
-            ExploitationComponent = SonNode._Q / SonNode._N;
-            ExplorationComponent = _C * Math.Sqrt((Math.Log10(FatherNode._N) / SonNode._N));
-
-            UCTBuff = ExploitationComponent + ExplorationComponent;
+            /*普通的UCT*/
+            //ExploitationComponent = SonNode._Q / SonNode._N;
+            //ExplorationComponent = _C * Math.Sqrt((Math.Log10(FatherNode._N) / SonNode._N));
+            //UCTBuff = ExploitationComponent + ExplorationComponent;
+            
+            /*与P值有关的UCT*/
+            UCTBuff = _C * SonNode._P * Math.Sqrt(FatherNode._N / (1 + SonNode._N));
+ 
             return UCTBuff;
         }
         /// <summary>
@@ -60,13 +64,13 @@ namespace MCTS
         {
             MonteCartoTreeNode MTNode = new MonteCartoTreeNode();
 
-            double MaxUCT = -100;
+            double MaxQUCT = -100;
             foreach (MonteCartoTreeNode NodeBuff in FatherNode.SonNode)
             {
                 NodeBuff._UCT = CalUCTValue_UCT(FatherNode, NodeBuff);
-                if (MaxUCT < NodeBuff._UCT)//选择最大UCT值的节点
+                if (MaxQUCT < NodeBuff._UCT + NodeBuff._Q)//选择最大UCT + Q值的节点
                 {
-                    MaxUCT = NodeBuff._UCT;
+                    MaxQUCT = NodeBuff._UCT + NodeBuff._Q;
                     MTNode = NodeBuff;
                 }
             }
@@ -118,6 +122,7 @@ namespace MCTS
                     MTSonNode.NodeAction = QA.PlayerAction;
                     MTSonNode.ActionLocation.X = QA.ActionPoint.X;
                     MTSonNode.ActionLocation.Y = QA.ActionPoint.Y;
+                    MTSonNode._P = QA.WholeScore;
                     MTSonNode.FatherNode = FatherNode;
                     SonNode.Add(MTSonNode);
                 }
@@ -130,6 +135,11 @@ namespace MCTS
         /// <param name="RootNode">根节点</param>
         public static void SimluationOnce(ChessBoard InitChessBoard, MonteCartoTreeNode RootNode)
         {
+            #region 暂存挡板数量
+            int Board1Save = InitChessBoard.NumPlayer1Board;
+            int Board2Save = InitChessBoard.NumPlayer2Board;
+            #endregion
+
             if (RootNode.SonNode.Count == 0)//初始根节点
 	        {
                 RootNode.Expand(InitChessBoard, RootNode);//先拓展一次		 
@@ -157,24 +167,47 @@ namespace MCTS
                 {
                     throw;
                 }
+
+                if (NextExpandNode.NodePlayer == EnumNowPlayer.Player1)
+                {
+                    if (NextExpandNode.NodeAction == NowAction.Action_PlaceVerticalBoard
+                        || NextExpandNode.NodeAction == NowAction.Action_PlaceHorizontalBoard)
+                        SimluationChessBoard.NumPlayer1Board -= 2;
+                }
+                else if (NextExpandNode.NodePlayer == EnumNowPlayer.Player2)
+                {
+                    if (NextExpandNode.NodeAction == NowAction.Action_PlaceVerticalBoard
+                        || NextExpandNode.NodeAction == NowAction.Action_PlaceHorizontalBoard)
+                        SimluationChessBoard.NumPlayer2Board -= 2;
+                }
                 #endregion
 
                 SimluationChessBoard.DrawNowChessBoard(ref Form1.Gr, Form1.form1.ChessWhitePB, Form1.form1.ChessBlackPB);
                 Form1.form1.ChessBoardPB.Refresh();
-
-                if (RuleEngine.CheckResult(SimluationChessBoard) != "No success")//搜索到胜利节点了
+                System.Threading.Thread.Sleep(500);
+                string SucessHint = RuleEngine.CheckResult(SimluationChessBoard);
+                if (SucessHint != "No success")//搜索到胜利节点了
                 {
                     double leaf_value = -1;
-                    if (NextExpandNode.NodePlayer == JudgePlayer)//决策玩家获胜加分
+                    if (JudgePlayer == EnumNowPlayer.Player1 && SucessHint == "Player1 Success!")
+                    {
+                        leaf_value = 1;                       
+                    }
+                    if (JudgePlayer == EnumNowPlayer.Player2 && SucessHint == "Player2 Success!")
                     {
                         leaf_value = 1;
                     }
+
                     NextExpandNode.BackPropagation(leaf_value);
                     break;
                 }
                 /*拓展*/
                 NextExpandNode.Expand(SimluationChessBoard, NextExpandNode);
             }
+            #region 恢复挡板数量
+            InitChessBoard.NumPlayer1Board = Board1Save;
+            InitChessBoard.NumPlayer2Board = Board2Save;
+            #endregion
         }
         /// <summary>
         /// 进行SimluationNum次模拟后选择最好的节点落子

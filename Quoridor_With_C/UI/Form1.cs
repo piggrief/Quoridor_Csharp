@@ -244,18 +244,27 @@ namespace Quoridor_With_C
                 TestTB.Location = new Point(ChessBoardPB.Location.X, ChessBoardPB.Size.Height + ChessBoardPB.Location.Y);
 
                 #region 配置初始棋盘
-                //NowQuoridor.ThisChessBoard.ChessBoardAll[0, 3].GridStatus = Grid.GridInsideStatus.Empty;
-                //NowQuoridor.ThisChessBoard.ChessBoardAll[1, 3].GridStatus = Grid.GridInsideStatus.Have_Player1;
-                //NowQuoridor.ThisChessBoard.ChessBoardAll[6, 3].GridStatus = Grid.GridInsideStatus.Empty;
-                //NowQuoridor.ThisChessBoard.ChessBoardAll[5, 3].GridStatus = Grid.GridInsideStatus.Have_Player2;
+                NowQuoridor.ThisChessBoard.ChessBoardAll[0, 3].GridStatus = Grid.GridInsideStatus.Empty;
+                NowQuoridor.ThisChessBoard.ChessBoardAll[1, 3].GridStatus = Grid.GridInsideStatus.Have_Player1;
+                NowQuoridor.ThisChessBoard.ChessBoardAll[6, 3].GridStatus = Grid.GridInsideStatus.Empty;
+                NowQuoridor.ThisChessBoard.ChessBoardAll[5, 3].GridStatus = Grid.GridInsideStatus.Have_Player2;
 
-                //NowQuoridor.ThisChessBoard.ChessBoardAll[1, 3].IfUpBoard = true;
-                //NowQuoridor.ThisChessBoard.ChessBoardAll[1, 4].IfUpBoard = true;
-                //NowQuoridor.ThisChessBoard.ChessBoardAll[6, 2].IfUpBoard = true;
-                //NowQuoridor.ThisChessBoard.ChessBoardAll[6, 3].IfUpBoard = true;
+                NowQuoridor.ThisChessBoard.ChessBoardAll[1, 3].IfUpBoard = true;
+                NowQuoridor.ThisChessBoard.ChessBoardAll[1, 4].IfUpBoard = true;
+                NowQuoridor.ThisChessBoard.ChessBoardAll[6, 2].IfUpBoard = true;
+                NowQuoridor.ThisChessBoard.ChessBoardAll[6, 3].IfUpBoard = true;
 
-                //NowQuoridor.ThisChessBoard.Player1Location = new Point(1, 3);
-                //NowQuoridor.ThisChessBoard.Player2Location = new Point(5, 3);
+                //NowQuoridor.ThisChessBoard.ChessBoardAll[2, 3].IfLeftBoard = true;
+                //NowQuoridor.ThisChessBoard.ChessBoardAll[3, 3].IfLeftBoard = true;
+                //NowQuoridor.ThisChessBoard.ChessBoardAll[2, 4].IfLeftBoard = true;
+                //NowQuoridor.ThisChessBoard.ChessBoardAll[3, 4].IfLeftBoard = true;
+
+                NowQuoridor.ThisChessBoard.NumPlayer1Board = 4 - 2;
+                NowQuoridor.ThisChessBoard.NumPlayer2Board = 4 - 2;
+
+
+                NowQuoridor.ThisChessBoard.Player1Location = new Point(1, 3);
+                NowQuoridor.ThisChessBoard.Player2Location = new Point(5, 3);
 
                 #endregion
 
@@ -263,8 +272,8 @@ namespace Quoridor_With_C
                 NowQuoridor.ThisChessBoard.DrawNowChessBoard(ref Gr, ChessWhitePB, ChessBlackPB);
                 ChessBoardPB.Refresh();
 
-                BlackBoardNumLB.Text = QuoridorRuleEngine.NumPlayer2Board.ToString();
-                WhiteBoardNumLB.Text = QuoridorRuleEngine.NumPlayer1Board.ToString();
+                BlackBoardNumLB.Text = NowQuoridor.ThisChessBoard.NumPlayer2Board.ToString();
+                WhiteBoardNumLB.Text = NowQuoridor.ThisChessBoard.NumPlayer1Board.ToString();
 
                 #region 打开DebugView窗体
                 //IfOpenDebugViewForm = true;
@@ -280,6 +289,7 @@ namespace Quoridor_With_C
                 CompareAlgorithmCB.Items.Add("None");
                 CompareAlgorithmCB.Items.Add(GameTreeNode.Enum_GameTreeSearchFrameWork.AlphaBetaPurning);
                 AlgorithmSelectCB.Items.Add(GameTreeNode.Enum_GameTreeSearchFrameWork.AlphaBetaPurning);
+                AlgorithmSelectCB.Items.Add("蒙特卡洛树搜索");
 
                 CompareAlgorithmCB.Items.Add(GameTreeNode.Enum_GameTreeSearchFrameWork.MinMax);
                 AlgorithmSelectCB.Items.Add(GameTreeNode.Enum_GameTreeSearchFrameWork.MinMax);
@@ -376,8 +386,12 @@ namespace Quoridor_With_C
         }
         long count_AIAction = 0;
         bool PlayerFirstAction = true;
+        bool AIFirstAction = true;
         GameTreeNode Root = new GameTreeNode();
         MonteCartoTreeNode MTRoot = new MonteCartoTreeNode();
+        QuoridorAction OpponentAction = new QuoridorAction(NowAction.Action_Wait, new Point(-1, -1));
+        QuoridorAction SelfAction = new QuoridorAction(NowAction.Action_Wait, new Point(-1, -1));
+
         /// <summary>
         /// 根据点击坐标执行下棋操作
         /// </summary>
@@ -443,6 +457,10 @@ namespace Quoridor_With_C
             }
 
             long HashBuff = 0;
+            OpponentAction.ActionPoint.X = row;
+            OpponentAction.ActionPoint.Y = col;
+            OpponentAction.PlayerAction = PlayerNowAction;
+ 
 
             if (PlayerFirstAction)
             {
@@ -468,14 +486,14 @@ namespace Quoridor_With_C
             {
                 if (PlayerNowAction == NowAction.Action_PlaceVerticalBoard
                     || PlayerNowAction == NowAction.Action_PlaceHorizontalBoard)
-                    QuoridorRuleEngine.NumPlayer1Board -= 2;
+                    NowQuoridor.ThisChessBoard.NumPlayer1Board -= 2;
                 NowPlayer = EnumNowPlayer.Player2;
             }
             else if (NowPlayer == EnumNowPlayer.Player2)
             {
                 if (PlayerNowAction == NowAction.Action_PlaceVerticalBoard
                     || PlayerNowAction == NowAction.Action_PlaceHorizontalBoard)
-                    QuoridorRuleEngine.NumPlayer2Board -= 2;
+                    NowQuoridor.ThisChessBoard.NumPlayer2Board -= 2;
                 NowPlayer = EnumNowPlayer.Player1;
             }
 
@@ -486,21 +504,22 @@ namespace Quoridor_With_C
             if (result != "No success")
             {
                 MessageBox.Show(result);
+                System.Environment.Exit(0);
             }
 
             if (NowPlayer == EnumNowPlayer.Player1)
             {
                 ActionPlayerLabel.Text = "白子";
-                BlackBoardNumLB.Text = QuoridorRuleEngine.NumPlayer2Board.ToString();
-                WhiteBoardNumLB.Text = QuoridorRuleEngine.NumPlayer1Board.ToString();
+                BlackBoardNumLB.Text = NowQuoridor.ThisChessBoard.NumPlayer2Board.ToString();
+                WhiteBoardNumLB.Text = NowQuoridor.ThisChessBoard.NumPlayer1Board.ToString();
 
                 PlayerNowAction = NowAction.Action_Move_Player1;
             }
             if (NowPlayer == EnumNowPlayer.Player2)
             {
                 ActionPlayerLabel.Text = "黑子";
-                BlackBoardNumLB.Text = QuoridorRuleEngine.NumPlayer2Board.ToString();
-                WhiteBoardNumLB.Text = QuoridorRuleEngine.NumPlayer1Board.ToString();
+                BlackBoardNumLB.Text = NowQuoridor.ThisChessBoard.NumPlayer2Board.ToString();
+                WhiteBoardNumLB.Text = NowQuoridor.ThisChessBoard.NumPlayer1Board.ToString();
 
                 PlayerNowAction = NowAction.Action_Move_Player2;
             }
@@ -643,20 +662,49 @@ namespace Quoridor_With_C
                 stopwatch = new System.Diagnostics.Stopwatch();
                 stopwatch.Start(); //  开始监视代码运行时间
                 /***************待测代码段****************/
-                #region AB剪枝树
-                //GameTreeNode.CreateGameTree(Root, NowQuoridor.ThisChessBoard, TreeDepth, DebugSelectCB.Checked);//skinCheckBox1.Checked);//可以改变最大深度来提高算法强度,一定要是奇数
-                //if (IfUseViewFormDebug)
-                //{
-                //    if (DV.treeView1.Nodes[DV.treeView1.Nodes.Count - 1].Text != "Root")
-                //        DV.treeView1.Nodes.Add(new TreeNode("第" + count_AIAction.ToString() + "次落子:"));
-                //    else
-                //        DV.treeView1.Nodes[0] = new TreeNode("第" + count_AIAction.ToString() + "次落子:");
-                //    GameTreeNode.GameTreeView(Root, DV.treeView1.Nodes[DV.treeView1.Nodes.Count - 1]);
-                //}
-                #endregion
+                QuoridorAction NextAction = new QuoridorAction(NowAction.Action_Wait,new Point(-1,-1));
                 #region MCTS
-                MonteCartoTreeNode.GetMCTSPolicy(NowQuoridor.ThisChessBoard, MTRoot);
+                if (AlgorithmSelectCB.SelectedItem.ToString() == "蒙特卡洛树搜索")
+                {
+                    long SimNum = 0;
+                    try
+                    {
+                        SimNum = Convert.ToInt64(SimNumSetTB.Text);
+                        MonteCartoTreeNode._C = Convert.ToDouble(CValueSetTB.Text);
+                    }
+                    catch (Exception)
+                    {
+                        
+                        throw;
+                    }
+                    if (AIFirstAction)
+                    {
+                        MTRoot = new MonteCartoTreeNode();
+                        AIFirstAction = false;
+                    }
+                    else
+                    {
+                        MTRoot = MonteCartoTreeNode.GetNextPolicyRootNode(SelfAction, OpponentAction, MTRoot);
+                    }
+                    MonteCartoTreeNode._C = 0.04;//0.0055比较折中
+                    MTRoot.NodePlayer = EnumNowPlayer.Player1;
+                    NextAction = MonteCartoTreeNode.GetMCTSPolicy(NowQuoridor.ThisChessBoard, MTRoot, 1000);
+                }
                 #endregion
+                else
+                {
+                    #region AB剪枝树
+                    GameTreeNode.CreateGameTree(Root, NowQuoridor.ThisChessBoard, TreeDepth, DebugSelectCB.Checked);//skinCheckBox1.Checked);//可以改变最大深度来提高算法强度,一定要是奇数
+                    if (IfUseViewFormDebug)
+                    {
+                        if (DV.treeView1.Nodes[DV.treeView1.Nodes.Count - 1].Text != "Root")
+                            DV.treeView1.Nodes.Add(new TreeNode("第" + count_AIAction.ToString() + "次落子:"));
+                        else
+                            DV.treeView1.Nodes[0] = new TreeNode("第" + count_AIAction.ToString() + "次落子:");
+                        GameTreeNode.GameTreeView(Root, DV.treeView1.Nodes[DV.treeView1.Nodes.Count - 1]);
+                    }
+                    #endregion 
+                }
                 Console.WriteLine("决策算法结果：");
                 Console.WriteLine(Root.NodeAction.ToString() + "(" + Root.ActionLocation.X.ToString() + "," + Root.ActionLocation.Y.ToString() + ")");
 
@@ -685,14 +733,20 @@ namespace Quoridor_With_C
                 //QuoridorAction AIAction = NowQuoridor.AIAction_Greedy(EnumNowPlayer.Player2);
                 //Hint = NowQuoridor.QuoridorRule.Action(ref NowQuoridor.ThisChessBoard, AIAction.ActionPoint.X, AIAction.ActionPoint.Y, AIAction.PlayerAction);
 
-                #region GameTree
-                //Hint = NowQuoridor.QuoridorRule.Action(ref NowQuoridor.ThisChessBoard, Root.ActionLocation.X, Root.ActionLocation.Y, Root.NodeAction);
-                //PlayerNowAction = Root.NodeAction;
-                #endregion
                 #region MCTS
-                Hint = NowQuoridor.QuoridorRule.Action(ref NowQuoridor.ThisChessBoard, MTRoot.ActionLocation.X, MTRoot.ActionLocation.Y, MTRoot.NodeAction);
-                PlayerNowAction = MTRoot.NodeAction;
+                if (AlgorithmSelectCB.SelectedItem.ToString() == "蒙特卡洛树搜索")
+                {
+                    Hint = NowQuoridor.QuoridorRule.Action(ref NowQuoridor.ThisChessBoard, NextAction.ActionPoint.X, NextAction.ActionPoint.Y, NextAction.PlayerAction);
+                    PlayerNowAction = NextAction.PlayerAction;
+                }
                 #endregion
+                else
+                {
+                    #region GameTree
+                    Hint = NowQuoridor.QuoridorRule.Action(ref NowQuoridor.ThisChessBoard, Root.ActionLocation.X, Root.ActionLocation.Y, Root.NodeAction);
+                    PlayerNowAction = Root.NodeAction;
+                    #endregion 
+                }
                 if (Hint != "OK")
                 {
                     MessageBox.Show(Hint);
@@ -702,16 +756,18 @@ namespace Quoridor_With_C
                 {
                     if (PlayerNowAction == NowAction.Action_PlaceVerticalBoard
                         || PlayerNowAction == NowAction.Action_PlaceHorizontalBoard)
-                        QuoridorRuleEngine.NumPlayer1Board -= 2;
+                        NowQuoridor.ThisChessBoard.NumPlayer1Board -= 2;
                     NowPlayer = EnumNowPlayer.Player2;
                 }
                 else if (NowPlayer == EnumNowPlayer.Player2)
                 {
                     if (PlayerNowAction == NowAction.Action_PlaceVerticalBoard
                         || PlayerNowAction == NowAction.Action_PlaceHorizontalBoard)
-                        QuoridorRuleEngine.NumPlayer2Board -= 2;
+                        NowQuoridor.ThisChessBoard.NumPlayer2Board -= 2;
                     NowPlayer = EnumNowPlayer.Player1;
                 }
+
+                SelfAction = NextAction;
 
                 NowQuoridor.ThisChessBoard.DrawNowChessBoard(ref Gr, ChessWhitePB, ChessBlackPB);
                 ChessBoardPB.Refresh();
@@ -720,6 +776,7 @@ namespace Quoridor_With_C
                 if (result != "No success")
                 {
                     MessageBox.Show(result);
+                    System.Environment.Exit(0);
                 }
 
                 if (NowPlayer == EnumNowPlayer.Player1)
@@ -727,9 +784,9 @@ namespace Quoridor_With_C
                     //MessageBox.Show("现在轮到玩家1操作！");
                     TestTB.Text = "当前行动玩家：白子";
                     TestTB.Text += System.Environment.NewLine;
-                    TestTB.Text += "白子剩余挡板：" + QuoridorRuleEngine.NumPlayer1Board.ToString();
+                    TestTB.Text += "白子剩余挡板：" + NowQuoridor.ThisChessBoard.NumPlayer1Board.ToString();
                     TestTB.Text += System.Environment.NewLine;
-                    TestTB.Text += "黑子剩余挡板：" + QuoridorRuleEngine.NumPlayer2Board.ToString();
+                    TestTB.Text += "黑子剩余挡板：" + NowQuoridor.ThisChessBoard.NumPlayer2Board.ToString();
 
                     PlayerNowAction = NowAction.Action_Move_Player1;
                 }
@@ -738,9 +795,9 @@ namespace Quoridor_With_C
                     //MessageBox.Show("现在轮到玩家2操作！");
                     TestTB.Text = "当前行动玩家：黑子";
                     TestTB.Text += System.Environment.NewLine;
-                    TestTB.Text += "白子剩余挡板：" + QuoridorRuleEngine.NumPlayer1Board.ToString();
+                    TestTB.Text += "白子剩余挡板：" + NowQuoridor.ThisChessBoard.NumPlayer1Board.ToString();
                     TestTB.Text += System.Environment.NewLine;
-                    TestTB.Text += "黑子剩余挡板：" + QuoridorRuleEngine.NumPlayer2Board.ToString();
+                    TestTB.Text += "黑子剩余挡板：" + NowQuoridor.ThisChessBoard.NumPlayer2Board.ToString();
 
                     PlayerNowAction = NowAction.Action_Move_Player2;
                 }

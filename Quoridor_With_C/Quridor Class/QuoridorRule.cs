@@ -56,6 +56,8 @@ namespace QuoridorRule
         public static Color Player2ChessColor = Color.Black;//玩家2棋子颜色
         public Point Player1Location = new Point(0, 3);//玩家1位置
         public Point Player2Location = new Point(6, 3);//玩家2位置
+        public int NumPlayer1Board = 16;//玩家1剩余挡板数
+        public int NumPlayer2Board = 16;//玩家2剩余挡板数
 
         public ChessBoard()
         {
@@ -119,7 +121,9 @@ namespace QuoridorRule
             ChessBoardSave.Player1Location.X = ChessBoardNow.Player1Location.X;
             ChessBoardSave.Player1Location.Y = ChessBoardNow.Player1Location.Y;
             ChessBoardSave.Player2Location.X = ChessBoardNow.Player2Location.X;
-            ChessBoardSave.Player2Location.Y = ChessBoardNow.Player2Location.Y; 
+            ChessBoardSave.Player2Location.Y = ChessBoardNow.Player2Location.Y;
+            ChessBoardSave.NumPlayer1Board = ChessBoardNow.NumPlayer1Board;
+            ChessBoardSave.NumPlayer2Board = ChessBoardNow.NumPlayer2Board;
         }
         /// <summary>
         /// 从ChessBoardSave中恢复保存的棋盘至ChessBoard_Resumed
@@ -138,7 +142,9 @@ namespace QuoridorRule
             ChessBoard_Resumed.Player1Location.X = ChessBoardSave.Player1Location.X;
             ChessBoard_Resumed.Player1Location.Y = ChessBoardSave.Player1Location.Y;
             ChessBoard_Resumed.Player2Location.X = ChessBoardSave.Player2Location.X;
-            ChessBoard_Resumed.Player2Location.Y = ChessBoardSave.Player2Location.Y; 
+            ChessBoard_Resumed.Player2Location.Y = ChessBoardSave.Player2Location.Y;
+            ChessBoard_Resumed.NumPlayer1Board = ChessBoardSave.NumPlayer1Board;
+            ChessBoard_Resumed.NumPlayer2Board = ChessBoardSave.NumPlayer2Board;
         }
     }
     /// <summary>
@@ -160,8 +166,6 @@ namespace QuoridorRule
             Action_Wait
         }
 
-        public static int NumPlayer1Board = 16;//玩家1剩余挡板数
-        public static int NumPlayer2Board = 16;//玩家2剩余挡板数
         LookupRoadAlgorithm AstarEngine = new LookupRoadAlgorithm();
         /// <summary>
         /// 检测能否执行移动，No Change代表检测成功后不会执行这次移动，不会改变棋盘ChessBoard_ToCheck
@@ -578,9 +582,9 @@ namespace QuoridorRule
             ChessBoard ThisChessBoard = ChessBoard_ToCheck;
             if (WhichBoard == NowAction.Action_Move_Player1 || WhichBoard == NowAction.Action_Move_Player2)
                 return "OK";
-            if (Player == EnumNowPlayer.Player1 && NumPlayer1Board <= 0)
+            if (Player == EnumNowPlayer.Player1 && ChessBoard_ToCheck.NumPlayer1Board <= 0)
                 return "Player1 No Board";
-            else if (Player == EnumNowPlayer.Player2 && NumPlayer2Board <= 0)
+            else if (Player == EnumNowPlayer.Player2 && ChessBoard_ToCheck.NumPlayer2Board <= 0)
                 return "Player2 No Board";
 
             # region 检测该点是否已经有挡板了
