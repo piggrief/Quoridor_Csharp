@@ -201,36 +201,42 @@ namespace MCTS
                     NextExpandNode.BackPropagation(leaf_value);
                     break;
                 }
-                # region 必赢必输局面检测
-                if (SimluationChessBoard.NumPlayer2Board == 0 && SimluationChessBoard.NumPlayer1Board == 0)//搜到终局时刻
-                {
-                    double dis_player1 = RuleEngine.AstarEngine.AstarRestart(SimluationChessBoard, EnumNowPlayer.Player1
-            , SimluationChessBoard.Player1Location.X, SimluationChessBoard.Player1Location.Y);
-                    double dis_player2 = RuleEngine.AstarEngine.AstarRestart(SimluationChessBoard, EnumNowPlayer.Player2
-            , SimluationChessBoard.Player2Location.X, SimluationChessBoard.Player2Location.Y);
 
-                    double leaf_value = -1;
-                    if (JudgePlayer == EnumNowPlayer.Player1)//下一步是P2走
+                double dis_player1 = RuleEngine.AstarEngine.AstarRestart(SimluationChessBoard, EnumNowPlayer.Player1
+, SimluationChessBoard.Player1Location.X, SimluationChessBoard.Player1Location.Y);
+                double dis_player2 = RuleEngine.AstarEngine.AstarRestart(SimluationChessBoard, EnumNowPlayer.Player2
+        , SimluationChessBoard.Player2Location.X, SimluationChessBoard.Player2Location.Y);
+
+                EnumNowPlayer Winner = EnumNowPlayer.Player1;
+                # region 必赢必输局面检测
+                if (dis_player1 >= 14 || dis_player2 >= 14)//某人步数过大
+                {
+                    if (dis_player2 - dis_player1 >= 5)
                     {
-                        #region 是否存在跳棋检测(未写)
-                        #endregion
-                        if (dis_player2 - dis_player1 > 0)
-                        {
-                            leaf_value = 1;
-                        }
+                        Winner = EnumNowPlayer.Player2;
                     }
-                    if (JudgePlayer == EnumNowPlayer.Player2)//下一步是P1走
-                    {
-                        #region 是否存在跳棋检测(未写)
-                        #endregion
-                        if (dis_player1 - dis_player2 > 0)
-                        {
-                            leaf_value = 1;
-                        }
-                    }
-                    NextExpandNode.BackPropagation(leaf_value);
-                    break;
                 }
+                else if (SimluationChessBoard.NumPlayer2Board == 0 && SimluationChessBoard.NumPlayer1Board == 0)//挡板已用完
+                {
+                    #region 是否存在跳棋检测(未写)
+                    #endregion
+                    if (dis_player2 - dis_player1 > 0)
+                    {
+                        Winner = EnumNowPlayer.Player2;
+                    }                   
+                }
+
+                double leaf_value2 = -1;
+                if (JudgePlayer == EnumNowPlayer.Player1 && Winner == EnumNowPlayer.Player1)//下一步是P2走
+                {
+                    leaf_value2 = 1;
+                }
+                if (JudgePlayer == EnumNowPlayer.Player2 && Winner == EnumNowPlayer.Player2)//下一步是P1走
+                {
+                    leaf_value2 = 1;
+                }
+                NextExpandNode.BackPropagation(leaf_value2);
+
                 #endregion
                 /*拓展*/
                 NextExpandNode.Expand(SimluationChessBoard, NextExpandNode);

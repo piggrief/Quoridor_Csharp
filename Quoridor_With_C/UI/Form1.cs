@@ -928,6 +928,15 @@ namespace Quoridor_With_C
             List<QuoridorAction> QABuff = NowQuoridor.ActionList;
 
             NowQuoridor.TestEvaluation();
+
+            double dis_player1 = NowQuoridor.AstarEngine.AstarRestart(NowQuoridor.ThisChessBoard, EnumNowPlayer.Player1
+, NowQuoridor.ThisChessBoard.Player1Location.X, NowQuoridor.ThisChessBoard.Player1Location.Y);
+            double dis_player2 = NowQuoridor.AstarEngine.AstarRestart(NowQuoridor.ThisChessBoard, EnumNowPlayer.Player2
+    , NowQuoridor.ThisChessBoard.Player2Location.X, NowQuoridor.ThisChessBoard.Player2Location.Y);
+
+            Console.WriteLine("P1的最短路程:" + dis_player1.ToString() + "步");
+            Console.WriteLine("P2的最短路程:" + dis_player2.ToString() + "步");
+
             //QABuff = NowQuoridor.CreateActionList(NowQuoridor.ThisChessBoard);
 
             Console.WriteLine("Stop!");

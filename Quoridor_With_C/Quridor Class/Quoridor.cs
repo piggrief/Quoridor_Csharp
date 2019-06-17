@@ -268,7 +268,7 @@ namespace Quoridor
                         }
 
 
-                        Action.WholeScore = disbuff_1 - disbuff_2 + disbuff_3 + disbuff_4; 
+                        Action.WholeScore = disbuff_1 - disbuff_2;//+ disbuff_3 + disbuff_4; 
                     }
                     else
                     {
