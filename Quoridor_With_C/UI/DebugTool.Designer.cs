@@ -889,7 +889,7 @@
         private CCWin.SkinControl.SkinButton SendClearBTN;
         private CCWin.SkinControl.SkinButton SendBTN;
         private CCWin.SkinControl.SkinCheckBox HexSendCB;
-        private System.Windows.Forms.TextBox SendTB;
+        public System.Windows.Forms.TextBox SendTB;
         private System.Windows.Forms.TextBox ReceiveTB;
         private CCWin.SkinControl.SkinTabPage ChartTabPage;
         public System.Windows.Forms.DataVisualization.Charting.Chart Chart1;

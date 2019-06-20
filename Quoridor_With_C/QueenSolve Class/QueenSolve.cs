@@ -916,5 +916,39 @@ namespace Queen
                                                                 {8,3,1,6,2,5,7,4},
                                                                 {8,4,1,3,6,2,7,5}};
         #endregion
+
+        public string CreateSendCMDStr(List<int> MoveSequence)
+        {
+            string CMDBuff = "ST";
+            int index = 0;
+            for (int i = 0; i < MoveSequence.Count; i++)//10 23
+            {
+                index = (i/2) % 10;
+                int row = 0, col = 0;
+                if (i % 2 == 0)//棋子
+                {
+                    row = ChessLocationList[index].X;
+                    col = ChessLocationList[index].Y;
+                }
+                else
+                {
+                    row = QueenLocationList[index].X;
+                    col = QueenLocationList[index].Y; 
+                }
+                int LocationNum = row * 8 + 1 + col;
+                if (LocationNum >= 10)
+                {
+                    CMDBuff += LocationNum.ToString();
+                }
+                else
+                {
+                    CMDBuff += "0";
+                    CMDBuff += LocationNum.ToString();
+                }
+            }
+            CMDBuff += "ED";
+
+            return CMDBuff;
+        }
     }
 }

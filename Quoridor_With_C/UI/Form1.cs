@@ -166,6 +166,7 @@ namespace Quoridor_With_C
 
         }
         public DebugView DV;
+        public DebugTool DT;
         QuoridorAI NowQuoridor = new QuoridorAI();
         List<CCWin.SkinControl.SkinPictureBox> QueenChessList = new List<CCWin.SkinControl.SkinPictureBox>();
         List<CCWin.SkinControl.SkinPictureBox> QueenList = new List<CCWin.SkinControl.SkinPictureBox>();      
@@ -319,13 +320,18 @@ namespace Quoridor_With_C
                 PlaceHorizontalBoardBTN.Dispose();
                 TestBTN.Dispose();
 
+                IfUseTT_CopareCB.Visible = false;
+                IfUseTT_CopareCB.Enabled = false;
+                TestTB.Visible = false;
+                skinToolStrip1.Visible = false;
+                skinToolStrip1.Enabled = false;
 
                 ChessBoardPB.Refresh();
 
                 //this.Location = new Point(0, 0);
-                DebugTool DT1 = new DebugTool(this);
+                DT = new DebugTool(this);
                 //DT1.Location = new Point(this.Size.Width, 0);
-                DT1.Show();
+                DT.Show();
             }
 
         }
@@ -1052,6 +1058,7 @@ namespace Quoridor_With_C
 
             if (IsShowQueenFlag)
             {
+                Test2BTN.Text = "取消显示";
                 ShowQueenLocation(ThisQueenSolve.QueenLocationList, QueenList);
                 Queen.QueenSolve.SelectedQueenResultNum = 92;
                 ///1000 0.96 64
@@ -1068,7 +1075,16 @@ namespace Quoridor_With_C
                 //  需要测试的代码 
                 //MoveSequence = ThisQueenSolve.SearchResult_ForOverall(ref disall, ref BestResult_QueenLocation, SearchPB);
                 //ThisQueenSolve.Test_SAParameter(1000, 0.9, 90, 0.1, SimulateAnneal.Annealing.SAMode.FastSA, 50);
-                ThisQueenSolve.Test_SAParameter(1000, 0.96, 64, 0, SimulateAnneal.Annealing.SAMode.SA, 10);
+                
+                //ThisQueenSolve.Test_SAParameter(1000, 0.96, 64, 0, SimulateAnneal.Annealing.SAMode.SA, 10);
+
+                double disbuff = 0;
+                ThisQueenSolve.InitSA(200, 0.9, 32, 0, SimulateAnneal.Annealing.SAMode.SA);
+                MoveSequence = ThisQueenSolve.SearchResult_ForOverall(ref disbuff, ref BestResult_QueenLocation, SearchPB);
+
+                string SendBuff = ThisQueenSolve.CreateSendCMDStr(MoveSequence);
+                Console.WriteLine(SendBuff);
+                DT.SendTB.Text = SendBuff;
                 //ThisQueenSolve.InitSA(200, 0.9, 32, 0, SimulateAnneal.Annealing.SAMode.SA);
                 //ThisQueenSolve.Test_SAParameter_Auto(ThisQueenSolve.ThisSAMode, ThisQueenSolve.ThisSA
                 //    , QueenSolve.WhichSAParameter.Lenght, 2, 4, 50, 20);
@@ -1094,6 +1110,7 @@ namespace Quoridor_With_C
             else
             {
                 HideQueen(QueenList);
+                Test2BTN.Text = "生成移动序列";
             }
             IsShowQueenFlag = !IsShowQueenFlag;
         }
