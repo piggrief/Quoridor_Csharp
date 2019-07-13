@@ -738,7 +738,7 @@
             this.CValueSetTB.IsPasswordChat = '\0';
             this.CValueSetTB.IsSystemPasswordChar = false;
             this.CValueSetTB.Lines = new string[] {
-        "0.04"};
+        "0.00035"};
             this.CValueSetTB.Location = new System.Drawing.Point(132, 9);
             this.CValueSetTB.Margin = new System.Windows.Forms.Padding(0);
             this.CValueSetTB.MaxLength = 32767;
@@ -762,11 +762,11 @@
             this.CValueSetTB.SkinTxt.Name = "BaseText";
             this.CValueSetTB.SkinTxt.Size = new System.Drawing.Size(151, 22);
             this.CValueSetTB.SkinTxt.TabIndex = 0;
-            this.CValueSetTB.SkinTxt.Text = "0.04";
+            this.CValueSetTB.SkinTxt.Text = "0.00035";
             this.CValueSetTB.SkinTxt.WaterColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(127)))), ((int)(((byte)(127)))));
             this.CValueSetTB.SkinTxt.WaterText = "";
             this.CValueSetTB.TabIndex = 38;
-            this.CValueSetTB.Text = "0.04";
+            this.CValueSetTB.Text = "0.00035";
             this.CValueSetTB.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.CValueSetTB.WaterColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(127)))), ((int)(((byte)(127)))));
             this.CValueSetTB.WaterText = "";

@@ -10,6 +10,7 @@ using QuoridorRule;
 using NowAction = QuoridorRule.QuoridorRuleEngine.NowAction;
 using EnumNowPlayer = QuoridorRule.QuoridorRuleEngine.EnumNowPlayer;
 using System.Collections;
+using MathNet.Numerics.Random;
 
 namespace Quoridor
 {
@@ -205,98 +206,36 @@ namespace Quoridor
                     continue;
                 }
                 # region 计算整体评分
-                //移动
-                if (Action.PlayerAction == NowAction.Action_Move_Player1
-                    || Action.PlayerAction == NowAction.Action_Move_Player2)
-                {
-                    if (Action.PlayerAction == NowAction.Action_Move_Player1)
-                    { 
-                        Action.WholeScore = Action.SelfScore + 1;
-                        if (Action.ActionPoint.X >= 6)
-                            Action.WholeScore = 99;
-                    }
-                    else
-                    {
-                        Action.WholeScore = Action.SelfScore + 1;
-                        if (Action.ActionPoint.X <= 0)
-                            Action.WholeScore = 99;
-                    }
-
-                    #region 检测是前走还是后走
-                    if (Action.PlayerAction == NowAction.Action_Move_Player1)
-                    {
-                        if (Action.ActionPoint.X < ThisChessBoard.Player1Location.X)
-                            Action.WholeScore -= 0.5;
-                    }
-                    else
-                    {
-                        if (Action.ActionPoint.X > ThisChessBoard.Player1Location.X)
-                            Action.WholeScore -= 0.5;
-                            
-                    }
-                    //Action.WholeScore += 1;
-                    #endregion
-                    #region 检测是左走还是右走
-                    if(Action.ActionPoint.Y > ThisChessBoard.Player1Location.Y)//右走
-                        Action.WholeScore -= 0.1;
-                    #endregion
-                }
                 //放挡板
                 if (Action.PlayerAction == NowAction.Action_PlaceHorizontalBoard
                 || Action.PlayerAction == NowAction.Action_PlaceVerticalBoard)
                 {
-                    double disbuff_1 = 0, disbuff_2 = 0, disbuff_3 = 0, disbuff_4 = 0;
+                    double disbuff_1 = 0, disbuff_2 = 0;
                     if (Player_Now == EnumNowPlayer.Player1)
-                    { 
+                    {
                         disbuff_1 = Action.OpponentScore - 1;
                         disbuff_2 = Action.SelfScore;
-                        if (Action.PlayerAction == NowAction.Action_PlaceHorizontalBoard)
-                        {
-                            disbuff_3 = Math.Abs(Action.ActionPoint.X - ThisChessBoard.Player1Location.X);
-
-                            if (Action.ActionPoint.X > ThisChessBoard.Player1Location.X)//下方
-                            {
-                                disbuff_3 = 6 - ThisChessBoard.Player1Location.X - disbuff_3;
-                            }
-
-                            disbuff_4 = Math.Abs(Action.ActionPoint.Y - ThisChessBoard.Player1Location.Y);
-                        }
-                        else
-                        {
-                            disbuff_3 = Math.Abs(Action.ActionPoint.Y - ThisChessBoard.Player1Location.Y);
-                            disbuff_4 = Math.Abs(Action.ActionPoint.X - ThisChessBoard.Player1Location.X);
-                        }
-
-
-                        Action.WholeScore = disbuff_1 - disbuff_2;//+ disbuff_3 + disbuff_4; 
+                        Action.WholeScore = disbuff_1 - disbuff_2;//
                     }
                     else
                     {
                         disbuff_1 = Action.OpponentScore - 1;
                         disbuff_2 = Action.SelfScore;
-                        if (Action.PlayerAction == NowAction.Action_PlaceHorizontalBoard)
-                        {
-                            disbuff_3 = Math.Abs(Action.ActionPoint.X - ThisChessBoard.Player2Location.X);
 
-                            if (Action.ActionPoint.X <= ThisChessBoard.Player2Location.X)//上方
-                            {
-                                disbuff_3 = ThisChessBoard.Player2Location.X - disbuff_3;
-                            }
-
-                            disbuff_4 = Math.Abs(Action.ActionPoint.Y - ThisChessBoard.Player2Location.Y);
-                        }
-                        else
-                        {
-                            disbuff_3 = Math.Abs(Action.ActionPoint.Y - ThisChessBoard.Player2Location.Y);
-                            disbuff_4 = Math.Abs(Action.ActionPoint.X - ThisChessBoard.Player2Location.X);
-                        }
-
-                        Action.WholeScore = disbuff_1 - disbuff_2 +disbuff_3 + disbuff_4;
+                        Action.WholeScore = disbuff_1 - disbuff_2;//
                     }
                 }
+                else
+                {
+                    Action.WholeScore = Action.SelfScore;
+                }
+
+                double RandomScore = 0;
+                CryptoRandomSource rnd = new CryptoRandomSource();
+                RandomScore = rnd.NextDouble();
+                Action.WholeScore += RandomScore;
 
                 #endregion
-
                 #region 根据评分剪枝
                 if (Action.PlayerAction == NowAction.Action_Move_Player2 || Action.PlayerAction == NowAction.Action_Move_Player1)
                 {
@@ -524,6 +463,151 @@ namespace Quoridor
             #endregion
             return ActionList;
         }
+        /// <summary>
+        /// 创建可选动作列表（全部可能的动作）
+        /// </summary>
+        public List<QuoridorAction> CreateActionList_ALL(ChessBoard ThisChessBoard)
+        {
+            List<QuoridorAction> ActionListBuff = new List<QuoridorAction>();
+            ActionList = new List<QuoridorAction>();
+
+            Point PlayerLocation = new Point();
+            if (Player_Now == EnumNowPlayer.Player1)
+            {
+                PlayerLocation.X = ThisChessBoard.Player1Location.X;
+                PlayerLocation.Y = ThisChessBoard.Player1Location.Y;
+            }
+            else
+            {
+                PlayerLocation.X = ThisChessBoard.Player2Location.X;
+                PlayerLocation.Y = ThisChessBoard.Player2Location.Y;
+            }
+
+            #region 创建移动Action
+            NowAction MoveAction = NowAction.Action_Move_Player1;
+            if (Player_Now == EnumNowPlayer.Player2)
+                MoveAction = NowAction.Action_Move_Player2;
+
+            int row = PlayerLocation.X, col = PlayerLocation.Y;
+
+            ///检测附近的12个可能点
+            if (row >= 2 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row - 2, col, MoveAction) == "OK")
+            {
+                ActionListBuff.Add(new QuoridorAction(MoveAction, new Point(row - 2, col)));
+                if (Player_Now == EnumNowPlayer.Player1)
+                    ActionListBuff.Last().SkipChessScore = -1;
+                else
+                    ActionListBuff.Last().SkipChessScore = 1;
+            }
+
+            if (row >= 1 && col >= 1 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row - 1, col - 1, MoveAction) == "OK")
+                ActionListBuff.Add(new QuoridorAction(MoveAction, new Point(row - 1, col - 1)));
+            if (row >= 1 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row - 1, col, MoveAction) == "OK")
+                ActionListBuff.Add(new QuoridorAction(MoveAction, new Point(row - 1, col)));
+            if (row >= 1 && col <= 5 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row - 1, col + 1, MoveAction) == "OK")
+                ActionListBuff.Add(new QuoridorAction(MoveAction, new Point(row - 1, col + 1)));
+
+            if (col >= 2 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row, col - 2, MoveAction) == "OK")
+                ActionListBuff.Add(new QuoridorAction(MoveAction, new Point(row, col - 2)));
+            if (col >= 1 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row, col - 1, MoveAction) == "OK")
+                ActionListBuff.Add(new QuoridorAction(MoveAction, new Point(row, col - 1)));
+            if (col <= 5 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row, col + 1, MoveAction) == "OK")
+                ActionListBuff.Add(new QuoridorAction(MoveAction, new Point(row, col + 1)));
+            if (col <= 4 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row, col + 2, MoveAction) == "OK")
+                ActionListBuff.Add(new QuoridorAction(MoveAction, new Point(row, col + 2)));
+
+            if (row <= 5 && col >= 1 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row + 1, col - 1, MoveAction) == "OK")
+                ActionListBuff.Add(new QuoridorAction(MoveAction, new Point(row + 1, col - 1)));
+            if (row <= 5 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row + 1, col, MoveAction) == "OK")
+                ActionListBuff.Add(new QuoridorAction(MoveAction, new Point(row + 1, col)));
+            if (row <= 5 && col <= 5 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row + 1, col + 1, MoveAction) == "OK")
+                ActionListBuff.Add(new QuoridorAction(MoveAction, new Point(row + 1, col)));
+
+            if (row <= 4 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row + 2, col, MoveAction) == "OK")
+            {
+                ActionListBuff.Add(new QuoridorAction(MoveAction, new Point(row + 2, col)));
+                if (Player_Now == EnumNowPlayer.Player1)
+                    ActionListBuff.Last().SkipChessScore = 1;
+                else
+                    ActionListBuff.Last().SkipChessScore = -1;
+            }
+
+            #endregion
+
+            #region 创建放置挡板Action
+
+            #region 遍历所有可能并检测
+            /*横挡板扫描*/
+            for (int rowindex = 1; rowindex <= 6; rowindex++)
+            {
+                for (int colindex = 0; colindex <= 5; colindex++)
+                {
+                    string BoardHintStr = QuoridorRule.CheckBoard(ThisChessBoard
+                        , NowAction.Action_PlaceHorizontalBoard
+                        , Player_Now, rowindex, colindex);
+
+                    if (BoardHintStr == "OK")
+                    {
+                        ActionListBuff.Add(
+                            new QuoridorAction(NowAction.Action_PlaceHorizontalBoard
+                                , new Point(rowindex, colindex)));
+                    }
+                }
+            }
+            /*竖挡板扫描*/
+            for (int rowindex = 0; rowindex <= 5; rowindex++)
+            {
+                for (int colindex = 1; colindex <= 6; colindex++)
+                {
+                    string BoardHintStr = QuoridorRule.CheckBoard(ThisChessBoard
+                        , NowAction.Action_PlaceVerticalBoard
+                        , Player_Now, rowindex, colindex);
+
+                    if (BoardHintStr == "OK")
+                    {
+                        ActionListBuff.Add(
+                            new QuoridorAction(NowAction.Action_PlaceVerticalBoard
+                                , new Point(rowindex, colindex)));
+                    }
+                }
+            }
+            #endregion
+
+            #endregion
+            #region 校验生成的ActionList是否合法
+
+            foreach (QuoridorAction QA in ActionListBuff)
+            {
+                if (QA.PlayerAction == NowAction.Action_Move_Player1 || QA.PlayerAction == NowAction.Action_Move_Player2)
+                {
+                    if (QuoridorRule.CheckMove_NoChange(ThisChessBoard, QA.ActionPoint.X, QA.ActionPoint.Y, QA.PlayerAction) == "OK")
+                    {
+                        ActionList.Add(QA);
+                    }
+                }
+                else
+                    ActionList.Add(QA);
+            }
+
+            #endregion
+
+            # region 评估加剪裁列表
+            ActionListEvaluation(ThisChessBoard, ref ActionList, Player_Now);
+            #endregion
+            #region 对动作列表按照评分排序
+
+            if (ActionListIfSort)
+            {
+
+                //对当前博弈玩家按整体评分降序排列
+                //ActionList = ActionList.OrderByDescending(a => a.WholeScore).ToList();
+                //对当前对手玩家按整体评分升序排列
+                ActionList = ActionList.OrderBy(a => a.WholeScore).ToList();
+            }
+            #endregion
+            return ActionList;
+        }
+
         /// <summary>
         /// 控制台输出动作列表的信息
         /// </summary>

@@ -321,6 +321,20 @@ namespace QuoridorRule
             return "MoveError";
         }
         /// <summary>
+        /// 改变P1或P2棋子位置
+        /// </summary>
+        /// <param name="ChessBoard_ToCheck">待检测的棋盘</param>
+        /// <param name="row">移动的行</param>
+        /// <param name="col">移动的列</param>
+        /// <param name="NA">移动类型</param>
+        public void ChangeP1P2Location(ref ChessBoard ChessBoard_ToCheck, int row, int col, NowAction NA)
+        {
+            if (NA == NowAction.Action_Move_Player1)
+                ChessBoard_ToCheck.Player1Location = new Point(row, col);
+            else
+                ChessBoard_ToCheck.Player2Location = new Point(row, col); 
+        }
+        /// <summary>
         /// 检测能否执行移动，Change代表检测成功后会执行这次移动，改变棋盘ChessBoard_ToCheck
         /// </summary>
         /// <param name="ChessBoard_ToCheck">待检测的棋盘</param>
@@ -359,10 +373,7 @@ namespace QuoridorRule
                 {
                     ChessBoardAll[row - 1, col].GridStatus = Grid.GridInsideStatus.Empty;
                     ChessBoardAll[row, col].GridStatus = ActionPlayer;
-                    if (NA == NowAction.Action_Move_Player1)
-                        ChessBoard_ToCheck.Player1Location = new Point(row, col);
-                    else
-                        ChessBoard_ToCheck.Player2Location = new Point(row, col);
+                    ChangeP1P2Location(ref ChessBoard_ToCheck, row, col, NA);
                     return "OK";
                 }
                 else if (ChessBoardAll[row - 1, col].GridStatus == AnotherPlayer)
@@ -373,10 +384,7 @@ namespace QuoridorRule
                     {
                         ChessBoardAll[row - 1, col - 1].GridStatus = Grid.GridInsideStatus.Empty;
                         ChessBoardAll[row, col].GridStatus = ActionPlayer;
-                        if (NA == NowAction.Action_Move_Player1)
-                            ChessBoard_ToCheck.Player1Location = new Point(row, col);
-                        else
-                            ChessBoard_ToCheck.Player2Location = new Point(row, col);
+                        ChangeP1P2Location(ref ChessBoard_ToCheck, row, col, NA);
                         return "OK";
                     }
                     if (col <= 5
@@ -385,10 +393,7 @@ namespace QuoridorRule
                     {
                         ChessBoardAll[row - 1, col + 1].GridStatus = Grid.GridInsideStatus.Empty;
                         ChessBoardAll[row, col].GridStatus = ActionPlayer;
-                        if (NA == NowAction.Action_Move_Player1)
-                            ChessBoard_ToCheck.Player1Location = new Point(row, col);
-                        else
-                            ChessBoard_ToCheck.Player2Location = new Point(row, col);
+                        ChangeP1P2Location(ref ChessBoard_ToCheck, row, col, NA);
                         return "OK";
                     }
                     if (row >= 2
@@ -397,14 +402,12 @@ namespace QuoridorRule
                     {
                         ChessBoardAll[row - 2, col].GridStatus = Grid.GridInsideStatus.Empty;
                         ChessBoardAll[row, col].GridStatus = ActionPlayer;
-                        if (NA == NowAction.Action_Move_Player1)
-                            ChessBoard_ToCheck.Player1Location = new Point(row, col);
-                        else
-                            ChessBoard_ToCheck.Player2Location = new Point(row, col);
+                        ChangeP1P2Location(ref ChessBoard_ToCheck, row, col, NA);
                         return "OK";
                     }
                 }
             }
+
             if (row <= 5
                 && !(ChessBoardAll[row + 1, col].IfUpBoard))//下扫
             {
@@ -412,10 +415,7 @@ namespace QuoridorRule
                 {
                     ChessBoardAll[row + 1, col].GridStatus = Grid.GridInsideStatus.Empty;
                     ChessBoardAll[row, col].GridStatus = ActionPlayer;
-                    if (NA == NowAction.Action_Move_Player1)
-                        ChessBoard_ToCheck.Player1Location = new Point(row, col);
-                    else
-                        ChessBoard_ToCheck.Player2Location = new Point(row, col);
+                    ChangeP1P2Location(ref ChessBoard_ToCheck, row, col, NA);
                     return "OK";
                 }
                 else if (ChessBoardAll[row + 1, col].GridStatus == AnotherPlayer)
@@ -426,10 +426,7 @@ namespace QuoridorRule
                     {
                         ChessBoardAll[row + 1, col - 1].GridStatus = Grid.GridInsideStatus.Empty;
                         ChessBoardAll[row, col].GridStatus = ActionPlayer;
-                        if (NA == NowAction.Action_Move_Player1)
-                            ChessBoard_ToCheck.Player1Location = new Point(row, col);
-                        else
-                            ChessBoard_ToCheck.Player2Location = new Point(row, col);
+                        ChangeP1P2Location(ref ChessBoard_ToCheck, row, col, NA);
                         return "OK";
                     }
                     if (col <= 5
@@ -438,10 +435,7 @@ namespace QuoridorRule
                     {
                         ChessBoardAll[row + 1, col + 1].GridStatus = Grid.GridInsideStatus.Empty;
                         ChessBoardAll[row, col].GridStatus = ActionPlayer;
-                        if (NA == NowAction.Action_Move_Player1)
-                            ChessBoard_ToCheck.Player1Location = new Point(row, col);
-                        else
-                            ChessBoard_ToCheck.Player2Location = new Point(row, col);
+                        ChangeP1P2Location(ref ChessBoard_ToCheck, row, col, NA);
                         return "OK";
                     }
 
@@ -451,10 +445,7 @@ namespace QuoridorRule
                     {
                         ChessBoardAll[row + 2, col].GridStatus = Grid.GridInsideStatus.Empty;
                         ChessBoardAll[row, col].GridStatus = ActionPlayer;
-                        if (NA == NowAction.Action_Move_Player1)
-                            ChessBoard_ToCheck.Player1Location = new Point(row, col);
-                        else
-                            ChessBoard_ToCheck.Player2Location = new Point(row, col);
+                        ChangeP1P2Location(ref ChessBoard_ToCheck, row, col, NA);
                         return "OK";
                     }
                 }
@@ -466,10 +457,7 @@ namespace QuoridorRule
                 {
                     ChessBoardAll[row, col - 1].GridStatus = Grid.GridInsideStatus.Empty;
                     ChessBoardAll[row, col].GridStatus = ActionPlayer;
-                    if (NA == NowAction.Action_Move_Player1)
-                        ChessBoard_ToCheck.Player1Location = new Point(row, col);
-                    else
-                        ChessBoard_ToCheck.Player2Location = new Point(row, col);
+                    ChangeP1P2Location(ref ChessBoard_ToCheck, row, col, NA);
                     return "OK";
                 }
                 else if (ChessBoardAll[row, col - 1].GridStatus == AnotherPlayer)
@@ -480,10 +468,7 @@ namespace QuoridorRule
                     {
                         ChessBoardAll[row, col - 2].GridStatus = Grid.GridInsideStatus.Empty;
                         ChessBoardAll[row, col].GridStatus = ActionPlayer;
-                        if (NA == NowAction.Action_Move_Player1)
-                            ChessBoard_ToCheck.Player1Location = new Point(row, col);
-                        else
-                            ChessBoard_ToCheck.Player2Location = new Point(row, col);
+                        ChangeP1P2Location(ref ChessBoard_ToCheck, row, col, NA);
                         return "OK";
                     }
                     if (row <= 5
@@ -492,10 +477,7 @@ namespace QuoridorRule
                     {
                         ChessBoardAll[row + 1, col - 1].GridStatus = Grid.GridInsideStatus.Empty;
                         ChessBoardAll[row, col].GridStatus = ActionPlayer;
-                        if (NA == NowAction.Action_Move_Player1)
-                            ChessBoard_ToCheck.Player1Location = new Point(row, col);
-                        else
-                            ChessBoard_ToCheck.Player2Location = new Point(row, col);
+                        ChangeP1P2Location(ref ChessBoard_ToCheck, row, col, NA);
                         return "OK";
                     }
                     if (row >= 1
@@ -504,10 +486,7 @@ namespace QuoridorRule
                     {
                         ChessBoardAll[row - 1, col - 1].GridStatus = Grid.GridInsideStatus.Empty;
                         ChessBoardAll[row, col].GridStatus = ActionPlayer;
-                        if (NA == NowAction.Action_Move_Player1)
-                            ChessBoard_ToCheck.Player1Location = new Point(row, col);
-                        else
-                            ChessBoard_ToCheck.Player2Location = new Point(row, col);
+                        ChangeP1P2Location(ref ChessBoard_ToCheck, row, col, NA);
                         return "OK";
                     }
                 }
@@ -519,10 +498,7 @@ namespace QuoridorRule
                 {
                     ChessBoardAll[row, col + 1].GridStatus = Grid.GridInsideStatus.Empty;
                     ChessBoardAll[row, col].GridStatus = ActionPlayer;
-                    if (NA == NowAction.Action_Move_Player1)
-                        ChessBoard_ToCheck.Player1Location = new Point(row, col);
-                    else
-                        ChessBoard_ToCheck.Player2Location = new Point(row, col);
+                    ChangeP1P2Location(ref ChessBoard_ToCheck, row, col, NA);
                     return "OK";
                 }
                 else if (ChessBoardAll[row, col + 1].GridStatus == AnotherPlayer)
@@ -533,10 +509,7 @@ namespace QuoridorRule
                     {
                         ChessBoardAll[row, col + 2].GridStatus = Grid.GridInsideStatus.Empty;
                         ChessBoardAll[row, col].GridStatus = ActionPlayer;
-                        if (NA == NowAction.Action_Move_Player1)
-                            ChessBoard_ToCheck.Player1Location = new Point(row, col);
-                        else
-                            ChessBoard_ToCheck.Player2Location = new Point(row, col);
+                        ChangeP1P2Location(ref ChessBoard_ToCheck, row, col, NA);
                         return "OK";
                     }
                     if (row <= 5
@@ -545,10 +518,7 @@ namespace QuoridorRule
                     {
                         ChessBoardAll[row + 1, col + 1].GridStatus = Grid.GridInsideStatus.Empty;
                         ChessBoardAll[row, col].GridStatus = ActionPlayer;
-                        if (NA == NowAction.Action_Move_Player1)
-                            ChessBoard_ToCheck.Player1Location = new Point(row, col);
-                        else
-                            ChessBoard_ToCheck.Player2Location = new Point(row, col);
+                        ChangeP1P2Location(ref ChessBoard_ToCheck, row, col, NA);
                         return "OK";
                     }
                     if (row >= 1
@@ -557,10 +527,7 @@ namespace QuoridorRule
                     {
                         ChessBoardAll[row - 1, col + 1].GridStatus = Grid.GridInsideStatus.Empty;
                         ChessBoardAll[row, col].GridStatus = ActionPlayer;
-                        if (NA == NowAction.Action_Move_Player1)
-                            ChessBoard_ToCheck.Player1Location = new Point(row, col);
-                        else
-                            ChessBoard_ToCheck.Player2Location = new Point(row, col);
+                        ChangeP1P2Location(ref ChessBoard_ToCheck, row, col, NA);
                         return "OK";
                     }
                 }

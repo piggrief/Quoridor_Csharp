@@ -187,7 +187,8 @@ namespace GameTree
             NowQuoridor.Player_Now = PlayerSave;
 
             List<QuoridorAction> QABuff = NowQuoridor.ActionList;
-
+            
+            //QABuff = NowQuoridor.CreateActionList(ThisChessBoard);
             QABuff = NowQuoridor.CreateActionList(ThisChessBoard);
 
             foreach (QuoridorAction QA in QABuff)

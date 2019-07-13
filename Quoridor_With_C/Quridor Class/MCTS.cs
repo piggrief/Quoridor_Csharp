@@ -23,6 +23,7 @@ namespace MCTS
         public double _P = 0;//P值
         public double _UCT = 0;//UCT值
         public static double _C = 0;//折中系数
+        public bool IfWin = false;
 
         public NowAction NodeAction = NowAction.Action_Move_Player1;///当前节点的动作
         public EnumNowPlayer NodePlayer = EnumNowPlayer.Player2;///当前节点的动作的执行玩家
@@ -111,9 +112,9 @@ namespace MCTS
                 NowQuoridor.Player_Now = PlayerSave;
 
                 List<QuoridorAction> QABuff = NowQuoridor.ActionList;
-
+                
                 QABuff = NowQuoridor.CreateActionList(ThisChessBoard);
-
+                //QABuff = NowQuoridor.CreateActionList_ALL(ThisChessBoard);
                 /*完全拓展*/
                 foreach (QuoridorAction QA in QABuff)
                 {
@@ -125,6 +126,16 @@ namespace MCTS
                     MTSonNode._P = QA.WholeScore;
                     MTSonNode.FatherNode = FatherNode;
                     SonNode.Add(MTSonNode);
+                    //if (QA.PlayerAction == NowAction.Action_PlaceHorizontalBoard || QA.PlayerAction == NowAction.Action_PlaceVerticalBoard)
+                    //{
+                    //    if (QA.OpponentScore - QA.SelfScore >= 5)
+                    //    {
+                    //        MTSonNode.IfWin = true;
+                    //        SonNode = new List<MonteCartoTreeNode>();
+                    //        SonNode.Add(MTSonNode);
+                    //        break;
+                    //    }
+                    //}
                 }
             }
         }
@@ -150,6 +161,21 @@ namespace MCTS
             MonteCartoTreeNode NextExpandNode = RootNode;
             while (true)
             {
+                #region 提前终止局面检测
+                if (NextExpandNode.SonNode.Count == 1)
+                {
+                    if (NextExpandNode.SonNode[0].IfWin)
+                    {
+                        double leaf_value = -1;
+                        if (JudgePlayer != NextExpandNode.SonNode[0].NodePlayer)
+                        {
+                            leaf_value = 1;                       
+                        }
+                        NextExpandNode.BackPropagation(leaf_value);
+                        break;                        
+                    }
+                }
+                #endregion
                 /*选择*/
                 NextExpandNode = Select(NextExpandNode);
 
@@ -209,35 +235,36 @@ namespace MCTS
 
                 EnumNowPlayer Winner = EnumNowPlayer.Player1;
                 # region 必赢必输局面检测
-                if (dis_player1 >= 14 || dis_player2 >= 14)//某人步数过大
-                {
-                    if (dis_player2 - dis_player1 >= 5)
-                    {
-                        Winner = EnumNowPlayer.Player2;
-                    }
-                }
-                else if (SimluationChessBoard.NumPlayer2Board == 0 && SimluationChessBoard.NumPlayer1Board == 0)//挡板已用完
-                {
-                    #region 是否存在跳棋检测(未写)
-                    #endregion
-                    if (dis_player2 - dis_player1 > 0)
-                    {
-                        Winner = EnumNowPlayer.Player2;
-                    }                   
-                }
+                //if (dis_player1 >= 14 || dis_player2 >= 14)//某人步数过大
+                //{
+                //    if (dis_player2 - dis_player1 >= 5)
+                //    {
+                //        Winner = EnumNowPlayer.Player2;
+                //    }
+                //}
+                //else if (SimluationChessBoard.NumPlayer2Board == 0 && SimluationChessBoard.NumPlayer1Board == 0)//挡板已用完
+                //{
+                //    #region 是否存在跳棋检测(未写)
+                //    #endregion
+                //    if (dis_player2 - dis_player1 > 0)
+                //    {
+                //        Winner = EnumNowPlayer.Player2;
+                //    }                   
+                //}
 
-                double leaf_value2 = -1;
-                if (JudgePlayer == EnumNowPlayer.Player1 && Winner == EnumNowPlayer.Player1)//下一步是P2走
-                {
-                    leaf_value2 = 1;
-                }
-                if (JudgePlayer == EnumNowPlayer.Player2 && Winner == EnumNowPlayer.Player2)//下一步是P1走
-                {
-                    leaf_value2 = 1;
-                }
-                NextExpandNode.BackPropagation(leaf_value2);
+                //double leaf_value2 = -1;
+                //if (JudgePlayer == EnumNowPlayer.Player1 && Winner == EnumNowPlayer.Player1)//下一步是P2走
+                //{
+                //    leaf_value2 = 1;
+                //}
+                //if (JudgePlayer == EnumNowPlayer.Player2 && Winner == EnumNowPlayer.Player2)//下一步是P1走
+                //{
+                //    leaf_value2 = 1;
+                //}
+                //NextExpandNode.BackPropagation(leaf_value2);
 
-                #endregion
+                #endregion 
+
                 /*拓展*/
                 NextExpandNode.Expand(SimluationChessBoard, NextExpandNode);
             }
