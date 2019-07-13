@@ -113,7 +113,7 @@ namespace MCTS
 
                 List<QuoridorAction> QABuff = NowQuoridor.ActionList;
                 
-                QABuff = NowQuoridor.CreateActionList(ThisChessBoard);
+                QABuff = NowQuoridor.CreateActionList(ThisChessBoard, EnumNowPlayer.Player2);
                 //QABuff = NowQuoridor.CreateActionList_ALL(ThisChessBoard);
                 /*完全拓展*/
                 foreach (QuoridorAction QA in QABuff)

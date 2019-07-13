@@ -284,8 +284,9 @@ namespace Quoridor
         /// <summary>
         /// 创建可选动作列表（目前只是用挡住对手的最短路径上的挡板动作为主）
         /// </summary>
-        public List<QuoridorAction> CreateActionList(ChessBoard ThisChessBoard)
+        public List<QuoridorAction> CreateActionList(ChessBoard ThisChessBoard, EnumNowPlayer MaxPlayer)
         {
+            EnumNowPlayer PlayerSave = Player_Now;
             List<QuoridorAction> ActionListBuff = new List<QuoridorAction>();
             ActionList = new List<QuoridorAction>();
 
@@ -454,11 +455,18 @@ namespace Quoridor
             
             if (ActionListIfSort)
             {
-
+                if (PlayerSave == MaxPlayer)
+                {
+                    ActionList = ActionList.OrderBy(a => a.WholeScore).ToList();
+                }
+                else//Min玩家
+                {
+                    ActionList = ActionList.OrderByDescending(a => a.OpponentScore).ToList();
+                }
                 //对当前博弈玩家按整体评分降序排列
                 //ActionList = ActionList.OrderByDescending(a => a.WholeScore).ToList();
                 //对当前对手玩家按整体评分升序排列
-                ActionList = ActionList.OrderBy(a => a.WholeScore).ToList();
+                //ActionList = ActionList.OrderBy(a => a.WholeScore).ToList();
             }
             #endregion
             return ActionList;
@@ -649,7 +657,7 @@ namespace Quoridor
         public void TestEvaluation()
         {
             List<QuoridorAction> QABuff = ActionList;
-            QABuff = CreateActionList(ThisChessBoard);
+            QABuff = CreateActionList(ThisChessBoard, EnumNowPlayer.Player2);
             ActionListEvaluation(ThisChessBoard, ref QABuff, Player_Now);
             PrintActionList(QABuff);
         }
@@ -667,7 +675,7 @@ namespace Quoridor
 
             Player_Now = AIPlayer;
 
-            QABuff = CreateActionList(ThisChessBoard);
+            QABuff = CreateActionList(ThisChessBoard, EnumNowPlayer.Player2);
             ActionListEvaluation(ThisChessBoard, ref QABuff, Player_Now);
 
             #region 贪婪思想，找最好的一步

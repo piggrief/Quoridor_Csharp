@@ -640,7 +640,7 @@
             this.IfUseTT_CopareCB.PageHover = ((System.Drawing.Image)(resources.GetObject("IfUseTT_CopareCB.PageHover")));
             this.IfUseTT_CopareCB.PageImagePosition = CCWin.SkinControl.SkinTabControl.ePageImagePosition.Left;
             this.IfUseTT_CopareCB.PageNorml = null;
-            this.IfUseTT_CopareCB.SelectedIndex = 0;
+            this.IfUseTT_CopareCB.SelectedIndex = 1;
             this.IfUseTT_CopareCB.Size = new System.Drawing.Size(371, 329);
             this.IfUseTT_CopareCB.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.IfUseTT_CopareCB.TabIndex = 35;
@@ -972,7 +972,14 @@
             "4",
             "6",
             "8",
-            "10"});
+            "10",
+            "12",
+            "14",
+            "16",
+            "18",
+            "20",
+            "22",
+            "24"});
             this.DepthSelectCB.Location = new System.Drawing.Point(116, 50);
             this.DepthSelectCB.Name = "DepthSelectCB";
             this.DepthSelectCB.Size = new System.Drawing.Size(201, 26);
