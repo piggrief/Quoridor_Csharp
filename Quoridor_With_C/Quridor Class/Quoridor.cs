@@ -11,6 +11,7 @@ using NowAction = QuoridorRule.QuoridorRuleEngine.NowAction;
 using EnumNowPlayer = QuoridorRule.QuoridorRuleEngine.EnumNowPlayer;
 using System.Collections;
 using MathNet.Numerics.Random;
+using System.IO;
 
 namespace Quoridor
 {
@@ -709,5 +710,111 @@ namespace Quoridor
                 return EnumNowPlayer.Player1;
         }
     }
+    public class ChessManual
+    {
+        public List<int> ActionSequence = new List<int>();
+        public EnumNowPlayer Winner = EnumNowPlayer.Player1;
+        /// <summary>
+        /// 根据ActionSequence和Winner生成棋盘保存用的棋谱字符串
+        /// </summary>
+        /// <returns>一局棋谱的字符串</returns>
+        string CreateManual()
+        {
+            string ManualStr = "";
+            ManualStr += DateTime.Now.ToLocalTime().ToString();
+            ManualStr += ",";
+            switch (Winner)
+            {
+                case EnumNowPlayer.Player1:
+                    ManualStr += "1,";
+                    break;
+                case EnumNowPlayer.Player2:
+                    ManualStr += "2,";
+                    break;
+                default:
+                    break;
+            }
+            foreach (int Action in ActionSequence)
+            {
+                ManualStr += Action.ToString();
+                ManualStr += ",";
+            }
 
+            ManualStr += "End";
+            ManualStr += System.Environment.NewLine;
+
+            return ManualStr;
+        }
+        /// <summary>
+        /// 把棋谱字符串写入FilePath文件末尾
+        /// </summary>
+        /// <param name="FilePath"></param>
+        void SaveChessManual(string FilePath)
+        {
+            FileStream fs = null;
+            fs = File.OpenWrite(FilePath);
+            
+            //StreamWriter sw = new StreamWriter(FilePath, true, System.Text.Encoding.Default);
+            string ManualBuff = CreateManual();
+            byte[] data = System.Text.Encoding.Default.GetBytes(ManualBuff);
+            //设定书写的开始位置为文件的末尾  
+            fs.Position = fs.Length;
+            //将待写入内容追加到文件末尾  
+            fs.Write(data, 0, data.Length);
+            //sw.Write(ManualBuff);
+        }
+        /// <summary>
+        /// 录入一局棋谱
+        /// </summary>
+        /// <param name="OnceGame_ActionSequence">该局的移动序列</param>
+        public void EnterChessManual(EnumNowPlayer WinnerPlayer)
+        {
+            Winner = WinnerPlayer;
+            string ManualPath = System.Windows.Forms.Application.StartupPath;
+            ManualPath += "\\ChessManual\\CM.txt";
+            try
+            {
+                SaveChessManual(ManualPath);
+            }
+            catch (Exception)
+            {
+                Console.WriteLine(ManualPath);
+                return;
+            }
+            foreach (int Action in ActionSequence)
+            {
+                Console.WriteLine(Action.ToString()); 
+            }
+            
+            Console.WriteLine("Enter Success!");
+        }
+        /// <summary>
+        /// 更新动作序列
+        /// </summary>
+        /// <param name="NowAction"></param>
+        public void RenewActionSequence(NowAction NowAction, int row, int col)
+        {
+            int ActionIndex = 0;
+            switch (NowAction)
+            {
+                case NowAction.Action_PlaceVerticalBoard:
+                    ActionIndex = 0;
+                    break;
+                case NowAction.Action_PlaceHorizontalBoard:
+                    ActionIndex = 1;
+                    break;
+                case NowAction.Action_Move_Player1:
+                    ActionIndex = 2;
+                    break;
+                case NowAction.Action_Move_Player2:
+                    ActionIndex = 3;
+                    break;
+                case NowAction.Action_Wait:
+                    break;
+                default:
+                    break;
+            }
+            ActionSequence.Add(ActionIndex * 100 + row * 10 + col);
+        }
+    }
 }

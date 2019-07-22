@@ -18,6 +18,7 @@ using NowAction = QuoridorRule.QuoridorRuleEngine.NowAction;
 using EnumNowPlayer = QuoridorRule.QuoridorRuleEngine.EnumNowPlayer;
 using System.Diagnostics;
 using MCTS;
+using System.IO; 
 
 namespace Quoridor_With_C
 {
@@ -266,7 +267,6 @@ namespace Quoridor_With_C
 
                 NowQuoridor.ThisChessBoard.Player1Location = new Point(1, 3);
                 NowQuoridor.ThisChessBoard.Player2Location = new Point(5, 3);
-
                 #endregion
 
                 //刷新初始棋盘
@@ -399,6 +399,7 @@ namespace Quoridor_With_C
         QuoridorAction OpponentAction = new QuoridorAction(NowAction.Action_Wait, new Point(-1, -1));
         QuoridorAction SelfAction = new QuoridorAction(NowAction.Action_Wait, new Point(-1, -1));
 
+        public ChessManual ThisCM = new ChessManual();
         /// <summary>
         /// 根据点击坐标执行下棋操作
         /// </summary>
@@ -462,7 +463,7 @@ namespace Quoridor_With_C
                     MessageBox.Show("P1:" + Hint1 + " P2:" + Hint2);
                 return Hint1 + Hint2;
             }
-
+            ThisCM.RenewActionSequence(PlayerNowAction, row, col);
             long HashBuff = 0;
             OpponentAction.ActionPoint.X = row;
             OpponentAction.ActionPoint.Y = col;
@@ -510,6 +511,10 @@ namespace Quoridor_With_C
             string result = NowQuoridor.QuoridorRule.CheckResult(NowQuoridor.ThisChessBoard);
             if (result != "No success")
             {
+                if (result == "Player2 Success!")
+                    ThisCM.EnterChessManual(EnumNowPlayer.Player2);
+                else if (result == "Player1 Success!")
+                    ThisCM.EnterChessManual(EnumNowPlayer.Player1);
                 MessageBox.Show(result);
                 System.Environment.Exit(0);
             }
@@ -741,10 +746,13 @@ namespace Quoridor_With_C
                 //Hint = NowQuoridor.QuoridorRule.Action(ref NowQuoridor.ThisChessBoard, AIAction.ActionPoint.X, AIAction.ActionPoint.Y, AIAction.PlayerAction);
 
                 #region MCTS
+                int NextActionX = 0, NextActionY = 0;
                 if (AlgorithmSelectCB.SelectedItem.ToString() == "蒙特卡洛树搜索")
                 {
                     Hint = NowQuoridor.QuoridorRule.Action(ref NowQuoridor.ThisChessBoard, NextAction.ActionPoint.X, NextAction.ActionPoint.Y, NextAction.PlayerAction);
                     PlayerNowAction = NextAction.PlayerAction;
+                    NextActionX = NextAction.ActionPoint.X;
+                    NextActionY = NextAction.ActionPoint.Y;
                 }
                 #endregion
                 else
@@ -752,6 +760,8 @@ namespace Quoridor_With_C
                     #region GameTree
                     Hint = NowQuoridor.QuoridorRule.Action(ref NowQuoridor.ThisChessBoard, Root.ActionLocation.X, Root.ActionLocation.Y, Root.NodeAction);
                     PlayerNowAction = Root.NodeAction;
+                    NextActionX = Root.ActionLocation.X;
+                    NextActionY = Root.ActionLocation.Y;
                     #endregion 
                 }
                 if (Hint != "OK")
@@ -775,6 +785,7 @@ namespace Quoridor_With_C
                 }
 
                 SelfAction = NextAction;
+                ThisCM.RenewActionSequence(PlayerNowAction, NextActionX, NextActionY);
 
                 NowQuoridor.ThisChessBoard.DrawNowChessBoard(ref Gr, ChessWhitePB, ChessBlackPB);
                 ChessBoardPB.Refresh();
@@ -782,6 +793,10 @@ namespace Quoridor_With_C
                 result = NowQuoridor.QuoridorRule.CheckResult(NowQuoridor.ThisChessBoard);
                 if (result != "No success")
                 {
+                    if (result == "Player2 Success!")
+                        ThisCM.EnterChessManual(EnumNowPlayer.Player2);
+                    else if (result == "Player1 Success!")
+                        ThisCM.EnterChessManual(EnumNowPlayer.Player1);
                     MessageBox.Show(result);
                     System.Environment.Exit(0);
                 }
