@@ -246,27 +246,27 @@ namespace Quoridor_With_C
                 TestTB.Location = new Point(ChessBoardPB.Location.X, ChessBoardPB.Size.Height + ChessBoardPB.Location.Y);
 
                 #region 配置初始棋盘
-                NowQuoridor.ThisChessBoard.ChessBoardAll[0, 3].GridStatus = Grid.GridInsideStatus.Empty;
-                NowQuoridor.ThisChessBoard.ChessBoardAll[1, 3].GridStatus = Grid.GridInsideStatus.Have_Player1;
-                NowQuoridor.ThisChessBoard.ChessBoardAll[6, 3].GridStatus = Grid.GridInsideStatus.Empty;
-                NowQuoridor.ThisChessBoard.ChessBoardAll[5, 3].GridStatus = Grid.GridInsideStatus.Have_Player2;
+                //NowQuoridor.ThisChessBoard.ChessBoardAll[0, 3].GridStatus = Grid.GridInsideStatus.Empty;
+                //NowQuoridor.ThisChessBoard.ChessBoardAll[1, 3].GridStatus = Grid.GridInsideStatus.Have_Player1;
+                //NowQuoridor.ThisChessBoard.ChessBoardAll[6, 3].GridStatus = Grid.GridInsideStatus.Empty;
+                //NowQuoridor.ThisChessBoard.ChessBoardAll[5, 3].GridStatus = Grid.GridInsideStatus.Have_Player2;
 
-                NowQuoridor.ThisChessBoard.ChessBoardAll[1, 3].IfUpBoard = true;
-                NowQuoridor.ThisChessBoard.ChessBoardAll[1, 4].IfUpBoard = true;
-                NowQuoridor.ThisChessBoard.ChessBoardAll[6, 2].IfUpBoard = true;
-                NowQuoridor.ThisChessBoard.ChessBoardAll[6, 3].IfUpBoard = true;
+                //NowQuoridor.ThisChessBoard.ChessBoardAll[1, 3].IfUpBoard = true;
+                //NowQuoridor.ThisChessBoard.ChessBoardAll[1, 4].IfUpBoard = true;
+                //NowQuoridor.ThisChessBoard.ChessBoardAll[6, 2].IfUpBoard = true;
+                //NowQuoridor.ThisChessBoard.ChessBoardAll[6, 3].IfUpBoard = true;
 
-                //NowQuoridor.ThisChessBoard.ChessBoardAll[2, 3].IfLeftBoard = true;
-                //NowQuoridor.ThisChessBoard.ChessBoardAll[3, 3].IfLeftBoard = true;
-                //NowQuoridor.ThisChessBoard.ChessBoardAll[2, 4].IfLeftBoard = true;
-                //NowQuoridor.ThisChessBoard.ChessBoardAll[3, 4].IfLeftBoard = true;
+                ////NowQuoridor.ThisChessBoard.ChessBoardAll[2, 3].IfLeftBoard = true;
+                ////NowQuoridor.ThisChessBoard.ChessBoardAll[3, 3].IfLeftBoard = true;
+                ////NowQuoridor.ThisChessBoard.ChessBoardAll[2, 4].IfLeftBoard = true;
+                ////NowQuoridor.ThisChessBoard.ChessBoardAll[3, 4].IfLeftBoard = true;
 
-                NowQuoridor.ThisChessBoard.NumPlayer1Board = 16 - 2;
-                NowQuoridor.ThisChessBoard.NumPlayer2Board = 16 - 2;
+                //NowQuoridor.ThisChessBoard.NumPlayer1Board = 16 - 2;
+                //NowQuoridor.ThisChessBoard.NumPlayer2Board = 16 - 2;
 
 
-                NowQuoridor.ThisChessBoard.Player1Location = new Point(1, 3);
-                NowQuoridor.ThisChessBoard.Player2Location = new Point(5, 3);
+                //NowQuoridor.ThisChessBoard.Player1Location = new Point(1, 3);
+                //NowQuoridor.ThisChessBoard.Player2Location = new Point(5, 3);
                 #endregion
 
                 //刷新初始棋盘
