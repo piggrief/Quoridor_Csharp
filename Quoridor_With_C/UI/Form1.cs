@@ -452,7 +452,7 @@ namespace Quoridor_With_C
                 }
             }
 
-            if ((Hint1 != "Player1 No Board" && Hint2 != "Player2 No Board")
+            if ((Hint1 != "Player1 No Board" || Hint2 != "Player2 No Board")
                 && (Hint1 != "OK" || Hint2 != "OK"))
             {
                 if (Hint1 != "OK" && Hint2 == "OK")

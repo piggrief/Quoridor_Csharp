@@ -484,7 +484,8 @@ namespace DebugToolForm
             Chart1.Series[1].IsValueShownAsLabel = false;
             Chart1.Series[1].ToolTip = "第#VALX次模拟退火中\r\n局部最短路径为：#VAL";
 
-            NowQueenSolve.Test_SAParameter(InitTemp, alpha, SALenght, FSAh, UsedSAMode, TestNum);
+            string TestStr = NowQueenSolve.Test_SAParameter(
+                            InitTemp, alpha, SALenght, FSAh, UsedSAMode, TestNum);
 
             ShowPoint.Clear();
 
@@ -501,10 +502,7 @@ namespace DebugToolForm
                 ShowPoint2.Add(new DataPoint(i, UsedTimeList[i]));
             }
 
-            InfoPrintTB.Text = "模拟退火参数：" + System.Environment.NewLine;
-            InfoPrintTB.Text += "T0 = " + InitTemp.ToString()+ System.Environment.NewLine;
-            InfoPrintTB.Text += "a = " + alpha.ToString() + System.Environment.NewLine;
-            InfoPrintTB.Text += "L = " + SALenght.ToString() + System.Environment.NewLine;
+            InfoPrintTB.Text = TestStr;
 
         }
 
