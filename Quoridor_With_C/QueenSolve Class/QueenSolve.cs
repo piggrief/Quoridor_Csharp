@@ -72,7 +72,26 @@ namespace Queen
                     return 999;
             }
         }
-
+        /// <summary>
+        /// 对初始解进行预处理，不优化棋子就在八皇后位置上的情况
+        /// </summary>
+        /// <param name="ChessList">棋子位置列表</param>
+        /// <param name="QueenList">皇后位置列表</param>
+        public void ResultPretreatment(ref List<Point> ChessList, ref List<Point> QueenList)
+        {
+            for (int i = ChessList.Count - 1; i >= 0; i--)
+            {
+                foreach (Point QueenPoint in QueenList)
+                {
+                    if (QueenPoint.X == ChessList[i].X && QueenPoint.Y == ChessList[i].Y)
+                    {
+                        QueenList.Remove(QueenPoint);
+                        ChessList.Remove(ChessList[i]);
+                        break;
+                    }
+                }                
+            }
+        }
         List<int> InitResult = new List<int>();//其中10~17代表第0~7个棋子，20~27代表第0~7个皇后
 
         public enum InitResultMethod///初始解计算方法
@@ -92,17 +111,27 @@ namespace Queen
         public List<int> CreateInitResult(List<Point> ChessList, List<Point> QueenList, ref double Distance_All)
         {
             List<int> MoveSequence = new List<int>();
-
+            List<Point> ChessListBuff = new List<Point>();
+            List<Point> QueenListBuff = new List<Point>();
+            for (int i = 0; i < ChessList.Count; i++)
+            {
+                ChessListBuff.Add(ChessList[i]);
+            }
+            for (int i = 0; i < QueenList.Count; i++)
+            {
+                QueenListBuff.Add(QueenList[i]);
+            }
+            ResultPretreatment(ref ChessListBuff, ref QueenListBuff);
             if (UsedInitResultMethod == InitResultMethod.Dijkstra)
             {
-                for (int i = 0; i < ChessList.Count; i++)
+                for (int i = 0; i < ChessListBuff.Count; i++)
                 {
                     double disbuff = 0;
                     double dismin = 999;
                     int minindex = 0;
-                    for (int j = 0; j < QueenList.Count; j++)
+                    for (int j = 0; j < QueenListBuff.Count; j++)
                     {
-                        disbuff = CalDistance_QueenToChess(ChessList[i], QueenList[j], UsedCalMethod);
+                        disbuff = CalDistance_QueenToChess(ChessListBuff[i], QueenListBuff[j], UsedCalMethod);
                         if (disbuff < dismin && !MoveSequence.Contains(20 + j))
                         {
                             dismin = disbuff;
@@ -114,7 +143,7 @@ namespace Queen
                 }
             }
 
-            Distance_All = CalMoveSequenceDistance(MoveSequence, ChessList, QueenList);
+            Distance_All = CalMoveSequenceDistance(MoveSequence, ChessListBuff, QueenListBuff);
 
             return MoveSequence;
         }
@@ -131,7 +160,7 @@ namespace Queen
             int[] RandomNumber = new int[2];
             do//保证随机出来的数全奇或全偶且不相等
             {
-                RandomNumber = rnd.NextInt32s(2, 0, 16);
+                RandomNumber = rnd.NextInt32s(2, 0, Sequence_last.Count);
                 int buff = RandomNumber[0] + RandomNumber[1];
                 if ((buff % 2 == 0) && (RandomNumber[0] != RandomNumber[1]))
                     RandomSuccess = true;
@@ -316,7 +345,7 @@ namespace Queen
                     double[] randnum = new double[] { 1 };
                     randnum = rnd.NextDoubles(1);
 
-                    if (E > 0)//局部更优必然接受
+                    if (E < 0)//局部更优必然接受 7.24日前是大于号
                     {
                         PartBest_Distance = result_distance_new;
                         PartBest_Sequence = New_Sequence;

@@ -1096,7 +1096,7 @@ namespace Quoridor_With_C
                 double disbuff = 0;
                 ThisQueenSolve.InitSA(200, 0.9, 32, 0, SimulateAnneal.Annealing.SAMode.SA);
                 MoveSequence = ThisQueenSolve.SearchResult_ForOverall(ref disbuff, ref BestResult_QueenLocation, SearchPB);
-
+                
                 string SendBuff = ThisQueenSolve.CreateSendCMDStr(MoveSequence);
                 Console.WriteLine(SendBuff);
                 DT.SendTB.Text = SendBuff;
