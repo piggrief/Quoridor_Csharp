@@ -1045,6 +1045,21 @@ namespace Quoridor_With_C
             }
         }
         /// <summary>
+        /// 显示八皇后位置（在棋盘上显示）
+        /// </summary>
+        /// <param name="MoveSequence">移动序列</param>
+        /// <param name="QueenPB">皇后位置图片列表</param>
+        public void ShowQueenLocation(List<int> MoveSequence, List<CCWin.SkinControl.SkinPictureBox> QueenPB)
+        {
+            _FormDraw FDBuff = new _FormDraw();
+            for (int i = 1; i < MoveSequence.Count; i+=2)
+            {
+                int index = (i - 1) / 2;
+                QueenPB[index].Location = FDBuff.GetQueenChessLocation(((MoveSequence[i] / 10) % 10), MoveSequence[i] % 10);
+                QueenPB[index].Visible = true;
+            }
+        }
+        /// <summary>
         /// 隐藏皇后位置
         /// </summary>
         /// <param name="QueenPB">皇后图片列表</param>
@@ -1074,8 +1089,8 @@ namespace Quoridor_With_C
             if (IsShowQueenFlag)
             {
                 Test2BTN.Text = "取消显示";
-                ShowQueenLocation(ThisQueenSolve.QueenLocationList, QueenList);
-                Queen.QueenSolve.SelectedQueenResultNum = 92;
+                //ShowQueenLocation(ThisQueenSolve.QueenLocationList, QueenList);
+                Queen.QueenSolve.SelectedQueenResultNum = 10;
                 ///1000 0.96 64
                 //ThisQueenSolve.InitSA(1000, 0.96, 64, 0, SimulateAnneal.Annealing.SAMode.SA);
                 //ThisQueenSolve.InitSA(1000, 0.9, 90, 0.1, SimulateAnneal.Annealing.SAMode.FastSA);
@@ -1094,7 +1109,7 @@ namespace Quoridor_With_C
                 //ThisQueenSolve.Test_SAParameter(1000, 0.96, 64, 0, SimulateAnneal.Annealing.SAMode.SA, 10);
 
                 double disbuff = 0;
-                ThisQueenSolve.InitSA(200, 0.9, 32, 0, SimulateAnneal.Annealing.SAMode.SA);
+                ThisQueenSolve.InitSA(1000, 0.99, 64, 0, SimulateAnneal.Annealing.SAMode.SA);
                 MoveSequence = ThisQueenSolve.SearchResult_ForOverall(ref disbuff, ref BestResult_QueenLocation, SearchPB);
                 
                 string SendBuff = ThisQueenSolve.CreateSendCMDStr(MoveSequence);
@@ -1116,10 +1131,10 @@ namespace Quoridor_With_C
                 //                                              ,ref disall);
 
                 ThisQueenSolve.PrintMoveSequence(MoveSequence, ThisQueenSolve.ChessLocationList, ThisQueenSolve.QueenLocationList);
-                Console.WriteLine("总路径长度为" + disall.ToString());
+                Console.WriteLine("总路径长度为" + disbuff.ToString());
                 Console.WriteLine("用时(s) ：" + seconds.ToString() + "秒");
                 Console.WriteLine("用时(ms)：" + milliseconds.ToString() + "毫秒");
-
+                ShowQueenLocation(MoveSequence, QueenList);
                 #endregion
             }
             else

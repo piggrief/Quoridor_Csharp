@@ -499,7 +499,7 @@ namespace DebugToolForm
             ShowPoint2.Clear();
             for (int i = 0; i < NowQueenSolve.TestUsedTime.Count; i++)
             {
-                ShowPoint2.Add(new DataPoint(i, UsedTimeList[i]));
+                //ShowPoint2.Add(new DataPoint(i, UsedTimeList[i]));
             }
 
             InfoPrintTB.Text = TestStr;

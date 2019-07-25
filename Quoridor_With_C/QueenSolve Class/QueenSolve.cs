@@ -107,7 +107,7 @@ namespace Queen
         /// <param name="QueenList">皇后位置列表</param>
         /// <param name="Method">计算初始解的方法</param>
         /// <param name="Distance_All">总距离</param>
-        /// <returns>路径移动序列,其中10~17代表第0~7个棋子，20~27代表第0~7个皇后</returns>
+        /// <returns>路径移动序列,其中百位数0、1代表棋子或皇后，十位代表所在行，个位数代表所在列</returns>
         public List<int> CreateInitResult(List<Point> ChessList, List<Point> QueenList, ref double Distance_All)
         {
             List<int> MoveSequence = new List<int>();
@@ -132,18 +132,18 @@ namespace Queen
                     for (int j = 0; j < QueenListBuff.Count; j++)
                     {
                         disbuff = CalDistance_QueenToChess(ChessListBuff[i], QueenListBuff[j], UsedCalMethod);
-                        if (disbuff < dismin && !MoveSequence.Contains(20 + j))
+                        if (disbuff < dismin && !MoveSequence.Contains(200 + QueenListBuff[j].X * 10 + QueenListBuff[j].Y)) 
                         {
                             dismin = disbuff;
                             minindex = j;
                         }
                     }
-                    MoveSequence.Add(10 + i);
-                    MoveSequence.Add(20 + minindex);
+                    MoveSequence.Add(100 + ChessListBuff[i].X * 10 + ChessListBuff[i].Y);
+                    MoveSequence.Add(200 + QueenListBuff[minindex].X * 10 + QueenListBuff[minindex].Y);
                 }
             }
 
-            Distance_All = CalMoveSequenceDistance(MoveSequence, ChessListBuff, QueenListBuff);
+            Distance_All = CalMoveSequenceDistance(MoveSequence);
 
             return MoveSequence;
         }
@@ -189,30 +189,18 @@ namespace Queen
         /// <summary>
         /// 计算一个移动序列的总距离
         /// </summary>
-        /// <param name="MoveSequence">移动序列列表</param>
-        /// <param name="ChessList">棋子位置列表</param>
-        /// <param name="QueenList">皇后位置列表</param>
+        /// <param name="MoveSequence">移动序列列表（其中百位数0、1代表棋子或皇后，十位代表所在行，个位数代表所在列）</param>
         /// <returns>移动序列的总距离</returns>
-        public double CalMoveSequenceDistance(List<int> MoveSequence, List<Point> ChessList, List<Point> QueenList)
+        public double CalMoveSequenceDistance(List<int> MoveSequence)
         {
             double dis_all = 0;
 
             for (int i = 0; i < MoveSequence.Count - 1; i++)
             {
-                if (i % 2 == 0)
-                {
-                    dis_all += CalDistance_QueenToChess(
-                                ChessList[MoveSequence[i] % 10]
-                                , QueenList[MoveSequence[i + 1] % 10]
-                                , UsedCalMethod);
-                }
-                else
-                {
-                    dis_all += CalDistance_QueenToChess(
-                                QueenList[MoveSequence[i] % 10]
-                                , ChessList[MoveSequence[i + 1] % 10]
-                                , UsedCalMethod); 
-                }
+                dis_all += CalDistance_QueenToChess(
+                            new Point((MoveSequence[i] / 10) % 10, MoveSequence[i] % 10)
+                            , new Point((MoveSequence[i + 1] / 10) % 10, MoveSequence[i + 1] % 10)
+                            , UsedCalMethod);
             }
 
             return dis_all;
@@ -236,13 +224,13 @@ namespace Queen
                 Console.Write("地点" + (i+1).ToString() + ": ");
                 if (i % 2 == 0)
                 {
-                    Console.Write("Chess----(" + ChessList[MoveSequence[i] % 10].X.ToString()
-                        + "," + ChessList[MoveSequence[i] % 10].Y.ToString() + ")");
+                    Console.Write("Chess----(" + ((MoveSequence[i] / 10) % 10).ToString()
+                        + "," + (MoveSequence[i] % 10).ToString() + ")");
                 }
                 else
                 {
-                    Console.Write("Queen----(" + QueenList[MoveSequence[i] % 10].X.ToString()
-                        + "," + QueenList[MoveSequence[i] % 10].Y.ToString() + ")");
+                    Console.Write("Queen----(" + ((MoveSequence[i] / 10) % 10).ToString()
+                        + "," + (MoveSequence[i] % 10).ToString() + ")");
                 }
                 Console.WriteLine();
             }
@@ -295,7 +283,7 @@ namespace Queen
             double Init_Distance = 999999;
 
             Init_Sequence = CreateInitResult(ChessLocationList, QueenLocationList, ref Init_Distance);
-            Init_Distance = CalMoveSequenceDistance(Init_Sequence, ChessLocationList, QueenLocationList);
+            Init_Distance = CalMoveSequenceDistance(Init_Sequence);
 
             #endregion
 
@@ -327,7 +315,7 @@ namespace Queen
                     ///产生新的随机解
                     New_Sequence = new List<int>();
                     New_Sequence = ChangeResult_Reverse(Last_Sequence);
-                    result_distance_new = CalMoveSequenceDistance(New_Sequence, ChessLocationList, QueenLocationList);
+                    result_distance_new = CalMoveSequenceDistance(New_Sequence);
 
                     //PrintResultSequence(New_Sequence);
 
@@ -386,7 +374,7 @@ namespace Queen
             double Init_Distance = 999999;
 
             Init_Sequence = CreateInitResult(ChessLocationList, QueenLocationList, ref Init_Distance);
-            Init_Distance = CalMoveSequenceDistance(Init_Sequence, ChessLocationList, QueenLocationList);
+            Init_Distance = CalMoveSequenceDistance(Init_Sequence);
 
             #endregion
 
@@ -417,7 +405,7 @@ namespace Queen
                     ///产生新的随机解
                     New_Sequence = new List<int>();
                     New_Sequence = ChangeResult_Reverse(Last_Sequence);
-                    result_distance_new = CalMoveSequenceDistance(New_Sequence, ChessLocationList, QueenLocationList);
+                    result_distance_new = CalMoveSequenceDistance(New_Sequence);
 
                     ///搜出最优解要记录保存
                     if (result_distance_new < OverallBest_Distance)
@@ -820,7 +808,7 @@ namespace Queen
 
                 Init_Sequence = CreateInitResult(ChessLocationList, QueenLocationList, ref Init_Distance);
 
-                ResultEvaluation.Add(Init_Distance);
+                ResultEvaluation.Add(Init_Sequence.Count);
             }
 
             return ResultEvaluation;
@@ -834,8 +822,13 @@ namespace Queen
             Queen92Dis.Clear();
 
             Queen92Dis = QueenResultEvaluation();
-            Queen92Dis.Sort();
-            double disGateValue = Queen92Dis[SelectNum - 1];
+            List<double> Queen92Buff = new List<double>();
+            for (int i = 0; i < Queen92Dis.Count; i++)
+            {
+                Queen92Buff.Add(Queen92Dis[i]);
+            }
+            Queen92Buff.Sort();
+            double disGateValue = Queen92Buff[SelectNum - 1];
             EightQueenResult_Effective.Clear();
 
             for (int i = 0, ResultNum = 0; ResultNum < SelectNum || i < 92 ; i++)
@@ -952,19 +945,7 @@ namespace Queen
             int index = 0;
             for (int i = 0; i < MoveSequence.Count; i++)//10 23
             {
-                index = (i/2) % 10;
-                int row = 0, col = 0;
-                if (i % 2 == 0)//棋子
-                {
-                    row = ChessLocationList[index].X;
-                    col = ChessLocationList[index].Y;
-                }
-                else
-                {
-                    row = QueenLocationList[index].X;
-                    col = QueenLocationList[index].Y; 
-                }
-                int LocationNum = row * 8 + 1 + col;
+                int LocationNum = MoveSequence[i] % 100;
                 if (LocationNum >= 10)
                 {
                     CMDBuff += LocationNum.ToString();
