@@ -63,6 +63,16 @@ namespace Quoridor_With_C {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
+        internal static System.Drawing.Bitmap Back {
+            get {
+                object obj = ResourceManager.GetObject("Back", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
         internal static System.Drawing.Bitmap ChessBlack {
             get {
                 object obj = ResourceManager.GetObject("ChessBlack", resourceCulture);
@@ -106,6 +116,26 @@ namespace Quoridor_With_C {
         internal static System.Drawing.Bitmap 封面 {
             get {
                 object obj = ResourceManager.GetObject("封面", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap 步步为营 {
+            get {
+                object obj = ResourceManager.GetObject("步步为营", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap 海大 {
+            get {
+                object obj = ResourceManager.GetObject("海大", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

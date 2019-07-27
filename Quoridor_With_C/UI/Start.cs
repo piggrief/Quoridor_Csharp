@@ -15,8 +15,7 @@ namespace Quoridor_With_C
     {
         public Start()
         {
-            InitializeComponent();
-            StartUI_PB.Size = new Size(400,400);      
+            InitializeComponent();    
         }
 
         private void DoublePlayBTN_Click(object sender, EventArgs e)
@@ -30,7 +29,12 @@ namespace Quoridor_With_C
 
         private void Start_Load(object sender, EventArgs e)
         {
-
+            //SinglePlayBTN.FlatStyle = FlatStyle.Flat;
+            //SinglePlayBTN.ForeColor = Color.Transparent;
+            //SinglePlayBTN.BaseColor = Color.Transparent;
+            //SinglePlayBTN.BackColor = Color.Transparent;
+            //SinglePlayBTN.GlowColor = Color.Transparent;
+            this.Size = new Size(Resource1.步步为营.Size.Width + 20, Resource1.步步为营.Size.Height + 40);
         }
 
         private void SinglePlayBTN_Click(object sender, EventArgs e)

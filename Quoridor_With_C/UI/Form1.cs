@@ -18,7 +18,8 @@ using NowAction = QuoridorRule.QuoridorRuleEngine.NowAction;
 using EnumNowPlayer = QuoridorRule.QuoridorRuleEngine.EnumNowPlayer;
 using System.Diagnostics;
 using MCTS;
-using System.IO; 
+using System.IO;
+using System.Drawing.Drawing2D;
 
 namespace Quoridor_With_C
 {
@@ -1071,6 +1072,63 @@ namespace Quoridor_With_C
                 SPB.Location = new Point(808, 348);
             }
         }
+        /// <summary>
+        /// 将最短路径转换成GraphpicsPath，用于绘制路径
+        /// </summary>
+        /// <param name="MoveSequence">最短路径序列</param>
+        public GraphicsPath ChangeMinRoadToPath(List<int> MoveSequence)
+        {
+            GraphicsPath Pth = new GraphicsPath();
+            _FormDraw FDBuff = new _FormDraw();
+            //Pth.StartFigure();
+            int x0 = (MoveSequence[0] / 10) % 10;
+            int y0 = MoveSequence[0] % 10;
+            Point X0 = FDBuff.GetQueenChessLocation(x0, y0);
+            X0.X += 30;
+            X0.Y += 30;
+            Point XStart = new Point();
+            if (X0.X < X0.Y)
+            {
+                XStart.X = 0;
+                XStart.Y = X0.Y;
+            }
+            else
+            {
+                XStart.Y = 0;
+                XStart.X = X0.X; 
+            }
+            Pth.AddLine(XStart, X0);
+            for (int i = 0; i < MoveSequence.Count - 1; i++)
+			{
+                Point x1 = new Point(), x2 = new Point();
+                x1 = FDBuff.GetQueenChessLocation(((MoveSequence[i] / 10) % 10), MoveSequence[i] % 10);
+                x2 = FDBuff.GetQueenChessLocation(((MoveSequence[i + 1] / 10) % 10), MoveSequence[i + 1] % 10);
+                x1.X += 30;
+                x1.Y += 30;
+                x2.X += 30;
+                x2.Y += 30;
+                Pth.AddLine(x1, x2);
+			}
+            int xe = (MoveSequence[MoveSequence.Count - 1] / 10) % 10;
+            int ye = MoveSequence[MoveSequence.Count - 1] % 10;
+            Point XE = FDBuff.GetQueenChessLocation(xe, ye);
+            XE.X += 30;
+            XE.Y += 30;
+            Point XEnd = new Point();
+            if (XE.X < XE.Y)
+            {
+                XEnd.X = 0;
+                XEnd.Y = XE.Y;
+            }
+            else
+            {
+                XEnd.Y = 0;
+                XEnd.X = XE.X;
+            }
+            Pth.AddLine(XEnd, XE);
+            //Pth.CloseFigure();
+            return Pth;
+        }
         bool IsShowQueenFlag = true;
        /// <summary>
        /// 主要用于测试八皇后寻优
@@ -1134,7 +1192,10 @@ namespace Quoridor_With_C
                 Console.WriteLine("总路径长度为" + disbuff.ToString());
                 Console.WriteLine("用时(s) ：" + seconds.ToString() + "秒");
                 Console.WriteLine("用时(ms)：" + milliseconds.ToString() + "毫秒");
+                
                 ShowQueenLocation(MoveSequence, QueenList);
+                Gr.DrawPath(new Pen(Color.Red, 6.5F), ChangeMinRoadToPath(MoveSequence));
+                ChessBoardPB.Refresh();
                 #endregion
             }
             else

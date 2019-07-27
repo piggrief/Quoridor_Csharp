@@ -194,7 +194,17 @@ namespace Queen
         public double CalMoveSequenceDistance(List<int> MoveSequence)
         {
             double dis_all = 0;
+            int x0 = (MoveSequence[0] / 10) % 10;
+            int y0 = MoveSequence[0] % 10;
 
+            if (x0 < y0)
+            {
+                dis_all = x0 + 1;
+            }
+            else
+            {
+                dis_all = y0 + 1;
+            }
             for (int i = 0; i < MoveSequence.Count - 1; i++)
             {
                 dis_all += CalDistance_QueenToChess(
@@ -202,7 +212,17 @@ namespace Queen
                             , new Point((MoveSequence[i + 1] / 10) % 10, MoveSequence[i + 1] % 10)
                             , UsedCalMethod);
             }
+            int xe = (MoveSequence[MoveSequence.Count - 1] / 10) % 10;
+            int ye = MoveSequence[MoveSequence.Count - 1] % 10;
 
+            if (xe < ye)
+            {
+                dis_all += (xe + 1);
+            }
+            else
+            {
+                dis_all += (ye + 1);
+            }
             return dis_all;
         }
         public QueenSolve(DistanceCalMethod SetCalMethod, InitResultMethod InitMethod, int SelectNum = 92)
