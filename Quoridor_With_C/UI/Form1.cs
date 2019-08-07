@@ -216,7 +216,8 @@ namespace Quoridor_With_C
 
             if (GameMode == GameModeStatus.DoublePlay || GameMode == GameModeStatus.SinglePlay)
             {
-                this.Text = "步步为营游戏_" + GameMode.ToString() + "模式_上海海事大学";
+                //this.Text = "步步为营游戏_" + GameMode.ToString() + "模式_上海海事大学";
+                this.Text = "步步为营游戏_" + "单人游戏" + "模式_上海海事大学";
 
                 RandomPlaceBTN.Dispose();
                 CustomPlaceBTN.Dispose();
@@ -298,6 +299,7 @@ namespace Quoridor_With_C
                 AlgorithmSelectCB.Items.Add("蒙特卡洛树搜索");
 
                 CompareAlgorithmCB.SelectedIndex = 0;
+                AlgorithmSelectCB.Items.Add("并行MTD（f）算法");
                 AlgorithmSelectCB.SelectedIndex = AlgorithmSelectCB.Items.Count - 1;
                 DepthSelectCB.SelectedIndex = 1;
                 DepthCompareCB.SelectedIndex = 1;
@@ -437,33 +439,27 @@ namespace Quoridor_With_C
                 return Hint;
             }
 
-            string Hint1 = "";
-            string Hint2 = "";
-            Hint1 = NowQuoridor.QuoridorRule.CheckBoard(NowQuoridor.ThisChessBoard, PlayerNowAction, EnumNowPlayer.Player1, row, col);
-            Hint2 = NowQuoridor.QuoridorRule.CheckBoard(NowQuoridor.ThisChessBoard, PlayerNowAction, EnumNowPlayer.Player2, row, col);
+            string RuleHint = "";
+            RuleHint = NowQuoridor.QuoridorRule.CheckBoard(NowQuoridor.ThisChessBoard, PlayerNowAction, NowPlayer, row, col);
 
 
-            if (Hint1 == "Player1 No Board")
+            if ((RuleHint == "Player1 No Board" && NowPlayer == EnumNowPlayer.Player1)
+                || (RuleHint == "Player2 No Board" && NowPlayer == EnumNowPlayer.Player2))
             {
                 if (PlayerNowAction == NowAction.Action_PlaceHorizontalBoard
                     || PlayerNowAction == NowAction.Action_PlaceVerticalBoard)
                 {
-                    MessageBox.Show(Hint1);
-                    return Hint1;
+                    MessageBox.Show(RuleHint);
+                    return RuleHint;
                 }
             }
 
-            if ((Hint1 != "Player1 No Board" || Hint2 != "Player2 No Board")
-                && (Hint1 != "OK" || Hint2 != "OK"))
+            if (RuleHint != "OK")
             {
-                if (Hint1 != "OK" && Hint2 == "OK")
-                    MessageBox.Show(Hint1);
-                else if (Hint2 != "OK" && Hint1 == "OK")
-                    MessageBox.Show(Hint2);
-                else if (Hint2 != "OK" && Hint1 != "OK")
-                    MessageBox.Show("P1:" + Hint1 + " P2:" + Hint2);
-                return Hint1 + Hint2;
+                MessageBox.Show(RuleHint);
+                return RuleHint;
             }
+
             ThisCM.RenewActionSequence(PlayerNowAction, row, col);
             long HashBuff = 0;
             OpponentAction.ActionPoint.X = row;

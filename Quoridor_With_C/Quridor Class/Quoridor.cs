@@ -230,12 +230,12 @@ namespace Quoridor
                 {
                     Action.WholeScore = Action.SelfScore;
                 }
-
-                double RandomScore = 0;
-                CryptoRandomSource rnd = new CryptoRandomSource();
-                RandomScore = rnd.NextDouble();
-                Action.WholeScore += RandomScore;
-
+                #region 随机因子
+                //double RandomScore = 0;
+                //CryptoRandomSource rnd = new CryptoRandomSource();
+                //RandomScore = rnd.NextDouble();
+                //Action.WholeScore += RandomScore;
+                #endregion
                 #endregion
                 #region 根据评分剪枝
                 if (Action.PlayerAction == NowAction.Action_Move_Player2 || Action.PlayerAction == NowAction.Action_Move_Player1)

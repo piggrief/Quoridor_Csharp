@@ -814,6 +814,38 @@ namespace GameTree
             public double beta = 10000;
             public int depth = -1;
         }
+        //class GameTreeNodeForHash
+        //{
+        //    public int Depth;//该节点的搜索深度
+        //    public double Value;//该节点上一层对其给出的估值
+        //    public QuoridorAction BestAction;//该节点下一步的最佳决策
+        //    public QuoridorAction SecondBestAction;//该节点下一步的次优决策
+        //    public int HashNodeType;//该节点类型
+        //}
+    }
+    public class MTD
+    {
+        public double AlphaBetaPruning(GameTreeNode NowNode, int Depth, double Alpha, double Beta)
+        { return 0; }
+        public double MTD_f(GameTreeNode NowNode, double GuessValue, int Depth)
+        {
+            double Low = -60;
+            double Upper = 60;
+            double Beta = 60;
+            while (Low < Upper)
+            {
+                if (GuessValue == Low)
+                    Beta = 0.5 * (Low + Upper);
+                else
+                    Beta = GuessValue;
+                GuessValue = AlphaBetaPruning(NowNode, Depth, Beta - 1, Beta);
+                if (GuessValue >= Beta)
+                    Low = GuessValue;
+                else
+                    Upper = GuessValue;
+            }
+            return GuessValue;
+        }
     }
 
 }
