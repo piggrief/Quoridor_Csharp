@@ -648,7 +648,54 @@ namespace GameTree
                 Console.WriteLine();
             }
         }
+        /// <summary>
+        /// 使用MTD（f）算法搜索博弈树
+        /// </summary>
+        /// <param name="ChessBoard_Init">当前局面棋盘</param>
+        /// <param name="SearchPlayer">待搜索的玩家</param>
+        /// <param name="InitGuessValue">初始猜测值</param>
+        /// <param name="Depth">搜索深度</param>
+        /// <param name="AlphaMax">待搜索的期望窗中的Alpha值</param>
+        /// <param name="BetaMax">待搜索的期望窗中的Beta值</param>
+        /// <returns>搜索结果保存的子树根节点</returns>
+        public static GameTreeNode MTDfSearch(ChessBoard ChessBoard_Init, EnumNowPlayer SearchPlayer, double InitGuessValue, int Depth, double AlphaMax, double BetaMax)
+        {
+            GameTreeNode SearchRoot = new GameTreeNode();
 
+            double Low = AlphaMax;
+            double Upper = BetaMax;
+            double Beta = Upper;
+            double GuessValue = InitGuessValue;
+            while (Low < Upper)
+            {
+                if (GuessValue == Low)
+                    Beta = 0.5 * (Low + Upper);//二分查找
+                else
+                    Beta = GuessValue;
+                #region AB剪枝搜索
+                SearchRoot = new GameTreeNode();
+                SearchRoot.NodePlayer = SearchPlayer;
+                SearchRoot.alpha = Beta - 1;
+                SearchRoot.beta = Beta;
+                CreateGameTree(SearchRoot, ChessBoard_Init, Depth);
+                if (true)
+                {
+                    if (Form1.form1.DV.treeView1.Nodes[Form1.form1.DV.treeView1.Nodes.Count - 1].Text != "Root")
+                        Form1.form1.DV.treeView1.Nodes.Add(new TreeNode("第次落子:"));
+                    else
+                        Form1.form1.DV.treeView1.Nodes[0] = new TreeNode("第次落子:");
+                    GameTreeNode.GameTreeView(SearchRoot, Form1.form1.DV.treeView1.Nodes[Form1.form1.DV.treeView1.Nodes.Count - 1]);
+                }
+                GuessValue = SearchRoot.alpha;
+                //GuessValue = AlphaBetaPruning(NowNode, Depth, Beta - 1, Beta);
+                #endregion
+                if (GuessValue >= Beta)
+                    Low = GuessValue;
+                else
+                    Upper = GuessValue;
+            }
+            return SearchRoot;
+        }
     }
 
     /// <summary>

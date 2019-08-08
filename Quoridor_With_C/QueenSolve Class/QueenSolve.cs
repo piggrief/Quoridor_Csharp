@@ -958,25 +958,329 @@ namespace Queen
                                                                 {8,3,1,6,2,5,7,4},
                                                                 {8,4,1,3,6,2,7,5}};
         #endregion
-
-        public string CreateSendCMDStr(List<int> MoveSequence)
+        public enum RunCMDMode
         {
-            string CMDBuff = "ST";
-            int index = 0;
-            for (int i = 0; i < MoveSequence.Count; i++)//10 23
+            Forward,
+            Back,
+            Left,
+            Right,
+            Stop,
+            HoldChess,
+            DownChess
+        }
+        /// <summary>
+        /// 绝对方向转换成相对方向的字典，绝对Forward方向为从0号AprilTag码到9号码方向
+        /// </summary>
+        Dictionary<RunCMDMode, RunCMDMode> DirectionConversionDic = new Dictionary<RunCMDMode, RunCMDMode>();
+        Dictionary<RunCMDMode, int> DirectionToSendIntDic = new Dictionary<RunCMDMode, int>();
+        /// <summary>
+        /// 一个0~15的十进制数转成16进制字符
+        /// </summary>
+        /// <param name="DecNum">0~15的十进制</param>
+        /// <returns>16进制字符</returns>
+        string DecCharToHexChar(int DecNum)
+        {
+            try
             {
-                int LocationNum = MoveSequence[i] % 100;
-                if (LocationNum >= 10)
+                if (DecNum < 10 && DecNum >= 0)
                 {
-                    CMDBuff += LocationNum.ToString();
+                    return DecNum.ToString();
+                }
+                else if (DecNum == 10)
+                {
+                    return "A";
+                }
+                else if (DecNum == 11)
+                {
+                    return "B";
+                }
+                else if (DecNum == 12)
+                {
+                    return "C";
+                }
+                else if (DecNum == 13)
+                {
+                    return "D";
+                }
+                else if (DecNum == 14)
+                {
+                    return "E";
+                }
+                else if (DecNum == 15)
+                {
+                    return "F";
                 }
                 else
                 {
-                    CMDBuff += "0";
-                    CMDBuff += LocationNum.ToString();
+                    throw new Exception("函数输入的数字不是0~15内的整数");                
                 }
             }
-            CMDBuff += "ED";
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        /// <summary>
+        /// 一个8位二进制存储的0~255的十进制转换成16进制字符串，如“A2”
+        /// </summary>
+        /// <param name="DecNum">0~255的十进制</param>
+        /// <returns>16进制字符串</returns>
+        string DecToHexStr(int DecNum)
+        {
+            string HexStr = "";
+            int Num1 = DecNum / 16;
+            int Num2 = DecNum % 16;
+            HexStr += DecCharToHexChar(Num1);
+            HexStr += DecCharToHexChar(Num2);
+            return HexStr;
+        }
+        public string CreateSendCMDStr(List<int> MoveSequence)
+        {
+            #region 初始化字典
+            DirectionConversionDic = new Dictionary<RunCMDMode, RunCMDMode>();
+            DirectionToSendIntDic = new Dictionary<RunCMDMode, int>();
+            DirectionToSendIntDic.Add(RunCMDMode.Forward, 0);
+            DirectionToSendIntDic.Add(RunCMDMode.Back, 1);
+            DirectionToSendIntDic.Add(RunCMDMode.Left, 2);
+            DirectionToSendIntDic.Add(RunCMDMode.Right, 3);
+            DirectionToSendIntDic.Add(RunCMDMode.Stop, 4);
+            DirectionToSendIntDic.Add(RunCMDMode.HoldChess, 5);
+            DirectionToSendIntDic.Add(RunCMDMode.DownChess, 6);
+            #endregion
+            string CMDBuff = "FF ";
+            int index = 0;
+            for (int i = 0; i < MoveSequence.Count; i++)//10 23
+            {
+                int ChessQueenIndex = MoveSequence[i] / 100;
+                int LocationRow = (MoveSequence[i] / 10) % 10;
+                int LocationCol = MoveSequence[i] % 10;
+
+                int LastLocationRow = LocationRow;
+                int LastLocationCol = LocationCol;
+                
+                int TaskNum = 0;
+
+                if (i == 0)
+                {
+                    # region 确定入场的方向
+                    int[] DistanceArr = new int[4];
+                    DistanceArr[0] = LocationRow;
+                    DistanceArr[1] = 7 - LocationRow;
+                    DistanceArr[2] = LocationCol;
+                    DistanceArr[3] = 7 - LocationCol;
+                    int MinDistance = 900;
+                    int MinIndex = 0;
+                    for (int j = 0; j < 4; j++)
+                    {
+                        if (DistanceArr[j] < MinDistance)
+                        {
+                            MinIndex = j;
+                            MinDistance = DistanceArr[j];
+                        }
+                    }
+                    if (MinIndex == 0)
+                    {
+                        DirectionConversionDic.Add(RunCMDMode.Forward, RunCMDMode.Forward);
+                        DirectionConversionDic.Add(RunCMDMode.Back, RunCMDMode.Back);
+                        DirectionConversionDic.Add(RunCMDMode.Left, RunCMDMode.Left);
+                        DirectionConversionDic.Add(RunCMDMode.Right, RunCMDMode.Right);
+                    }
+                    else if (MinIndex == 1)
+                    {
+                        DirectionConversionDic.Add(RunCMDMode.Forward, RunCMDMode.Back);
+                        DirectionConversionDic.Add(RunCMDMode.Back, RunCMDMode.Forward);
+                        DirectionConversionDic.Add(RunCMDMode.Left, RunCMDMode.Right);
+                        DirectionConversionDic.Add(RunCMDMode.Right, RunCMDMode.Left);                                                
+                    }
+                    else if (MinIndex == 2)
+                    {
+                        DirectionConversionDic.Add(RunCMDMode.Forward, RunCMDMode.Right);
+                        DirectionConversionDic.Add(RunCMDMode.Back, RunCMDMode.Left);
+                        DirectionConversionDic.Add(RunCMDMode.Left, RunCMDMode.Forward);
+                        DirectionConversionDic.Add(RunCMDMode.Right, RunCMDMode.Back);
+                    }
+                    else
+                    {
+                        DirectionConversionDic.Add(RunCMDMode.Forward, RunCMDMode.Left);
+                        DirectionConversionDic.Add(RunCMDMode.Back, RunCMDMode.Right);
+                        DirectionConversionDic.Add(RunCMDMode.Left, RunCMDMode.Back);
+                        DirectionConversionDic.Add(RunCMDMode.Right, RunCMDMode.Forward); 
+                    }
+                    TaskNum = DirectionToSendIntDic[RunCMDMode.Forward] * 10 + MinDistance + 1;
+
+                    CMDBuff += DecToHexStr(TaskNum);
+                    CMDBuff += " ";
+                    CMDBuff += DecToHexStr(DirectionToSendIntDic[RunCMDMode.Stop] * 10 + 1);
+                    CMDBuff += " ";
+                    CMDBuff += DecToHexStr(DirectionToSendIntDic[RunCMDMode.HoldChess] * 10 + 1);
+                    CMDBuff += " ";
+                    # endregion
+                }
+                else
+                {
+                    LastLocationRow = (MoveSequence[i - 1] / 10) % 10;
+                    LastLocationCol = MoveSequence[i - 1] % 10;
+                    int LocationCha = 0;
+                    if (LastLocationRow == LocationRow)//同行，只左右动
+                    {
+                        LocationCha = LocationCol - LastLocationCol;
+                        if (LocationCha > 0)//左移
+                        {
+                            TaskNum = DirectionToSendIntDic[DirectionConversionDic[RunCMDMode.Left]] * 10 + Math.Abs(LocationCha);
+                        }
+                        else
+                        {
+                            TaskNum = DirectionToSendIntDic[DirectionConversionDic[RunCMDMode.Right]] * 10 + Math.Abs(LocationCha); 
+                        }
+                        CMDBuff += DecToHexStr(TaskNum);
+                        CMDBuff += " ";
+                        CMDBuff += DecToHexStr(DirectionToSendIntDic[RunCMDMode.Stop] * 10 + 1);
+                        CMDBuff += " ";
+                        if (ChessQueenIndex == 1)//棋子
+                        {
+                            CMDBuff += DecToHexStr(DirectionToSendIntDic[RunCMDMode.HoldChess] * 10 + 1);
+                        }
+                        else
+                        {
+                            CMDBuff += DecToHexStr(DirectionToSendIntDic[RunCMDMode.DownChess] * 10 + 1); 
+                        }
+                        CMDBuff += " ";
+                    }
+                    else if (LastLocationCol == LocationCol)//同列，只前后动
+                    {
+                        LocationCha = LocationRow - LastLocationRow;
+                        if (LocationCha > 0)//前移
+                        {
+                            TaskNum = DirectionToSendIntDic[DirectionConversionDic[RunCMDMode.Forward]] * 10 + Math.Abs(LocationCha);
+                        }
+                        else
+                        {
+                            TaskNum = DirectionToSendIntDic[DirectionConversionDic[RunCMDMode.Back]] * 10 + Math.Abs(LocationCha);
+                        }
+                        CMDBuff += DecToHexStr(TaskNum);
+                        CMDBuff += " ";
+                        CMDBuff += DecToHexStr(DirectionToSendIntDic[RunCMDMode.Stop] * 10 + 1);
+                        CMDBuff += " ";
+                        if (ChessQueenIndex == 1)//棋子
+                        {
+                            CMDBuff += DecToHexStr(DirectionToSendIntDic[RunCMDMode.HoldChess] * 10 + 1);
+                        }
+                        else
+                        {
+                            CMDBuff += DecToHexStr(DirectionToSendIntDic[RunCMDMode.DownChess] * 10 + 1);
+                        }
+                        CMDBuff += " ";
+                    }
+                    else//不同行且不同列
+                    {
+                        int RowCha = LocationRow - LastLocationRow;
+                        int ColCha = LocationCol - LastLocationCol;
+                        #region 四方位路径解算
+                        if (RowCha > 0 && ColCha > 0)//右下,需要前左移动
+                        {
+                            TaskNum = DirectionToSendIntDic[DirectionConversionDic[RunCMDMode.Forward]] * 10 + Math.Abs(RowCha);
+                            CMDBuff += DecToHexStr(TaskNum);
+                            CMDBuff += " ";
+                            CMDBuff += DecToHexStr(DirectionToSendIntDic[RunCMDMode.Stop] * 10 + 1);
+                            CMDBuff += " ";
+                            TaskNum = DirectionToSendIntDic[DirectionConversionDic[RunCMDMode.Left]] * 10 + Math.Abs(ColCha);
+                            CMDBuff += DecToHexStr(TaskNum);
+                            CMDBuff += " ";
+                            CMDBuff += DecToHexStr(DirectionToSendIntDic[RunCMDMode.Stop] * 10 + 1);
+                            CMDBuff += " ";
+                        }
+                        else if (RowCha > 0 && ColCha < 0)//左下，需要前右移动
+                        {
+                            TaskNum = DirectionToSendIntDic[DirectionConversionDic[RunCMDMode.Forward]] * 10 + Math.Abs(RowCha);
+                            CMDBuff += DecToHexStr(TaskNum);
+                            CMDBuff += " ";
+                            CMDBuff += DecToHexStr(DirectionToSendIntDic[RunCMDMode.Stop] * 10 + 1);
+                            CMDBuff += " ";
+                            TaskNum = DirectionToSendIntDic[DirectionConversionDic[RunCMDMode.Right]] * 10 + Math.Abs(ColCha);
+                            CMDBuff += DecToHexStr(TaskNum);
+                            CMDBuff += " ";
+                            CMDBuff += DecToHexStr(DirectionToSendIntDic[RunCMDMode.Stop] * 10 + 1);
+                            CMDBuff += " ";
+                        }
+                        else if (RowCha < 0 && ColCha > 0)//右上，需要后左移动
+                        {
+                            TaskNum = DirectionToSendIntDic[DirectionConversionDic[RunCMDMode.Back]] * 10 + Math.Abs(RowCha);
+                            CMDBuff += DecToHexStr(TaskNum);
+                            CMDBuff += " ";
+                            CMDBuff += DecToHexStr(DirectionToSendIntDic[RunCMDMode.Stop] * 10 + 1);
+                            CMDBuff += " ";
+                            TaskNum = DirectionToSendIntDic[DirectionConversionDic[RunCMDMode.Left]] * 10 + Math.Abs(ColCha);
+                            CMDBuff += DecToHexStr(TaskNum);
+                            CMDBuff += " ";
+                            CMDBuff += DecToHexStr(DirectionToSendIntDic[RunCMDMode.Stop] * 10 + 1);
+                            CMDBuff += " ";
+                        }
+                        else if (RowCha < 0 && ColCha < 0)//左上，需要后右移动
+                        {
+                            TaskNum = DirectionToSendIntDic[DirectionConversionDic[RunCMDMode.Back]] * 10 + Math.Abs(RowCha);
+                            CMDBuff += DecToHexStr(TaskNum);
+                            CMDBuff += " ";
+                            CMDBuff += DecToHexStr(DirectionToSendIntDic[RunCMDMode.Stop] * 10 + 1);
+                            CMDBuff += " ";
+                            TaskNum = DirectionToSendIntDic[DirectionConversionDic[RunCMDMode.Right]] * 10 + Math.Abs(ColCha);
+                            CMDBuff += DecToHexStr(TaskNum);
+                            CMDBuff += " ";
+                            CMDBuff += DecToHexStr(DirectionToSendIntDic[RunCMDMode.Stop] * 10 + 1);
+                            CMDBuff += " ";
+                        }
+                        #endregion
+                        if (ChessQueenIndex == 1)//棋子
+                        {
+                            CMDBuff += DecToHexStr(DirectionToSendIntDic[RunCMDMode.HoldChess] * 10 + 1);
+                        }
+                        else
+                        {
+                            CMDBuff += DecToHexStr(DirectionToSendIntDic[RunCMDMode.DownChess] * 10 + 1);
+                        }
+                        CMDBuff += " ";
+                    }
+                }
+            }
+            # region 出场解算
+            int LocationRow_End = (MoveSequence.Last() / 10) % 10;
+            int LocationCol_End = MoveSequence.Last() % 10;
+            int[] DistanceArr2 = new int[4];
+            DistanceArr2[0] = 7 - LocationRow_End;
+            DistanceArr2[1] = LocationRow_End;
+            DistanceArr2[2] = 7 - LocationCol_End;
+            DistanceArr2[3] = LocationCol_End;
+            int MinDistance2 = 900;
+            int MinIndex2 = 0;
+            for (int j = 0; j < 4; j++)
+            {
+                if (DistanceArr2[j] < MinDistance2)
+                {
+                    MinIndex2 = j;
+                    MinDistance2 = DistanceArr2[j];
+                }
+            }
+            int TaskNum2 = 0;
+            if (MinIndex2 == 0)
+            {
+                TaskNum2 = DirectionToSendIntDic[DirectionConversionDic[RunCMDMode.Forward]] * 10 + MinDistance2 + 1;
+            }
+            else if (MinIndex2 == 1)
+            {
+                TaskNum2 = DirectionToSendIntDic[DirectionConversionDic[RunCMDMode.Back]] * 10 + MinDistance2 + 1;
+            }
+            else if (MinIndex2 == 2)
+            {
+                TaskNum2 = DirectionToSendIntDic[DirectionConversionDic[RunCMDMode.Left]] * 10 + MinDistance2 + 1;
+            }
+            else
+            {
+                TaskNum2 = DirectionToSendIntDic[DirectionConversionDic[RunCMDMode.Right]] * 10 + MinDistance2 + 1;
+            }
+
+            CMDBuff += DecToHexStr(TaskNum2);
+            CMDBuff += " ";
+            # endregion
+            CMDBuff += "FE";
 
             return CMDBuff;
         }
