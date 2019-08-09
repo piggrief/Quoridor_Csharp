@@ -52,6 +52,10 @@ namespace QuoridorRule
     public class ChessBoard
     {
         public Grid[,] ChessBoardAll = new Grid[7, 7];//当前7x7的棋盘
+        /// <summary>
+        /// 挡板地图的哈希值
+        /// </summary>
+        public LookupRoadResultTable.HashCode_RT BoardHashCode = new LookupRoadResultTable.HashCode_RT(0, 0);
         public static Color Player1ChessColor = Color.White;//玩家1棋子颜色
         public static Color Player2ChessColor = Color.Black;//玩家2棋子颜色
         public Point Player1Location = new Point(0, 3);//玩家1位置
@@ -124,6 +128,8 @@ namespace QuoridorRule
             ChessBoardSave.Player2Location.Y = ChessBoardNow.Player2Location.Y;
             ChessBoardSave.NumPlayer1Board = ChessBoardNow.NumPlayer1Board;
             ChessBoardSave.NumPlayer2Board = ChessBoardNow.NumPlayer2Board;
+            ChessBoardSave.BoardHashCode.HorizontalHashCode = ChessBoardNow.BoardHashCode.HorizontalHashCode;
+            ChessBoardSave.BoardHashCode.VerticalHashCode = ChessBoardNow.BoardHashCode.VerticalHashCode;
         }
         /// <summary>
         /// 从ChessBoardSave中恢复保存的棋盘至ChessBoard_Resumed
@@ -145,6 +151,8 @@ namespace QuoridorRule
             ChessBoard_Resumed.Player2Location.Y = ChessBoardSave.Player2Location.Y;
             ChessBoard_Resumed.NumPlayer1Board = ChessBoardSave.NumPlayer1Board;
             ChessBoard_Resumed.NumPlayer2Board = ChessBoardSave.NumPlayer2Board;
+            ChessBoard_Resumed.BoardHashCode.HorizontalHashCode = ChessBoardSave.BoardHashCode.HorizontalHashCode;
+            ChessBoard_Resumed.BoardHashCode.VerticalHashCode = ChessBoardSave.BoardHashCode.VerticalHashCode;
         }
     }
     /// <summary>
@@ -635,6 +643,10 @@ namespace QuoridorRule
                         return "十字交叉违规！";
                     ChessBoardAll[row, col].IfLeftBoard = true;
                     ChessBoardAll[row + 1, col].IfLeftBoard = true;
+
+                    ChessBoard_ToAction.BoardHashCode = LookupRoadAlgorithm.ResultSaveTable.RenewHashCode(
+                        ChessBoard_ToAction.BoardHashCode
+                        , NowAction.Action_PlaceVerticalBoard, row, col);
                     return "OK";
                 case NowAction.Action_PlaceHorizontalBoard:
                     if (row <= 0 || row >= 7 || col >= 6) return "HorizontalBoardPlaceError!";
@@ -643,6 +655,9 @@ namespace QuoridorRule
                         return "十字交叉违规！";
                     ChessBoardAll[row, col].IfUpBoard = true;
                     ChessBoardAll[row, col + 1].IfUpBoard = true;
+                    ChessBoard_ToAction.BoardHashCode = LookupRoadAlgorithm.ResultSaveTable.RenewHashCode(
+                        ChessBoard_ToAction.BoardHashCode
+                        , NowAction.Action_PlaceHorizontalBoard, row, col);
                     return "OK";
                 case NowAction.Action_Move_Player1:
                     return CheckMove_Change(ref ChessBoard_ToAction, row, col, NowAction.Action_Move_Player1);

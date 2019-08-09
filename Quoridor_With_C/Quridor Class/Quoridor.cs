@@ -429,7 +429,7 @@ namespace Quoridor
             }
             #endregion
             #region 校验生成的ActionList是否合法
-
+            
             foreach (QuoridorAction QA in ActionListBuff)
             {
                 if (QuoridorRule.CheckBoard(ThisChessBoard, QA.PlayerAction, Player_Now,

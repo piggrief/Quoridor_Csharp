@@ -189,8 +189,8 @@ namespace GameTree
             NowQuoridor.Player_Now = PlayerSave;
 
             List<QuoridorAction> QABuff = NowQuoridor.ActionList;
-            
-            //QABuff = NowQuoridor.CreateActionList(ThisChessBoard);
+
+            //QABuff = NowQuoridor.CreateActionList_ALL(ThisChessBoard);
             QABuff = NowQuoridor.CreateActionList(ThisChessBoard, GameTreePlayer);
 
             foreach (QuoridorAction QA in QABuff)
@@ -816,7 +816,7 @@ namespace GameTree
         public void Add(long HashCode, GameTreeNodeForHash NodeToSave, bool IfInitNode = false)
         {
             long HashCodeBuff = HashCode;
-
+            
             if (IfInitNode)
             {
                 ChessBoardTT.Add(HashCodeBuff, NodeToSave);

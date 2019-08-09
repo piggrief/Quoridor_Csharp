@@ -9,6 +9,7 @@ using Quoridor_With_C;
 using QuoridorRule;
 using NowAction = QuoridorRule.QuoridorRuleEngine.NowAction;
 using EnumNowPlayer = QuoridorRule.QuoridorRuleEngine.EnumNowPlayer;
+using System.Collections;
 
 namespace LookupRoad
 {
@@ -17,6 +18,7 @@ namespace LookupRoad
     /// </summary>
     public class LookupRoadAlgorithm
     {
+        public static LookupRoadResultTable ResultSaveTable = new LookupRoadResultTable();
         /// <summary>
         /// 计算两点间的曼哈顿距离
         /// </summary>
@@ -47,12 +49,12 @@ namespace LookupRoad
             public AstarList Father;
         }
         /// <summary>
-        /// 重启A*寻路
+        /// 重启A*寻路，最短路径保存在Player1MinRoad或Player2MinRoad中，返回最短路径长度
         /// </summary>
         /// <param name="Player">寻路玩家</param>
         /// <param name="Location_row">该玩家所在位置行</param>
         /// <param name="Location_col">该玩家所在位置列</param>
-        /// <returns></returns>
+        /// <returns>最短路径长度</returns>
         public int AstarRestart(ChessBoard ToAstarSearch, EnumNowPlayer Player, int Location_row, int Location_col)
         {
             System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
@@ -468,6 +470,93 @@ namespace LookupRoad
             }
 
             return Num_HBoard + Num_VBoard;
+        }
+    }
+    /// <summary>
+    /// 保存已寻路过的局面的寻路结果存储表（哈希表）
+    /// </summary>
+    public class LookupRoadResultTable
+    {
+        /// <summary>
+        /// 结果存储表特定的哈希值类型
+        /// </summary>
+        public class HashCode_RT
+        {
+            public Int64 VerticalHashCode = 0;//竖挡板地图哈希值
+            public Int64 HorizontalHashCode = 0;//横挡板地图哈希值
+            public HashCode_RT(Int64 VerticalHash, Int64 HorizontalHash)
+            {
+                VerticalHashCode = VerticalHash;
+                HorizontalHashCode = HorizontalHash;
+            }
+            public HashCode_RT(HashCode_RT CopyHashCode)
+            {
+                VerticalHashCode = CopyHashCode.VerticalHashCode;
+                HorizontalHashCode = CopyHashCode.HorizontalHashCode;
+            }
+        }
+        public Hashtable ResultTable = new Hashtable();
+        /// <summary>
+        /// 寻路结果类
+        /// </summary>
+        public class LookRoadResult
+        {
+            int Player1Distance = 0;
+            int Player2Distance = 0;
+        }
+        /// <summary>
+        /// 添加一个散列映射
+        /// </summary>
+        /// <param name="HashCode">要添加的哈希值</param>
+        /// <param name="Result">寻路结果对象</param>
+        public void Add(HashCode_RT HashCode, LookRoadResult Result)
+        {
+            ResultTable.Add(HashCode, Result);
+        }
+        /// <summary>
+        /// 通过地图挡板的哈希值检索出寻路结果
+        /// </summary>
+        /// <param name="HashCode">哈希值</param>
+        /// <param name="Result">寻路结果</param>
+        /// <returns>是否含有此哈希值</returns>
+        public bool Search(HashCode_RT HashCode, ref LookRoadResult Result)
+        {
+            if (ResultTable.Contains(HashCode))
+            {
+                Result = (LookRoadResult)ResultTable[HashCode];
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        /// <summary>
+        /// 根据当前动作更新挡板地图哈希值
+        /// </summary>
+        /// <param name="HashCode_Last">上一次的哈希值</param>
+        /// <param name="NA">当前动作</param>
+        /// <param name="ActionLocation_Row">动作落实位置行</param>
+        /// <param name="ActionLocation_Col">动作落实位置列</param>
+        /// <returns></returns>
+        public HashCode_RT RenewHashCode(HashCode_RT HashCode_Last, NowAction NA, int ActionLocation_Row, int ActionLocation_Col)
+        {
+            HashCode_RT NewHashCode = new HashCode_RT(HashCode_Last);
+            int BoardIndex1 = ActionLocation_Row * 7 + ActionLocation_Col;
+            int BoardIndex2 = 0;
+            if (NA == NowAction.Action_PlaceHorizontalBoard)
+            {
+                BoardIndex2 = ActionLocation_Row * 7 + ActionLocation_Col + 1;                
+                NewHashCode.HorizontalHashCode += Convert.ToInt64((Math.Pow(2.0, Convert.ToDouble(BoardIndex1))));
+                NewHashCode.HorizontalHashCode += Convert.ToInt64((Math.Pow(2.0, Convert.ToDouble(BoardIndex2))));
+            }
+            else if (NA == NowAction.Action_PlaceVerticalBoard)
+            {
+                BoardIndex2 = (ActionLocation_Row + 1) * 7 + ActionLocation_Col;
+                NewHashCode.VerticalHashCode += Convert.ToInt64((Math.Pow(2.0, Convert.ToDouble(BoardIndex1))));
+                NewHashCode.VerticalHashCode += Convert.ToInt64((Math.Pow(2.0, Convert.ToDouble(BoardIndex2))));
+            }
+            return NewHashCode;
         }
     }
 }

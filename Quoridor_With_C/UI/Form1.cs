@@ -703,8 +703,8 @@ namespace Quoridor_With_C
                 else
                 {
                     #region AB剪枝树
-                    //GameTreeNode.CreateGameTree(Root, NowQuoridor.ThisChessBoard, TreeDepth, DebugSelectCB.Checked);//skinCheckBox1.Checked);//可以改变最大深度来提高算法强度,一定要是奇数
-                    Root = GameTreeNode.MTDfSearch(NowQuoridor.ThisChessBoard, EnumNowPlayer.Player1, Root.beta, 2, Root.alpha, Root.beta);
+                    GameTreeNode.CreateGameTree(Root, NowQuoridor.ThisChessBoard, TreeDepth, DebugSelectCB.Checked);//skinCheckBox1.Checked);//可以改变最大深度来提高算法强度,一定要是奇数
+                    //Root = GameTreeNode.MTDfSearch(NowQuoridor.ThisChessBoard, EnumNowPlayer.Player1, Root.beta, 2, Root.alpha, Root.beta);
                     if (IfUseViewFormDebug)
                     {
                         if (DV.treeView1.Nodes[DV.treeView1.Nodes.Count - 1].Text != "Root")
