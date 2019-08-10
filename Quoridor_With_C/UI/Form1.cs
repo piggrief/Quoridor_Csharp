@@ -439,9 +439,10 @@ namespace Quoridor_With_C
                 return Hint;
             }
 
-            string RuleHint = "";
-            RuleHint = NowQuoridor.QuoridorRule.CheckBoard(NowQuoridor.ThisChessBoard, PlayerNowAction, NowPlayer, row, col);
-
+            QuoridorRuleEngine.CheckBoardResult RuleCheckResult = new QuoridorRuleEngine.CheckBoardResult();
+            
+            RuleCheckResult = NowQuoridor.QuoridorRule.CheckBoard(NowQuoridor.ThisChessBoard, PlayerNowAction, NowPlayer, row, col);
+            string RuleHint = RuleCheckResult.HintStr;
 
             if ((RuleHint == "Player1 No Board" && NowPlayer == EnumNowPlayer.Player1)
                 || (RuleHint == "Player2 No Board" && NowPlayer == EnumNowPlayer.Player2))
@@ -937,17 +938,6 @@ namespace Quoridor_With_C
         /// </summary>
         private void TestBTN_Click(object sender, EventArgs e)
         {
-            //GameTreeNode Root = new GameTreeNode();
-            //Root.NodePlayer = EnumNowPlayer.Player1;
-            //GameTreeNode.CreateGameTree(Root, NowQuoridor.ThisChessBoard, 1, true);
-
-            EnumNowPlayer PlayerSave = EnumNowPlayer.Player2;
-            NowQuoridor.Player_Now = PlayerSave;
-
-            List<QuoridorAction> QABuff = NowQuoridor.ActionList;
-
-            NowQuoridor.TestEvaluation();
-
             double dis_player1 = NowQuoridor.AstarEngine.AstarRestart(NowQuoridor.ThisChessBoard, EnumNowPlayer.Player1
 , NowQuoridor.ThisChessBoard.Player1Location.X, NowQuoridor.ThisChessBoard.Player1Location.Y);
             double dis_player2 = NowQuoridor.AstarEngine.AstarRestart(NowQuoridor.ThisChessBoard, EnumNowPlayer.Player2
@@ -956,7 +946,6 @@ namespace Quoridor_With_C
             Console.WriteLine("P1的最短路程:" + dis_player1.ToString() + "步");
             Console.WriteLine("P2的最短路程:" + dis_player2.ToString() + "步");
 
-            //QABuff = NowQuoridor.CreateActionList(NowQuoridor.ThisChessBoard);
 
             Console.WriteLine("Stop!");
         }

@@ -57,8 +57,32 @@ namespace LookupRoad
         /// <returns>最短路径长度</returns>
         public int AstarRestart(ChessBoard ToAstarSearch, EnumNowPlayer Player, int Location_row, int Location_col)
         {
+            //bool IfContains = false;
             System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
             stopwatch.Start(); //  开始监视代码运行时间
+            /***************待测代码段****************/
+
+            //int TableSearchResult = 0;
+            //string BoardHashCode = LookupRoadAlgorithm.ResultSaveTable.GetHashCode_String(
+            //    ToAstarSearch, Player);
+            //if (ResultSaveTable.Search(BoardHashCode, ref TableSearchResult))
+            //{
+            //    Console.WriteLine("此局面已在存储表中！K值：" + BoardHashCode + "V值：" + TableSearchResult.ToString());
+            //    /***************待测代码段****************/
+            //    stopwatch.Stop(); //  停止监视
+            //    TimeSpan timespan = stopwatch.Elapsed; //  获取当前实例测量得出的总时间
+            //    Console.WriteLine("存储表命中寻路用时：" + timespan.TotalMilliseconds.ToString() + "ms");
+            //    //return TableSearchResult;
+            //    IfContains = true;
+            //}
+            //else
+            //{ 
+            //    /***************待测代码段****************/
+            //    stopwatch.Stop(); //  停止监视
+            //    TimeSpan timespan2 = stopwatch.Elapsed; //  获取当前实例测量得出的总时间
+            //    Console.WriteLine("存储表查询费时：" + timespan2.TotalMilliseconds.ToString() + "ms");
+            //}
+            //stopwatch.Restart();
             /***************待测代码段****************/
 
             Min_DistanceLength = 999;
@@ -73,18 +97,21 @@ namespace LookupRoad
 
             /***************待测代码段****************/
             stopwatch.Stop(); //  停止监视
-            TimeSpan timespan = stopwatch.Elapsed; //  获取当前实例测量得出的总时间
+            TimeSpan timespan3 = stopwatch.Elapsed; //  获取当前实例测量得出的总时间
 
             if (QuoridorAI.AIRunTime.Astar_s == 0)
             {
-                QuoridorAI.AIRunTime.Astar_s = timespan.TotalMilliseconds;
+                QuoridorAI.AIRunTime.Astar_s = timespan3.TotalMilliseconds;
             }
             else
             {
-                QuoridorAI.AIRunTime.Astar_s += timespan.TotalMilliseconds;
+                QuoridorAI.AIRunTime.Astar_s += timespan3.TotalMilliseconds;
                 QuoridorAI.AIRunTime.Astar_s /= 2;
             }
             QuoridorAI.AIRunTime.AstarNum++;
+
+            //if (!IfContains)
+            //    LookupRoadAlgorithm.ResultSaveTable.Add(BoardHashCode, Min_DistanceLength);
 
             return Min_DistanceLength;
 
@@ -477,39 +504,13 @@ namespace LookupRoad
     /// </summary>
     public class LookupRoadResultTable
     {
-        /// <summary>
-        /// 结果存储表特定的哈希值类型
-        /// </summary>
-        public class HashCode_RT
-        {
-            public Int64 VerticalHashCode = 0;//竖挡板地图哈希值
-            public Int64 HorizontalHashCode = 0;//横挡板地图哈希值
-            public HashCode_RT(Int64 VerticalHash, Int64 HorizontalHash)
-            {
-                VerticalHashCode = VerticalHash;
-                HorizontalHashCode = HorizontalHash;
-            }
-            public HashCode_RT(HashCode_RT CopyHashCode)
-            {
-                VerticalHashCode = CopyHashCode.VerticalHashCode;
-                HorizontalHashCode = CopyHashCode.HorizontalHashCode;
-            }
-        }
         public Hashtable ResultTable = new Hashtable();
-        /// <summary>
-        /// 寻路结果类
-        /// </summary>
-        public class LookRoadResult
-        {
-            int Player1Distance = 0;
-            int Player2Distance = 0;
-        }
         /// <summary>
         /// 添加一个散列映射
         /// </summary>
         /// <param name="HashCode">要添加的哈希值</param>
         /// <param name="Result">寻路结果对象</param>
-        public void Add(HashCode_RT HashCode, LookRoadResult Result)
+        public void Add(string HashCode, int Result)
         {
             ResultTable.Add(HashCode, Result);
         }
@@ -519,11 +520,11 @@ namespace LookupRoad
         /// <param name="HashCode">哈希值</param>
         /// <param name="Result">寻路结果</param>
         /// <returns>是否含有此哈希值</returns>
-        public bool Search(HashCode_RT HashCode, ref LookRoadResult Result)
+        public bool Search(string HashCode, ref int Result)
         {
             if (ResultTable.Contains(HashCode))
             {
-                Result = (LookRoadResult)ResultTable[HashCode];
+                Result = (int)ResultTable[HashCode];
                 return true;
             }
             else
@@ -532,31 +533,59 @@ namespace LookupRoad
             }
         }
         /// <summary>
-        /// 根据当前动作更新挡板地图哈希值
+        /// 根据当前棋盘状态以及寻路玩家生成哈希字符串
         /// </summary>
-        /// <param name="HashCode_Last">上一次的哈希值</param>
-        /// <param name="NA">当前动作</param>
-        /// <param name="ActionLocation_Row">动作落实位置行</param>
-        /// <param name="ActionLocation_Col">动作落实位置列</param>
-        /// <returns></returns>
-        public HashCode_RT RenewHashCode(HashCode_RT HashCode_Last, NowAction NA, int ActionLocation_Row, int ActionLocation_Col)
+        /// <param name="ToHashChessBoard">当前棋盘状态</param>
+        /// <param name="LookupPlayer">寻路玩家</param>
+        /// <returns>哈希字符串</returns>
+        public string GetHashCode_String(ChessBoard ToHashChessBoard, EnumNowPlayer LookupPlayer)
         {
-            HashCode_RT NewHashCode = new HashCode_RT(HashCode_Last);
+            string HashBuff = "";
+            HashBuff += "P";
+            if (LookupPlayer == EnumNowPlayer.Player1)
+            {
+                HashBuff += "1";
+            }
+            else
+            {
+                HashBuff += "2";
+            }
+            HashBuff += "V";
+            HashBuff += ToHashChessBoard.VerticalBoardHashCode.ToString();
+            HashBuff += "H";
+            HashBuff += ToHashChessBoard.HorizontalBoardHashCode.ToString();
+            HashBuff += "P1L";
+            HashBuff += ToHashChessBoard.Player1Location.X.ToString();
+            HashBuff += ToHashChessBoard.Player1Location.Y.ToString();
+            HashBuff += "P2L";
+            HashBuff += ToHashChessBoard.Player2Location.X.ToString();
+            HashBuff += ToHashChessBoard.Player2Location.Y.ToString();
+            return HashBuff;
+        }
+        /// <summary>
+        /// 根据动作更新竖直挡板地图哈希值和横档板地图哈希值
+        /// </summary>
+        /// <param name="VertivalCode">竖直挡板地图哈希值</param>
+        /// <param name="HorizontalCode">横档板地图哈希值</param>
+        /// <param name="NA">动作</param>
+        /// <param name="ActionLocation_Row">动作位置行</param>
+        /// <param name="ActionLocation_Col">动作位置列</param>
+        public void RenewHashCode(ref Int64 VertivalCode, ref Int64 HorizontalCode, NowAction NA, int ActionLocation_Row, int ActionLocation_Col)
+        {
             int BoardIndex1 = ActionLocation_Row * 7 + ActionLocation_Col;
             int BoardIndex2 = 0;
             if (NA == NowAction.Action_PlaceHorizontalBoard)
             {
-                BoardIndex2 = ActionLocation_Row * 7 + ActionLocation_Col + 1;                
-                NewHashCode.HorizontalHashCode += Convert.ToInt64((Math.Pow(2.0, Convert.ToDouble(BoardIndex1))));
-                NewHashCode.HorizontalHashCode += Convert.ToInt64((Math.Pow(2.0, Convert.ToDouble(BoardIndex2))));
+                BoardIndex2 = ActionLocation_Row * 7 + ActionLocation_Col + 1;
+                HorizontalCode += Convert.ToInt64((Math.Pow(2.0, Convert.ToDouble(BoardIndex1))));
+                HorizontalCode += Convert.ToInt64((Math.Pow(2.0, Convert.ToDouble(BoardIndex2))));
             }
             else if (NA == NowAction.Action_PlaceVerticalBoard)
             {
                 BoardIndex2 = (ActionLocation_Row + 1) * 7 + ActionLocation_Col;
-                NewHashCode.VerticalHashCode += Convert.ToInt64((Math.Pow(2.0, Convert.ToDouble(BoardIndex1))));
-                NewHashCode.VerticalHashCode += Convert.ToInt64((Math.Pow(2.0, Convert.ToDouble(BoardIndex2))));
+                VertivalCode += Convert.ToInt64((Math.Pow(2.0, Convert.ToDouble(BoardIndex1))));
+                VertivalCode += Convert.ToInt64((Math.Pow(2.0, Convert.ToDouble(BoardIndex2))));
             }
-            return NewHashCode;
         }
     }
 }

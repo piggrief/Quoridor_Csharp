@@ -27,7 +27,7 @@ namespace Quoridor
         public double SelfScore = 50;
         public double OpponentScore = 50;
         public double WholeScore = 50;
-
+        public QuoridorRuleEngine.CheckBoardResult ActionCheckResult = new QuoridorRuleEngine.CheckBoardResult();
         public QuoridorAction(NowAction PA, Point AP)
         {
             PlayerAction = PA;
@@ -432,8 +432,11 @@ namespace Quoridor
             
             foreach (QuoridorAction QA in ActionListBuff)
             {
-                if (QuoridorRule.CheckBoard(ThisChessBoard, QA.PlayerAction, Player_Now,
-                    QA.ActionPoint.X, QA.ActionPoint.Y) == "OK")
+                QA.ActionCheckResult =
+                    QuoridorRule.CheckBoard(ThisChessBoard, QA.PlayerAction, Player_Now,
+                    QA.ActionPoint.X, QA.ActionPoint.Y);
+
+                if (QA.ActionCheckResult.HintStr == "OK")
                 {
                     if (QA.PlayerAction == NowAction.Action_Move_Player1 || QA.PlayerAction == NowAction.Action_Move_Player2)
                     {
@@ -551,9 +554,11 @@ namespace Quoridor
             {
                 for (int colindex = 0; colindex <= 5; colindex++)
                 {
-                    string BoardHintStr = QuoridorRule.CheckBoard(ThisChessBoard
+                    QuoridorRuleEngine.CheckBoardResult ResultBuff = 
+                        QuoridorRule.CheckBoard(ThisChessBoard
                         , NowAction.Action_PlaceHorizontalBoard
                         , Player_Now, rowindex, colindex);
+                    string BoardHintStr = ResultBuff.HintStr;
 
                     if (BoardHintStr == "OK")
                     {
@@ -568,9 +573,11 @@ namespace Quoridor
             {
                 for (int colindex = 1; colindex <= 6; colindex++)
                 {
-                    string BoardHintStr = QuoridorRule.CheckBoard(ThisChessBoard
+                    QuoridorRuleEngine.CheckBoardResult ResultBuff =
+                        QuoridorRule.CheckBoard(ThisChessBoard
                         , NowAction.Action_PlaceVerticalBoard
                         , Player_Now, rowindex, colindex);
+                    string BoardHintStr = ResultBuff.HintStr;
 
                     if (BoardHintStr == "OK")
                     {
