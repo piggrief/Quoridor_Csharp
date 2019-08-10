@@ -562,11 +562,11 @@ namespace QuoridorRule
         {
             CheckBoardResult Result = new CheckBoardResult();
             ChessBoard ThisChessBoard = ChessBoard_ToCheck;
-            if (WhichBoard == NowAction.Action_Move_Player1 || WhichBoard == NowAction.Action_Move_Player2)
-            {
-                Result.HintStr = "OK";
-                return Result; 
-            }
+            //if (WhichBoard == NowAction.Action_Move_Player1 || WhichBoard == NowAction.Action_Move_Player2)
+            //{
+            //    Result.HintStr = "OK";
+            //    return Result; 
+            //}
             if (Player == EnumNowPlayer.Player1 && ChessBoard_ToCheck.NumPlayer1Board <= 0)
             {
                 Result.HintStr = "Player1 No Board";

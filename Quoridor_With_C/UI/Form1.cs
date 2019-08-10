@@ -565,9 +565,14 @@ namespace Quoridor_With_C
                     }
 
                     Root = new GameTreeNode();
-
                     Root.NodePlayer = EnumNowPlayer.Player1;
-                   
+
+                    int P2Dis = NowQuoridor.AstarEngine.AstarRestart(NowQuoridor.ThisChessBoard, EnumNowPlayer.Player2
+                        , NowQuoridor.ThisChessBoard.Player2Location.X, NowQuoridor.ThisChessBoard.Player2Location.Y);
+                    int P1Dis = NowQuoridor.AstarEngine.AstarRestart(NowQuoridor.ThisChessBoard, EnumNowPlayer.Player1
+                        , NowQuoridor.ThisChessBoard.Player1Location.X, NowQuoridor.ThisChessBoard.Player1Location.Y);
+                    Root.P1Distance = P1Dis;
+                    Root.P2Distance = P2Dis;
                     try
                     {
                         double AlphaInit = Convert.ToDouble(AlphaSet_CompareCB.Text);
@@ -639,9 +644,14 @@ namespace Quoridor_With_C
                 }
 
                 Root = new GameTreeNode();
-
                 Root.NodePlayer = EnumNowPlayer.Player1;
 
+                int P2Distance = NowQuoridor.AstarEngine.AstarRestart(NowQuoridor.ThisChessBoard, EnumNowPlayer.Player2
+                    , NowQuoridor.ThisChessBoard.Player2Location.X, NowQuoridor.ThisChessBoard.Player2Location.Y);
+                int P1Distance = NowQuoridor.AstarEngine.AstarRestart(NowQuoridor.ThisChessBoard, EnumNowPlayer.Player1
+                    , NowQuoridor.ThisChessBoard.Player1Location.X, NowQuoridor.ThisChessBoard.Player1Location.Y);
+                Root.P1Distance = P1Distance;
+                Root.P2Distance = P2Distance;
                 try
                 {
                     double AlphaInit = Convert.ToDouble(AlphaSetTB.Text);

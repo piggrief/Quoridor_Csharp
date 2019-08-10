@@ -33,7 +33,8 @@ namespace GameTree
         public double alpha = -10000;///该节点的alpha值
         public double beta = 10000;///该节点的beta值
         public double score = 10000;///该节点的评分值
-
+        public int P1Distance = -1;//该节点对应的棋局的玩家1最短路径长
+        public int P2Distance = -1;//该节点对应的棋局的玩家2最短路径长
         public static TranslationTable NodeTranslationTable = new TranslationTable();
         public static long InitChessBoardHashCode = 0;
         public static int RootDepth = 1;///根节点的深度，在一步一步落子后需要+2更新
@@ -59,7 +60,7 @@ namespace GameTree
         /// <summary>
         /// 构造函数,用来设定该博弈树节点的信息
         /// </summary>
-        public GameTreeNode(NowAction Action_set, Point ActionLocation_set, EnumNowPlayer Player_set, int depth_set, double alpha_set, double beta_set, double score_set)
+        public GameTreeNode(NowAction Action_set, Point ActionLocation_set, EnumNowPlayer Player_set, int depth_set, double alpha_set, double beta_set, double score_set, int P1Dis, int P2Dis)
         {
             NodeAction = Action_set;
             NodePlayer = Player_set;
@@ -68,6 +69,8 @@ namespace GameTree
             beta = beta_set;
             score = score_set;
             ActionLocation = ActionLocation_set;
+            P1Distance = P1Dis;
+            P2Distance = P2Dis;
             InitTranslationTable();
         }
         /// <summary>
@@ -92,7 +95,7 @@ namespace GameTree
 
             List<QuoridorAction> QABuff = NowQuoridor.ActionList;
 
-            QABuff = NowQuoridor.CreateActionList(ThisChessBoard, GameTreePlayer);
+            QABuff = NowQuoridor.CreateActionList(ThisChessBoard, GameTreePlayer, ThisNode.P1Distance, ThisNode.P2Distance);
 
             foreach (QuoridorAction QA in QABuff)
             {
@@ -118,14 +121,14 @@ namespace GameTree
                 if (ThisNode.depth <= DepthMax)
                 {
                     CreateNewSon(ThisNode, new GameTreeNode(QA.PlayerAction, QA.ActionPoint
-                        , PlayerSave, ThisNode.depth + 1, ThisNode.alpha, ThisNode.beta, ThisNode.beta));
+                        , PlayerSave, ThisNode.depth + 1, ThisNode.alpha, ThisNode.beta, ThisNode.beta, QA.ActionCheckResult.P1Distance, QA.ActionCheckResult.P2Distance));
 
                     ExpandNode_MinMax(ThisChessBoard, ThisNode.SonNode.Last());
                 }
                 else
                 {
                     CreateNewSon(ThisNode, new GameTreeNode(QA.PlayerAction, QA.ActionPoint
-                        , PlayerSave, ThisNode.depth + 1, QA.WholeScore, QA.WholeScore, QA.WholeScore)); 
+                        , PlayerSave, ThisNode.depth + 1, QA.WholeScore, QA.WholeScore, QA.WholeScore, QA.ActionCheckResult.P1Distance, QA.ActionCheckResult.P2Distance)); 
                 }
                 #region 恢复棋盘状态
                 ChessBoard.ResumeChessBoard(ref ThisChessBoard, ChessBoardBuff);
@@ -190,8 +193,8 @@ namespace GameTree
 
             List<QuoridorAction> QABuff = NowQuoridor.ActionList;
 
-            //QABuff = NowQuoridor.CreateActionList_ALL(ThisChessBoard);
-            QABuff = NowQuoridor.CreateActionList(ThisChessBoard, GameTreePlayer);
+            //QABuff = NowQuoridor.CreateActionList_ALL(ThisChessBoard, ThisNode.P1Distance, ThisNode.P2Distance);
+            QABuff = NowQuoridor.CreateActionList(ThisChessBoard, GameTreePlayer, ThisNode.P1Distance, ThisNode.P2Distance);
 
             foreach (QuoridorAction QA in QABuff)
             {
@@ -228,7 +231,7 @@ namespace GameTree
                 if (ThisNode.depth <= DepthMax)
                 {
                     CreateNewSon(ThisNode, new GameTreeNode(QA.PlayerAction, QA.ActionPoint
-                    , PlayerSave, ThisNode.depth + 1, ThisNode.alpha, ThisNode.beta, ThisNode.score));
+                    , PlayerSave, ThisNode.depth + 1, ThisNode.alpha, ThisNode.beta, ThisNode.score, QA.ActionCheckResult.P1Distance, QA.ActionCheckResult.P2Distance));
 
                     if (IfUseTT)
                     {
@@ -240,7 +243,7 @@ namespace GameTree
                 else
                 {
                     CreateNewSon(ThisNode, new GameTreeNode(QA.PlayerAction, QA.ActionPoint
-                    , PlayerSave, ThisNode.depth + 1, QA.WholeScore, ThisNode.beta, QA.WholeScore));
+                    , PlayerSave, ThisNode.depth + 1, QA.WholeScore, ThisNode.beta, QA.WholeScore, QA.ActionCheckResult.P1Distance, QA.ActionCheckResult.P2Distance));
                 }
 
                 ChessBoard.ResumeChessBoard(ref ThisChessBoard, ChessBoardBuff);
@@ -296,138 +299,6 @@ namespace GameTree
             }
             #endregion
         }
-        /// <summary>
-        /// 以Alpha-Beta剪枝框架并使用TranslationTable生成博弈树
-        /// </summary>
-        /// <param name="ThisChessBoard">当前棋盘状态</param>
-        /// <param name="ThisNode">当前博弈树节点</param>
-        public void ExpandNode_ABPruningNew(ChessBoard ThisChessBoard, GameTreeNode ThisNode, bool IfUseTT = true)
-        {
-            if (IfUseTT)
-            {
-                bool IfInTT = false;
-                TranslationTable.GameTreeNodeForHash HashNode1 = new TranslationTable.GameTreeNodeForHash();
-                HashNode1 = NodeTranslationTable.Search(ThisNode.NodeHashCode, ref IfInTT);
-                if (ThisNode.depth != 0 && IfInTT && ThisNode.depth + RootDepth <= HashNode1.depth)
-                {
-                    ThisNode.alpha = HashNode1.alpha;
-                    ThisNode.beta = HashNode1.beta;
-                    return;
-                }
-            }
-            ///暂存一些量以便恢复
-            EnumNowPlayer PlayerSave = NowQuoridor.ReversePlayer(ThisNode.NodePlayer);
-            NowQuoridor.Player_Now = PlayerSave;
-
-            List<QuoridorAction> QABuff = NowQuoridor.ActionList;
-
-            //QABuff = NowQuoridor.CreateActionList(ThisChessBoard);
-            QABuff = NowQuoridor.CreateActionList(ThisChessBoard, GameTreePlayer);
-
-            foreach (QuoridorAction QA in QABuff)
-            {
-                #region 保存棋盘状态
-                ChessBoard ChessBoardBuff = new ChessBoard();
-                ChessBoard.SaveChessBoard(ref ChessBoardBuff, ThisChessBoard);
-                #endregion
-                #region 模拟落子
-                string Hint = NowQuoridor.QuoridorRule.Action(ref ThisChessBoard, QA.ActionPoint.X, QA.ActionPoint.Y, QA.PlayerAction);
-                try
-                {
-                    if (Hint != "OK")
-                    {
-                        Exception e = new Exception();
-                    }
-                }
-                catch (Exception)
-                {
-                    throw;
-                }
-                if (QA.PlayerAction == NowAction.Action_PlaceHorizontalBoard || QA.PlayerAction == NowAction.Action_PlaceVerticalBoard)
-                {
-                    if (PlayerSave == EnumNowPlayer.Player1)
-                    {
-                        ThisChessBoard.NumPlayer1Board -= 2;
-                    }
-                    else
-                    {
-                        ThisChessBoard.NumPlayer2Board -= 2;
-                    }
-                }
-                #endregion
-
-                if (ThisNode.depth <= DepthMax)
-                {
-                    CreateNewSon(ThisNode, new GameTreeNode(QA.PlayerAction, QA.ActionPoint
-                    , PlayerSave, ThisNode.depth + 1, ThisNode.alpha, ThisNode.beta, ThisNode.score));
-
-                    if (IfUseTT)
-                    {
-                        long HashCodeBuff = NodeTranslationTable.NodeGetHashCode(ThisNode.NodeHashCode, QA, ChessBoardBuff);//ThisChessBoard已变，不能作为原棋盘传入，只能上一步的棋盘ChessBoardBuff
-                        ThisNode.SonNode.Last().NodeHashCode = HashCodeBuff;
-                    }
-                    ExpandNode_ABPruning(ThisChessBoard, ThisNode.SonNode.Last(), IfUseTT);
-                }
-                else
-                {
-                    CreateNewSon(ThisNode, new GameTreeNode(QA.PlayerAction, QA.ActionPoint
-                    , PlayerSave, ThisNode.depth + 1, QA.WholeScore, ThisNode.beta, QA.WholeScore));
-                }
-
-                ChessBoard.ResumeChessBoard(ref ThisChessBoard, ChessBoardBuff);
-
-                #region Min层
-                if (ThisNode.NodePlayer == NowQuoridor.PlayerBuff)
-                {
-                    if (ThisNode.SonNode.Last().alpha < ThisNode.beta)
-                    {
-                        ThisNode.beta = ThisNode.SonNode.Last().alpha;
-                        ThisNode.score = ThisNode.SonNode.Last().alpha;
-                    }
-                }
-                #endregion
-                #region Max层
-                else
-                {
-                    if (ThisNode.SonNode.Last().beta > ThisNode.alpha)
-                    {
-                        ThisNode.alpha = ThisNode.SonNode.Last().beta;
-                        ThisNode.score = ThisNode.SonNode.Last().beta;
-                    }
-                }
-                #endregion
-
-                if (ThisNode.beta <= ThisNode.alpha)//剪枝
-                {
-                    #region 存入置换表
-                    if (IfUseTT)
-                    {
-                        /*剪枝break前这个时刻该节点已经遍历完毕，可以加入置换表*/
-                        TranslationTable.GameTreeNodeForHash HashNodeBuff = new TranslationTable.GameTreeNodeForHash();
-                        HashNodeBuff.alpha = ThisNode.alpha;
-                        HashNodeBuff.beta = ThisNode.beta;
-                        HashNodeBuff.depth = ThisNode.depth + RootDepth;
-
-                        NodeTranslationTable.Add(ThisNode.NodeHashCode, HashNodeBuff);
-                    }
-                    #endregion
-                    break;
-                }
-            }
-            #region 存入置换表
-            if (IfUseTT)
-            {
-                /*遍历完整个动作列表后可以加入置换表*/
-                TranslationTable.GameTreeNodeForHash HashNodeBuff2 = new TranslationTable.GameTreeNodeForHash();
-                HashNodeBuff2.alpha = ThisNode.alpha;
-                HashNodeBuff2.beta = ThisNode.beta;
-                HashNodeBuff2.depth = ThisNode.depth + RootDepth;
-
-                NodeTranslationTable.Add(ThisNode.NodeHashCode, HashNodeBuff2);
-            }
-            #endregion 
-        }
-
         public enum Enum_GameTreeSearchFrameWork
         {
             MinMax,

@@ -152,47 +152,40 @@ namespace Quoridor
             else if (Action_Once.PlayerAction == NowAction.Action_PlaceHorizontalBoard
                 || Action_Once.PlayerAction == NowAction.Action_PlaceVerticalBoard)
             {
+                int SelfEffectDis = Action_Once.ActionCheckResult.P1Distance;
+                int OpponentEffectDis = Action_Once.ActionCheckResult.P2Distance;
                 Point PlayerLocation = new Point();
-                EnumNowPlayer CheckPlayer = EnumNowPlayer.Player1;
                 if(Player == EnumNowPlayer.Player1)
                 {
                     PlayerLocation.X = ThisChessBoard.Player2Location.X;
                     PlayerLocation.Y = ThisChessBoard.Player2Location.Y;
-                    CheckPlayer = EnumNowPlayer.Player2;                    
                 }
                 else
                 {
                     PlayerLocation.X = ThisChessBoard.Player1Location.X;
                     PlayerLocation.Y = ThisChessBoard.Player1Location.Y;
-                    CheckPlayer = EnumNowPlayer.Player1;
                     SelfDis = RoadDis_Player2;
                     OpponentDis = RoadDis_Player1;
+                    SelfEffectDis = Action_Once.ActionCheckResult.P2Distance;
+                    OpponentEffectDis = Action_Once.ActionCheckResult.P1Distance;
                 }
-                int distance_effect = CheckBoardEffect(Action_Once.PlayerAction
-                                                        , CheckPlayer
-                                                        , Action_Once.ActionPoint.X
-                                                        , Action_Once.ActionPoint.Y);
 
-                Action_Once.OpponentScore = Convert.ToDouble(distance_effect) - OpponentDis;
-
-                distance_effect = CheckBoardEffect(Action_Once.PlayerAction
-                                                        , Player
-                                                        , Action_Once.ActionPoint.X
-                                                        , Action_Once.ActionPoint.Y);
-
-                Action_Once.SelfScore = Convert.ToDouble(distance_effect) - SelfDis;
+                Action_Once.OpponentScore = Convert.ToDouble(OpponentEffectDis) - OpponentDis;
+                Action_Once.SelfScore = Convert.ToDouble(SelfEffectDis) - SelfDis;
             }
         }
         /// <summary>
         /// 对整个动作列表的每个动作评分
         /// </summary>
-        public void ActionListEvaluation(ChessBoard ThisChessBoard, ref List<QuoridorAction> ActionList, EnumNowPlayer Player_ToEva)
+        public void ActionListEvaluation(ChessBoard ThisChessBoard, ref List<QuoridorAction> ActionList, EnumNowPlayer Player_ToEva, int NowP1Dis, int NowP2Dis)
         {
             int dis_player1 = 0, dis_player2 = 0;
-            dis_player1 = AstarEngine.AstarRestart(ThisChessBoard,EnumNowPlayer.Player1
-                        , ThisChessBoard.Player1Location.X, ThisChessBoard.Player1Location.Y);
-            dis_player2 = AstarEngine.AstarRestart(ThisChessBoard,EnumNowPlayer.Player2
-                        , ThisChessBoard.Player2Location.X, ThisChessBoard.Player2Location.Y);
+            dis_player1 = NowP1Dis;
+            dis_player2 = NowP2Dis;
+            //dis_player1 = AstarEngine.AstarRestart(ThisChessBoard,EnumNowPlayer.Player1
+            //            , ThisChessBoard.Player1Location.X, ThisChessBoard.Player1Location.Y);
+            //dis_player2 = AstarEngine.AstarRestart(ThisChessBoard,EnumNowPlayer.Player2
+            //            , ThisChessBoard.Player2Location.X, ThisChessBoard.Player2Location.Y);
 
             QuoridorAction BestAction = new QuoridorAction(NowAction.Action_Wait, new Point(0, 0));
             BestAction.WholeScore = -1000;
@@ -285,7 +278,7 @@ namespace Quoridor
         /// <summary>
         /// 创建可选动作列表（目前只是用挡住对手的最短路径上的挡板动作为主）
         /// </summary>
-        public List<QuoridorAction> CreateActionList(ChessBoard ThisChessBoard, EnumNowPlayer MaxPlayer)
+        public List<QuoridorAction> CreateActionList(ChessBoard ThisChessBoard, EnumNowPlayer MaxPlayer, int NowP1Dis, int NowP2Dis)
         {
             EnumNowPlayer PlayerSave = Player_Now;
             List<QuoridorAction> ActionListBuff = new List<QuoridorAction>();
@@ -453,7 +446,7 @@ namespace Quoridor
             #endregion
 
             # region 评估加剪裁列表
-            ActionListEvaluation(ThisChessBoard, ref ActionList, Player_Now);
+            ActionListEvaluation(ThisChessBoard, ref ActionList, Player_Now, NowP1Dis, NowP2Dis);
             #endregion
             #region 对动作列表按照评分排序
             
@@ -478,7 +471,7 @@ namespace Quoridor
         /// <summary>
         /// 创建可选动作列表（全部可能的动作）
         /// </summary>
-        public List<QuoridorAction> CreateActionList_ALL(ChessBoard ThisChessBoard)
+        public List<QuoridorAction> CreateActionList_ALL(ChessBoard ThisChessBoard, int NowP1Dis, int NowP2Dis)
         {
             List<QuoridorAction> ActionListBuff = new List<QuoridorAction>();
             ActionList = new List<QuoridorAction>();
@@ -608,7 +601,7 @@ namespace Quoridor
             #endregion
 
             # region 评估加剪裁列表
-            ActionListEvaluation(ThisChessBoard, ref ActionList, Player_Now);
+            ActionListEvaluation(ThisChessBoard, ref ActionList, Player_Now, NowP1Dis, NowP2Dis);
             #endregion
             #region 对动作列表按照评分排序
 
@@ -664,43 +657,10 @@ namespace Quoridor
         /// </summary>
         public void TestEvaluation()
         {
-            List<QuoridorAction> QABuff = ActionList;
-            QABuff = CreateActionList(ThisChessBoard, EnumNowPlayer.Player2);
-            ActionListEvaluation(ThisChessBoard, ref QABuff, Player_Now);
-            PrintActionList(QABuff);
-        }
-        /// <summary>
-        /// AI落子，使用贪婪算法
-        /// </summary>
-        /// <param name="AIPlayer"></param>
-        /// <returns></returns>
-        public QuoridorAction AIAction_Greedy(EnumNowPlayer AIPlayer)
-        {
-            List<QuoridorAction> QABuff = ActionList;
-
-            ///暂存一些量以便恢复
-            EnumNowPlayer PlayerSave = Player_Now;
-
-            Player_Now = AIPlayer;
-
-            QABuff = CreateActionList(ThisChessBoard, EnumNowPlayer.Player2);
-            ActionListEvaluation(ThisChessBoard, ref QABuff, Player_Now);
-
-            #region 贪婪思想，找最好的一步
-            QuoridorAction BestAction = ActionList.First();
-            double MinScore = 99;
-            foreach (QuoridorAction AL in ActionList)
-            {
-                if (MinScore > AL.WholeScore)
-                {
-                    BestAction = AL;
-                    MinScore = AL.WholeScore;
-                }
-            }
-            #endregion
-
-            Player_Now = PlayerSave;
-            return BestAction;
+            //List<QuoridorAction> QABuff = ActionList;
+            //QABuff = CreateActionList(ThisChessBoard, EnumNowPlayer.Player2);
+            //ActionListEvaluation(ThisChessBoard, ref QABuff, Player_Now);
+            //PrintActionList(QABuff);
         }
         public enum SearchLevel
         {

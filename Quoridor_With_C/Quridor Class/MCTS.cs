@@ -50,10 +50,10 @@ namespace MCTS
             //ExploitationComponent = SonNode._Q / SonNode._N;
             //ExplorationComponent = _C * Math.Sqrt((Math.Log10(FatherNode._N) / SonNode._N));
             //UCTBuff = ExploitationComponent + ExplorationComponent;
-            
+
             /*与P值有关的UCT*/
             UCTBuff = _C * SonNode._P * Math.Sqrt(FatherNode._N / (1 + SonNode._N));
- 
+
             return UCTBuff;
         }
         /// <summary>
@@ -106,14 +106,14 @@ namespace MCTS
         /// <param name="FatherNode">父节点</param>
         public void Expand(ChessBoard ThisChessBoard, MonteCartoTreeNode FatherNode)
         {
-            if(SonNode.Count == 0)//未拓展节点
+            if (SonNode.Count == 0)//未拓展节点
             {
                 EnumNowPlayer PlayerSave = NowQuoridor.ReversePlayer(FatherNode.NodePlayer);
                 NowQuoridor.Player_Now = PlayerSave;
 
                 List<QuoridorAction> QABuff = NowQuoridor.ActionList;
-                
-                QABuff = NowQuoridor.CreateActionList(ThisChessBoard, EnumNowPlayer.Player2);
+
+//                QABuff = NowQuoridor.CreateActionList(ThisChessBoard, EnumNowPlayer.Player2);
                 //QABuff = NowQuoridor.CreateActionList_ALL(ThisChessBoard);
                 /*完全拓展*/
                 foreach (QuoridorAction QA in QABuff)
@@ -152,9 +152,9 @@ namespace MCTS
             #endregion
 
             if (RootNode.SonNode.Count == 0)//初始根节点
-	        {
+            {
                 RootNode.Expand(InitChessBoard, RootNode);//先拓展一次		 
-	        }
+            }
 
             ChessBoard SimluationChessBoard = new ChessBoard();
             ChessBoard.SaveChessBoard(ref SimluationChessBoard, InitChessBoard);//相当于拷贝了
@@ -169,10 +169,10 @@ namespace MCTS
                         double leaf_value = -1;
                         if (JudgePlayer != NextExpandNode.SonNode[0].NodePlayer)
                         {
-                            leaf_value = 1;                       
+                            leaf_value = 1;
                         }
                         NextExpandNode.BackPropagation(leaf_value);
-                        break;                        
+                        break;
                     }
                 }
                 #endregion
@@ -217,7 +217,7 @@ namespace MCTS
                     double leaf_value = -1;
                     if (JudgePlayer == EnumNowPlayer.Player1 && SucessHint == "Player1 Success!")
                     {
-                        leaf_value = 1;                       
+                        leaf_value = 1;
                     }
                     if (JudgePlayer == EnumNowPlayer.Player2 && SucessHint == "Player2 Success!")
                     {
@@ -263,7 +263,7 @@ namespace MCTS
                 //}
                 //NextExpandNode.BackPropagation(leaf_value2);
 
-                #endregion 
+                #endregion
 
                 /*拓展*/
                 NextExpandNode.Expand(SimluationChessBoard, NextExpandNode);
