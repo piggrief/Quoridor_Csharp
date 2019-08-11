@@ -432,11 +432,17 @@ namespace GameTree
             }
 
             SonTextbuff += " A:";
-            SonTextbuff += NowNode.alpha.ToString();
+            Int64 Score = Convert.ToInt64(NowNode.alpha * 100.0);
+            string ScoreStr = (Convert.ToDouble(Score) / 100.0).ToString();
+            SonTextbuff += ScoreStr;
             SonTextbuff += ",B:";
-            SonTextbuff += NowNode.beta.ToString();
+            Score = Convert.ToInt64(NowNode.beta * 100.0);
+            ScoreStr = (Convert.ToDouble(Score) / 100.0).ToString();
+            SonTextbuff += ScoreStr.ToString();
             SonTextbuff += ",S:";
-            SonTextbuff += NowNode.score.ToString();
+            Score = Convert.ToInt64(NowNode.score * 100.0);
+            ScoreStr = (Convert.ToDouble(Score) / 100.0).ToString();
+            SonTextbuff += ScoreStr;
 
             if (GameTreeNode.IfUseTanslationTable)
             {

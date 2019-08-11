@@ -567,17 +567,19 @@ namespace QuoridorRule
             //    Result.HintStr = "OK";
             //    return Result; 
             //}
-            if (Player == EnumNowPlayer.Player1 && ChessBoard_ToCheck.NumPlayer1Board <= 0)
-            {
-                Result.HintStr = "Player1 No Board";
-                return Result; 
+            if (WhichBoard != NowAction.Action_Move_Player1 && WhichBoard != NowAction.Action_Move_Player2)
+            { 
+                if (Player == EnumNowPlayer.Player1 && ChessBoard_ToCheck.NumPlayer1Board <= 0)
+                {
+                    Result.HintStr = "Player1 No Board";
+                    return Result; 
+                }
+                else if (Player == EnumNowPlayer.Player2 && ChessBoard_ToCheck.NumPlayer2Board <= 0)
+                {
+                    Result.HintStr = "Player2 No Board";
+                    return Result; 
+                }
             }
-            else if (Player == EnumNowPlayer.Player2 && ChessBoard_ToCheck.NumPlayer2Board <= 0)
-            {
-                Result.HintStr = "Player2 No Board";
-                return Result; 
-            }
-
             ///为了不改变原状态而暂存原状态以便后续恢复
             ChessBoard ChessBoardBuff = new ChessBoard();
             ChessBoard.SaveChessBoard(ref ChessBoardBuff, ThisChessBoard);

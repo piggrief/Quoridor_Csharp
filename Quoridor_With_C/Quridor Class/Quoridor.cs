@@ -172,6 +172,8 @@ namespace Quoridor
 
                 Action_Once.OpponentScore = Convert.ToDouble(OpponentEffectDis) - OpponentDis;
                 Action_Once.SelfScore = Convert.ToDouble(SelfEffectDis) - SelfDis;
+                //Action_Once.OpponentScore = Convert.ToDouble(OpponentEffectDis);
+                //Action_Once.SelfScore = Convert.ToDouble(SelfEffectDis);
             }
         }
         /// <summary>
@@ -221,13 +223,13 @@ namespace Quoridor
                 }
                 else
                 {
-                    Action.WholeScore = Action.SelfScore;
+                    Action.WholeScore = Action.SelfScore - 1;
                 }
                 #region 随机因子
                 double RandomScore = 0;
                 CryptoRandomSource rnd = new CryptoRandomSource();
                 RandomScore = rnd.NextDouble();
-                //Action.WholeScore += RandomScore;
+                Action.WholeScore += RandomScore;
                 #endregion
                 #endregion
                 #region 根据评分剪枝
@@ -237,6 +239,10 @@ namespace Quoridor
                     {
                         BestAction = Action;
                     }
+                }
+                if (Action.WholeScore < 0)
+                {
+                    ActionList.Remove(ActionList[i]);
                 }
                 #endregion
             }
@@ -274,6 +280,563 @@ namespace Quoridor
             }
             ActionListToSort = SortedActionList;
         }
+        /// <summary>
+        /// 在ActionListToAdd列表中添加所有移动序列
+        /// </summary>
+        /// <param name="ActionListToAdd">待添加的动作列表</param>
+        /// <param name="ThisChessBoard">当前局面棋盘</param>
+        /// <param name="ToCreatePlayer">添加的是哪个玩家的移动动作</param>
+        /// <param name="PlayerLocation">该玩家的位置</param>
+        public void AddMoveAction(ref List<QuoridorAction> ActionListToAdd, ChessBoard ThisChessBoard, EnumNowPlayer ToCreatePlayer, Point PlayerLocation)
+        {
+            NowAction MoveAction = NowAction.Action_Move_Player1;
+            if (ToCreatePlayer == EnumNowPlayer.Player2)
+                MoveAction = NowAction.Action_Move_Player2;
+
+            int row = PlayerLocation.X, col = PlayerLocation.Y;
+
+            ///检测附近的12个可能点
+            if (row >= 2 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row - 2, col, MoveAction) == "OK")
+            {
+                ActionListToAdd.Add(new QuoridorAction(MoveAction, new Point(row - 2, col)));
+                if (Player_Now == EnumNowPlayer.Player1)
+                    ActionListToAdd.Last().SkipChessScore = -1;
+                else
+                    ActionListToAdd.Last().SkipChessScore = 1;
+            }
+
+            if (row >= 1 && col >= 1 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row - 1, col - 1, MoveAction) == "OK")
+                ActionListToAdd.Add(new QuoridorAction(MoveAction, new Point(row - 1, col - 1)));
+            if (row >= 1 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row - 1, col, MoveAction) == "OK")
+                ActionListToAdd.Add(new QuoridorAction(MoveAction, new Point(row - 1, col)));
+            if (row >= 1 && col <= 5 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row - 1, col + 1, MoveAction) == "OK")
+                ActionListToAdd.Add(new QuoridorAction(MoveAction, new Point(row - 1, col + 1)));
+
+            if (col >= 2 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row, col - 2, MoveAction) == "OK")
+                ActionListToAdd.Add(new QuoridorAction(MoveAction, new Point(row, col - 2)));
+            if (col >= 1 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row, col - 1, MoveAction) == "OK")
+                ActionListToAdd.Add(new QuoridorAction(MoveAction, new Point(row, col - 1)));
+            if (col <= 5 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row, col + 1, MoveAction) == "OK")
+                ActionListToAdd.Add(new QuoridorAction(MoveAction, new Point(row, col + 1)));
+            if (col <= 4 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row, col + 2, MoveAction) == "OK")
+                ActionListToAdd.Add(new QuoridorAction(MoveAction, new Point(row, col + 2)));
+
+            if (row <= 5 && col >= 1 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row + 1, col - 1, MoveAction) == "OK")
+                ActionListToAdd.Add(new QuoridorAction(MoveAction, new Point(row + 1, col - 1)));
+            if (row <= 5 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row + 1, col, MoveAction) == "OK")
+                ActionListToAdd.Add(new QuoridorAction(MoveAction, new Point(row + 1, col)));
+            if (row <= 5 && col <= 5 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row + 1, col + 1, MoveAction) == "OK")
+                ActionListToAdd.Add(new QuoridorAction(MoveAction, new Point(row + 1, col)));
+
+            if (row <= 4 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row + 2, col, MoveAction) == "OK")
+            {
+                ActionListToAdd.Add(new QuoridorAction(MoveAction, new Point(row + 2, col)));
+                if (Player_Now == EnumNowPlayer.Player1)
+                    ActionListToAdd.Last().SkipChessScore = 1;
+                else
+                    ActionListToAdd.Last().SkipChessScore = -1;
+            } 
+        }
+        /// <summary>
+        /// 在ActionListToAdd列表中添加挡板动作序列，后续的几个bool可选项中只要IfAllSearch为True，后面三个就没用了
+        /// </summary>
+        /// <param name="ActionListToAdd">待添加的动作列表</param>
+        /// <param name="ThisChessBoard">当前局面棋盘</param>
+        /// <param name="ToCreatePlayer">添加的是哪个玩家的挡板动作</param>
+        /// <param name="IfAllSearch">是否搜索所有挡板动作</param>
+        /// <param name="IfBoardExtend">是否使用挡板延伸搜索</param>
+        /// <param name="IfMinRoadSearch">是否使用最短路径搜索</param>
+        /// <param name="IfNeighborSearch">是否使用领域搜索</param>
+        public void AddBoardAction(ref List<QuoridorAction> ActionListToAdd, ChessBoard ThisChessBoard, EnumNowPlayer ToCreatePlayer
+            , bool IfAllSearch = false, bool IfBoardExtend = true, bool IfMinRoadSearch = false, bool IfNeighborSearch = false)
+        {
+            if (IfAllSearch)
+            {
+                #region 遍历所有可能并检测
+                /*横挡板扫描*/
+                for (int rowindex = 1; rowindex <= 6; rowindex++)
+                {
+                    for (int colindex = 0; colindex <= 5; colindex++)
+                    {
+                        QuoridorRuleEngine.CheckBoardResult ResultBuff =
+                            QuoridorRule.CheckBoard(ThisChessBoard
+                            , NowAction.Action_PlaceHorizontalBoard
+                            , Player_Now, rowindex, colindex);
+                        string BoardHintStr = ResultBuff.HintStr;
+
+                        if (BoardHintStr == "OK")
+                        {
+                            ActionListToAdd.Add(
+                                new QuoridorAction(NowAction.Action_PlaceHorizontalBoard
+                                    , new Point(rowindex, colindex)));
+                        }
+                    }
+                }
+                /*竖挡板扫描*/
+                for (int rowindex = 0; rowindex <= 5; rowindex++)
+                {
+                    for (int colindex = 1; colindex <= 6; colindex++)
+                    {
+                        QuoridorRuleEngine.CheckBoardResult ResultBuff =
+                            QuoridorRule.CheckBoard(ThisChessBoard
+                            , NowAction.Action_PlaceVerticalBoard
+                            , Player_Now, rowindex, colindex);
+                        string BoardHintStr = ResultBuff.HintStr;
+
+                        if (BoardHintStr == "OK")
+                        {
+                            ActionListToAdd.Add(
+                                new QuoridorAction(NowAction.Action_PlaceVerticalBoard
+                                    , new Point(rowindex, colindex)));
+                        }
+                    }
+                }
+                #endregion
+            }
+            else
+            {
+                List<int> CheckTable = new List<int>();
+                int CheckNum = 0;
+                if (IfMinRoadSearch)
+                {
+                    #region 寻路出最短路径
+                    List<Point> MinRoad = new List<Point>();
+                    if(Player_Now == EnumNowPlayer.Player1)
+                    {
+                        AstarEngine.AstarRestart(ThisChessBoard, EnumNowPlayer.Player2, ThisChessBoard.Player2Location.X, ThisChessBoard.Player2Location.Y);
+                        MinRoad = AstarEngine.Player2MinRoad;
+                    }
+                    else
+                    {
+                        AstarEngine.AstarRestart(ThisChessBoard, EnumNowPlayer.Player1, ThisChessBoard.Player1Location.X, ThisChessBoard.Player1Location.Y);
+
+                        MinRoad = AstarEngine.Player1MinRoad;
+                    }
+                    #endregion
+                    #region 根据最短路径生成所有挡板序列（不判断可不可行）
+                    for (int i = 0; i < MinRoad.Count - 1; i++)
+                    {
+                        int row_1 = MinRoad[i].X, col_1 = MinRoad[i].Y;
+                        int row_2 = MinRoad[i + 1].X, col_2 = MinRoad[i + 1].Y;
+
+
+                        /*判断下一格在这一格的哪个方位*/
+                        if (col_1 == col_2 && row_1 != row_2)//上或下
+                        {
+                            if (row_1 < row_2)//下
+                            {
+                                if (col_2 <= 5 && !ThisChessBoard.ChessBoardAll[row_2, col_2 + 1].IfUpBoard)
+                                {
+                                    CheckNum = 100 + 10 * row_2 + col_2;
+                                    if(!CheckTable.Contains(CheckNum))
+                                    {
+                                        ActionListToAdd.Add(new QuoridorAction(
+                                                                           NowAction.Action_PlaceHorizontalBoard
+                                                                           , new Point(row_2, col_2)));
+                                        CheckTable.Add(CheckNum);
+                                    }
+                                }
+                                if (col_2 >= 1 && !ThisChessBoard.ChessBoardAll[row_2, col_2 - 1].IfUpBoard)
+                                {
+                                    CheckNum = 100 + 10 * row_2 + col_2 - 1;
+                                    if (!CheckTable.Contains(CheckNum))
+                                    {
+                                        ActionListToAdd.Add(new QuoridorAction(
+                                                                           NowAction.Action_PlaceHorizontalBoard
+                                                                           , new Point(row_2, col_2 - 1)));
+                                        CheckTable.Add(CheckNum);
+                                    }
+                                }
+                            }
+                            else//上
+                            {
+                                if (col_1 <= 5 && !ThisChessBoard.ChessBoardAll[row_1, col_1 + 1].IfUpBoard)
+                                {
+                                    CheckNum = 100 + 10 * row_1 + col_1;
+                                    if (!CheckTable.Contains(CheckNum))
+                                    {
+                                        ActionListToAdd.Add(new QuoridorAction(
+                                                                        NowAction.Action_PlaceHorizontalBoard
+                                                                        , new Point(row_1, col_1)));
+                                        CheckTable.Add(CheckNum);
+                                    }
+                                }
+                                if (col_1 >= 1 && !ThisChessBoard.ChessBoardAll[row_1, col_1 - 1].IfUpBoard)
+                                {
+                                    CheckNum = 100 + 10 * row_1 + col_1 - 1;
+                                    if (!CheckTable.Contains(CheckNum))
+                                    {
+                                        ActionListToAdd.Add(new QuoridorAction(
+                                                                        NowAction.Action_PlaceHorizontalBoard
+                                                                        , new Point(row_1, col_1 - 1)));
+                                        CheckTable.Add(CheckNum);
+                                    }
+                                }
+
+                            }
+                        }
+                        else if (row_1 == row_2 && col_1 != col_2)//左或右
+                        {
+                            if (col_1 < col_2)//右
+                            {
+                                if (row_2 <= 5 && !ThisChessBoard.ChessBoardAll[row_2 + 1, col_2].IfLeftBoard)
+                                {
+                                    CheckNum = 200 + 10 * row_2 + col_2;
+                                    if (!CheckTable.Contains(CheckNum))
+                                    {
+                                        ActionListToAdd.Add(new QuoridorAction(
+                                                                        NowAction.Action_PlaceVerticalBoard
+                                                                        , new Point(row_2, col_2)));
+                                        CheckTable.Add(CheckNum);
+                                    }
+                                }
+                                if (row_2 >= 1 && !ThisChessBoard.ChessBoardAll[row_2 - 1, col_2].IfLeftBoard)
+                                {
+                                    CheckNum = 200 + 10 * (row_2 - 1) + col_2;
+                                    if (!CheckTable.Contains(CheckNum))
+                                    {
+                                        ActionListToAdd.Add(new QuoridorAction(
+                                                                           NowAction.Action_PlaceVerticalBoard
+                                                                           , new Point(row_2 - 1, col_2)));
+                                        CheckTable.Add(CheckNum);
+                                    }
+                                }
+                            }
+                            else//上
+                            {
+                                if (row_1 <= 5 && !ThisChessBoard.ChessBoardAll[row_1 + 1, col_1].IfLeftBoard)
+                                {
+                                    CheckNum = 200 + 10 * row_1 + col_1;
+                                    if (!CheckTable.Contains(CheckNum))
+                                    {
+                                        ActionListToAdd.Add(new QuoridorAction(
+                                                                        NowAction.Action_PlaceVerticalBoard
+                                                                        , new Point(row_1, col_1)));
+                                        CheckTable.Add(CheckNum);
+                                    }
+                                }
+                                if (row_1 >= 1 && !ThisChessBoard.ChessBoardAll[row_1 - 1, col_1].IfLeftBoard)
+                                {
+                                    CheckNum = 200 + 10 * (row_1 - 1) + col_1;
+                                    if (!CheckTable.Contains(CheckNum))
+                                    {
+                                        ActionListToAdd.Add(new QuoridorAction(
+                                                                        NowAction.Action_PlaceVerticalBoard
+                                                                        , new Point(row_1 - 1, col_1)));
+                                        CheckTable.Add(CheckNum);
+                                    }
+                                }
+                            } 
+                        }
+                    }
+                    # endregion
+                }
+                if (IfBoardExtend)
+                {
+                    #region 检索所有横挡板,只检索出放下的位置
+                    List<Point> HorizontalBoardList = new List<Point>();
+                    for (int rowindex = 1; rowindex <= 6; rowindex++)
+                    {
+                        for (int colindex = 0; colindex <= 5; colindex++)
+                        {
+                            if (ThisChessBoard.ChessBoardAll[rowindex, colindex].IfUpBoard)
+                            {
+                                HorizontalBoardList.Add(new Point(rowindex, colindex));
+                                colindex++;
+                            }
+                        }
+                    }
+                    foreach (Point HorizontalBoardPoint in HorizontalBoardList)
+                    {
+                        int BoardRow = HorizontalBoardPoint.X;
+                        int BoardCol = HorizontalBoardPoint.Y;
+                        #region 八块领域板延伸
+                        #region 两块横档板延伸
+                        if (BoardCol >= 2)//左板
+                        {
+                            CheckNum = 100 + 10 * BoardRow + BoardCol - 2;
+                            if (!CheckTable.Contains(CheckNum))
+                            {
+                                ActionListToAdd.Add(new QuoridorAction(
+                                    NowAction.Action_PlaceHorizontalBoard
+                                    , new Point(BoardRow, BoardCol - 2)));
+                                CheckTable.Add(CheckNum);
+                            }
+                        }
+                        if (BoardCol <= 3)//右板
+                        {
+                            CheckNum = 100 + 10 * BoardRow + BoardCol + 2;
+                            if (!CheckTable.Contains(CheckNum))
+                            {
+                                ActionListToAdd.Add(new QuoridorAction(
+                                    NowAction.Action_PlaceHorizontalBoard
+                                    , new Point(BoardRow, BoardCol + 2)));
+                                CheckTable.Add(CheckNum);
+                            } 
+                        }
+                        #endregion
+                        # region 六块竖挡板延伸
+                        if (BoardRow >= 2 && BoardCol >= 1)//左上
+                        {
+                            CheckNum = 200 + 10 * (BoardRow - 2) + BoardCol;
+                            if (!CheckTable.Contains(CheckNum))
+                            {
+                                ActionListToAdd.Add(new QuoridorAction(
+                                    NowAction.Action_PlaceVerticalBoard
+                                    , new Point(BoardRow - 2, BoardCol)));
+                                CheckTable.Add(CheckNum);
+                            }                            
+                        }
+                        if (BoardRow <= 5 && BoardCol >= 1)//左下
+                        {
+                            CheckNum = 200 + 10 * BoardRow + BoardCol;
+                            if (!CheckTable.Contains(CheckNum))
+                            {
+                                ActionListToAdd.Add(new QuoridorAction(
+                                    NowAction.Action_PlaceVerticalBoard
+                                    , new Point(BoardRow, BoardCol)));
+                                CheckTable.Add(CheckNum);
+                            }                             
+                        }
+                        if (BoardRow >= 2)//中上
+                        {
+                            CheckNum = 200 + 10 * (BoardRow - 2) + BoardCol + 1;
+                            if (!CheckTable.Contains(CheckNum))
+                            {
+                                ActionListToAdd.Add(new QuoridorAction(
+                                    NowAction.Action_PlaceVerticalBoard
+                                    , new Point(BoardRow - 2, BoardCol + 1)));
+                                CheckTable.Add(CheckNum);
+                            }   
+                        }
+                        if (BoardRow <= 5)//中下
+                        {
+                            CheckNum = 200 + 10 * BoardRow + BoardCol + 1;
+                            if (!CheckTable.Contains(CheckNum))
+                            {
+                                ActionListToAdd.Add(new QuoridorAction(
+                                    NowAction.Action_PlaceVerticalBoard
+                                    , new Point(BoardRow, BoardCol + 1)));
+                                CheckTable.Add(CheckNum);
+                            }
+                        }
+                        if (BoardRow >= 2 && BoardCol <= 4)//右上
+                        {
+                            CheckNum = 200 + 10 * (BoardRow - 2) + BoardCol + 2;
+                            if (!CheckTable.Contains(CheckNum))
+                            {
+                                ActionListToAdd.Add(new QuoridorAction(
+                                    NowAction.Action_PlaceVerticalBoard
+                                    , new Point(BoardRow - 2, BoardCol + 2)));
+                                CheckTable.Add(CheckNum);
+                            }
+                        }
+                        if (BoardRow <= 5 && BoardCol <= 4)//右下
+                        {
+                            CheckNum = 200 + 10 * BoardRow + BoardCol + 2;
+                            if (!CheckTable.Contains(CheckNum))
+                            {
+                                ActionListToAdd.Add(new QuoridorAction(
+                                    NowAction.Action_PlaceVerticalBoard
+                                    , new Point(BoardRow, BoardCol + 2)));
+                                CheckTable.Add(CheckNum);
+                            }
+                        }
+                        # endregion
+                        #endregion
+                    }
+                    # endregion
+                    # region 检索所有竖挡板,只检索出放下的位置
+                    List<Point> VerticalBoardList = new List<Point>();
+                    for (int colindex = 1; colindex <= 6; colindex++)
+                    {
+                        for (int rowindex = 0; rowindex <= 5; rowindex++)
+                        {
+                            if (ThisChessBoard.ChessBoardAll[rowindex, colindex].IfLeftBoard)
+                            {
+                                VerticalBoardList.Add(new Point(rowindex, colindex));
+                                rowindex++;
+                            }
+                        }
+                    }
+                    foreach (Point VerticalBoardPoint in VerticalBoardList)
+                    {
+                        int BoardRow = VerticalBoardPoint.X;
+                        int BoardCol = VerticalBoardPoint.Y;
+
+                        # region 八块邻域板延伸
+                        # region 两块竖挡板延伸
+                        if (BoardRow >= 2)//上板
+                        {
+                            CheckNum = 200 + 10 * (BoardRow - 2) + BoardCol;
+                            if (!CheckTable.Contains(CheckNum))
+                            {
+                                ActionListToAdd.Add(new QuoridorAction(
+                                    NowAction.Action_PlaceVerticalBoard
+                                    , new Point(BoardRow - 2, BoardCol)));
+                                CheckTable.Add(CheckNum);
+                            }
+                        }
+                        if (BoardRow <= 3)//下板
+                        {
+                            CheckNum = 200 + 10 * (BoardRow + 2) + BoardCol;
+                            if (!CheckTable.Contains(CheckNum))
+                            {
+                                ActionListToAdd.Add(new QuoridorAction(
+                                    NowAction.Action_PlaceVerticalBoard
+                                    , new Point(BoardRow + 2, BoardCol)));
+                                CheckTable.Add(CheckNum);
+                            }
+                        }
+                        # endregion
+                        # region 六块横档板延伸
+                        if (BoardCol >= 2 && BoardRow >= 1)//左上
+                        {
+                            CheckNum = 100 + 10 * BoardRow + BoardCol - 2;
+                            if (!CheckTable.Contains(CheckNum))
+                            {
+                                ActionListToAdd.Add(new QuoridorAction(
+                                    NowAction.Action_PlaceHorizontalBoard
+                                    , new Point(BoardRow, BoardCol - 2)));
+                                CheckTable.Add(CheckNum);
+                            }
+                        }
+                        if (BoardCol <= 4 && BoardRow >= 1)//右上
+                        {
+                            CheckNum = 100 + 10 * BoardRow + BoardCol;
+                            if (!CheckTable.Contains(CheckNum))
+                            {
+                                ActionListToAdd.Add(new QuoridorAction(
+                                    NowAction.Action_PlaceHorizontalBoard
+                                    , new Point(BoardRow, BoardCol)));
+                                CheckTable.Add(CheckNum);
+                            }
+                        }
+                        if (BoardCol >= 2)//左中
+                        {
+                            CheckNum = 100 + 10 * (BoardRow + 1) + BoardCol - 2;
+                            if (!CheckTable.Contains(CheckNum))
+                            {
+                                ActionListToAdd.Add(new QuoridorAction(
+                                    NowAction.Action_PlaceHorizontalBoard
+                                    , new Point(BoardRow + 1, BoardCol - 2)));
+                                CheckTable.Add(CheckNum);
+                            }
+                        }
+                        if (BoardCol <= 4)//右中
+                        {
+                            CheckNum = 100 + 10 * (BoardRow + 1) + BoardCol;
+                            if (!CheckTable.Contains(CheckNum))
+                            {
+                                ActionListToAdd.Add(new QuoridorAction(
+                                    NowAction.Action_PlaceHorizontalBoard
+                                    , new Point(BoardRow + 1, BoardCol)));
+                                CheckTable.Add(CheckNum);
+                            }
+                        }
+                        if (BoardCol >= 2 && BoardRow <= 4)//左下
+                        {
+                            CheckNum = 100 + 10 * (BoardRow + 2) + BoardCol - 2;
+                            if (!CheckTable.Contains(CheckNum))
+                            {
+                                ActionListToAdd.Add(new QuoridorAction(
+                                    NowAction.Action_PlaceHorizontalBoard
+                                    , new Point(BoardRow + 2, BoardCol - 2)));
+                                CheckTable.Add(CheckNum);
+                            }
+                        }
+                        if (BoardCol <= 4 && BoardRow <= 4)//右下
+                        {
+                            CheckNum = 100 + 10 * (BoardRow + 2) + BoardCol;
+                            if (!CheckTable.Contains(CheckNum))
+                            {
+                                ActionListToAdd.Add(new QuoridorAction(
+                                    NowAction.Action_PlaceHorizontalBoard
+                                    , new Point(BoardRow + 2, BoardCol)));
+                                CheckTable.Add(CheckNum);
+                            }
+                        }
+                        # endregion
+                        # endregion
+                    }
+                    # endregion
+                }
+                if (IfNeighborSearch)
+                {
+                    # region 确定领域
+                    int LocationRow = ThisChessBoard.Player1Location.X;
+                    int LocationCol = ThisChessBoard.Player1Location.Y;
+                    if (ToCreatePlayer == EnumNowPlayer.Player1)
+                    {
+                        LocationRow = ThisChessBoard.Player2Location.X;
+                        LocationCol = ThisChessBoard.Player2Location.Y;
+                    }
+                    # endregion
+                    # region 领域搜索挡板
+                    # region 八块横档板
+                    List<Point> BoardLocationList = new List<Point>();
+                    BoardLocationList.Add(new Point(LocationRow - 1, LocationCol - 1));
+                    BoardLocationList.Add(new Point(LocationRow - 1, LocationCol));
+                    BoardLocationList.Add(new Point(LocationRow, LocationCol - 1));
+                    BoardLocationList.Add(new Point(LocationRow, LocationCol));
+                    BoardLocationList.Add(new Point(LocationRow + 1, LocationCol - 1));
+                    BoardLocationList.Add(new Point(LocationRow + 1, LocationCol));
+                    BoardLocationList.Add(new Point(LocationRow + 2, LocationCol - 1));
+                    BoardLocationList.Add(new Point(LocationRow + 2, LocationCol));
+                    //校验
+                    foreach (Point BoardLocation in BoardLocationList)
+                    {
+                        if (BoardLocation.X >= 1 && BoardLocation.X <= 6)
+                        {
+                            if (BoardLocation.Y >= 0 && BoardLocation.Y <= 5)
+                            {
+                                CheckNum = 100 + 10 * BoardLocation.X + BoardLocation.Y;
+                                if (!CheckTable.Contains(CheckNum))
+                                {
+                                    ActionListToAdd.Add(new QuoridorAction(
+                                        NowAction.Action_PlaceHorizontalBoard
+                                        , new Point(BoardLocation.X, BoardLocation.Y)));
+                                    CheckTable.Add(CheckNum);
+                                }
+                            }
+                        }
+                    }
+
+                    # endregion
+                    # region 八块竖挡板
+                    BoardLocationList = new List<Point>();
+                    BoardLocationList.Add(new Point(LocationRow - 1, LocationCol - 1));
+                    BoardLocationList.Add(new Point(LocationRow, LocationCol - 1));
+                    BoardLocationList.Add(new Point(LocationRow - 1, LocationCol));
+                    BoardLocationList.Add(new Point(LocationRow, LocationCol));
+                    BoardLocationList.Add(new Point(LocationRow - 1, LocationCol + 1));
+                    BoardLocationList.Add(new Point(LocationRow, LocationCol + 1));
+                    BoardLocationList.Add(new Point(LocationRow - 1, LocationCol + 2));
+                    BoardLocationList.Add(new Point(LocationRow, LocationCol + 2));
+                    //校验
+                    foreach (Point BoardLocation in BoardLocationList)
+                    {
+                        if (BoardLocation.X >= 0 && BoardLocation.X <= 5)
+                        {
+                            if (BoardLocation.Y >= 1 && BoardLocation.Y <= 6)
+                            {
+                                CheckNum = 200 + 10 * BoardLocation.X + BoardLocation.Y;
+                                if (!CheckTable.Contains(CheckNum))
+                                {
+                                    ActionListToAdd.Add(new QuoridorAction(
+                                        NowAction.Action_PlaceVerticalBoard
+                                        , new Point(BoardLocation.X, BoardLocation.Y)));
+                                    CheckTable.Add(CheckNum);
+                                }
+                            }
+                        }
+                    }
+                    # endregion
+                    # endregion
+                }
+            }
+        }
+        
         public static bool ActionListIfSort = false;
         /// <summary>
         /// 创建可选动作列表（目前只是用挡住对手的最短路径上的挡板动作为主）
@@ -295,134 +858,9 @@ namespace Quoridor
                 PlayerLocation.X = ThisChessBoard.Player2Location.X;
                 PlayerLocation.Y = ThisChessBoard.Player2Location.Y;
             }
-
-            #region 创建移动Action
-            NowAction MoveAction = NowAction.Action_Move_Player1;
-            if(Player_Now == EnumNowPlayer.Player2)
-                MoveAction = NowAction.Action_Move_Player2;
-
-            int row = PlayerLocation.X, col = PlayerLocation.Y;
-
-            ///检测附近的12个可能点
-            if (row >= 2 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row - 2, col, MoveAction) == "OK")
-            { 
-                ActionListBuff.Add(new QuoridorAction(MoveAction, new Point(row - 2, col)));
-                if (Player_Now == EnumNowPlayer.Player1)
-                    ActionListBuff.Last().SkipChessScore = -1;
-                else
-                    ActionListBuff.Last().SkipChessScore = 1;
-            }
-
-            if (row >= 1 && col >= 1 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row - 1, col - 1, MoveAction) == "OK")
-                ActionListBuff.Add(new QuoridorAction(MoveAction, new Point(row - 1, col - 1)));
-            if (row >= 1 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row - 1, col, MoveAction) == "OK")
-                ActionListBuff.Add(new QuoridorAction(MoveAction, new Point(row - 1, col)));
-            if (row >= 1 && col <= 5 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row - 1, col + 1, MoveAction) == "OK")
-                ActionListBuff.Add(new QuoridorAction(MoveAction, new Point(row - 1, col + 1)));
-
-            if (col >= 2 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row, col - 2, MoveAction) == "OK")
-                ActionListBuff.Add(new QuoridorAction(MoveAction, new Point(row, col - 2)));
-            if (col >= 1 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row, col - 1, MoveAction) == "OK")
-                ActionListBuff.Add(new QuoridorAction(MoveAction, new Point(row, col - 1)));
-            if (col <= 5 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row, col + 1, MoveAction) == "OK")
-                ActionListBuff.Add(new QuoridorAction(MoveAction, new Point(row, col + 1)));
-            if (col <= 4 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row, col + 2, MoveAction) == "OK")
-                ActionListBuff.Add(new QuoridorAction(MoveAction, new Point(row, col + 2)));
-
-            if (row <= 5 && col >= 1 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row + 1, col - 1, MoveAction) == "OK")
-                ActionListBuff.Add(new QuoridorAction(MoveAction, new Point(row + 1, col - 1)));
-            if (row <= 5 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row + 1, col, MoveAction) == "OK")
-                ActionListBuff.Add(new QuoridorAction(MoveAction, new Point(row + 1, col)));
-            if (row <= 5 && col <= 5 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row + 1, col + 1, MoveAction) == "OK")
-                ActionListBuff.Add(new QuoridorAction(MoveAction, new Point(row + 1, col)));
-
-            if (row <= 4 && QuoridorRule.CheckMove_NoChange(ThisChessBoard, row + 2, col, MoveAction) == "OK")
-            { 
-                ActionListBuff.Add(new QuoridorAction(MoveAction, new Point(row + 2, col)));
-                if (Player_Now == EnumNowPlayer.Player1)
-                    ActionListBuff.Last().SkipChessScore = 1;
-                else
-                    ActionListBuff.Last().SkipChessScore = -1;
-            }
-
-            #endregion
-
-            #region 创建放置挡板Action
-            List<Point> MinRoad = new List<Point>();
-            if(Player_Now == EnumNowPlayer.Player1)
-            {
-                AstarEngine.AstarRestart(ThisChessBoard, EnumNowPlayer.Player2, ThisChessBoard.Player2Location.X, ThisChessBoard.Player2Location.Y);
-                MinRoad = AstarEngine.Player2MinRoad;
-            }
-            else
-            {
-                AstarEngine.AstarRestart(ThisChessBoard, EnumNowPlayer.Player1, ThisChessBoard.Player1Location.X, ThisChessBoard.Player1Location.Y);
-
-                MinRoad = AstarEngine.Player1MinRoad;
-            }
-
-            for (int i = 0; i < MinRoad.Count - 1; i++)
-            {
-                int row_1 = MinRoad[i].X, col_1 = MinRoad[i].Y;
-                int row_2 = MinRoad[i + 1].X, col_2 = MinRoad[i + 1].Y;
-
-
-                /*判断下一格在这一格的哪个方位*/
-                if (col_1 == col_2 && row_1 != row_2)//上或下
-                {
-                    if (row_1 < row_2)//下
-                    {
-                        if (col_2 <= 5 && !ThisChessBoard.ChessBoardAll[row_2, col_2 + 1].IfUpBoard)
-                            ActionListBuff.Add(new QuoridorAction(
-                                                            NowAction.Action_PlaceHorizontalBoard
-                                                            ,new Point(row_2, col_2)));
-                        if(col_2 >= 1 && !ThisChessBoard.ChessBoardAll[row_2, col_2 - 1].IfUpBoard)
-                            ActionListBuff.Add(new QuoridorAction(
-                                                            NowAction.Action_PlaceHorizontalBoard
-                                                            , new Point(row_2, col_2 - 1)));
-                    }
-                    else//上
-                    {
-                        if (col_1 <= 5 && !ThisChessBoard.ChessBoardAll[row_1, col_1 + 1].IfUpBoard)
-                            ActionListBuff.Add(new QuoridorAction(
-                                                            NowAction.Action_PlaceHorizontalBoard
-                                                            , new Point(row_1, col_1)));
-                        if(col_1 >= 1 && !ThisChessBoard.ChessBoardAll[row_1,col_1 - 1].IfUpBoard)
-                            ActionListBuff.Add(new QuoridorAction(
-                                                            NowAction.Action_PlaceHorizontalBoard
-                                                            , new Point(row_1, col_1 - 1)));
-
-                    }
-                }
-                else if (row_1 == row_2 && col_1 != col_2)//左或右
-                {
-                    if (col_1 < col_2)//右
-                    {
-                        if(row_2 <= 5 && !ThisChessBoard.ChessBoardAll[row_2 + 1,col_2].IfLeftBoard)
-                            ActionListBuff.Add(new QuoridorAction(
-                                                            NowAction.Action_PlaceVerticalBoard
-                                                            , new Point(row_2, col_2)));
-                        if(row_2 >= 1 && !ThisChessBoard.ChessBoardAll[row_2 - 1,col_2].IfLeftBoard)
-                            ActionListBuff.Add(new QuoridorAction(
-                                                            NowAction.Action_PlaceVerticalBoard
-                                                            , new Point(row_2 - 1, col_2)));
-                    }
-                    else//上
-                    {
-                        if (row_1 <= 5 && !ThisChessBoard.ChessBoardAll[row_1 + 1, col_1].IfLeftBoard)
-                            ActionListBuff.Add(new QuoridorAction(
-                                                            NowAction.Action_PlaceVerticalBoard
-                                                            , new Point(row_1, col_1)));
-                        if (row_1 >= 1 && !ThisChessBoard.ChessBoardAll[row_1 - 1, col_1].IfLeftBoard)
-                            ActionListBuff.Add(new QuoridorAction(
-                                                            NowAction.Action_PlaceVerticalBoard
-                                                            , new Point(row_1 - 1, col_1)));
-                    } 
-                }
-            }
-            #endregion
+            AddMoveAction(ref ActionListBuff, ThisChessBoard, Player_Now, PlayerLocation);
+            AddBoardAction(ref ActionListBuff, ThisChessBoard, Player_Now, false, false, true, false);
             #region 校验生成的ActionList是否合法
-            
             foreach (QuoridorAction QA in ActionListBuff)
             {
                 QA.ActionCheckResult =
@@ -655,12 +1093,12 @@ namespace Quoridor
         /// <summary>
         /// 测试该动作列表的评分
         /// </summary>
-        public void TestEvaluation()
+        public void TestEvaluation(ChessBoard ThisChessBoard, int Dis1, int Dis2)
         {
-            //List<QuoridorAction> QABuff = ActionList;
-            //QABuff = CreateActionList(ThisChessBoard, EnumNowPlayer.Player2);
-            //ActionListEvaluation(ThisChessBoard, ref QABuff, Player_Now);
-            //PrintActionList(QABuff);
+            List<QuoridorAction> QABuff = new List<QuoridorAction>();
+            QABuff = CreateActionList(ThisChessBoard, EnumNowPlayer.Player1, Dis1, Dis2);
+            ActionListEvaluation(ThisChessBoard, ref QABuff, EnumNowPlayer.Player1, Dis1, Dis2);
+            PrintActionList(QABuff);
         }
         public enum SearchLevel
         {
