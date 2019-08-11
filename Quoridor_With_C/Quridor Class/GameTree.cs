@@ -243,7 +243,7 @@ namespace GameTree
                 else
                 {
                     CreateNewSon(ThisNode, new GameTreeNode(QA.PlayerAction, QA.ActionPoint
-                    , PlayerSave, ThisNode.depth + 1, QA.WholeScore, ThisNode.beta, QA.WholeScore, QA.ActionCheckResult.P1Distance, QA.ActionCheckResult.P2Distance));
+                    , PlayerSave, ThisNode.depth + 1, ThisNode.alpha, QA.WholeScore, QA.WholeScore, QA.ActionCheckResult.P1Distance, QA.ActionCheckResult.P2Distance));
                 }
 
                 ChessBoard.ResumeChessBoard(ref ThisChessBoard, ChessBoardBuff);
@@ -269,7 +269,7 @@ namespace GameTree
                 }
                 #endregion
 
-                if (ThisNode.beta <= ThisNode.alpha)//剪枝
+                if (ThisNode.depth <= DepthMax && ThisNode.beta <= ThisNode.alpha)//剪枝
                 {
                     #region 存入置换表
                     if (IfUseTT)
@@ -326,7 +326,7 @@ namespace GameTree
             {
                 throw;
             }
-            DepthMax = DepthMax_Set;
+            DepthMax = DepthMax_Set - 1;
 
             if (SearchFrameWork == Enum_GameTreeSearchFrameWork.MinMax)
             {
@@ -346,8 +346,6 @@ namespace GameTree
             }
             else
             {
-
-
                 RootNode.NodeHashCode = GameTreeNode.InitChessBoardHashCode;
                 RootNode.ExpandNode_ABPruning(ChessBoard_Init, RootNode, GameTreeNode.IfUseTanslationTable); 
 

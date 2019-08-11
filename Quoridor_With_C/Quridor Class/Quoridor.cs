@@ -224,9 +224,9 @@ namespace Quoridor
                     Action.WholeScore = Action.SelfScore;
                 }
                 #region 随机因子
-                //double RandomScore = 0;
-                //CryptoRandomSource rnd = new CryptoRandomSource();
-                //RandomScore = rnd.NextDouble();
+                double RandomScore = 0;
+                CryptoRandomSource rnd = new CryptoRandomSource();
+                RandomScore = rnd.NextDouble();
                 //Action.WholeScore += RandomScore;
                 #endregion
                 #endregion

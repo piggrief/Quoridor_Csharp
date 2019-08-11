@@ -1,0 +1,789 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DirectedGraph DataVirtualized="True" GraphDirection="LeftToRight" Layout="ForceDirected" xmlns="http://schemas.microsoft.com/vs/2009/dgml">
+  <Nodes>
+    <Node Id="@103" Category="CodeSchema_Method" Bounds="156.133016223257,970.281337924876,165.263333333333,25.2399999999998" CodeSchemaProperty_IsPublic="True" CommonLabel="ChangeResult_Reverse" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="方法" Label="ChangeResult_Reverse" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/queensolve.cs StartLineNumber=122 StartCharacterOffset=8 EndLineNumber=122 EndCharacterOffset=8)" />
+    <Node Id="@104" Category="CodeSchema_Method" Bounds="820.473394403393,1113.8948597864,100.016666666667,25.2399999999998" CodeSchemaProperty_IsConstructor="True" CodeSchemaProperty_IsPublic="True" CommonLabel="DebugTool" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="构造函数" Label="DebugTool" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///D:/智能车/步步为营人工智障/Quoridor_With_C/Quoridor_With_C/DebugTool.cs StartLineNumber=28 StartCharacterOffset=8 EndLineNumber=28 EndCharacterOffset=8)" />
+    <Node Id="@105" Category="CodeSchema_Method" Bounds="361.115612307893,749.321337924876,143.666666666667,25.24" CodeSchemaProperty_IsPublic="True" CommonLabel="SelectQueenResult" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="方法" Label="SelectQueenResult" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/queensolve.cs StartLineNumber=570 StartCharacterOffset=8 EndLineNumber=570 EndCharacterOffset=8)" />
+    <Node Id="@108" Category="CodeSchema_Method" Bounds="948.613929279793,378.750971123973,174.49,25.24" CodeSchemaProperty_IsPrivate="True" CommonLabel="MouseAction_PlayChess" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="方法" Label="MouseAction_PlayChess" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///D:/智能车/步步为营人工智障/Quoridor_With_C/Quoridor_With_C/Form1.cs StartLineNumber=343 StartCharacterOffset=8 EndLineNumber=343 EndCharacterOffset=8)" />
+    <Node Id="@110" Category="CodeSchema_Method" Bounds="244.473433333333,804.561337924876,205.1,25.24" CodeSchemaProperty_IsPublic="True" CommonLabel="SearchResult_ForMinDistance" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="方法" Label="SearchResult_ForMinDistance" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/queensolve.cs StartLineNumber=232 StartCharacterOffset=8 EndLineNumber=232 EndCharacterOffset=8)" />
+    <Node Id="@111" Category="CodeSchema_Method" Bounds="1636.23898358307,199.053649524977,132.583333333333,25.24" CodeSchemaProperty_IsPublic="True" CommonLabel="ActionEvaluation" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="方法" Label="ActionEvaluation" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/quoridor.cs StartLineNumber=1205 StartCharacterOffset=8 EndLineNumber=1205 EndCharacterOffset=8)" />
+    <Node Id="@113" Category="CodeSchema_Method" Bounds="64.8110025496943,859.801337924876,205.1,25.24" CodeSchemaProperty_IsPublic="True" CommonLabel="SearchResult_ForMinDistance" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="方法" Label="SearchResult_ForMinDistance" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/queensolve.cs StartLineNumber=319 StartCharacterOffset=8 EndLineNumber=319 EndCharacterOffset=8)" />
+    <Node Id="@115" Category="CodeSchema_Method" Bounds="590.871774383575,205.72,157.86,25.24" CodeSchemaProperty_IsPrivate="True" CommonLabel="DoublePlayBTN_Click" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="方法" Label="DoublePlayBTN_Click" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/start.cs StartLineNumber=21 StartCharacterOffset=8 EndLineNumber=21 EndCharacterOffset=8)" />
+    <Node Id="@116" Category="CodeSchema_Method" Bounds="1141.70051438892,506.98292625398,106.343333333333,25.24" CodeSchemaProperty_IsPrivate="True" CommonLabel="Form1_Load" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="方法" Label="Form1_Load" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///D:/智能车/步步为营人工智障/Quoridor_With_C/Quoridor_With_C/Form1.cs StartLineNumber=176 StartCharacterOffset=8 EndLineNumber=176 EndCharacterOffset=8)" />
+    <Node Id="@117" Category="CodeSchema_Method" Bounds="590.871774383575,95.24,137.733333333333,25.24" CodeSchemaProperty_IsPrivate="True" CommonLabel="Queen8BTN_Click" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="方法" Label="Queen8BTN_Click" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/start.cs StartLineNumber=45 StartCharacterOffset=8 EndLineNumber=45 EndCharacterOffset=8)" />
+    <Node Id="@118" Category="CodeSchema_Method" Bounds="650.362653411716,948.174859786399,138.63,25.24" CodeSchemaProperty_IsPrivate="True" CommonLabel="SATest1BTN_Click" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="方法" Label="SATest1BTN_Click" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///D:/智能车/步步为营人工智障/Quoridor_With_C/Quoridor_With_C/DebugTool.cs StartLineNumber=432 StartCharacterOffset=8 EndLineNumber=432 EndCharacterOffset=8)" />
+    <Node Id="@119" Category="CodeSchema_Method" Bounds="590.871774383575,150.48,151.223333333333,25.24" CodeSchemaProperty_IsPrivate="True" CommonLabel="SinglePlayBTN_Click" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="方法" Label="SinglePlayBTN_Click" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/start.cs StartLineNumber=35 StartCharacterOffset=8 EndLineNumber=35 EndCharacterOffset=8)" />
+    <Node Id="@120" Category="CodeSchema_Method" Bounds="848.597144646891,562.22292625398,123.26,25.24" CodeSchemaProperty_IsPrivate="True" CommonLabel="Test2BTN_Click" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="方法" Label="Test2BTN_Click" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///D:/智能车/步步为营人工智障/Quoridor_With_C/Quoridor_With_C/Form1.cs StartLineNumber=751 StartCharacterOffset=8 EndLineNumber=751 EndCharacterOffset=8)" />
+    <Node Id="@121" Category="CodeSchema_Method" Bounds="640.201804515552,1113.8948597864,146.423333333333,25.2399999999998" CodeSchemaProperty_IsPrivate="True" CommonLabel="TestAllSABTN_Click" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="方法" Label="TestAllSABTN_Click" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///D:/智能车/步步为营人工智障/Quoridor_With_C/Quoridor_With_C/DebugTool.cs StartLineNumber=477 StartCharacterOffset=8 EndLineNumber=477 EndCharacterOffset=8)" />
+    <Node Id="@122" Category="CodeSchema_Method" Bounds="995.477081055585,503.643585368276,116.223333333333,25.24" CodeSchemaProperty_IsPrivate="True" CommonLabel="TestBTN_Click" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="方法" Label="TestBTN_Click" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///D:/智能车/步步为营人工智障/Quoridor_With_C/Quoridor_With_C/Form1.cs StartLineNumber=367 StartCharacterOffset=0 EndLineNumber=367 EndCharacterOffset=0)">
+      <Category Ref="CallStackEntry" />
+      <Category Ref="CodeSchema_SourceLocation" />
+    </Node>
+    <Node Id="@124" Category="CodeSchema_Method" Bounds="848.597144646891,323.42998715592,196.386666666667,25.24" CodeSchemaProperty_IsPrivate="True" CommonLabel="ChessBoardPB_MouseDown" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="方法" Label="ChessBoardPB_MouseDown" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///D:/智能车/步步为营人工智障/Quoridor_With_C/Quoridor_With_C/Form1.cs StartLineNumber=305 StartCharacterOffset=0 EndLineNumber=305 EndCharacterOffset=0)">
+      <Category Ref="CallStackEntry" />
+      <Category Ref="CodeSchema_SourceLocation" />
+    </Node>
+    <Node Id="@125" Category="CodeSchema_Method" Bounds="1340.24200272121,480.013608364919,125.616666666667,25.24" CodeSchemaProperty_IsConstructor="True" CodeSchemaProperty_IsPublic="True" CommonLabel="QuoridorAction" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="构造函数" Label="QuoridorAction" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/quoridor.cs StartLineNumber=1221 StartCharacterOffset=8 EndLineNumber=1221 EndCharacterOffset=8)" />
+    <Node Id="@126" Category="CodeSchema_Method" Bounds="346.463542493154,915.041337924876,174.073333333333,25.24" CodeSchemaProperty_IsPublic="True" CommonLabel="SearchResult_ForOverall" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="方法" Label="SearchResult_ForOverall" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/queensolve.cs StartLineNumber=409 StartCharacterOffset=8 EndLineNumber=409 EndCharacterOffset=8)" />
+    <Node Id="@127" Category="CodeSchema_Method" Bounds="1306.66758970943,981.933649524977,73.1466666666668,25.24" CodeSchemaProperty_IsPublic="True" CommonLabel="Action" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="方法" Label="Action" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/quoridor.cs StartLineNumber=416 StartCharacterOffset=8 EndLineNumber=416 EndCharacterOffset=8)" />
+    <Node Id="@128" Category="CodeSchema_Method" Bounds="1308.75420085835,871.453649524977,134.66,25.24" CodeSchemaProperty_IsPublic="True" CommonLabel="CheckMove_New" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="方法" Label="CheckMove_New" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/quoridor.cs StartLineNumber=214 StartCharacterOffset=8 EndLineNumber=214 EndCharacterOffset=8)" />
+    <Node Id="@129" Category="CodeSchema_Method" Bounds="1106.73082304276,981.933649524977,169.936666666667,25.24" CodeSchemaProperty_IsPublic="True" CommonLabel="CheckMove_NoChange" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="方法" Label="CheckMove_NoChange" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/quoridor.cs StartLineNumber=97 StartCharacterOffset=8 EndLineNumber=97 EndCharacterOffset=8)" />
+    <Node Id="@130" Category="CodeSchema_Method" Bounds="20.0000000000001,804.561337924876,194.473333333333,25.24" CodeSchemaProperty_IsPublic="True" CommonLabel="CalDistance_QueenToChess" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="方法" Label="CalDistance_QueenToChess" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/queensolve.cs StartLineNumber=38 StartCharacterOffset=8 EndLineNumber=38 EndCharacterOffset=8)" />
+    <Node Id="@132" Category="CodeSchema_Method" Bounds="125.100109159821,915.041337924876,191.363333333333,25.24" CodeSchemaProperty_IsPublic="True" CommonLabel="CalMoveSequenceDistance" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="方法" Label="CalMoveSequenceDistance" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/queensolve.cs StartLineNumber=163 StartCharacterOffset=8 EndLineNumber=163 EndCharacterOffset=8)" />
+    <Node Id="@133" Category="CodeSchema_Method" Bounds="255,1025.52133792488,151.283333333333,25.2399999999998" CodeSchemaProperty_IsPublic="True" CommonLabel="PrintMoveSequence" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="方法" Label="PrintMoveSequence" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/queensolve.cs StartLineNumber=193 StartCharacterOffset=8 EndLineNumber=193 EndCharacterOffset=8)" />
+    <Node Id="@134" Category="CodeSchema_Method" Bounds="1598.93651514701,700.973649524977,60.3766666666666,25.24" CodeSchemaProperty_IsConstructor="True" CodeSchemaProperty_IsPublic="True" CommonLabel="Grid" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="构造函数" Label="Grid" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/quoridor.cs StartLineNumber=35 StartCharacterOffset=8 EndLineNumber=35 EndCharacterOffset=8)" />
+    <Node Id="@135" Category="CodeSchema_Method" Bounds="351.39644955659,970.281337924876,174.073333333333,25.24" CodeSchemaProperty_IsPublic="True" CommonLabel="SearchResult_ForOverall" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="方法" Label="SearchResult_ForOverall" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/queensolve.cs StartLineNumber=497 StartCharacterOffset=8 EndLineNumber=497 EndCharacterOffset=8)" />
+    <Node Id="@136" Category="CodeSchema_Method" Bounds="119.953333333333,1025.52133792488,105.046666666667,25.2399999999998" CodeSchemaProperty_IsConstructor="True" CodeSchemaProperty_IsPublic="True" CommonLabel="QueenSolve" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="构造函数" Label="QueenSolve" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/queensolve.cs StartLineNumber=187 StartCharacterOffset=8 EndLineNumber=187 EndCharacterOffset=8)" />
+    <Node Id="@137" Category="CodeSchema_Method" Bounds="1636.13780849788,1202.89364952498,106.036666666667,25.24" CodeSchemaProperty_IsPublic="True" CommonLabel="AstarRestart" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="方法" Label="AstarRestart" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/quoridor.cs StartLineNumber=585 StartCharacterOffset=8 EndLineNumber=585 EndCharacterOffset=8)" />
+    <Node Id="@138" Category="CodeSchema_Method" Bounds="1886.54552507841,987.477096203727,103.063333333333,25.2400000000001" CodeSchemaProperty_IsPublic="True" CommonLabel="CalDistance" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="方法" Label="CalDistance" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/quoridor.cs StartLineNumber=942 StartCharacterOffset=8 EndLineNumber=942 EndCharacterOffset=8)" />
+    <Node Id="@140" Category="CodeSchema_Method" Bounds="1193.45187571312,816.213649524977,160.076666666667,25.24" CodeSchemaProperty_IsPublic="True" CommonLabel="DrawNowChessBoard" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="方法" Label="DrawNowChessBoard" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/quoridor.cs StartLineNumber=71 StartCharacterOffset=8 EndLineNumber=71 EndCharacterOffset=8)" />
+    <Node Id="@141" Category="CodeSchema_Method" Bounds="384.994189239668,859.801337924876,174.073333333333,25.24" CodeSchemaProperty_IsPublic="True" CommonLabel="SearchResult_ForOverall" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="方法" Label="SearchResult_ForOverall" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/queensolve.cs StartLineNumber=451 StartCharacterOffset=8 EndLineNumber=451 EndCharacterOffset=8)" />
+    <Node Id="@142" Category="CodeSchema_Method" Bounds="155.321033699195,749.321337924876,127.17,25.2399999999999" CodeSchemaProperty_IsPublic="True" CommonLabel="CreateInitResult" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="方法" Label="CreateInitResult" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/queensolve.cs StartLineNumber=88 StartCharacterOffset=8 EndLineNumber=88 EndCharacterOffset=8)" />
+    <Node Id="@143" Category="CodeSchema_Method" Bounds="1864.94959504441,1097.95709620373,155.313333333333,25.2400000000002" CodeSchemaProperty_IsPublic="True" CommonLabel="LookupRoad_Greedy" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="方法" Label="LookupRoad_Greedy" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/quoridor.cs StartLineNumber=833 StartCharacterOffset=8 EndLineNumber=833 EndCharacterOffset=8)" />
+    <Node Id="@144" Category="CodeSchema_Method" Bounds="1697.28422277724,981.933649524977,104.83,25.24" CodeSchemaProperty_IsPublic="True" CommonLabel="CheckBoard" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="方法" Label="CheckBoard" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/quoridor.cs StartLineNumber=919 StartCharacterOffset=8 EndLineNumber=919 EndCharacterOffset=8)" />
+    <Node Id="@145" Category="CodeSchema_Method" Bounds="1686.98888896154,926.693649524977,137.043333333333,25.24" CodeSchemaProperty_IsPublic="True" CommonLabel="CheckBoardEffect" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="方法" Label="CheckBoardEffect" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/quoridor.cs StartLineNumber=1080 StartCharacterOffset=0 EndLineNumber=1080 EndCharacterOffset=0)">
+      <Category Ref="CallStackEntry" />
+      <Category Ref="CodeSchema_SourceLocation" />
+    </Node>
+    <Node Id="@147" Category="CodeSchema_Method" Bounds="20,1025.52133792488,69.9533333333333,25.2399999999998" CodeSchemaProperty_IsPublic="True" CommonLabel="InitSA" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="方法" Label="InitSA" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/queensolve.cs StartLineNumber=222 StartCharacterOffset=8 EndLineNumber=222 EndCharacterOffset=8)" />
+    <Node Id="@148" Category="CodeSchema_Method" Bounds="1685.60562633383,1147.65364952498,143.843333333333,25.2399999999998" CodeSchemaProperty_IsPublic="True" CommonLabel="LookupRoad_Astar" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="方法" Label="LookupRoad_Astar" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/quoridor.cs StartLineNumber=611 StartCharacterOffset=8 EndLineNumber=611 EndCharacterOffset=8)" />
+    <Node Id="@150" Category="CodeSchema_Method" Bounds="1372.73635699861,926.693649524977,103.386666666667,25.24" CodeSchemaProperty_IsConstructor="True" CodeSchemaProperty_IsPublic="True" CommonLabel="ChessBoard" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="构造函数" Label="ChessBoard" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/quoridor.cs StartLineNumber=54 StartCharacterOffset=8 EndLineNumber=54 EndCharacterOffset=8)" />
+    <Node Id="@151" Category="CodeSchema_Method" Bounds="821.238165508871,948.174859786399,100.016666666667,25.24" CodeSchemaProperty_IsConstructor="True" CodeSchemaProperty_IsPublic="True" CommonLabel="DebugTool" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="构造函数" Label="DebugTool" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///D:/智能车/步步为营人工智障/Quoridor_With_C/Quoridor_With_C/DebugTool.cs StartLineNumber=23 StartCharacterOffset=8 EndLineNumber=23 EndCharacterOffset=8)" />
+    <Node Id="@152" Category="CodeSchema_Method" Bounds="1095.72187632679,323.510971123973,72.8666666666668,25.24" CodeSchemaProperty_IsConstructor="True" CodeSchemaProperty_IsPublic="True" CommonLabel="Form1" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="构造函数" Label="Form1" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///D:/智能车/步步为营人工智障/Quoridor_With_C/Quoridor_With_C/Form1.cs StartLineNumber=159 StartCharacterOffset=8 EndLineNumber=159 EndCharacterOffset=8)" />
+    <Node Id="@153" Category="CodeSchema_Method" Bounds="1620.61353641899,480.013649524977,60.3766666666666,25.2400000000001" CodeSchemaProperty_IsConstructor="True" CodeSchemaProperty_IsPublic="True" CommonLabel="Grid" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="构造函数" Label="Grid" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/quoridor.cs StartLineNumber=26 StartCharacterOffset=8 EndLineNumber=26 EndCharacterOffset=8)" />
+    <Node Id="@154" Category="CodeSchema_Method" Bounds="778.731774383575,205.72,63.0833333333333,25.2399999999998" CodeSchemaProperty_IsConstructor="True" CodeSchemaProperty_IsPublic="True" CommonLabel="Start" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="构造函数" Label="Start" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/start.cs StartLineNumber=15 StartCharacterOffset=8 EndLineNumber=15 EndCharacterOffset=8)" />
+    <Node Id="@155" Category="CodeSchema_Field" Bounds="1516.8908438587,364.773649524977,93.52,25.24" CodeSchemaProperty_IsPublic="True" DelayedCrossGroupLinksState="Fetched" Label="ActionList" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/quoridor.cs StartLineNumber=1233 StartCharacterOffset=36 EndLineNumber=1233 EndCharacterOffset=36)" />
+    <Node Id="@156" Category="CodeSchema_Method" Bounds="1502.22528378432,143.813649524977,151.956666666667,25.24" CodeSchemaProperty_IsPublic="True" CommonLabel="ActionListEvaluation" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="方法" Label="ActionListEvaluation" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/quoridor.cs StartLineNumber=1287 StartCharacterOffset=8 EndLineNumber=1287 EndCharacterOffset=8)" />
+    <Node Id="@157" Category="CodeSchema_Field" Bounds="1662.93112304276,1092.41364952498,98.7533333333333,25.24" CodeSchemaProperty_IsPublic="True" DelayedCrossGroupLinksState="Fetched" Label="Astar_Stop" />
+    <Node Id="@158" Category="CodeSchema_Method" Bounds="1949.08798970943,1042.71709620373,106.03,25.2399999999998" CodeSchemaProperty_IsPublic="True" CommonLabel="CheckResult" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="方法" Label="CheckResult" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/quoridor.cs StartLineNumber=534 StartCharacterOffset=8 EndLineNumber=534 EndCharacterOffset=8)" />
+    <Node Id="@159" Category="CodeSchema_Field" Bounds="1223.51959033194,926.693649524977,119.216666666667,25.24" CodeSchemaProperty_IsPublic="True" DelayedCrossGroupLinksState="Fetched" Label="ChessBoardAll" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/quoridor.cs StartLineNumber=47 StartCharacterOffset=23 EndLineNumber=47 EndCharacterOffset=23)" />
+    <Node Id="@160" Category="CodeSchema_Method" Bounds="1476.38555024973,199.053649524977,129.853333333333,25.24" CodeSchemaProperty_IsPublic="True" CommonLabel="CreateActionList" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="方法" Label="CreateActionList" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/quoridor.cs StartLineNumber=1239 StartCharacterOffset=8 EndLineNumber=1239 EndCharacterOffset=8)" />
+    <Node Id="@161" Category="CodeSchema_Field" Bounds="888.456931777059,1031.28999095396,139.596666666667,25.24" CodeSchemaProperty_IsPrivate="True" DelayedCrossGroupLinksState="Fetched" Label="Form_ChessBorad" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///D:/智能车/步步为营人工智障/Quoridor_With_C/Quoridor_With_C/DebugTool.cs StartLineNumber=27 StartCharacterOffset=14 EndLineNumber=27 EndCharacterOffset=14)" />
+    <Node Id="@162" Category="CodeSchema_Field" Bounds="1198.58864299346,320.959975736312,71.6533333333332,25.24" CodeSchemaProperty_IsPublic="True" CodeSchemaProperty_IsStatic="True" DelayedCrossGroupLinksState="Fetched" Label="form1" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///D:/智能车/步步为营人工智障/Quoridor_With_C/Quoridor_With_C/Form1.cs StartLineNumber=158 StartCharacterOffset=28 EndLineNumber=158 EndCharacterOffset=28)" />
+    <Node Id="@163" Category="CodeSchema_Field" Bounds="1604.78286011479,645.733649524977,96.8233333333333,25.24" CodeSchemaProperty_IsPublic="True" DelayedCrossGroupLinksState="Fetched" Label="GridStatus" />
+    <Node Id="@164" Category="CodeSchema_Field" Bounds="1589.71289257844,590.493649524977,100.336666666667,25.24" CodeSchemaProperty_IsPublic="True" DelayedCrossGroupLinksState="Fetched" Label="IfLeftBoard" />
+    <Node Id="@165" Category="CodeSchema_Field" Bounds="1579.04386245773,535.253649524977,95.3633333333337,25.24" CodeSchemaProperty_IsPublic="True" DelayedCrossGroupLinksState="Fetched" Label="IfUpBoard" />
+    <Node Id="@166" Category="CodeSchema_Method" Bounds="706.690165110392,1003.4148597864,151.766666666667,25.2399999999999" CodeSchemaProperty_IsPrivate="True" CommonLabel="InitializeComponent" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="方法" Label="InitializeComponent" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///D:/智能车/步步为营人工智障/Quoridor_With_C/Quoridor_With_C/DebugTool.Designer.cs StartLineNumber=36 StartCharacterOffset=8 EndLineNumber=36 EndCharacterOffset=8)" />
+    <Node Id="@167" Category="CodeSchema_Method" Bounds="685.472640768319,0,64.9433333333333,25.24" CodeSchemaProperty_IsPrivate="True" CodeSchemaProperty_IsStatic="True" CommonLabel="Main" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="方法" Label="Main" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///D:/智能车/步步为营人工智障/Quoridor_With_C/Quoridor_With_C/Program.cs StartLineNumber=13 StartCharacterOffset=8 EndLineNumber=13 EndCharacterOffset=8)" />
+    <Node Id="@168" Category="CodeSchema_Field" Bounds="1607.88778970943,1037.17364952498,153.796666666667,25.24" CodeSchemaProperty_IsPublic="True" DelayedCrossGroupLinksState="Fetched" Label="Min_DistanceLength" />
+    <Node Id="@169" Category="CodeSchema_Field" Bounds="725.550165110392,1058.6548597864,132.906666666667,25.2399999999998" CodeSchemaProperty_IsPublic="True" DelayedCrossGroupLinksState="Fetched" Label="NowQueenSolve" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///D:/智能车/步步为营人工智障/Quoridor_With_C/Quoridor_With_C/DebugTool.cs StartLineNumber=427 StartCharacterOffset=32 EndLineNumber=427 EndCharacterOffset=32)" />
+    <Node Id="@170" Category="CodeSchema_Field" Bounds="1070.92617516875,433.990971123973,116.33,25.24" CodeSchemaProperty_IsPrivate="True" DelayedCrossGroupLinksState="Fetched" Label="NowQuoridor" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///D:/智能车/步步为营人工智障/Quoridor_With_C/Quoridor_With_C/Form1.cs StartLineNumber=172 StartCharacterOffset=19 EndLineNumber=172 EndCharacterOffset=19)" />
+    <Node Id="@171" Category="CodeSchema_Field" Bounds="1608.31054484449,871.453649524977,141.396666666667,25.24" CodeSchemaProperty_IsPublic="True" DelayedCrossGroupLinksState="Fetched" Label="NumPlayer1Board" />
+    <Node Id="@172" Category="CodeSchema_Field" Bounds="1675.57923272971,816.213649524977,141.396666666667,25.24" CodeSchemaProperty_IsPublic="True" DelayedCrossGroupLinksState="Fetched" Label="NumPlayer2Board" />
+    <Node Id="@173" Category="CodeSchema_Field" Bounds="1507.91575733913,88.5736495249771,104.153333333333,25.24" CodeSchemaProperty_IsPublic="True" DelayedCrossGroupLinksState="Fetched" Label="Player_Now" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/quoridor.cs StartLineNumber=1234 StartCharacterOffset=35 EndLineNumber=1234 EndCharacterOffset=35)" />
+    <Node Id="@174" Category="CodeSchema_Field" Bounds="1409.8143563761,981.933649524977,128.073333333333,25.24" CodeSchemaProperty_IsPublic="True" DelayedCrossGroupLinksState="Fetched" Label="Player1Location" />
+    <Node Id="@175" Category="CodeSchema_Field" Bounds="1389.38326130719,816.213649524977,128.073333333333,25.24" CodeSchemaProperty_IsPublic="True" DelayedCrossGroupLinksState="Fetched" Label="Player2Location" />
+    <Node Id="@176" Category="CodeSchema_Field" Bounds="1399.98363235744,538.11586971359,109.06,25.24" CodeSchemaProperty_IsPublic="True" DelayedCrossGroupLinksState="Fetched" Label="PlayerAction" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/quoridor.cs StartLineNumber=1213 StartCharacterOffset=31 EndLineNumber=1213 EndCharacterOffset=31)" />
+    <Node Id="@177" Category="CodeSchema_Method" Bounds="240.840434420654,694.081337924876,168.876666666667,25.24" CodeSchemaProperty_IsPublic="True" CommonLabel="QueenResultEvaluation" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="方法" Label="QueenResultEvaluation" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/queensolve.cs StartLineNumber=545 StartCharacterOffset=8 EndLineNumber=545 EndCharacterOffset=8)" />
+    <Node Id="@178" Category="CodeSchema_Method" Bounds="1508.91003761191,254.293649524977,119.15,25.24" CodeSchemaProperty_IsPublic="True" CommonLabel="TestEvaluation" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="方法" Label="TestEvaluation" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/quoridor.cs StartLineNumber=1351 StartCharacterOffset=0 EndLineNumber=1351 EndCharacterOffset=0)">
+      <Category Ref="CallStackEntry" />
+      <Category Ref="CodeSchema_SourceLocation" />
+    </Node>
+    <Node Id="@179" Category="CodeSchema_Field" Bounds="1791.6845563761,1042.7170369629,127.403333333333,25.24" CodeSchemaProperty_IsPublic="True" DelayedCrossGroupLinksState="Fetched" Label="ThisChessBoard" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/quoridor.cs StartLineNumber=529 StartCharacterOffset=26 EndLineNumber=529 EndCharacterOffset=26)" />
+    <Node Id="@180" Category="CodeSchema_Field" Bounds="904.404396764746,620.113935329701,129.063333333333,25.24" CodeSchemaProperty_IsPublic="True" CodeSchemaProperty_IsStatic="True" DelayedCrossGroupLinksState="Fetched" Label="ThisQueenSolve" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///D:/智能车/步步为营人工智障/Quoridor_With_C/Quoridor_With_C/Form1.cs StartLineNumber=721 StartCharacterOffset=33 EndLineNumber=721 EndCharacterOffset=33)" />
+    <Node Id="@41" Category="CodeSchema_Class" Bounds="1086.73082304276,776.213649524977,471.156866666666,250.96" CodeSchemaProperty_IsPublic="True" CommonLabel="ChessBoard" DelayedChildNodesState="Incomplete" DelayedCrossGroupLinksState="Fetched" Group="Expanded" Icon="CodeSchema_Class" Label="ChessBoard" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/quoridor.cs StartLineNumber=45 StartCharacterOffset=4 EndLineNumber=45 EndCharacterOffset=4)" />
+    <Node Id="@80" Category="CodeSchema_Class" Bounds="620.201804515552,908.174859786399,427.851793928174,250.96" CodeSchemaProperty_IsPublic="True" CommonLabel="DebugTool" DelayedChildNodesState="Incomplete" DelayedCrossGroupLinksState="Fetched" Group="Expanded" Icon="CodeSchema_Class" Label="DebugTool" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///D:/智能车/步步为营人工智障/Quoridor_With_C/Quoridor_With_C/DebugTool.cs StartLineNumber=19 StartCharacterOffset=4 EndLineNumber=19 EndCharacterOffset=4)" />
+    <Node Id="@82" Category="CodeSchema_Class" Bounds="828.597144646891,280.959975736312,461.6448316799,384.393959593388" CodeSchemaProperty_IsPublic="True" CommonLabel="Form1" DelayedChildNodesState="Incomplete" DelayedCrossGroupLinksState="Fetched" Group="Expanded" Icon="CodeSchema_Class" Label="Form1" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///D:/智能车/步步为营人工智障/Quoridor_With_C/Quoridor_With_C/Form1.cs StartLineNumber=16 StartCharacterOffset=4 EndLineNumber=16 EndCharacterOffset=4)" />
+    <Node Id="@84" Category="CodeSchema_Class" Bounds="1559.04386245773,440.013649524977,162.56233099039,306.2" CodeSchemaProperty_IsPublic="True" CommonLabel="Grid" DelayedChildNodesState="Incomplete" DelayedCrossGroupLinksState="Fetched" Group="Expanded" Icon="CodeSchema_Class" Label="Grid" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/quoridor.cs StartLineNumber=14 StartCharacterOffset=4 EndLineNumber=14 EndCharacterOffset=4)" />
+    <Node Id="@87" Category="CodeSchema_Class" Bounds="0,654.081337924876,590.201704515553,416.68" CodeSchemaProperty_IsPublic="True" CommonLabel="QueenSolve" DelayedChildNodesState="Incomplete" DelayedCrossGroupLinksState="Fetched" Group="Expanded" Icon="CodeSchema_Class" Label="QueenSolve" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/queensolve.cs StartLineNumber=16 StartCharacterOffset=4 EndLineNumber=16 EndCharacterOffset=4)" />
+    <Node Id="@88" Category="CodeSchema_Class" Bounds="1320.24200272121,440.013608364919,208.801629636233,143.34226134867" CodeSchemaProperty_IsPublic="True" CommonLabel="QuoridorAction" DelayedChildNodesState="Incomplete" DelayedCrossGroupLinksState="Fetched" Group="Expanded" Icon="CodeSchema_Class" Label="QuoridorAction" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/quoridor.cs StartLineNumber=1211 StartCharacterOffset=4 EndLineNumber=1211 EndCharacterOffset=4)" />
+    <Node Id="@90" Category="CodeSchema_Class" Bounds="1447.64393622705,48.5736495249771,341.178380689349,361.44" CodeSchemaProperty_IsPublic="True" CommonLabel="QuoridorAI" DelayedChildNodesState="Incomplete" DelayedCrossGroupLinksState="Fetched" Group="Expanded" Icon="CodeSchema_Class" Label="QuoridorAI" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/quoridor.cs StartLineNumber=1231 StartCharacterOffset=4 EndLineNumber=1231 EndCharacterOffset=4)" />
+    <Node Id="@92" Category="CodeSchema_Class" Bounds="1587.88778970943,776.213649524977,487.2302,471.92" CodeSchemaProperty_IsPublic="True" CommonLabel="QuoridorGame" DelayedChildNodesState="Incomplete" DelayedCrossGroupLinksState="Fetched" Group="Expanded" Icon="CodeSchema_Class" Label="QuoridorGame" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/quoridor.cs StartLineNumber=524 StartCharacterOffset=4 EndLineNumber=524 EndCharacterOffset=4)" />
+    <Node Id="@94" Category="CodeSchema_Class" Bounds="570.871774383575,55.24,290.943333333333,195.72" CodeSchemaProperty_IsPublic="True" CommonLabel="Start" DelayedChildNodesState="Incomplete" DelayedCrossGroupLinksState="Fetched" Group="Expanded" Icon="CodeSchema_Class" Label="Start" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/start.cs StartLineNumber=13 StartCharacterOffset=4 EndLineNumber=13 EndCharacterOffset=4)" />
+    <Node Id="@96" Category="CodeSchema_Method" Bounds="1496.90282376425,309.533649524977,131.65,25.24" CodeSchemaProperty_IsPublic="True" CommonLabel="AIAction_Greedy" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="方法" Label="AIAction_Greedy" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///d:/智能车/步步为营人工智障/quoridor_with_c/quoridor_with_c/quoridor.cs StartLineNumber=1581 StartCharacterOffset=8 EndLineNumber=1581 EndCharacterOffset=8)" />
+    <Node Id="@98" Category="CodeSchema_Method" Bounds="1157.39669335861,378.750971123973,72.8666666666668,25.24" CodeSchemaProperty_IsConstructor="True" CodeSchemaProperty_IsPublic="True" CommonLabel="Form1" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="构造函数" Label="Form1" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///D:/智能车/步步为营人工智障/Quoridor_With_C/Quoridor_With_C/Form1.cs StartLineNumber=165 StartCharacterOffset=8 EndLineNumber=165 EndCharacterOffset=8)" />
+  </Nodes>
+  <Links>
+    <Link Source="@104" Target="@136" Category="CodeSchema_Calls" Weight="1" />
+    <Link Source="@104" Target="@161" Category="CodeSchema_FieldWrite" Bounds="883.891373648793,1062.69805470341,54.4002399359659,51.1968050829844" Weight="2" />
+    <Link Source="@104" Target="@166" Category="CodeSchema_Calls" Bounds="824.408935546875,1031.83459472656,45.766845703125,82.060302734375" Weight="1" />
+    <Link Source="@104" Target="@169" Category="CodeSchema_FieldWrite" Bounds="817.292063687196,1089.07521482287,35.2607130416075,24.819644963525" Weight="1" />
+    <Link Source="@104" Target="@82" Category="References" Bounds="874.131167827879,673.999886852814,127.208750492602,439.895155114965" Weight="1" />
+    <Link Source="@105" Target="@177" Category="CodeSchema_Calls" Bounds="357.88445888681,723.429631808289,50.4664120814082,25.8917061165864" Weight="1" />
+    <Link Source="@108" Target="@127" Category="CodeSchema_Calls" Weight="2" />
+    <Link Source="@108" Target="@140" Category="CodeSchema_Calls" Weight="2" />
+    <Link Source="@108" Target="@144" Category="CodeSchema_Calls" Weight="2" />
+    <Link Source="@108" Target="@158" Category="CodeSchema_Calls" Weight="2" />
+    <Link Source="@108" Target="@170" Category="CodeSchema_FieldRead" Bounds="1057.15854809077,403.990971123973,42.8900661990965,25.4123156022652" Weight="23" />
+    <Link Source="@108" Target="@171" Category="CodeSchema_FieldRead" Weight="8">
+      <Category Ref="CodeSchema_FieldWrite" />
+    </Link>
+    <Link Source="@108" Target="@172" Category="CodeSchema_FieldRead" Weight="8">
+      <Category Ref="CodeSchema_FieldWrite" />
+    </Link>
+    <Link Source="@108" Target="@173" Category="CodeSchema_FieldWrite" Weight="2" />
+    <Link Source="@108" Target="@176" Category="CodeSchema_FieldRead" Weight="2" />
+    <Link Source="@108" Target="@179" Category="CodeSchema_FieldRead" Bounds="1051.43572167607,403.991154645308,781.380813642487,633.060814577278" Weight="4" />
+    <Link Source="@108" Target="@88" Bounds="974.771886412,217.906040146522,6.25330893788896,201.238455301048" />
+    <Link Source="@108" Target="@96" Category="CodeSchema_Calls" Weight="1" />
+    <Link Source="@110" Target="@103" Category="CodeSchema_Calls" Bounds="281.326934814453,829.801330566406,63.7617492675781,137.357971191406" Weight="1" />
+    <Link Source="@110" Target="@132" Category="CodeSchema_Calls" Bounds="243.288162231445,829.801330566406,90.7975006103516,79.5626220703125" Weight="2" />
+    <Link Source="@110" Target="@142" Category="CodeSchema_Calls" Bounds="256.439950887889,778.124725906714,61.3140837600196,26.4366120181619" Weight="1" />
+    <Link Source="@111" Target="@137" Category="CodeSchema_Calls" Weight="2" />
+    <Link Source="@111" Target="@145" Category="CodeSchema_Calls" Bounds="775.661376953125,16.0841121673584,113.489379882813,132.733423233032" Weight="2" />
+    <Link Source="@111" Target="@174" Category="CodeSchema_FieldRead" Bounds="882.45556640625,25.2399997711182,65.7130126953125,133.971227645874" Weight="2" />
+    <Link Source="@111" Target="@175" Category="CodeSchema_FieldRead" Bounds="942.487323486639,25.2400000000001,7.11858016254428,21.4577962462141" Weight="2" />
+    <Link Source="@111" Target="@176" Category="CodeSchema_FieldRead" Weight="6" />
+    <Link Source="@111" Target="@179" Category="CodeSchema_FieldRead" Bounds="1704.81713676238,224.29254791396,146.678094982292,809.569164722382" Weight="4" />
+    <Link Source="@111" Target="@82" Bounds="1298.57917823652,224.29254791396,372.913068561059,151.623924210706" />
+    <Link Source="@111" Target="@88" Category="References" Bounds="1148.67299400913,216.12072479248,52.1251018301591,11.875811816987" Weight="1" />
+    <Link Source="@113" Target="@103" Category="CodeSchema_Calls" Bounds="114.965927124023,885.041320800781,67.0010070800781,82.9536743164063" Weight="1" />
+    <Link Source="@113" Target="@132" Category="CodeSchema_Calls" Bounds="179.565386306992,885.041337924876,22.7554686125999,23.5303985520197" Weight="2" />
+    <Link Source="@113" Target="@142" Category="CodeSchema_Calls" Bounds="189.599975585938,783.537414550781,33.4989166259766,76.263916015625" Weight="1" />
+    <Link Source="@115" Target="@82" Bounds="689.097835808777,230.959736884078,131.967179259585,86.3090314299755" />
+    <Link Source="@115" Target="@98" Category="CodeSchema_Calls" Weight="1" />
+    <Link Source="@116" Target="@104" Category="CodeSchema_Calls" Weight="1" />
+    <Link Source="@116" Target="@140" Category="CodeSchema_Calls" Weight="1" />
+    <Link Source="@116" Target="@170" Category="CodeSchema_FieldRead" Bounds="1146.48957947067,465.916597862556,37.0093441784861,41.066328391424" Weight="3" />
+    <Link Source="@116" Target="@171" Category="CodeSchema_FieldRead" Weight="1" />
+    <Link Source="@116" Target="@172" Category="CodeSchema_FieldRead" Weight="1" />
+    <Link Source="@116" Target="@179" Category="CodeSchema_FieldRead" Bounds="1210.43162032862,532.22324378105,622.405385953884,504.824908098369" Weight="1" />
+    <Link Source="@116" Target="@80" Bounds="235.315542197806,868.740687721787,246.366365560433,228.869536887588" />
+    <Link Source="@117" Target="@82" Bounds="673.546287068948,120.479536884078,168.942523796622,154.408843622248" />
+    <Link Source="@117" Target="@98" Category="CodeSchema_Calls" Weight="1" />
+    <Link Source="@118" Target="@113" Category="CodeSchema_Calls" Bounds="-333.296852334142,-426.918756247383,54.4908015215447,506.758582155095" Weight="1" />
+    <Link Source="@118" Target="@132" Category="CodeSchema_Calls" Bounds="142.526669564247,928.741081623619,1015.91603800338,46.4285779755938" Weight="1" />
+    <Link Source="@118" Target="@142" Category="CodeSchema_Calls" Bounds="142.526669564247,926.306287481364,839.690530378686,8.87946246777642" Weight="1" />
+    <Link Source="@118" Target="@147" Category="CodeSchema_Calls" Bounds="-324.649708355858,-427.081842027996,268.788395947878,614.148928143508" Weight="1" />
+    <Link Source="@118" Target="@169" Category="CodeSchema_FieldRead" Bounds="696.555969238281,973.414855957031,59.8093872070313,81.4789428710938" Weight="13">
+      <Category Ref="CodeSchema_FieldWrite" />
+    </Link>
+    <Link Source="@118" Target="@180" Category="CodeSchema_FieldRead" Bounds="242.800643920898,514.617370605469,27.0497283935547,81.320556640625" Weight="1" />
+    <Link Source="@118" Target="@82" Bounds="728.470150988363,672.738613615407,191.899049297383,275.436128352371" />
+    <Link Source="@119" Target="@82" Bounds="682.476764962538,175.719636884078,139.055078465564,109.72539371504" />
+    <Link Source="@119" Target="@98" Category="CodeSchema_Calls" Weight="1" />
+    <Link Source="@120" Target="@133" Category="CodeSchema_Calls" Bounds="-325.050359859998,-537.562042027996,271.780985380518,669.295238457384" Weight="1" />
+    <Link Source="@120" Target="@141" Category="CodeSchema_Calls" Bounds="176.227568399682,135.720002288818,224.258239025548,338.695853257724" Weight="1" />
+    <Link Source="@120" Target="@147" Category="CodeSchema_Calls" Bounds="-325.456574139265,-537.562042027996,270.856764158428,724.444003395164" Weight="1" />
+    <Link Source="@120" Target="@180" Category="CodeSchema_FieldRead" Bounds="923.025445572887,587.46292625398,26.7038724956955,26.3318445818961" Weight="10" />
+    <Link Source="@121" Target="@135" Category="CodeSchema_Calls" Bounds="138.97629061482,25.2393702435388,157.331844586008,338.041164602321" Weight="1" />
+    <Link Source="@121" Target="@147" Category="CodeSchema_Calls" Bounds="75.2781190141405,25.2393702435388,221.357420157546,503.681582700051" Weight="1" />
+    <Link Source="@121" Target="@169" Category="CodeSchema_FieldRead" Bounds="731.367963290116,1089.07028356068,35.3179602160444,24.824576225715" Weight="8">
+      <Category Ref="CodeSchema_FieldWrite" />
+    </Link>
+    <Link Source="@121" Target="@177" Category="CodeSchema_Calls" Bounds="278.793431264895,25.2393702435388,21.7856959889291,171.552104903512" Weight="1" />
+    <Link Source="@121" Target="@180" Category="CodeSchema_FieldRead" Bounds="312.916717529297,-46.4633903503418,122.764007568359,529.764842987061" Weight="1" />
+    <Link Source="@121" Target="@82" Bounds="720.096767912738,673.307663582248,233.326828170841,440.58737838553" />
+    <Link Source="@122" Target="@170" Category="CodeSchema_FieldRead" Bounds="1067.26864537882,465.333508040145,41.5275702903486,38.3100773281311" Weight="1" />
+    <Link Source="@122" Target="@178" Category="CodeSchema_Calls" Bounds="1247.99939288031,245.460946261676,0.556385033252354,21.0032561790597" Weight="1">
+      <Category Ref="CallStackDirectCall" />
+    </Link>
+    <Link Source="@124" Target="@108" Category="CodeSchema_Calls" Bounds="967.109058286925,348.66998715592,40.7859571066282,25.332418452283" Weight="1" />
+    <Link Source="@124" Target="@127" Category="CodeSchema_Calls" Bounds="911.456115859697,528.796669273125,23.3613242530373,23.6033307268756" Weight="1" />
+    <Link Source="@124" Target="@144" Category="CodeSchema_Calls" Bounds="907.503601074219,245.761871337891,44.1929321289063,76.5222473144531" Weight="2" />
+    <Link Source="@125" Target="@176" Category="CodeSchema_FieldWrite" Bounds="1414.22833126965,505.253608364919,23.1399046219153,26.1250421662179" Weight="2" />
+    <Link Source="@125" Target="@82" Bounds="1299.22755592898,486.749094573349,41.014403706436,2.3246326612736" />
+    <Link Source="@126" Target="@105" Category="CodeSchema_Calls" Bounds="374.860015869141,782.714294433594,83.3367004394531,132.327026367188" Weight="1" />
+    <Link Source="@126" Target="@110" Category="CodeSchema_Calls" Bounds="354.552825927734,838.277648925781,56.1669921875,76.763671875" Weight="1" />
+    <Link Source="@127" Target="@128" Category="CodeSchema_Calls" Bounds="1346.99257190258,905.320522110271,22.7754003258701,76.6131274147061" Weight="2" />
+    <Link Source="@127" Target="@159" Category="CodeSchema_FieldRead" Bounds="1303.48808884666,958.023338548433,26.0195602615597,23.9103109765441" Weight="12" />
+    <Link Source="@127" Target="@164" Category="CodeSchema_FieldRead" Bounds="918.710632324219,415.165374755859,26.1005859375,81.99462890625" Weight="6">
+      <Category Ref="CodeSchema_FieldWrite" />
+    </Link>
+    <Link Source="@127" Target="@165" Category="CodeSchema_FieldRead" Bounds="989.595458984375,365.645172119141,63.65576171875,132.692352294922" Weight="6">
+      <Category Ref="CodeSchema_FieldWrite" />
+    </Link>
+    <Link Source="@127" Target="@82" Bounds="1168.34450317792,673.258864703045,168.026732482984,308.675283210914" />
+    <Link Source="@128" Target="@159" Category="CodeSchema_FieldRead" Bounds="1312.10146249024,896.693649524977,42.7461667139301,25.4022463095521" Weight="69" />
+    <Link Source="@128" Target="@163" Category="CodeSchema_FieldRead" Bounds="851.89973195375,356.68,31.0277952211129,24.4321215312624" Weight="53">
+      <Category Ref="CodeSchema_FieldWrite" />
+    </Link>
+    <Link Source="@128" Target="@164" Category="CodeSchema_FieldRead" Bounds="918.989338329879,356.68,40.0114427100017,25.2032064337585" Weight="8" />
+    <Link Source="@128" Target="@165" Category="CodeSchema_FieldRead" Bounds="966.284411094436,344.06,21.0000999999997,0" Weight="8" />
+    <Link Source="@128" Target="@174" Category="CodeSchema_FieldWrite" Bounds="1418.88391113281,896.693664550781,64.11083984375,76.3517456054688" Weight="16" />
+    <Link Source="@128" Target="@175" Category="CodeSchema_FieldWrite" Bounds="1393.7521385158,846.684805490917,34.67625929009,24.7688440340597" Weight="16" />
+    <Link Source="@128" Target="@82" Bounds="1213.02588286596,672.482924252783,153.332940333693,198.971023661177" />
+    <Link Source="@128" Target="@84" Bounds="939.006870004891,-224.876215820312,43.383230614999,703.897372385825" />
+    <Link Source="@129" Target="@159" Category="CodeSchema_FieldRead" Bounds="1212.58675672348,956.587800548022,41.9503933356389,25.345848976955" Weight="37" />
+    <Link Source="@129" Target="@163" Category="CodeSchema_FieldRead" Weight="21" />
+    <Link Source="@129" Target="@164" Category="CodeSchema_FieldRead" Weight="8" />
+    <Link Source="@129" Target="@165" Category="CodeSchema_FieldRead" Weight="8" />
+    <Link Source="@129" Target="@82" Bounds="1110.39357408135,674.077760186113,78.1038611205502,307.856387727846" />
+    <Link Source="@129" Target="@84" Bounds="946.478311003773,-59.1558903503418,70.8513189518046,538.236978805826" />
+    <Link Source="@132" Target="@130" Category="CodeSchema_Calls" Bounds="189.310089111328,831.562438964844,90.735107421875,83.4788818359375" Weight="2" />
+    <Link Source="@134" Target="@163" Category="CodeSchema_FieldWrite" Bounds="1634.62375036594,679.224421722906,9.47677256505199,21.7492278020708" Weight="2" />
+    <Link Source="@134" Target="@164" Category="CodeSchema_FieldWrite" Bounds="1594.64868164063,622.010192871094,26.599853515625,78.9634399414063" Weight="2" />
+    <Link Source="@134" Target="@165" Category="CodeSchema_FieldWrite" Bounds="1583.18798828125,565.782470703125,32.543701171875,135.191162109375" Weight="2" />
+    <Link Source="@135" Target="@105" Category="CodeSchema_Calls" Bounds="460.113708496094,779.438720703125,109.088012695313,190.842590332031" Weight="1" />
+    <Link Source="@135" Target="@110" Category="CodeSchema_Calls" Bounds="338.587554931641,838.7724609375,60.1805725097656,131.508850097656" Weight="1" />
+    <Link Source="@137" Target="@148" Category="CodeSchema_Calls" Bounds="1704.77605362984,1178.54974597068,30.1307152418776,24.343903554299" Weight="1" />
+    <Link Source="@137" Target="@157" Category="CodeSchema_FieldWrite" Bounds="1682.01416015625,1123.60656738281,9.2335205078125,79.287109375" Weight="1" />
+    <Link Source="@137" Target="@168" Category="CodeSchema_FieldRead" Bounds="1656.91101074219,1068.82641601563,28.8011474609375,134.067260742188" Weight="2">
+      <Category Ref="CodeSchema_FieldWrite" />
+    </Link>
+    <Link Source="@137" Target="@82" Bounds="1228.28094076753,672.21736174366,450.16972979915,530.677186170299" />
+    <Link Source="@138" Target="@159" Category="CodeSchema_FieldRead" Weight="4" />
+    <Link Source="@138" Target="@164" Category="CodeSchema_FieldRead" Weight="2" />
+    <Link Source="@138" Target="@165" Category="CodeSchema_FieldRead" Weight="2" />
+    <Link Source="@138" Target="@179" Category="CodeSchema_FieldRead" Bounds="1881.76137160475,1012.71709620373,37.4244163719363,25.0005844141765" Weight="4" />
+    <Link Source="@138" Target="@82" Bounds="1297.96039927835,616.212586911584,619.073322143652,371.264749771907" />
+    <Link Source="@140" Target="@159" Category="CodeSchema_FieldRead" Bounds="1274.59111381192,841.453649524977,6.65376114515766,76.2740504767834" Weight="4" />
+    <Link Source="@140" Target="@163" Category="CodeSchema_FieldRead" Weight="2" />
+    <Link Source="@140" Target="@164" Category="CodeSchema_FieldRead" Weight="1" />
+    <Link Source="@140" Target="@165" Category="CodeSchema_FieldRead" Weight="1" />
+    <Link Source="@140" Target="@82" Bounds="1179.73796124472,673.065201759392,86.1566900902219,143.148646154568" />
+    <Link Source="@140" Target="@84" Bounds="945.390480130234,-114.39598739624,72.067937389484,593.465733564638" />
+    <Link Source="@141" Target="@105" Category="CodeSchema_Calls" Bounds="441.434539794922,782.903747558594,26.9242858886719,76.8975830078125" Weight="1" />
+    <Link Source="@141" Target="@110" Category="CodeSchema_Calls" Bounds="383.814412109155,833.439041873532,59.6575431297055,26.3622960513441" Weight="1" />
+    <Link Source="@142" Target="@130" Category="CodeSchema_Calls" Bounds="148.371923265481,774.561337924876,47.3069668430099,25.7032862963704" Weight="1" />
+    <Link Source="@142" Target="@132" Category="CodeSchema_Calls" Bounds="221.403228759766,774.561340332031,58.6419677734375,136.104125976563" Weight="1" />
+    <Link Source="@143" Target="@138" Category="CodeSchema_Calls" Bounds="1938.96318273759,1021.70954325956,3.12572865695847,76.2475529441635" Weight="1" />
+    <Link Source="@143" Target="@143" Category="CodeSchema_Calls" Bounds="1903.77795410156,1037.95715332031,77.6566162109375,60" Weight="1" />
+    <Link Source="@143" Target="@159" Category="CodeSchema_FieldRead" Weight="6" />
+    <Link Source="@143" Target="@164" Category="CodeSchema_FieldRead" Weight="2" />
+    <Link Source="@143" Target="@165" Category="CodeSchema_FieldRead" Weight="4" />
+    <Link Source="@143" Target="@179" Category="CodeSchema_FieldRead" Bounds="1882.91562985606,1072.77254933425,39.7645690824397,25.1845468694801" Weight="6" />
+    <Link Source="@143" Target="@82" Bounds="1297.53980208949,645.015175033119,627.580646233261,452.942471415997" />
+    <Link Source="@144" Target="@127" Category="CodeSchema_Calls" Bounds="918.710632324219,301.440002441406,57.7079467773438,189.589324951172" Weight="1" />
+    <Link Source="@144" Target="@148" Category="CodeSchema_Calls" Bounds="1758.29211425781,1007.17364501953,10.5260009765625,131.531311035156" Weight="2" />
+    <Link Source="@144" Target="@150" Category="CodeSchema_Calls" Weight="1" />
+    <Link Source="@144" Target="@157" Category="CodeSchema_FieldWrite" Bounds="1736.66845703125,1007.17364501953,35.150146484375,79.8917846679688" Weight="1" />
+    <Link Source="@144" Target="@159" Category="CodeSchema_FieldRead" Bounds="926.348388671875,301.440002441406,50.0701904296875,136.125305175781" Weight="18" />
+    <Link Source="@144" Target="@163" Category="CodeSchema_FieldRead" Bounds="803.042731292957,368.85631407221,130.487347649814,80.5140110479013" Weight="6">
+      <Category Ref="CodeSchema_FieldWrite" />
+    </Link>
+    <Link Source="@144" Target="@164" Category="CodeSchema_FieldRead" Bounds="823.897021173752,368.85631407221,89.5874835861703,27.3703498288418" Weight="6">
+      <Category Ref="CodeSchema_FieldWrite" />
+    </Link>
+    <Link Source="@144" Target="@165" Category="CodeSchema_FieldRead" Bounds="835.004765332027,356.23631407221,69.4338693948032,0" Weight="6">
+      <Category Ref="CodeSchema_FieldWrite" />
+    </Link>
+    <Link Source="@144" Target="@168" Category="CodeSchema_FieldWrite" Bounds="1706.47014161866,1007.17364952498,28.3991876276411,24.1672502309696" Weight="1" />
+    <Link Source="@144" Target="@171" Category="CodeSchema_FieldRead" Bounds="1677.44445800781,905.690246582031,43.956298828125,76.243408203125" Weight="1" />
+    <Link Source="@144" Target="@172" Category="CodeSchema_FieldRead" Bounds="1765.2822265625,847.820373535156,68.8841552734375,134.11328125" Weight="1" />
+    <Link Source="@144" Target="@174" Category="CodeSchema_FieldRead" Bounds="937.920715332031,199.620346069336,45.200439453125,76.5796661376953" Weight="14" />
+    <Link Source="@144" Target="@175" Category="CodeSchema_FieldRead" Bounds="831.215881347656,87.7324523925781,110.827331542969,188.467559814453" Weight="14" />
+    <Link Source="@144" Target="@179" Category="CodeSchema_FieldRead" Bounds="1771.64222397494,1007.17364952498,53.9992674257323,31.0564060391134" Weight="26" />
+    <Link Source="@144" Target="@41" />
+    <Link Source="@144" Target="@82" Bounds="1297.42352180662,652.931462045777,435.568026371323,329.002685868183" />
+    <Link Source="@145" Target="@127" Category="CodeSchema_Calls" Bounds="918.710632324219,246.199996948242,54.222900390625,244.829330444336" Weight="1" />
+    <Link Source="@145" Target="@148" Category="CodeSchema_Calls" Bounds="1761.56555175781,951.933654785156,50.682861328125,186.875183105469" Weight="2" />
+    <Link Source="@145" Target="@150" Category="CodeSchema_Calls" Weight="1" />
+    <Link Source="@145" Target="@157" Category="CodeSchema_FieldWrite" Bounds="1734.76818847656,951.933654785156,77.480224609375,134.793640136719" Weight="1" />
+    <Link Source="@145" Target="@159" Category="CodeSchema_FieldRead" Bounds="926.348388671875,246.199996948242,46.5851440429688,191.365310668945" Weight="18" />
+    <Link Source="@145" Target="@163" Category="CodeSchema_FieldRead" Bounds="885.333312988281,313.616302490234,45.6956176757813,136.113311767578" Weight="6">
+      <Category Ref="CodeSchema_FieldWrite" />
+    </Link>
+    <Link Source="@145" Target="@164" Category="CodeSchema_FieldRead" Bounds="886.683288574219,313.616302490234,45.453125,80.9601135253906" Weight="6">
+      <Category Ref="CodeSchema_FieldWrite" />
+    </Link>
+    <Link Source="@145" Target="@165" Category="CodeSchema_FieldRead" Bounds="901.213432185214,313.61631407221,34.8346719005763,24.7826958080673" Weight="6">
+      <Category Ref="CodeSchema_FieldWrite" />
+    </Link>
+    <Link Source="@145" Target="@168" Category="CodeSchema_FieldWrite" Bounds="1685.44128417969,951.933654785156,43.5128173828125,76.2440795898438" Weight="1" />
+    <Link Source="@145" Target="@171" Category="CodeSchema_FieldRead" Bounds="1703.78289139445,901.962361716602,34.2502715939315,24.7312878083749" Weight="1" />
+    <Link Source="@145" Target="@172" Category="CodeSchema_FieldRead" Bounds="1748.08177100931,850.422384252434,6.37411111859933,76.2712652725429" Weight="1" />
+    <Link Source="@145" Target="@174" Category="CodeSchema_FieldRead" Bounds="922.802167497103,197.246177189863,24.2971391564424,23.7138228101372" Weight="14" />
+    <Link Source="@145" Target="@175" Category="CodeSchema_FieldRead" Bounds="899.87548828125,87.7378616333008,42.1751098632813,133.222145080566" Weight="14" />
+    <Link Source="@145" Target="@179" Category="CodeSchema_FieldRead" Bounds="1777.55187988281,951.933654785156,63.5478515625,83.4679565429688" Weight="26" />
+    <Link Source="@145" Target="@41" />
+    <Link Source="@145" Target="@82" Bounds="1297.72001994132,632.741748803867,438.945664307841,293.952299110093" />
+    <Link Source="@148" Target="@148" Category="CodeSchema_Calls" Bounds="1721.56640625,1087.65368652344,71.9217529296875,60" Weight="1" />
+    <Link Source="@148" Target="@157" Category="CodeSchema_FieldRead" Bounds="1728.33941807998,1124.6178352576,18.8571339441662,23.0358142673717" Weight="4">
+      <Category Ref="CodeSchema_FieldWrite" />
+    </Link>
+    <Link Source="@148" Target="@159" Category="CodeSchema_FieldRead" Weight="6" />
+    <Link Source="@148" Target="@164" Category="CodeSchema_FieldRead" Weight="2" />
+    <Link Source="@148" Target="@165" Category="CodeSchema_FieldRead" Weight="4" />
+    <Link Source="@148" Target="@168" Category="CodeSchema_FieldRead" Bounds="1741.763671875,1064.69018554688,22.8828125,82.9635009765625" Weight="6">
+      <Category Ref="CodeSchema_FieldWrite" />
+    </Link>
+    <Link Source="@148" Target="@179" Category="CodeSchema_FieldRead" Bounds="1769.29610911701,1074.53909651813,68.1831798557087,73.11455300685" Weight="6" />
+    <Link Source="@148" Target="@82" Bounds="1261.10497796104,671.667400363899,483.600448177222,475.987047550061" />
+    <Link Source="@150" Target="@153" Category="CodeSchema_Calls" Weight="1" />
+    <Link Source="@150" Target="@159" Category="CodeSchema_FieldRead" Bounds="1351.73625699861,939.313649524977,21.0000999999997,0" Weight="4">
+      <Category Ref="CodeSchema_FieldWrite" />
+    </Link>
+    <Link Source="@150" Target="@163" Category="CodeSchema_FieldWrite" Weight="2" />
+    <Link Source="@150" Target="@174" Category="CodeSchema_FieldWrite" Bounds="1435.72037133865,951.933649524977,20.8390820224204,23.2925910285385" Weight="1" />
+    <Link Source="@150" Target="@175" Category="CodeSchema_FieldWrite" Bounds="1435.74169921875,850.45361328125,17.7711181640625,76.2400512695313" Weight="1" />
+    <Link Source="@150" Target="@84" Bounds="942.776997588542,-280.116267089844,73.594837754248,759.162372700029" />
+    <Link Source="@151" Target="@136" Category="CodeSchema_Calls" Weight="1" />
+    <Link Source="@151" Target="@161" Category="CodeSchema_FieldWrite" Bounds="884.457698955585,973.414859786399,54.0784569353456,51.6584504562034" Weight="1" />
+    <Link Source="@151" Target="@166" Category="CodeSchema_Calls" Bounds="810.470492781848,973.414859786399,40.5179817115363,25.2412041961722" Weight="1" />
+    <Link Source="@151" Target="@169" Category="CodeSchema_FieldWrite" Bounds="830.041442871094,973.414855957031,40.775390625,81.7256469726563" Weight="1" />
+    <Link Source="@152" Target="@162" Category="CodeSchema_FieldWrite" Bounds="1168.58854299346,334.698158482528,21.0028990895489,0.523941387744912" Weight="1" />
+    <Link Source="@152" Target="@170" Category="CodeSchema_FieldWrite" Bounds="1129.69068482154,348.750971123973,2.11452379513025,76.243459250697" Weight="1" />
+    <Link Source="@153" Target="@163" Category="CodeSchema_FieldWrite" Bounds="1663.90893554688,505.253662109375,32.5496826171875,135.177917480469" Weight="1" />
+    <Link Source="@153" Target="@164" Category="CodeSchema_FieldWrite" Bounds="1658.50988769531,505.253662109375,26.031494140625,78.92236328125" Weight="1" />
+    <Link Source="@153" Target="@165" Category="CodeSchema_FieldWrite" Bounds="1635.82189129613,505.253649524977,9.47955451114808,21.7495922361441" Weight="1" />
+    <Link Source="@155" Target="@88" Category="References" Bounds="1148.87018996849,256.076113338123,167.204770969005,13.1420990988527" Weight="1" />
+    <Link Source="@156" Target="@111" Category="CodeSchema_Calls" Bounds="1606.60707761959,169.053649524977,59.2954041364594,26.3456630628218" Weight="1" />
+    <Link Source="@156" Target="@137" Category="CodeSchema_Calls" Weight="2" />
+    <Link Source="@156" Target="@155" Category="CodeSchema_FieldRead" Bounds="1593.03161621094,169.053649902344,45.51904296875,192.112182617188" Weight="4" />
+    <Link Source="@156" Target="@159" Category="CodeSchema_FieldRead" Weight="5" />
+    <Link Source="@156" Target="@163" Category="CodeSchema_FieldRead" Weight="5" />
+    <Link Source="@156" Target="@173" Category="CodeSchema_FieldRead" Bounds="1566.97079451611,122.361136170234,7.07233641270614,21.4525133547436" Weight="2" />
+    <Link Source="@156" Target="@174" Category="CodeSchema_FieldRead" Weight="10" />
+    <Link Source="@156" Target="@175" Category="CodeSchema_FieldRead" Weight="8" />
+    <Link Source="@156" Target="@176" Category="CodeSchema_FieldRead" Weight="8" />
+    <Link Source="@156" Target="@179" Category="CodeSchema_FieldRead" Bounds="1582.09512393909,169.05244791396,266.747672325361,865.064680555217" Weight="23" />
+    <Link Source="@156" Target="@82" Bounds="1297.92355554906,169.05244791396,259.608995044692,158.494795030118" />
+    <Link Source="@156" Target="@84" Bounds="937.96819991578,409.938737353788,22.3669720184726,61.7775864987511" />
+    <Link Source="@156" Target="@88" Category="References" Bounds="1141.48936221128,105.640725250244,172.79662375699,96.2229342003043" Weight="3" />
+    <Link Source="@158" Target="@159" Category="CodeSchema_FieldRead" Weight="2" />
+    <Link Source="@158" Target="@163" Category="CodeSchema_FieldRead" Weight="2" />
+    <Link Source="@158" Target="@179" Category="CodeSchema_FieldRead" Bounds="1928.08788970943,1055.33706631814,21.0001000000004,8.47935393721855E-06" Weight="2" />
+    <Link Source="@158" Target="@84" Bounds="937.96819991578,409.938737353788,22.3669720184726,61.7775864987511" />
+    <Link Source="@159" Target="@84" Category="References" Bounds="922.014249288853,-335.356409912109,9.20032545309596,814.361095569223" Weight="1" />
+    <Link Source="@160" Target="@125" Category="CodeSchema_Calls" Weight="20" />
+    <Link Source="@160" Target="@129" Category="CodeSchema_Calls" Weight="12" />
+    <Link Source="@160" Target="@137" Category="CodeSchema_Calls" Weight="2" />
+    <Link Source="@160" Target="@155" Category="CodeSchema_FieldRead" Bounds="1489.86242675781,224.293655395508,35.6552734375,136.920547485352" Weight="21">
+      <Category Ref="CodeSchema_FieldWrite" />
+    </Link>
+    <Link Source="@160" Target="@159" Category="CodeSchema_FieldRead" Bounds="1009.81182861328,273.213226318359,83.4893188476563,163.272216796875" Weight="8" />
+    <Link Source="@160" Target="@164" Category="CodeSchema_FieldRead" Bounds="992.742492675781,309.012908935547,49.9044799804688,85.2992553710938" Weight="4" />
+    <Link Source="@160" Target="@165" Category="CodeSchema_FieldRead" Bounds="986.596632287074,309.012905738876,42.2320828861167,29.454875451482" Weight="4" />
+    <Link Source="@160" Target="@173" Category="CodeSchema_FieldRead" Bounds="1493.58532714844,116.967994689941,28.6055908203125,82.0856552124023" Weight="3" />
+    <Link Source="@160" Target="@174" Category="CodeSchema_FieldRead" Bounds="989.995976092463,196.449962667885,66.9304023243337,51.5232590140331" Weight="4" />
+    <Link Source="@160" Target="@175" Category="CodeSchema_FieldRead" Bounds="1007.53228759766,83.0540542602539,65.1693725585938,164.919166564941" Weight="4" />
+    <Link Source="@160" Target="@179" Category="CodeSchema_FieldRead" Bounds="1546.01022505134,224.29254791396,301.537973862506,809.990487136941" Weight="28" />
+    <Link Source="@160" Target="@82" Bounds="1298.15244413526,224.29254791396,219.902166218249,119.323338332394" />
+    <Link Source="@160" Target="@88" Category="References" Bounds="1148.87131916775,222.65088596357,248.753161626517,19.1468227735426" Weight="2" />
+    <Link Source="@161" Target="@82" Category="References" Bounds="960.492107841626,674.216001711774,63.2903485160052,357.074032467913" Weight="1" />
+    <Link Source="@162" Target="@82" Category="References" Bounds="1234.41528320313,267.4599609375,12.322265625,53.5" Weight="1" />
+    <Link Source="@166" Target="@118" Category="CodeSchema_FunctionPointer" Bounds="740.808885130566,979.353943292713,27.395577029598,24.0609164936859" Weight="1" />
+    <Link Source="@166" Target="@121" Category="CodeSchema_FunctionPointer" Bounds="713.968505859375,1028.65490722656,42.5158081054688,76.242919921875" Weight="1" />
+    <Link Source="@167" Target="@154" Category="CodeSchema_Calls" Weight="1" />
+    <Link Source="@167" Target="@94" />
+    <Link Source="@169" Target="@87" Category="References" Bounds="329.160125732422,425.1865234375,52.8121337890625,76.7334899902344" Weight="1" />
+    <Link Source="@170" Target="@90" Category="References" Bounds="1297.60801425785,310.796267279554,1.26173259843517,21.0162757184725" Weight="1" />
+    <Link Source="@173" Target="@82" Bounds="1297.46590722732,113.81234791396,245.543117420707,182.457744974287" />
+    <Link Source="@176" Target="@82" Bounds="1299.0733395091,520.214359029673,101.100075482454,19.8515016480774" />
+    <Link Source="@177" Target="@142" Category="CodeSchema_Calls" Bounds="251.194916319602,719.321337924876,49.7821877165815,25.8521892278098" Weight="1" />
+    <Link Source="@178" Target="@155" Category="CodeSchema_FieldRead" Bounds="1595.75695800781,279.533660888672,42.9300537109375,81.6379089355469" Weight="1" />
+    <Link Source="@178" Target="@156" Category="CodeSchema_Calls" Bounds="1587.08850097656,176.459182739258,29.2845458984375,77.83447265625" Weight="1" />
+    <Link Source="@178" Target="@160" Category="CodeSchema_Calls" Bounds="1551.49259240863,232.369474536743,10.7846067315779,21.924174988234" Weight="1" />
+    <Link Source="@178" Target="@173" Category="CodeSchema_FieldRead" Bounds="1472.62377929688,117.765327453613,56.145751953125,136.528327941895" Weight="1" />
+    <Link Source="@178" Target="@176" Category="CodeSchema_FieldRead" Weight="1" />
+    <Link Source="@178" Target="@82" Bounds="1298.58339146033,279.53264791396,238.752187415548,96.7288639568299" />
+    <Link Source="@178" Target="@88" Category="References" Bounds="1148.55682548848,160.880726928711,218.970448940479,62.0586775879601" Weight="3" />
+    <Link Source="@179" Target="@41" Category="References" Bounds="1566.5356839051,972.084976335728,245.064577776846,70.6325578087002" Weight="1" />
+    <Link Source="@180" Target="@87" Category="References" Bounds="279.676020793347,462.859421347386,15.6313839440566,22.5982884688866" Weight="1" />
+    <Link Source="@41" Target="@127" Category="Contains" FetchingParent="@41" />
+    <Link Source="@41" Target="@128" Category="Contains" FetchingParent="@41" />
+    <Link Source="@41" Target="@129" Category="Contains" FetchingParent="@41" />
+    <Link Source="@41" Target="@140" Category="Contains" FetchingParent="@41" />
+    <Link Source="@41" Target="@150" Category="Contains" FetchingParent="@41" />
+    <Link Source="@41" Target="@159" Category="Contains" FetchingParent="@41" />
+    <Link Source="@41" Target="@174" Category="Contains" FetchingParent="@41" />
+    <Link Source="@41" Target="@175" Category="Contains" FetchingParent="@41" />
+    <Link Source="@80" Target="@104" Category="Contains" FetchingParent="@80" />
+    <Link Source="@80" Target="@118" Category="Contains" FetchingParent="@80" />
+    <Link Source="@80" Target="@121" Category="Contains" FetchingParent="@80" />
+    <Link Source="@80" Target="@151" Category="Contains" FetchingParent="@80" />
+    <Link Source="@80" Target="@161" Category="Contains" FetchingParent="@80" />
+    <Link Source="@80" Target="@166" Category="Contains" FetchingParent="@80" />
+    <Link Source="@80" Target="@169" Category="Contains" FetchingParent="@80" />
+    <Link Source="@82" Target="@108" Category="Contains" FetchingParent="@82" />
+    <Link Source="@82" Target="@116" Category="Contains" FetchingParent="@82" />
+    <Link Source="@82" Target="@120" Category="Contains" FetchingParent="@82" />
+    <Link Source="@82" Target="@122" Category="Contains" FetchingParent="@82" />
+    <Link Source="@82" Target="@124" Category="Contains" FetchingParent="@82" />
+    <Link Source="@82" Target="@152" Category="Contains" FetchingParent="@82" />
+    <Link Source="@82" Target="@162" Category="Contains" FetchingParent="@82" />
+    <Link Source="@82" Target="@170" Category="Contains" FetchingParent="@82" />
+    <Link Source="@82" Target="@180" Category="Contains" FetchingParent="@82" />
+    <Link Source="@82" Target="@98" Category="Contains" FetchingParent="@82" />
+    <Link Source="@84" Target="@134" Category="Contains" FetchingParent="@84" />
+    <Link Source="@84" Target="@153" Category="Contains" FetchingParent="@84" />
+    <Link Source="@84" Target="@163" Category="Contains" FetchingParent="@84" />
+    <Link Source="@84" Target="@164" Category="Contains" FetchingParent="@84" />
+    <Link Source="@84" Target="@165" Category="Contains" FetchingParent="@84" />
+    <Link Source="@87" Target="@103" Category="Contains" FetchingParent="@87" />
+    <Link Source="@87" Target="@105" Category="Contains" FetchingParent="@87" />
+    <Link Source="@87" Target="@110" Category="Contains" FetchingParent="@87" />
+    <Link Source="@87" Target="@113" Category="Contains" FetchingParent="@87" />
+    <Link Source="@87" Target="@126" Category="Contains" FetchingParent="@87" />
+    <Link Source="@87" Target="@130" Category="Contains" FetchingParent="@87" />
+    <Link Source="@87" Target="@132" Category="Contains" FetchingParent="@87" />
+    <Link Source="@87" Target="@133" Category="Contains" FetchingParent="@87" />
+    <Link Source="@87" Target="@135" Category="Contains" FetchingParent="@87" />
+    <Link Source="@87" Target="@136" Category="Contains" FetchingParent="@87" />
+    <Link Source="@87" Target="@141" Category="Contains" FetchingParent="@87" />
+    <Link Source="@87" Target="@142" Category="Contains" FetchingParent="@87" />
+    <Link Source="@87" Target="@147" Category="Contains" FetchingParent="@87" />
+    <Link Source="@87" Target="@177" Category="Contains" FetchingParent="@87" />
+    <Link Source="@88" Target="@125" Category="Contains" FetchingParent="@88" />
+    <Link Source="@88" Target="@176" Category="Contains" FetchingParent="@88" />
+    <Link Source="@90" Target="@111" Category="Contains" FetchingParent="@90" />
+    <Link Source="@90" Target="@155" Category="Contains" FetchingParent="@90" />
+    <Link Source="@90" Target="@156" Category="Contains" FetchingParent="@90" />
+    <Link Source="@90" Target="@160" Category="Contains" FetchingParent="@90" />
+    <Link Source="@90" Target="@173" Category="Contains" FetchingParent="@90" />
+    <Link Source="@90" Target="@178" Category="Contains" FetchingParent="@90" />
+    <Link Source="@90" Target="@92" Category="InheritsFrom" Weight="1" />
+    <Link Source="@90" Target="@96" Category="Contains" FetchingParent="@90" />
+    <Link Source="@92" Target="@137" Category="Contains" FetchingParent="@92" />
+    <Link Source="@92" Target="@138" Category="Contains" FetchingParent="@92" />
+    <Link Source="@92" Target="@143" Category="Contains" FetchingParent="@92" />
+    <Link Source="@92" Target="@144" Category="Contains" FetchingParent="@92" />
+    <Link Source="@92" Target="@145" Category="Contains" FetchingParent="@92" />
+    <Link Source="@92" Target="@148" Category="Contains" FetchingParent="@92" />
+    <Link Source="@92" Target="@157" Category="Contains" FetchingParent="@92" />
+    <Link Source="@92" Target="@158" Category="Contains" FetchingParent="@92" />
+    <Link Source="@92" Target="@168" Category="Contains" FetchingParent="@92" />
+    <Link Source="@92" Target="@171" Category="Contains" FetchingParent="@92" />
+    <Link Source="@92" Target="@172" Category="Contains" FetchingParent="@92" />
+    <Link Source="@92" Target="@179" Category="Contains" FetchingParent="@92" />
+    <Link Source="@94" Target="@115" Category="Contains" FetchingParent="@94" />
+    <Link Source="@94" Target="@117" Category="Contains" FetchingParent="@94" />
+    <Link Source="@94" Target="@119" Category="Contains" FetchingParent="@94" />
+    <Link Source="@94" Target="@154" Category="Contains" FetchingParent="@94" />
+    <Link Source="@96" Target="@155" Category="CodeSchema_FieldRead" Bounds="1562.93869475614,334.773649524977,0.350915666582978,21.0012561356927" Weight="2" />
+    <Link Source="@96" Target="@156" Category="CodeSchema_Calls" Bounds="1592.04479980469,175.052169799805,40.8536376953125,134.481491088867" Weight="1" />
+    <Link Source="@96" Target="@160" Category="CodeSchema_Calls" Bounds="1498.77587890625,231.424514770508,39.1080322265625,78.1091461181641" Weight="1" />
+    <Link Source="@96" Target="@173" Category="CodeSchema_FieldRead" Bounds="1471.24182128906,117.765327453613,74.64404296875,191.768333435059" Weight="3">
+      <Category Ref="CodeSchema_FieldWrite" />
+    </Link>
+    <Link Source="@96" Target="@82" Bounds="1298.86235758751,334.77274791396,221.802139908852,66.545893811632" />
+    <Link Source="@96" Target="@88" Category="References" Bounds="1148.60980602325,272.59094553094,165.550423562361,42.9226604260915" Weight="5">
+      <Category Ref="CodeSchema_ReturnTypeLink" />
+    </Link>
+    <Link Source="@98" Target="@162" Category="CodeSchema_FieldWrite" Bounds="1202.69276158036,353.56517587707,17.6874030290978,25.1857952469031" Weight="1" />
+    <Link Source="@98" Target="@170" Category="CodeSchema_FieldWrite" Bounds="1150.72763964258,403.990971123973,28.3123018534366,24.1581603254662" Weight="1" />
+  </Links>
+  <Categories>
+    <Category Id="CallStackDirectCall" Label="调用堆栈直接调用" CanBeDataDriven="True" CanLinkedNodesBeDataDriven="True" IncomingActionLabel="调用堆栈直接调用" OutgoingActionLabel="调用堆栈直接调用" />
+    <Category Id="CallStackEntry" Label="调用堆栈入口" CanBeDataDriven="True" IsProviderRoot="False" NavigationActionLabel="调用堆栈入口" />
+    <Category Id="CodeSchema_Calls" Label="调用" CanBeDataDriven="True" CanLinkedNodesBeDataDriven="True" IncomingActionLabel="调用者" OutgoingActionLabel="调用" />
+    <Category Id="CodeSchema_Class" Label="类" BasedOn="CodeSchema_Type" CanBeDataDriven="True" DefaultAction="Node:Both:CodeSchema_Member" Icon="CodeSchema_Class" NavigationActionLabel="类" />
+    <Category Id="CodeSchema_Field" Label="字段" BasedOn="CodeSchema_Member" CanBeDataDriven="True" DefaultAction="Microsoft.Contains" Icon="CodeSchema_Field" NavigationActionLabel="字段" />
+    <Category Id="CodeSchema_FieldRead" Label="字段读取" BasedOn="CodeSchema_FieldReference" CanBeDataDriven="True" CanLinkedNodesBeDataDriven="True" IncomingActionLabel="读取方" OutgoingActionLabel="读取字段" />
+    <Category Id="CodeSchema_FieldReference" Label="字段引用" CanBeDataDriven="True" CanLinkedNodesBeDataDriven="True" IncomingActionLabel="引用方" OutgoingActionLabel="引用字段" />
+    <Category Id="CodeSchema_FieldWrite" Label="字段写入" BasedOn="CodeSchema_FieldReference" CanBeDataDriven="True" CanLinkedNodesBeDataDriven="True" IncomingActionLabel="写入方" OutgoingActionLabel="写入字段" />
+    <Category Id="CodeSchema_FunctionPointer" Label="函数指针" CanBeDataDriven="True" CanLinkedNodesBeDataDriven="True" IncomingActionLabel="函数指针" OutgoingActionLabel="函数指针" />
+    <Category Id="CodeSchema_Member" Label="编号" CanBeDataDriven="True" DefaultAction="Microsoft.Contains" Icon="CodeSchema_Field" NavigationActionLabel="成员" />
+    <Category Id="CodeSchema_Method" Label="方法" BasedOn="CodeSchema_Member" CanBeDataDriven="True" DefaultAction="Link:Forward:CodeSchema_Calls" Icon="CodeSchema_Method" NavigationActionLabel="方法" />
+    <Category Id="CodeSchema_ReturnTypeLink" Label="返回" CanBeDataDriven="True" CanLinkedNodesBeDataDriven="True" IncomingActionLabel="返回类型" OutgoingActionLabel="返回类型" />
+    <Category Id="CodeSchema_SourceLocation" Label="源位置" Icon="File" />
+    <Category Id="CodeSchema_Type" Label="类型" CanBeDataDriven="True" DefaultAction="Node:Both:CodeSchema_Member" Icon="CodeSchema_Class" NavigationActionLabel="类型" />
+    <Category Id="Contains" Label="包含" Description="链接的源是否包含目标对象" CanBeDataDriven="False" CanLinkedNodesBeDataDriven="True" IncomingActionLabel="包含者" IsContainment="True" OutgoingActionLabel="包含" />
+    <Category Id="InheritsFrom" Label="继承自" CanBeDataDriven="True" CanLinkedNodesBeDataDriven="True" IncomingActionLabel="继承者" OutgoingActionLabel="继承自" />
+    <Category Id="References" Label="引用" CanBeDataDriven="True" CanLinkedNodesBeDataDriven="True" IncomingActionLabel="引用者" OutgoingActionLabel="引用" />
+  </Categories>
+  <Properties>
+    <Property Id="Bounds" DataType="System.Windows.Rect" />
+    <Property Id="CanBeDataDriven" Label="CanBeDataDriven" Description="CanBeDataDriven" DataType="System.Boolean" />
+    <Property Id="CanLinkedNodesBeDataDriven" Label="CanLinkedNodesBeDataDriven" Description="CanLinkedNodesBeDataDriven" DataType="System.Boolean" />
+    <Property Id="CodeSchemaProperty_IsConstructor" Label="是构造函数" Description="一个标志，用于指示该方法是构造函数" DataType="System.Boolean" />
+    <Property Id="CodeSchemaProperty_IsPrivate" Label="是私有的" Description="一个标志，用于指示该范围是“私有”范围" DataType="System.Boolean" />
+    <Property Id="CodeSchemaProperty_IsPublic" Label="是公共的" Description="一个标志，用于指示该范围是“公共”范围" DataType="System.Boolean" />
+    <Property Id="CodeSchemaProperty_IsStatic" Label="是静态的" Description="一个标志，用于指示该成员是静态成员" DataType="System.Boolean" />
+    <Property Id="CommonLabel" DataType="System.String" />
+    <Property Id="DataVirtualized" Label="已虚拟化数据" Description="如果为 true，则图中可以包含表示虚拟化节点/链接(即，不在图中实际创建)的数据的节点和链接。" DataType="System.Boolean" />
+    <Property Id="DefaultAction" Label="DefaultAction" Description="DefaultAction" DataType="System.String" />
+    <Property Id="DelayedChildNodesState" Label="延迟的子节点状态" Description="如果未指定延迟的子节点状态，则为 Unspecified。如果尚未将组包含的子节点提取到关系图中，则为 NotFetched。如果已提取组内的所有延迟的子节点，则为 Fetched。" DataType="Microsoft.VisualStudio.GraphModel.DelayedDataState" />
+    <Property Id="DelayedCrossGroupLinksState" Label="延迟的跨组链接状态" Description="如果未指定延迟的跨组链接状态，则为 Unspecified。如果尚未将此节点上延迟的跨组链接提取到关系图中，则为 NotFetched。如果已提取所有延迟的跨组链接，则为 Fetched。" DataType="Microsoft.VisualStudio.GraphModel.DelayedDataState" />
+    <Property Id="Expression" DataType="System.String" />
+    <Property Id="FetchingParent" DataType="Microsoft.VisualStudio.GraphModel.GraphNodeId" />
+    <Property Id="FunctionTypeFlags" Label="FunctionTypeFlags" Description="FunctionTypeFlags" DataType="System.String" />
+    <Property Id="GraphDirection" DataType="Microsoft.VisualStudio.Diagrams.Layout.LayoutOrientation" />
+    <Property Id="Group" Label="组" Description="将节点显示为组" DataType="Microsoft.VisualStudio.GraphModel.GraphGroupStyle" />
+    <Property Id="GroupLabel" DataType="System.String" />
+    <Property Id="Icon" Label="图标" Description="图标" DataType="System.String" />
+    <Property Id="IncomingActionLabel" Label="IncomingActionLabel" Description="IncomingActionLabel" DataType="System.String" />
+    <Property Id="IsContainment" DataType="System.Boolean" />
+    <Property Id="IsEnabled" DataType="System.Boolean" />
+    <Property Id="IsProviderRoot" Label="IsProviderRoot" Description="IsProviderRoot" DataType="System.Boolean" />
+    <Property Id="Label" Label="标签" Description="可批注对象的可显示标签" DataType="System.String" />
+    <Property Id="Language" Label="语言" Description="语言" DataType="System.String" />
+    <Property Id="Layout" DataType="System.String" />
+    <Property Id="NavigationActionLabel" Label="NavigationActionLabel" Description="NavigationActionLabel" DataType="System.String" />
+    <Property Id="OutgoingActionLabel" Label="OutgoingActionLabel" Description="OutgoingActionLabel" DataType="System.String" />
+    <Property Id="SourceLocation" Label="起始行号" DataType="Microsoft.VisualStudio.GraphModel.CodeSchema.SourceLocation" />
+    <Property Id="TargetType" DataType="System.Type" />
+    <Property Id="Value" DataType="System.String" />
+    <Property Id="ValueLabel" DataType="System.String" />
+    <Property Id="Visibility" Label="Visibility" Description="Defines whether a node in the graph is visible or not" DataType="System.Windows.Visibility" />
+    <Property Id="Weight" Label="粗细" Description="粗细" DataType="System.Double" />
+  </Properties>
+  <QualifiedNames>
+    <Name Id="Assembly" Label="程序集" ValueType="Uri" />
+    <Name Id="GenericArguments" Label="泛型实参" ValueType="Microsoft.VisualStudio.GraphModel.GraphNodeIdCollection" />
+    <Name Id="GenericParameterCount" Label="泛型形参计数" ValueType="System.String" />
+    <Name Id="Member" Label="编号" ValueType="System.Object" />
+    <Name Id="Name" Label="名称" ValueType="System.String" />
+    <Name Id="Namespace" Label="命名空间" ValueType="System.String" />
+    <Name Id="OverloadingParameters" Label="参数" ValueType="Microsoft.VisualStudio.GraphModel.GraphNodeIdCollection" Formatter="NameValueNoEscape" />
+    <Name Id="ParamKind" Label="参数种类" ValueType="Microsoft.VisualStudio.GraphModel.CodeSchema.ParamKind" />
+    <Name Id="ParentType" Label="父类型" ValueType="System.Object" />
+    <Name Id="Type" Label="类型" ValueType="System.Object" />
+  </QualifiedNames>
+  <IdentifierAliases>
+    <Alias n="1" Uri="Assembly=$(25dbfefa-8264-434a-8d2e-1620c3776e75.OutputPathUri)" />
+    <Alias n="25" Id="Namespace=Quoridor" />
+    <Alias n="40" Id="Type=ChessBoard" />
+    <Alias n="41" Id="(@1 @25 @40)" />
+    <Alias n="52" Id="Namespace=Quoridor_With_C" />
+    <Alias n="79" Id="Type=DebugTool" />
+    <Alias n="80" Id="(@1 @52 @79)" />
+    <Alias n="81" Id="Type=Form1" />
+    <Alias n="82" Id="(@1 @52 @81)" />
+    <Alias n="83" Id="Type=Grid" />
+    <Alias n="84" Id="(@1 @25 @83)" />
+    <Alias n="85" Id="Namespace=Queen" />
+    <Alias n="86" Id="Type=QueenSolve" />
+    <Alias n="87" Id="(@1 @85 @86)" />
+    <Alias n="88" Id="(@1 @25 Type=QuoridorAction)" />
+    <Alias n="89" Id="Type=QuoridorAI" />
+    <Alias n="90" Id="(@1 @25 @89)" />
+    <Alias n="91" Id="Type=QuoridorGame" />
+    <Alias n="92" Id="(@1 @25 @91)" />
+    <Alias n="93" Id="Type=Start" />
+    <Alias n="94" Id="(@1 @52 @93)" />
+    <Alias n="95" Id="(@1 @52 Type=(Name=EnumNowPlayer ParentType=Form1))" />
+    <Alias n="96" Id="(@1 @25 @89 Member=(Name=AIAction_Greedy OverloadingParameters=[@95]))" />
+    <Alias n="97" Id="Name=.ctor" />
+    <Alias n="98" Id="(@1 @52 @81 Member=(@97 OverloadingParameters=[(@1 @52 Type=(Name=GameModeStatus ParentType=Form1))]))" />
+    <Alias n="99" Uri="Assembly=$(FxReferenceAssembliesUri)/.NETFramework/v4.6.1/mscorlib.dll" />
+    <Alias n="100" Id="Namespace=System.Collections.Generic" />
+    <Alias n="101" Id="Namespace=System" />
+    <Alias n="102" Id="(@99 @101 Type=Int32)" />
+    <Alias n="103" Id="(@1 @85 @86 Member=(Name=ChangeResult_Reverse OverloadingParameters=[(@99 @100 Type=(Name=List GenericParameterCount=1 GenericArguments=[@102]))]))" />
+    <Alias n="104" Id="(@1 @52 @79 Member=(@97 OverloadingParameters=[@82]))" />
+    <Alias n="105" Id="(@1 @85 @86 Member=(Name=SelectQueenResult OverloadingParameters=[@102]))" />
+    <Alias n="106" Uri="Assembly=$(FxReferenceAssembliesUri)/.NETFramework/v4.6.1/System.Drawing.dll" />
+    <Alias n="107" Id="(@106 Namespace=System.Drawing Type=Point)" />
+    <Alias n="108" Id="(@1 @52 @81 Member=(Name=MouseAction_PlayChess OverloadingParameters=[@107]))" />
+    <Alias n="109" Id="(@99 @101 Type=Double ParamKind=Ref)" />
+    <Alias n="110" Id="(@1 @85 @86 Member=(Name=SearchResult_ForMinDistance OverloadingParameters=[@109]))" />
+    <Alias n="111" Id="(@1 @25 @89 Member=(Name=ActionEvaluation OverloadingParameters=[@88,@95]))" />
+    <Alias n="112" Uri="Assembly=$(FxReferenceAssembliesUri)/.NETFramework/v4.6.1/System.Windows.Forms.DataVisualization.dll" />
+    <Alias n="113" Id="(@1 @85 @86 Member=(Name=SearchResult_ForMinDistance OverloadingParameters=[@109,(@112 Namespace=System.Windows.Forms.DataVisualization.Charting Type=DataPointCollection)]))" />
+    <Alias n="114" Id="OverloadingParameters=[(@99 @101 Type=Object),(@99 @101 Type=EventArgs)]" />
+    <Alias n="115" Id="(@1 @52 @93 Member=(Name=DoublePlayBTN_Click @114))" />
+    <Alias n="116" Id="(@1 @52 @81 Member=(Name=Form1_Load @114))" />
+    <Alias n="117" Id="(@1 @52 @93 Member=(Name=Queen8BTN_Click @114))" />
+    <Alias n="118" Id="(@1 @52 @79 Member=(Name=SATest1BTN_Click @114))" />
+    <Alias n="119" Id="(@1 @52 @93 Member=(Name=SinglePlayBTN_Click @114))" />
+    <Alias n="120" Id="(@1 @52 @81 Member=(Name=Test2BTN_Click @114))" />
+    <Alias n="121" Id="(@1 @52 @79 Member=(Name=TestAllSABTN_Click @114))" />
+    <Alias n="122" Id="(@1 @52 @81 Member=(Name=TestBTN_Click @114))" />
+    <Alias n="123" Uri="Assembly=$(FxReferenceAssembliesUri)/.NETFramework/v4.6.1/System.Windows.Forms.dll" />
+    <Alias n="124" Id="(@1 @52 @81 Member=(Name=ChessBoardPB_MouseDown OverloadingParameters=[(@99 @101 Type=Object),(@123 Namespace=System.Windows.Forms Type=MouseEventArgs)]))" />
+    <Alias n="125" Id="(@1 @25 Type=QuoridorAction Member=(@97 OverloadingParameters=[(@1 @52 Type=(Name=NowAction ParentType=Form1)),@107]))" />
+    <Alias n="126" Id="(@1 @85 @86 Member=(Name=SearchResult_ForOverall OverloadingParameters=[@109,(@99 @100 Type=(Name=List GenericParameterCount=1 GenericArguments=[@107]) ParamKind=Ref)]))" />
+    <Alias n="127" Id="(@1 @25 @40 Member=(Name=Action OverloadingParameters=[@102,@102,(@1 @52 Type=(Name=NowAction ParentType=Form1))]))" />
+    <Alias n="128" Id="(@1 @25 @40 Member=(Name=CheckMove_New OverloadingParameters=[@102,@102,(@1 @52 Type=(Name=NowAction ParentType=Form1))]))" />
+    <Alias n="129" Id="(@1 @25 @40 Member=(Name=CheckMove_NoChange OverloadingParameters=[@102,@102,(@1 @52 Type=(Name=NowAction ParentType=Form1))]))" />
+    <Alias n="130" Id="(@1 @85 @86 Member=(Name=CalDistance_QueenToChess OverloadingParameters=[@107,@107,(@1 @85 Type=(Name=DistanceCalMethod ParentType=QueenSolve))]))" />
+    <Alias n="131" Id="(@99 @100 Type=(Name=List GenericParameterCount=1 GenericArguments=[@107]))" />
+    <Alias n="132" Id="(@1 @85 @86 Member=(Name=CalMoveSequenceDistance OverloadingParameters=[(@99 @100 Type=(Name=List GenericParameterCount=1 GenericArguments=[@102])),@131,@131]))" />
+    <Alias n="133" Id="(@1 @85 @86 Member=(Name=PrintMoveSequence OverloadingParameters=[(@99 @100 Type=(Name=List GenericParameterCount=1 GenericArguments=[@102])),@131,@131]))" />
+    <Alias n="134" Id="(@1 @25 @83 Member=(@97 OverloadingParameters=[(@1 @25 Type=(Name=GridInsideStatus ParentType=Grid)),(@99 @101 Type=Boolean),(@99 @101 Type=Boolean)]))" />
+    <Alias n="135" Id="(@1 @85 @86 Member=(Name=SearchResult_ForOverall OverloadingParameters=[@109,(@99 @100 Type=(Name=List GenericParameterCount=1 GenericArguments=[@107]) ParamKind=Ref),(@112 Namespace=System.Windows.Forms.DataVisualization.Charting Type=DataPointCollection)]))" />
+    <Alias n="136" Id="(@1 @85 @86 Member=(@97 OverloadingParameters=[(@1 @85 Type=(Name=DistanceCalMethod ParentType=QueenSolve)),(@1 @85 Type=(Name=InitResultMethod ParentType=QueenSolve)),@102]))" />
+    <Alias n="137" Id="(@1 @25 @91 Member=(Name=AstarRestart OverloadingParameters=[@95,@102,@102]))" />
+    <Alias n="138" Id="(@1 @25 @91 Member=(Name=CalDistance OverloadingParameters=[@95,@102,@102]))" />
+    <Alias n="139" Uri="Assembly=$(VsSolutionUri)/packages/cskin.16.1.14.3/lib/net40/CSkin.dll" />
+    <Alias n="140" Id="(@1 @25 @40 Member=(Name=DrawNowChessBoard OverloadingParameters=[(@106 Namespace=System.Drawing Type=Graphics ParamKind=Ref),(@139 Namespace=CCWin.SkinControl Type=SkinPictureBox),(@139 Namespace=CCWin.SkinControl Type=SkinPictureBox)]))" />
+    <Alias n="141" Id="(@1 @85 @86 Member=(Name=SearchResult_ForOverall OverloadingParameters=[@109,(@99 @100 Type=(Name=List GenericParameterCount=1 GenericArguments=[@107]) ParamKind=Ref),(@139 Namespace=CCWin.SkinControl Type=SkinProgressBar)]))" />
+    <Alias n="142" Id="(@1 @85 @86 Member=(Name=CreateInitResult OverloadingParameters=[@131,@131,@109]))" />
+    <Alias n="143" Id="(@1 @25 @91 Member=(Name=LookupRoad_Greedy OverloadingParameters=[@95,@102,@102,@131]))" />
+    <Alias n="144" Id="(@1 @25 @91 Member=(Name=CheckBoard OverloadingParameters=[(@1 @52 Type=(Name=NowAction ParentType=Form1)),@95,@102,@102]))" />
+    <Alias n="145" Id="(@1 @25 @91 Member=(Name=CheckBoardEffect OverloadingParameters=[(@1 @52 Type=(Name=NowAction ParentType=Form1)),@95,@102,@102]))" />
+    <Alias n="146" Id="(@99 @101 Type=Double)" />
+    <Alias n="147" Id="(@1 @85 @86 Member=(Name=InitSA OverloadingParameters=[@146,@146,@146,@146,(@1 Namespace=SimulateAnneal Type=(Name=SAMode ParentType=Annealing))]))" />
+    <Alias n="148" Id="(@1 @25 @91 Member=(Name=LookupRoad_Astar OverloadingParameters=[@95,(@1 @25 Type=(Name=AstarList ParentType=QuoridorGame)),@102,(@99 @100 Type=(Name=List GenericParameterCount=1 GenericArguments=[(@1 @25 Type=(Name=AstarList ParentType=QuoridorGame))])),(@99 @100 Type=(Name=List GenericParameterCount=1 GenericArguments=[(@1 @25 Type=(Name=AstarList ParentType=QuoridorGame))]))]))" />
+    <Alias n="149" Id="Member=.ctor" />
+    <Alias n="150" Id="(@1 @25 @40 @149)" />
+    <Alias n="151" Id="(@1 @52 @79 @149)" />
+    <Alias n="152" Id="(@1 @52 @81 @149)" />
+    <Alias n="153" Id="(@1 @25 @83 @149)" />
+    <Alias n="154" Id="(@1 @52 @93 @149)" />
+    <Alias n="155" Id="(@1 @25 @89 Member=ActionList)" />
+    <Alias n="156" Id="(@1 @25 @89 Member=ActionListEvaluation)" />
+    <Alias n="157" Id="(@1 @25 @91 Member=Astar_Stop)" />
+    <Alias n="158" Id="(@1 @25 @91 Member=CheckResult)" />
+    <Alias n="159" Id="(@1 @25 @40 Member=ChessBoardAll)" />
+    <Alias n="160" Id="(@1 @25 @89 Member=CreateActionList)" />
+    <Alias n="161" Id="(@1 @52 @79 Member=Form_ChessBorad)" />
+    <Alias n="162" Id="(@1 @52 @81 Member=form1)" />
+    <Alias n="163" Id="(@1 @25 @83 Member=GridStatus)" />
+    <Alias n="164" Id="(@1 @25 @83 Member=IfLeftBoard)" />
+    <Alias n="165" Id="(@1 @25 @83 Member=IfUpBoard)" />
+    <Alias n="166" Id="(@1 @52 @79 Member=InitializeComponent)" />
+    <Alias n="167" Id="(@1 @52 Type=Program Member=Main)" />
+    <Alias n="168" Id="(@1 @25 @91 Member=Min_DistanceLength)" />
+    <Alias n="169" Id="(@1 @52 @79 Member=NowQueenSolve)" />
+    <Alias n="170" Id="(@1 @52 @81 Member=NowQuoridor)" />
+    <Alias n="171" Id="(@1 @25 @91 Member=NumPlayer1Board)" />
+    <Alias n="172" Id="(@1 @25 @91 Member=NumPlayer2Board)" />
+    <Alias n="173" Id="(@1 @25 @89 Member=Player_Now)" />
+    <Alias n="174" Id="(@1 @25 @40 Member=Player1Location)" />
+    <Alias n="175" Id="(@1 @25 @40 Member=Player2Location)" />
+    <Alias n="176" Id="(@1 @25 Type=QuoridorAction Member=PlayerAction)" />
+    <Alias n="177" Id="(@1 @85 @86 Member=QueenResultEvaluation)" />
+    <Alias n="178" Id="(@1 @25 @89 Member=TestEvaluation)" />
+    <Alias n="179" Id="(@1 @25 @91 Member=ThisChessBoard)" />
+    <Alias n="180" Id="(@1 @52 @81 Member=ThisQueenSolve)" />
+  </IdentifierAliases>
+  <Styles>
+    <Style TargetType="Link" GroupLabel="Current Call Stack Link" ValueLabel="True" Visibility="Hidden">
+      <Condition Expression="HasCategory('CurrentCallStackCall')" />
+      <Setter Property="Stroke" Value="#FFD93701" />
+      <Setter Property="Weight" Value="1" />
+    </Style>
+    <Style TargetType="Link" GroupLabel="Call Stack Indirect Link" ValueLabel="True" Visibility="Hidden">
+      <Condition Expression="HasCategory('CallStackIndirectCall')" />
+      <Setter Property="Stroke" Value="#FFB8B8B8" />
+      <Setter Property="StrokeDashArray" Value="4 1" />
+    </Style>
+    <Style TargetType="Link" GroupLabel="Call Stack Direct Link" ValueLabel="True" Visibility="Hidden">
+      <Condition Expression="HasCategory('CallStackDirectCall')" />
+      <Setter Property="Stroke" Value="#FFB8B8B8" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="External And Current" ValueLabel="True" Visibility="Hidden">
+      <Condition Expression="HasCategory('ExternalCallStackEntry') And HasCategory('CurrentCallStackEntry')" />
+      <Setter Property="Background" Value="#FFFFF8F0" />
+      <Setter Property="Stroke" Value="#FFCE5100" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="当前调用堆栈节点" ValueLabel="True">
+      <Condition Expression="HasCategory('CurrentCallStackEntry') And !HasCategory('QueryResult')" />
+      <Setter Property="Background" Value="#FFFFE3C6" />
+      <Setter Property="Stroke" Value="#FFD93701" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="外部调用堆栈入口" ValueLabel="True">
+      <Condition Expression="HasCategory('ExternalCallStackEntry')" />
+      <Setter Property="Background" Value="#FFF7F7F7" />
+      <Setter Property="StrokeDashArray" Value="1 3" />
+      <Setter Property="Foreground" Value="#FFA5A5A5" />
+      <Setter Property="Stroke" Value="#FFA5A5A5" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="结果" ValueLabel="True">
+      <Condition Expression="HasCategory('QueryResult')" />
+      <Setter Property="Background" Value="#FFBCFFBE" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="程序集" ValueLabel="具有类别">
+      <Condition Expression="HasCategory('CodeSchema_Assembly')" />
+      <Setter Property="Background" Value="#FF094167" />
+      <Setter Property="Stroke" Value="#FF094167" />
+      <Setter Property="Icon" Value="CodeSchema_Assembly" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="命名空间" ValueLabel="具有类别">
+      <Condition Expression="HasCategory('CodeSchema_Namespace')" />
+      <Setter Property="Background" Value="#FF0E619A" />
+      <Setter Property="Stroke" Value="#FF0E619A" />
+      <Setter Property="Icon" Value="CodeSchema_Namespace" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="接口" ValueLabel="具有类别">
+      <Condition Expression="HasCategory('CodeSchema_Interface')" />
+      <Setter Property="Background" Value="#FF1382CE" />
+      <Setter Property="Stroke" Value="#FF1382CE" />
+      <Setter Property="Icon" Value="CodeSchema_Interface" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="结构" ValueLabel="具有类别">
+      <Condition Expression="HasCategory('CodeSchema_Struct')" />
+      <Setter Property="Background" Value="#FF1382CE" />
+      <Setter Property="Stroke" Value="#FF1382CE" />
+      <Setter Property="Icon" Value="CodeSchema_Struct" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="枚举" ValueLabel="具有类别">
+      <Condition Expression="HasCategory('CodeSchema_Enum')" />
+      <Setter Property="Background" Value="#FF1382CE" />
+      <Setter Property="Stroke" Value="#FF1382CE" />
+      <Setter Property="Icon" Value="CodeSchema_Enum" />
+      <Setter Property="LayoutSettings" Value="List" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="委托" ValueLabel="具有类别">
+      <Condition Expression="HasCategory('CodeSchema_Delegate')" />
+      <Setter Property="Background" Value="#FF1382CE" />
+      <Setter Property="Stroke" Value="#FF1382CE" />
+      <Setter Property="Icon" Value="CodeSchema_Delegate" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="类" ValueLabel="具有类别">
+      <Condition Expression="HasCategory('CodeSchema_Type')" />
+      <Setter Property="Background" Value="#FF1382CE" />
+      <Setter Property="Stroke" Value="#FF1382CE" />
+      <Setter Property="Icon" Value="CodeSchema_Class" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="属性" ValueLabel="具有类别">
+      <Condition Expression="HasCategory('CodeSchema_Property')" />
+      <Setter Property="Background" Value="#FFE0E0E0" />
+      <Setter Property="Stroke" Value="#FFE0E0E0" />
+      <Setter Property="Icon" Value="CodeSchema_Property" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="方法" ValueLabel="具有类别">
+      <Condition Expression="HasCategory('CodeSchema_Method') Or HasCategory('CodeSchema_CallStackUnresolvedMethod')" />
+      <Setter Property="Background" Value="#FFE0E0E0" />
+      <Setter Property="Stroke" Value="#FFE0E0E0" />
+      <Setter Property="Icon" Value="CodeSchema_Method" />
+      <Setter Property="LayoutSettings" Value="List" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="事件" ValueLabel="具有类别">
+      <Condition Expression="HasCategory('CodeSchema_Event')" />
+      <Setter Property="Background" Value="#FFE0E0E0" />
+      <Setter Property="Stroke" Value="#FFE0E0E0" />
+      <Setter Property="Icon" Value="CodeSchema_Event" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="字段" ValueLabel="具有类别">
+      <Condition Expression="HasCategory('CodeSchema_Field')" />
+      <Setter Property="Background" Value="#FFE0E0E0" />
+      <Setter Property="Stroke" Value="#FFE0E0E0" />
+      <Setter Property="Icon" Value="CodeSchema_Field" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Out Parameter" ValueLabel="True">
+      <Condition Expression="CodeSchemaProperty_IsOut = 'True'" />
+      <Setter Property="Icon" Value="CodeSchema_OutParameter" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Parameter" ValueLabel="True">
+      <Condition Expression="HasCategory('CodeSchema_Parameter')" />
+      <Setter Property="Icon" Value="CodeSchema_Parameter" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Local Variable" ValueLabel="True">
+      <Condition Expression="HasCategory('CodeSchema_LocalExpression')" />
+      <Setter Property="Icon" Value="CodeSchema_LocalExpression" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="外部" ValueLabel="具有类别">
+      <Condition Expression="HasCategory('Externals')" />
+      <Setter Property="Background" Value="#FF424242" />
+      <Setter Property="Stroke" Value="#FF424242" />
+    </Style>
+    <Style TargetType="Link" GroupLabel="Inherits From" ValueLabel="True" Visibility="Hidden">
+      <Condition Expression="HasCategory('InheritsFrom') And Target.HasCategory('CodeSchema_Class')" />
+      <Setter Property="TargetDecorator" Value="OpenArrow" />
+    </Style>
+    <Style TargetType="Link" GroupLabel="Implements" ValueLabel="True" Visibility="Hidden">
+      <Condition Expression="HasCategory('Implements') And Target.HasCategory('CodeSchema_Interface')" />
+      <Setter Property="TargetDecorator" Value="OpenArrow" />
+    </Style>
+    <Style TargetType="Link" GroupLabel="Field Read" ValueLabel="True" Visibility="Hidden">
+      <Condition Expression="Target.HasCategory('CodeSchema_Field') And HasCategory('CodeSchema_FieldRead')" />
+      <Setter Property="StrokeDashArray" Value="2 2" />
+    </Style>
+    <Style TargetType="Link" GroupLabel="Comment Link" ValueLabel="True" Visibility="Hidden">
+      <Condition Expression="Source.HasCategory('Comment')" />
+      <Setter Property="Stroke" Value="#FFE5C365" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Cursor Location Changed" ValueLabel="True" Visibility="Hidden">
+      <Condition Expression="IsCursorLocation" />
+      <Setter Property="IndicatorWest" Value="WestIndicator" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Disabled Breakpoint Location Changed" ValueLabel="True" Visibility="Hidden">
+      <Condition Expression="DisabledBreakpointCount" />
+      <Setter Property="IndicatorWest" Value="WestIndicator" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Enabled Breakpoint Location Changed" ValueLabel="True" Visibility="Hidden">
+      <Condition Expression="EnabledBreakpointCount" />
+      <Setter Property="IndicatorWest" Value="WestIndicator" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Instruction Pointer Location Changed" ValueLabel="True" Visibility="Hidden">
+      <Condition Expression="IsInstructionPointerLocation" />
+      <Setter Property="IndicatorWest" Value="WestIndicator" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Current Callstack Changed" ValueLabel="True" Visibility="Hidden">
+      <Condition Expression="IsCurrentCallstackFrame" />
+      <Setter Property="IndicatorWest" Value="WestIndicator" />
+    </Style>
+  </Styles>
+  <Paths>
+    <Path Id="25dbfefa-8264-434a-8d2e-1620c3776e75.OutputPath" Value="D:\智能车\步步为营人工智障\Quoridor_With_C\Quoridor_With_C\bin\Debug\Quoridor_With_C.exe" />
+    <Path Id="25dbfefa-8264-434a-8d2e-1620c3776e75.OutputPathUri" Value="file:///D:/智能车/步步为营人工智障/Quoridor_With_C/Quoridor_With_C/bin/Debug/Quoridor_With_C.exe" />
+    <Path Id="FxReferenceAssemblies" Value="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework" />
+    <Path Id="FxReferenceAssembliesUri" Value="file:///C:/Program Files (x86)/Reference Assemblies/Microsoft/Framework" />
+    <Path Id="VsSolution" Value="D:\智能车\步步为营人工智障\Quoridor_With_C" />
+    <Path Id="VsSolutionUri" Value="file:///D:/智能车/步步为营人工智障/Quoridor_With_C" />
+  </Paths>
+</DirectedGraph>
