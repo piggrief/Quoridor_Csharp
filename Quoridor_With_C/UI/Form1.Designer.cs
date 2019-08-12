@@ -826,7 +826,7 @@
             this.BetaSetTB.IsPasswordChat = '\0';
             this.BetaSetTB.IsSystemPasswordChar = false;
             this.BetaSetTB.Lines = new string[] {
-        "1"};
+        "50"};
             this.BetaSetTB.Location = new System.Drawing.Point(234, 139);
             this.BetaSetTB.Margin = new System.Windows.Forms.Padding(0);
             this.BetaSetTB.MaxLength = 32767;
@@ -850,11 +850,11 @@
             this.BetaSetTB.SkinTxt.Name = "BaseText";
             this.BetaSetTB.SkinTxt.Size = new System.Drawing.Size(72, 22);
             this.BetaSetTB.SkinTxt.TabIndex = 0;
-            this.BetaSetTB.SkinTxt.Text = "1";
+            this.BetaSetTB.SkinTxt.Text = "50";
             this.BetaSetTB.SkinTxt.WaterColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(127)))), ((int)(((byte)(127)))));
             this.BetaSetTB.SkinTxt.WaterText = "";
             this.BetaSetTB.TabIndex = 12;
-            this.BetaSetTB.Text = "1";
+            this.BetaSetTB.Text = "50";
             this.BetaSetTB.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.BetaSetTB.WaterColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(127)))), ((int)(((byte)(127)))));
             this.BetaSetTB.WaterText = "";
@@ -882,7 +882,7 @@
             this.AlphaSetTB.IsPasswordChat = '\0';
             this.AlphaSetTB.IsSystemPasswordChar = false;
             this.AlphaSetTB.Lines = new string[] {
-        "-1"};
+        "-50"};
             this.AlphaSetTB.Location = new System.Drawing.Point(76, 139);
             this.AlphaSetTB.Margin = new System.Windows.Forms.Padding(0);
             this.AlphaSetTB.MaxLength = 32767;
@@ -906,11 +906,11 @@
             this.AlphaSetTB.SkinTxt.Name = "BaseText";
             this.AlphaSetTB.SkinTxt.Size = new System.Drawing.Size(72, 22);
             this.AlphaSetTB.SkinTxt.TabIndex = 0;
-            this.AlphaSetTB.SkinTxt.Text = "-1";
+            this.AlphaSetTB.SkinTxt.Text = "-50";
             this.AlphaSetTB.SkinTxt.WaterColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(127)))), ((int)(((byte)(127)))));
             this.AlphaSetTB.SkinTxt.WaterText = "";
             this.AlphaSetTB.TabIndex = 10;
-            this.AlphaSetTB.Text = "-1";
+            this.AlphaSetTB.Text = "-50";
             this.AlphaSetTB.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.AlphaSetTB.WaterColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(127)))), ((int)(((byte)(127)))));
             this.AlphaSetTB.WaterText = "";
@@ -944,8 +944,6 @@
             // 
             this.IfUseTTCB.AutoSize = true;
             this.IfUseTTCB.BackColor = System.Drawing.Color.Transparent;
-            this.IfUseTTCB.Checked = true;
-            this.IfUseTTCB.CheckState = System.Windows.Forms.CheckState.Checked;
             this.IfUseTTCB.ControlState = CCWin.SkinClass.ControlState.Normal;
             this.IfUseTTCB.DownBack = null;
             this.IfUseTTCB.Font = new System.Drawing.Font("微软雅黑", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));

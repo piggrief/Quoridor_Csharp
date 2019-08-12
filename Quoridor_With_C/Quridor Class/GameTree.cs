@@ -23,9 +23,9 @@ namespace GameTree
     /// </summary>
     public class GameTreeNode
     {
-        public NowAction NodeAction;///当前节点的动作
+        //public NowAction NodeAction;///当前节点的动作
         public EnumNowPlayer NodePlayer;///当前节点的动作的执行玩家
-        public Point ActionLocation = new Point(-1, -1);///当前节点动作的执行位置
+        //public Point ActionLocation = new Point(-1, -1);///当前节点动作的执行位置
         public List<GameTreeNode> SonNode = new List<GameTreeNode>();///子节点列表
 
         public int depth = 0;///该节点深度
@@ -33,8 +33,9 @@ namespace GameTree
         public double alpha = -10000;///该节点的alpha值
         public double beta = 10000;///该节点的beta值
         public double score = 10000;///该节点的评分值
-        public int P1Distance = -1;//该节点对应的棋局的玩家1最短路径长
-        public int P2Distance = -1;//该节点对应的棋局的玩家2最短路径长
+        public QuoridorAction NodeAction = new QuoridorAction(NowAction.Action_Wait, new Point(-1, -1));///该节点的动作
+        //public int P1Distance = -1;//该节点对应的棋局的玩家1最短路径长
+        //public int P2Distance = -1;//该节点对应的棋局的玩家2最短路径长
         public static TranslationTable NodeTranslationTable = new TranslationTable();
         public static long InitChessBoardHashCode = 0;
         public static int RootDepth = 1;///根节点的深度，在一步一步落子后需要+2更新
@@ -60,7 +61,7 @@ namespace GameTree
         /// <summary>
         /// 构造函数,用来设定该博弈树节点的信息
         /// </summary>
-        public GameTreeNode(NowAction Action_set, Point ActionLocation_set, EnumNowPlayer Player_set, int depth_set, double alpha_set, double beta_set, double score_set, int P1Dis, int P2Dis)
+        public GameTreeNode(QuoridorAction Action_set, EnumNowPlayer Player_set, int depth_set, double alpha_set, double beta_set, double score_set)
         {
             NodeAction = Action_set;
             NodePlayer = Player_set;
@@ -68,9 +69,6 @@ namespace GameTree
             alpha = alpha_set;
             beta = beta_set;
             score = score_set;
-            ActionLocation = ActionLocation_set;
-            P1Distance = P1Dis;
-            P2Distance = P2Dis;
             InitTranslationTable();
         }
         /// <summary>
@@ -95,7 +93,9 @@ namespace GameTree
 
             List<QuoridorAction> QABuff = NowQuoridor.ActionList;
 
-            QABuff = NowQuoridor.CreateActionList(ThisChessBoard, GameTreePlayer, ThisNode.P1Distance, ThisNode.P2Distance);
+            QABuff = NowQuoridor.CreateActionList(ThisChessBoard, GameTreePlayer
+                , ThisNode.NodeAction.ActionCheckResult.P1Distance
+                , ThisNode.NodeAction.ActionCheckResult.P2Distance);
 
             foreach (QuoridorAction QA in QABuff)
             {
@@ -120,15 +120,15 @@ namespace GameTree
 
                 if (ThisNode.depth <= DepthMax)
                 {
-                    CreateNewSon(ThisNode, new GameTreeNode(QA.PlayerAction, QA.ActionPoint
-                        , PlayerSave, ThisNode.depth + 1, ThisNode.alpha, ThisNode.beta, ThisNode.beta, QA.ActionCheckResult.P1Distance, QA.ActionCheckResult.P2Distance));
+                    CreateNewSon(ThisNode, new GameTreeNode(QA
+                        , PlayerSave, ThisNode.depth + 1, ThisNode.alpha, ThisNode.beta, ThisNode.beta));
 
                     ExpandNode_MinMax(ThisChessBoard, ThisNode.SonNode.Last());
                 }
                 else
                 {
-                    CreateNewSon(ThisNode, new GameTreeNode(QA.PlayerAction, QA.ActionPoint
-                        , PlayerSave, ThisNode.depth + 1, QA.WholeScore, QA.WholeScore, QA.WholeScore, QA.ActionCheckResult.P1Distance, QA.ActionCheckResult.P2Distance)); 
+                    CreateNewSon(ThisNode, new GameTreeNode(QA
+                        , PlayerSave, ThisNode.depth + 1, QA.WholeScore, QA.WholeScore, QA.WholeScore)); 
                 }
                 #region 恢复棋盘状态
                 ChessBoard.ResumeChessBoard(ref ThisChessBoard, ChessBoardBuff);
@@ -157,7 +157,6 @@ namespace GameTree
                         ThisNode.score = maxvalue;
                         if (ThisNode.depth == 0)//根节点层
                         {
-                            ThisNode.ActionLocation = Son.ActionLocation;
                             ThisNode.NodeAction = Son.NodeAction;
                             ThisNode.NodePlayer = Son.NodePlayer;
                         }
@@ -194,7 +193,9 @@ namespace GameTree
             List<QuoridorAction> QABuff = NowQuoridor.ActionList;
 
             //QABuff = NowQuoridor.CreateActionList_ALL(ThisChessBoard, ThisNode.P1Distance, ThisNode.P2Distance);
-            QABuff = NowQuoridor.CreateActionList(ThisChessBoard, GameTreePlayer, ThisNode.P1Distance, ThisNode.P2Distance);
+            QABuff = NowQuoridor.CreateActionList(ThisChessBoard, GameTreePlayer
+                , ThisNode.NodeAction.ActionCheckResult.P1Distance
+                , ThisNode.NodeAction.ActionCheckResult.P2Distance);
 
             foreach (QuoridorAction QA in QABuff)
             {
@@ -230,8 +231,8 @@ namespace GameTree
 
                 if (ThisNode.depth <= DepthMax)
                 {
-                    CreateNewSon(ThisNode, new GameTreeNode(QA.PlayerAction, QA.ActionPoint
-                    , PlayerSave, ThisNode.depth + 1, ThisNode.alpha, ThisNode.beta, ThisNode.score, QA.ActionCheckResult.P1Distance, QA.ActionCheckResult.P2Distance));
+                    CreateNewSon(ThisNode, new GameTreeNode(QA
+                    , PlayerSave, ThisNode.depth + 1, ThisNode.alpha, ThisNode.beta, ThisNode.score));
 
                     if (IfUseTT)
                     {
@@ -242,8 +243,8 @@ namespace GameTree
                 }
                 else
                 {
-                    CreateNewSon(ThisNode, new GameTreeNode(QA.PlayerAction, QA.ActionPoint
-                    , PlayerSave, ThisNode.depth + 1, ThisNode.alpha, QA.WholeScore, QA.WholeScore, QA.ActionCheckResult.P1Distance, QA.ActionCheckResult.P2Distance));
+                    CreateNewSon(ThisNode, new GameTreeNode(QA
+                    , PlayerSave, ThisNode.depth + 1, ThisNode.alpha, QA.WholeScore, QA.WholeScore));
                 }
 
                 ChessBoard.ResumeChessBoard(ref ThisChessBoard, ChessBoardBuff);
@@ -338,8 +339,7 @@ namespace GameTree
                     {
                         MaxScore = GTN.score;
                         RootNode.NodePlayer = GTN.NodePlayer;
-                        RootNode.NodeAction = GTN.NodeAction;
-                        RootNode.ActionLocation = GTN.ActionLocation;
+                        RootNode.NodeAction = GTN.NodeAction;                        
                         RootNode.score = MaxScore;
                     }
                 }
@@ -357,7 +357,6 @@ namespace GameTree
                         MaxScore = GTN.beta;
                         RootNode.NodePlayer = GTN.NodePlayer;
                         RootNode.NodeAction = GTN.NodeAction;
-                        RootNode.ActionLocation = GTN.ActionLocation;
                         RootNode.score = MaxScore;
                         RootNode.NodeHashCode = GTN.NodeHashCode;
                     }
@@ -389,8 +388,10 @@ namespace GameTree
         /// 获得博弈树节点在TreeView控件上应有的Text属性字符串
         /// </summary>
         /// <param name="NowNode">当前待生成的节点</param>
+        /// <param name="IfShowAction">是否显示动作信息</param>
+        /// <param name="IfShowActionScore">是否显示动作的评分信息</param>
         /// <returns></returns>
-        public static string GetGameTreeNodeViewText(GameTreeNode NowNode)
+        public static string GetGameTreeNodeViewText(GameTreeNode NowNode, bool IfShowAction = true, bool IfShowActionScore = false)
         {
             string SonTextbuff = "D:";
             SonTextbuff += (NowNode.depth + RootDepth).ToString() + " P";
@@ -407,30 +408,32 @@ namespace GameTree
                     SonTextbuff += "Error";
                     break;
             }
-            switch (NowNode.NodeAction)
+            if (IfShowAction)
             {
-                case NowAction.Action_PlaceVerticalBoard:
-                    SonTextbuff += ((NowNode.ActionLocation.X) * 8 + NowNode.ActionLocation.Y + 1).ToString() + "点和" +
-                        ((NowNode.ActionLocation.X + 1) * 8 + NowNode.ActionLocation.Y + 1).ToString() + "点;";
-                    break;
-                case NowAction.Action_PlaceHorizontalBoard:
-                    SonTextbuff += ((NowNode.ActionLocation.X) * 8 + NowNode.ActionLocation.Y + 1).ToString() + "点和" +
-                        ((NowNode.ActionLocation.X) * 8 + NowNode.ActionLocation.Y + 1 + 1).ToString() + "点";
-                    break;
-                case NowAction.Action_Move_Player1:
-                    SonTextbuff += ((NowNode.ActionLocation.X) * 8 + NowNode.ActionLocation.Y + 1).ToString() + "点";
-                    break;
-                case NowAction.Action_Move_Player2:
-                    SonTextbuff += ((NowNode.ActionLocation.X) * 8 + NowNode.ActionLocation.Y + 1).ToString() + "点";
-                    break;
-                case NowAction.Action_Wait:
-                    SonTextbuff += "Error";
-                    break;
-                default:
-                    SonTextbuff += "Error";
-                    break;
+                switch (NowNode.NodeAction.PlayerAction)
+                {
+                    case NowAction.Action_PlaceVerticalBoard:
+                        SonTextbuff += ((NowNode.NodeAction.ActionPoint.X) * 8 + NowNode.NodeAction.ActionPoint.Y + 1).ToString() + "点和" +
+                            ((NowNode.NodeAction.ActionPoint.X + 1) * 8 + NowNode.NodeAction.ActionPoint.Y + 1).ToString() + "点;";
+                        break;
+                    case NowAction.Action_PlaceHorizontalBoard:
+                        SonTextbuff += ((NowNode.NodeAction.ActionPoint.X) * 8 + NowNode.NodeAction.ActionPoint.Y + 1).ToString() + "点和" +
+                            ((NowNode.NodeAction.ActionPoint.X) * 8 + NowNode.NodeAction.ActionPoint.Y + 1 + 1).ToString() + "点";
+                        break;
+                    case NowAction.Action_Move_Player1:
+                        SonTextbuff += ((NowNode.NodeAction.ActionPoint.X) * 8 + NowNode.NodeAction.ActionPoint.Y + 1).ToString() + "点";
+                        break;
+                    case NowAction.Action_Move_Player2:
+                        SonTextbuff += ((NowNode.NodeAction.ActionPoint.X) * 8 + NowNode.NodeAction.ActionPoint.Y + 1).ToString() + "点";
+                        break;
+                    case NowAction.Action_Wait:
+                        SonTextbuff += "Error";
+                        break;
+                    default:
+                        SonTextbuff += "Error";
+                        break;
+                }
             }
-
             SonTextbuff += " A:";
             Int64 Score = Convert.ToInt64(NowNode.alpha * 100.0);
             string ScoreStr = (Convert.ToDouble(Score) / 100.0).ToString();
@@ -444,6 +447,19 @@ namespace GameTree
             ScoreStr = (Convert.ToDouble(Score) / 100.0).ToString();
             SonTextbuff += ScoreStr;
 
+            if (IfShowActionScore)
+            {
+                SonTextbuff += " SS:";
+                SonTextbuff += NowNode.NodeAction.SelfScore.ToString();
+                SonTextbuff += " OS:";
+                SonTextbuff += NowNode.NodeAction.OpponentScore.ToString();
+                SonTextbuff += " WS:";
+                Score = Convert.ToInt64(NowNode.NodeAction.WholeScore * 100.0);
+                ScoreStr = (Convert.ToDouble(Score) / 100.0).ToString();
+                SonTextbuff += ScoreStr.ToString();
+            }
+            # region 显示该动作评分
+            # endregion
             if (GameTreeNode.IfUseTanslationTable)
             {
                 SonTextbuff += " ";
@@ -460,14 +476,14 @@ namespace GameTree
             }
             foreach (GameTreeNode Son in NowNode.SonNode)
             {
-                string SonTextbuff = GetGameTreeNodeViewText(Son);
+                string SonTextbuff = GetGameTreeNodeViewText(Son, false, true);
                 TreeNode SonTreeNode = new TreeNode(SonTextbuff);
 
                 NowTreeNode.Nodes.Add(SonTreeNode);
                 GameTreeView(Son, SonTreeNode);
                 if (NowNode.depth == 0)
                 {
-                    SonTextbuff = GetGameTreeNodeViewText(NowNode);
+                    SonTextbuff = GetGameTreeNodeViewText(NowNode, false, true);
 
                     NowTreeNode.Text = SonTextbuff;
                 }
@@ -505,19 +521,19 @@ namespace GameTree
                 Console.Write((",s = " + NowNode.score.ToString()));
                 Console.Write("动作：");
                 Console.Write(NowNode.NodeAction.ToString());
-                if (NowNode.NodeAction == NowAction.Action_PlaceVerticalBoard)
+                if (NowNode.NodeAction.PlayerAction == NowAction.Action_PlaceVerticalBoard)
                 {
-                    Console.Write("位置：" + ((NowNode.ActionLocation.X) * 8 + NowNode.ActionLocation.Y + 1).ToString() + "点和" +
-                        ((NowNode.ActionLocation.X + 1) * 8 + NowNode.ActionLocation.Y + 1).ToString() + "点左侧");
+                    Console.Write("位置：" + ((NowNode.NodeAction.ActionPoint.X) * 8 + NowNode.NodeAction.ActionPoint.Y + 1).ToString() + "点和" +
+                        ((NowNode.NodeAction.ActionPoint.X + 1) * 8 + NowNode.NodeAction.ActionPoint.Y + 1).ToString() + "点左侧");
                 }
-                else if (NowNode.NodeAction == NowAction.Action_PlaceHorizontalBoard)
+                else if (NowNode.NodeAction.PlayerAction == NowAction.Action_PlaceHorizontalBoard)
                 {
-                    Console.Write("位置：" + ((NowNode.ActionLocation.X) * 8 + NowNode.ActionLocation.Y + 1).ToString() + "点和" +
-                        ((NowNode.ActionLocation.X) * 8 + NowNode.ActionLocation.Y + 1 + 1).ToString() + "点上侧");
+                    Console.Write("位置：" + ((NowNode.NodeAction.ActionPoint.X) * 8 + NowNode.NodeAction.ActionPoint.Y + 1).ToString() + "点和" +
+                        ((NowNode.NodeAction.ActionPoint.X) * 8 + NowNode.NodeAction.ActionPoint.Y + 1 + 1).ToString() + "点上侧");
                 }
-                else if (NowNode.NodeAction == NowAction.Action_Move_Player1 || NowNode.NodeAction == NowAction.Action_Move_Player2)
+                else if (NowNode.NodeAction.PlayerAction == NowAction.Action_Move_Player1 || NowNode.NodeAction.PlayerAction == NowAction.Action_Move_Player2)
                 {
-                    Console.Write("位置：" + ((NowNode.ActionLocation.X) * 8 + NowNode.ActionLocation.Y + 1).ToString() + "点");
+                    Console.Write("位置：" + ((NowNode.NodeAction.ActionPoint.X) * 8 + NowNode.NodeAction.ActionPoint.Y + 1).ToString() + "点");
                 }
 
                 Console.WriteLine();

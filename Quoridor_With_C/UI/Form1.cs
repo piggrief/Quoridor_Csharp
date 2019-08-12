@@ -571,8 +571,8 @@ namespace Quoridor_With_C
                         , NowQuoridor.ThisChessBoard.Player2Location.X, NowQuoridor.ThisChessBoard.Player2Location.Y);
                     int P1Dis = NowQuoridor.AstarEngine.AstarRestart(NowQuoridor.ThisChessBoard, EnumNowPlayer.Player1
                         , NowQuoridor.ThisChessBoard.Player1Location.X, NowQuoridor.ThisChessBoard.Player1Location.Y);
-                    Root.P1Distance = P1Dis;
-                    Root.P2Distance = P2Dis;
+                    Root.NodeAction.ActionCheckResult.P1Distance = P1Dis;
+                    Root.NodeAction.ActionCheckResult.P2Distance = P2Dis;
                     try
                     {
                         double AlphaInit = Convert.ToDouble(AlphaSet_CompareCB.Text);
@@ -614,7 +614,7 @@ namespace Quoridor_With_C
                     }
 
                     Console.WriteLine("对比算法结果：");
-                    Console.WriteLine(Root.NodeAction.ToString() + "(" + Root.ActionLocation.X.ToString() + "," + Root.ActionLocation.Y.ToString() + ")");
+                    Console.WriteLine(Root.NodeAction.ToString() + "(" + Root.NodeAction.ActionPoint.X.ToString() + "," + Root.NodeAction.ActionPoint.Y.ToString() + ")");
 
                     /***************待测代码段****************/
                     stopwatch.Stop(); //  停止监视
@@ -650,8 +650,8 @@ namespace Quoridor_With_C
                     , NowQuoridor.ThisChessBoard.Player2Location.X, NowQuoridor.ThisChessBoard.Player2Location.Y);
                 int P1Distance = NowQuoridor.AstarEngine.AstarRestart(NowQuoridor.ThisChessBoard, EnumNowPlayer.Player1
                     , NowQuoridor.ThisChessBoard.Player1Location.X, NowQuoridor.ThisChessBoard.Player1Location.Y);
-                Root.P1Distance = P1Distance;
-                Root.P2Distance = P2Distance;
+                Root.NodeAction.ActionCheckResult.P1Distance = P1Distance;
+                Root.NodeAction.ActionCheckResult.P2Distance = P2Distance;
                 try
                 {
                     double AlphaInit = Convert.ToDouble(AlphaSetTB.Text);
@@ -727,7 +727,7 @@ namespace Quoridor_With_C
                     #endregion 
                 }
                 Console.WriteLine("决策算法结果：");
-                Console.WriteLine(Root.NodeAction.ToString() + "(" + Root.ActionLocation.X.ToString() + "," + Root.ActionLocation.Y.ToString() + ")");
+                Console.WriteLine(Root.NodeAction.ToString() + "(" + Root.NodeAction.ActionPoint.X.ToString() + "," + Root.NodeAction.ActionPoint.Y.ToString() + ")");
 
                 /***************待测代码段****************/
                 stopwatch.Stop(); //  停止监视
@@ -767,10 +767,10 @@ namespace Quoridor_With_C
                 else
                 {
                     #region GameTree
-                    Hint = NowQuoridor.QuoridorRule.Action(ref NowQuoridor.ThisChessBoard, Root.ActionLocation.X, Root.ActionLocation.Y, Root.NodeAction);
-                    PlayerNowAction = Root.NodeAction;
-                    NextActionX = Root.ActionLocation.X;
-                    NextActionY = Root.ActionLocation.Y;
+                    Hint = NowQuoridor.QuoridorRule.Action(ref NowQuoridor.ThisChessBoard, Root.NodeAction.ActionPoint.X, Root.NodeAction.ActionPoint.Y, Root.NodeAction.PlayerAction);
+                    PlayerNowAction = Root.NodeAction.PlayerAction;
+                    NextActionX = Root.NodeAction.ActionPoint.X;
+                    NextActionY = Root.NodeAction.ActionPoint.Y;
                     #endregion 
                 }
                 if (Hint != "OK")
