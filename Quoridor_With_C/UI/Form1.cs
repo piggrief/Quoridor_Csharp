@@ -20,6 +20,7 @@ using System.Diagnostics;
 using MCTS;
 using System.IO;
 using System.Drawing.Drawing2D;
+using QuoridorGameAlgorithm;
 
 namespace Quoridor_With_C
 {
@@ -169,7 +170,7 @@ namespace Quoridor_With_C
         }
         public DebugView DV;
         public DebugTool DT;
-        QuoridorAI NowQuoridor = new QuoridorAI();
+        QuoridorEvalution NowQuoridor = new QuoridorEvalution();
         List<CCWin.SkinControl.SkinPictureBox> QueenChessList = new List<CCWin.SkinControl.SkinPictureBox>();
         List<CCWin.SkinControl.SkinPictureBox> QueenList = new List<CCWin.SkinControl.SkinPictureBox>();      
         public static List<Point> QueenChessLocation = new List<Point>();
@@ -541,7 +542,6 @@ namespace Quoridor_With_C
             #region AI落子
             if (GameMode == GameModeStatus.SinglePlay)
             {
-
                 count_AIAction++;
                 Console.WriteLine("第" + count_AIAction.ToString() + "次落子:");
 
@@ -552,6 +552,9 @@ namespace Quoridor_With_C
 
                 IfUseViewFormDebug = IfUseTreeViewCB.Checked;
                 int TreeDepth = Convert.ToInt16(DepthSelectCB.Text);
+
+                double AlphaInit = 0;
+                double BetaInit = 0;
 
                 if (CompareAlgorithmCB.SelectedItem.ToString() != "None")
                 {
@@ -575,8 +578,8 @@ namespace Quoridor_With_C
                     Root.NodeAction.ActionCheckResult.P2Distance = P2Dis;
                     try
                     {
-                        double AlphaInit = Convert.ToDouble(AlphaSet_CompareCB.Text);
-                        double BetaInit = Convert.ToDouble(BetaSet_CompareCB.Text);
+                        AlphaInit = Convert.ToDouble(AlphaSet_CompareCB.Text);
+                        BetaInit = Convert.ToDouble(BetaSet_CompareCB.Text);
                         if (AlphaInit > BetaInit)
                         {
                             MessageBox.Show("Alpha值必须小于等于Beta值");
@@ -587,7 +590,7 @@ namespace Quoridor_With_C
                         Root.beta = BetaInit;
                         #endregion
 
-                        QuoridorAI.ActionListIfSort = IfSorted_CompareCB.Checked;
+                        QuoridorEvalution.ActionListIfSort = IfSorted_CompareCB.Checked;
                         GameTreeNode.IfUseTanslationTable = IfUseTT_CompareCB.Checked;
                     }
                     catch (Exception)
@@ -597,8 +600,8 @@ namespace Quoridor_With_C
                     }
 
                     #region 对比算法测试
-                    QuoridorAI.AIRunTime.AstarNum = 0;
-                    QuoridorAI.AIRunTime.Astar_s = 0;
+                    QuoridorEvalution.AIRunTime.AstarNum = 0;
+                    QuoridorEvalution.AIRunTime.Astar_s = 0;
 
                     stopwatch = new System.Diagnostics.Stopwatch();
                     stopwatch.Start(); //  开始监视代码运行时间
@@ -642,47 +645,33 @@ namespace Quoridor_With_C
                 {
                     GameTreeNode.SearchFrameWork = GameTreeNode.Enum_GameTreeSearchFrameWork.MinMax;
                 }
-
-                Root = new GameTreeNode();
-                Root.NodePlayer = EnumNowPlayer.Player1;
-
-                int P2Distance = NowQuoridor.AstarEngine.AstarRestart(NowQuoridor.ThisChessBoard, EnumNowPlayer.Player2
-                    , NowQuoridor.ThisChessBoard.Player2Location.X, NowQuoridor.ThisChessBoard.Player2Location.Y);
-                int P1Distance = NowQuoridor.AstarEngine.AstarRestart(NowQuoridor.ThisChessBoard, EnumNowPlayer.Player1
-                    , NowQuoridor.ThisChessBoard.Player1Location.X, NowQuoridor.ThisChessBoard.Player1Location.Y);
-                Root.NodeAction.ActionCheckResult.P1Distance = P1Distance;
-                Root.NodeAction.ActionCheckResult.P2Distance = P2Distance;
                 try
                 {
-                    double AlphaInit = Convert.ToDouble(AlphaSetTB.Text);
-                    double BetaInit = Convert.ToDouble(BetaSetTB.Text);
+                    AlphaInit = Convert.ToDouble(AlphaSetTB.Text);
+                    BetaInit = Convert.ToDouble(BetaSetTB.Text);
                     if (AlphaInit > BetaInit)
                     {
                         MessageBox.Show("Alpha值必须小于等于Beta值");
                         return "SetError";
                     }
-                    # region 全局期望窗口
-                    Root.alpha = AlphaInit;
-                    Root.beta = BetaInit;
-                    #endregion
-
-                    QuoridorAI.ActionListIfSort = IfSortedCB.Checked;
-                    GameTreeNode.IfUseTanslationTable = IfUseTTCB.Checked;
                 }
                 catch (Exception)
                 {
 
                     throw;
                 }
-                
+                QuoridorDecisionSystem QDS = new QuoridorDecisionSystem(QuoridorDecisionSystem.Enum_DecisionAlgorithm.AlphaBetaPurning
+                    , new QuoridorDecisionSystem.ABPurningPara(
+                        TreeDepth, IfSortedCB.Checked, IfUseTTCB.Checked, AlphaInit, BetaInit));
                 #region AI博弈树决策
-                QuoridorAI.AIRunTime.AstarNum = 0;
-                QuoridorAI.AIRunTime.Astar_s = 0;
+                QuoridorEvalution.AIRunTime.AstarNum = 0;
+                QuoridorEvalution.AIRunTime.Astar_s = 0;
 
                 stopwatch = new System.Diagnostics.Stopwatch();
                 stopwatch.Start(); //  开始监视代码运行时间
                 /***************待测代码段****************/
                 QuoridorAction NextAction = new QuoridorAction(NowAction.Action_Wait,new Point(-1,-1));
+                GameTreeNode RootNode = new GameTreeNode();
                 #region MCTS
                 if (AlgorithmSelectCB.SelectedItem.ToString() == "蒙特卡洛树搜索")
                 {
@@ -714,7 +703,7 @@ namespace Quoridor_With_C
                 else
                 {
                     #region AB剪枝树
-                    GameTreeNode.CreateGameTree(Root, NowQuoridor.ThisChessBoard, TreeDepth, DebugSelectCB.Checked);//skinCheckBox1.Checked);//可以改变最大深度来提高算法强度,一定要是奇数
+                    NextAction = QDS.GetNextPolicy(NowQuoridor.ThisChessBoard, out RootNode);
                     //Root = GameTreeNode.MTDfSearch(NowQuoridor.ThisChessBoard, EnumNowPlayer.Player1, Root.beta, 2, Root.alpha, Root.beta);
                     if (IfUseViewFormDebug)
                     {
@@ -722,12 +711,12 @@ namespace Quoridor_With_C
                             DV.treeView1.Nodes.Add(new TreeNode("第" + count_AIAction.ToString() + "次落子:"));
                         else
                             DV.treeView1.Nodes[0] = new TreeNode("第" + count_AIAction.ToString() + "次落子:");
-                        GameTreeNode.GameTreeView(Root, DV.treeView1.Nodes[DV.treeView1.Nodes.Count - 1]);
+                        GameTreeNode.GameTreeView(RootNode, DV.treeView1.Nodes[DV.treeView1.Nodes.Count - 1]);
                     }
                     #endregion 
                 }
                 Console.WriteLine("决策算法结果：");
-                Console.WriteLine(Root.NodeAction.ToString() + "(" + Root.NodeAction.ActionPoint.X.ToString() + "," + Root.NodeAction.ActionPoint.Y.ToString() + ")");
+                Console.WriteLine(NextAction.PlayerAction.ToString() + "(" + NextAction.ActionPoint.X.ToString() + "," + NextAction.ActionPoint.Y.ToString() + ")");
 
                 /***************待测代码段****************/
                 stopwatch.Stop(); //  停止监视
@@ -737,7 +726,7 @@ namespace Quoridor_With_C
 
                 Console.WriteLine("算法用时：" + seconds.ToString() + "s");
                 GameTreeNode.NodeNum = 0;
-                GameTreeNode.CalGameTreeNodeNum(Root);
+                GameTreeNode.CalGameTreeNodeNum(RootNode);
                 Console.WriteLine("博弈树节点总数：" + GameTreeNode.NodeNum.ToString() + "个");
                 //Console.WriteLine("Astar平均用时：" + QuoridorAI.AIRunTime.Astar_s.ToString() + "ms");
                 //Console.WriteLine("Astar次数：" + QuoridorAI.AIRunTime.AstarNum.ToString() + "次");
@@ -766,11 +755,12 @@ namespace Quoridor_With_C
                 #endregion
                 else
                 {
+                    
                     #region GameTree
-                    Hint = NowQuoridor.QuoridorRule.Action(ref NowQuoridor.ThisChessBoard, Root.NodeAction.ActionPoint.X, Root.NodeAction.ActionPoint.Y, Root.NodeAction.PlayerAction);
-                    PlayerNowAction = Root.NodeAction.PlayerAction;
-                    NextActionX = Root.NodeAction.ActionPoint.X;
-                    NextActionY = Root.NodeAction.ActionPoint.Y;
+                    Hint = NowQuoridor.QuoridorRule.Action(ref NowQuoridor.ThisChessBoard, NextAction.ActionPoint.X, NextAction.ActionPoint.Y, NextAction.PlayerAction);
+                    PlayerNowAction = NextAction.PlayerAction;
+                    NextActionX = NextAction.ActionPoint.X;
+                    NextActionY = NextAction.ActionPoint.Y;
                     #endregion 
                 }
                 if (Hint != "OK")

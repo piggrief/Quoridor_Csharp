@@ -39,7 +39,7 @@ namespace GameTree
         public static TranslationTable NodeTranslationTable = new TranslationTable();
         public static long InitChessBoardHashCode = 0;
         public static int RootDepth = 1;///根节点的深度，在一步一步落子后需要+2更新
-        public static QuoridorAI NowQuoridor = new QuoridorAI();
+        public static QuoridorEvalution NowQuoridor = new QuoridorEvalution();
         public static long NodeNum = 0;
         public static EnumNowPlayer GameTreePlayer = EnumNowPlayer.Player2;
         public static void InitTranslationTable()

@@ -99,16 +99,16 @@ namespace LookupRoad
             stopwatch.Stop(); //  停止监视
             TimeSpan timespan3 = stopwatch.Elapsed; //  获取当前实例测量得出的总时间
 
-            if (QuoridorAI.AIRunTime.Astar_s == 0)
+            if (QuoridorEvalution.AIRunTime.Astar_s == 0)
             {
-                QuoridorAI.AIRunTime.Astar_s = timespan3.TotalMilliseconds;
+                QuoridorEvalution.AIRunTime.Astar_s = timespan3.TotalMilliseconds;
             }
             else
             {
-                QuoridorAI.AIRunTime.Astar_s += timespan3.TotalMilliseconds;
-                QuoridorAI.AIRunTime.Astar_s /= 2;
+                QuoridorEvalution.AIRunTime.Astar_s += timespan3.TotalMilliseconds;
+                QuoridorEvalution.AIRunTime.Astar_s /= 2;
             }
-            QuoridorAI.AIRunTime.AstarNum++;
+            QuoridorEvalution.AIRunTime.AstarNum++;
 
             //if (!IfContains)
             //    LookupRoadAlgorithm.ResultSaveTable.Add(BoardHashCode, Min_DistanceLength);

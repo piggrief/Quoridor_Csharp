@@ -33,7 +33,7 @@ namespace MCTS
         public List<MonteCartoTreeNode> SonNode = new List<MonteCartoTreeNode>();///子节点列表
 
         public static EnumNowPlayer JudgePlayer = EnumNowPlayer.Player2;
-        public static QuoridorAI NowQuoridor = new QuoridorAI();
+        public static QuoridorEvalution NowQuoridor = new QuoridorEvalution();
         public static QuoridorRuleEngine RuleEngine = new QuoridorRuleEngine();
         /// <summary>
         /// 计算一个子节点的UCT值，用于Select

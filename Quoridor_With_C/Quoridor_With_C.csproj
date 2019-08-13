@@ -71,6 +71,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Quridor Class\GameAlgorithm.cs" />
     <Compile Include="Quridor Class\MCTS.cs" />
     <Compile Include="UI\DebugTool.cs">
       <SubType>Form</SubType>

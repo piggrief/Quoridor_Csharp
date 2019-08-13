@@ -38,7 +38,7 @@ namespace Quoridor
     /// <summary>
     /// 步步为营AI类 
     /// </summary>
-    public class QuoridorAI
+    public class QuoridorEvalution
     {
         public ChessBoard ThisChessBoard = new ChessBoard();
         public LookupRoadAlgorithm AstarEngine = new LookupRoadAlgorithm();
