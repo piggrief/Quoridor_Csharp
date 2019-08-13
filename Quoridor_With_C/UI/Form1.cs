@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using CCWin;
 using System.Runtime.InteropServices;
-using Quoridor;
+using QuoridorEva;
 using Queen;
 using DebugToolForm;
 using QuoridorRule;
@@ -21,6 +21,7 @@ using MCTS;
 using System.IO;
 using System.Drawing.Drawing2D;
 using QuoridorGameAlgorithm;
+using QuoridorGame;
 
 namespace Quoridor_With_C
 {

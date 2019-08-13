@@ -13,7 +13,7 @@ using System.IO;
 using System.Threading;
 using UartComunication;
 using System.Windows.Forms.DataVisualization.Charting;
-using Quoridor;
+using QuoridorEva;
 using Quoridor_With_C;
 
 namespace DebugToolForm

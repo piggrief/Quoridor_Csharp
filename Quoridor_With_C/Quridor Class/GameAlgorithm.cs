@@ -9,7 +9,7 @@ using EnumNowPlayer = QuoridorRule.QuoridorRuleEngine.EnumNowPlayer;
 using LookupRoad;
 using QuoridorRule;
 using GameTree;
-using Quoridor;
+using QuoridorEva;
 
 namespace QuoridorGameAlgorithm
 {
@@ -55,7 +55,7 @@ namespace QuoridorGameAlgorithm
         }
         #endregion
         public ABPurningPara ThisABPurningPara= new ABPurningPara();
-        public QuoridorEvalution NowQuoridor = new QuoridorEvalution();
+        public QuoridorEvalution NowEvalution = new QuoridorEvalution();
         /// <summary>
         /// 获得PolicyPlayer下一步的决策
         /// </summary>
@@ -67,11 +67,11 @@ namespace QuoridorGameAlgorithm
             QuoridorAction NextPolicy = new QuoridorAction(NowAction.Action_Wait, new Point(-1, -1));
 
             RootNode = new GameTreeNode();
-            RootNode.NodePlayer = NowQuoridor.ReversePlayer(PolicyPlayer);
+            RootNode.NodePlayer = NowEvalution.ReversePlayer(PolicyPlayer);
 
-            int P2Dis = NowQuoridor.AstarEngine.AstarRestart(ThisChessBoard, EnumNowPlayer.Player2
+            int P2Dis = NowEvalution.AstarEngine.AstarRestart(ThisChessBoard, EnumNowPlayer.Player2
                 , ThisChessBoard.Player2Location.X, ThisChessBoard.Player2Location.Y);
-            int P1Dis = NowQuoridor.AstarEngine.AstarRestart(ThisChessBoard, EnumNowPlayer.Player1
+            int P1Dis = NowEvalution.AstarEngine.AstarRestart(ThisChessBoard, EnumNowPlayer.Player1
                 , ThisChessBoard.Player1Location.X, ThisChessBoard.Player1Location.Y);
             RootNode.NodeAction.ActionCheckResult.P1Distance = P1Dis;
             RootNode.NodeAction.ActionCheckResult.P2Distance = P2Dis;

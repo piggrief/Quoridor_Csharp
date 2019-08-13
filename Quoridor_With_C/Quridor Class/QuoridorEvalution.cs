@@ -13,7 +13,7 @@ using System.Collections;
 using MathNet.Numerics.Random;
 using System.IO;
 
-namespace Quoridor
+namespace QuoridorEva
 {
     /// <summary>
     /// 动作类，包含双方评分

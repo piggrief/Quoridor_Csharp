@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Quoridor;
+using QuoridorEva;
 using System.Drawing;
 using Quoridor_With_C;
 using QuoridorRule;

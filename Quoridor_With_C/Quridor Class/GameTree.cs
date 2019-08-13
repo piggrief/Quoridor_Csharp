@@ -7,7 +7,7 @@ using Quoridor_With_C;
 using System.Drawing;
 using LookupRoad;
 using QuoridorRule;
-using Quoridor;
+using QuoridorEva;
 using NowAction = QuoridorRule.QuoridorRuleEngine.NowAction;
 using EnumNowPlayer = QuoridorRule.QuoridorRuleEngine.EnumNowPlayer;
 using System.Windows.Forms;

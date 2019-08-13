@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using GameTree;
 using System.Drawing;
 using QuoridorRule;
-using Quoridor;
+using QuoridorEva;
 using NowAction = QuoridorRule.QuoridorRuleEngine.NowAction;
 using EnumNowPlayer = QuoridorRule.QuoridorRuleEngine.EnumNowPlayer;
 using Quoridor_With_C;
