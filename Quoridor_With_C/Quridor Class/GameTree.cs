@@ -167,6 +167,7 @@ namespace GameTree
 
         public long NodeHashCode = 0;
         public static bool IfUseTanslationTable = true;
+        public EnumNowPlayer PolicyPlayer = EnumNowPlayer.Player2;
         /// <summary>
         /// 以Alpha-Beta剪枝框架并使用TranslationTable生成博弈树
         /// </summary>
@@ -250,7 +251,7 @@ namespace GameTree
                 ChessBoard.ResumeChessBoard(ref ThisChessBoard, ChessBoardBuff);
 
                 #region Min层
-                if (ThisNode.NodePlayer == NowQuoridor.PlayerBuff)
+                if (ThisNode.NodePlayer == PolicyPlayer)
                 {
                     if (ThisNode.SonNode.Last().alpha < ThisNode.beta)
                     {
@@ -313,7 +314,7 @@ namespace GameTree
         /// <param name="ChessBoard_Init">初始棋盘状态</param>
         /// <param name="DepthMax_Set">博弈树深度</param>
         /// <param name="IfShowDebugLog">是否显示调试日志，默认不显示</param>
-        public static void CreateGameTree(GameTreeNode RootNode, ChessBoard ChessBoard_Init, int DepthMax_Set, bool IfShowDebugLog = false)
+        public static void CreateGameTree(EnumNowPlayer PolicyPlayer, GameTreeNode RootNode, ChessBoard ChessBoard_Init, int DepthMax_Set, bool IfShowDebugLog = false)
         {
             try
             {
@@ -328,7 +329,7 @@ namespace GameTree
                 throw;
             }
             DepthMax = DepthMax_Set - 1;
-
+            RootNode.PolicyPlayer = PolicyPlayer;
             if (SearchFrameWork == Enum_GameTreeSearchFrameWork.MinMax)
             {
                 RootNode.ExpandNode_MinMax(ChessBoard_Init, RootNode);//3W数量级节点数  
@@ -567,7 +568,7 @@ namespace GameTree
                 SearchRoot.NodePlayer = SearchPlayer;
                 SearchRoot.alpha = Beta - 1;
                 SearchRoot.beta = Beta;
-                CreateGameTree(SearchRoot, ChessBoard_Init, Depth);
+                CreateGameTree(SearchPlayer, SearchRoot, ChessBoard_Init, Depth);
                 if (true)
                 {
                     if (Form1.form1.DV.treeView1.Nodes[Form1.form1.DV.treeView1.Nodes.Count - 1].Text != "Root")

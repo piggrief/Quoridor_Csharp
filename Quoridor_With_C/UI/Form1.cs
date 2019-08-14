@@ -170,6 +170,91 @@ namespace Quoridor_With_C
             form1 = this;
 
         }
+        public void ConfigTabPageInit()
+        {
+            P1TypeSetCB.Items.Add(QuoridorGame.Enum_PlayerType.AI);
+            P1TypeSetCB.Items.Add(QuoridorGame.Enum_PlayerType.Human);
+            P1TypeSetCB.SelectedIndex = 1;
+            P2TypeSetCB.Items.Add(QuoridorGame.Enum_PlayerType.AI);
+            P2TypeSetCB.Items.Add(QuoridorGame.Enum_PlayerType.Human);
+            P2TypeSetCB.SelectedIndex = 0;
+            for (int i = 2; i <= 6; i += 2)
+            {
+                ABPDepthSelectCB.Items.Add(i);
+            }
+            ABPDepthSelectCB.SelectedItem = 2;
+            for (int i = 0; i <= 12; i+=2)
+			{
+                OE_DepthSelectCB.Items.Add(i);			 
+			}
+            OE_DepthSelectCB.SelectedItem = 6;
+            ABPConfigCB.SelectedIndex = 0;
+            GameTabControl.SelectedTab = GameSetTabPage;
+        }
+        /// <summary>
+        /// 显示参数配置提示字符串
+        /// </summary>
+        /// <param name="ConfigGame">配置好的游戏对象</param>
+        public void ShowParaConfigStr(QuoridorGame ConfigGame)
+        {
+            string HintStr = "";
+            if (ConfigGame.P1Type == QuoridorGame.Enum_PlayerType.Human)
+            {
+                HintStr = "P1:Human";
+            }
+            else
+            {
+                HintStr = "P1:AI,算法：";
+                HintStr += ConfigGame.P1DecisionSystem.UsedAlgorithm.ToString();
+                HintStr += System.Environment.NewLine;
+                if (ConfigGame.P1DecisionSystem.UsedAlgorithm == QuoridorDecisionSystem.Enum_DecisionAlgorithm.AlphaBetaPurning)
+                {                    
+                    QuoridorDecisionSystem.ABPurningPara ParaConfiged = ConfigGame.P1DecisionSystem.ThisABPurningPara;
+                    HintStr += ParaConfiged.DepthMax.ToString() + "层剪枝，"
+                        + ParaConfiged.GoodExtension_Depth.ToString() + "层算杀";
+                    HintStr += System.Environment.NewLine;
+                    if (ParaConfiged.SortActionList)
+                        HintStr += "结点有序;";
+                    if (ParaConfiged.UseTT)
+                        HintStr += "置换表;";
+                    if (ParaConfiged.UseFormulae)
+                        HintStr += "分局势;";
+                    HintStr += System.Environment.NewLine;
+                    if (ParaConfiged.UseGoodExtension)
+                        HintStr += "单步延伸评分下限" + ParaConfiged.GoodExtension_ScoreLower.ToString();                                  
+                }
+            }
+            P1ParaShowTB.Text = HintStr;
+            if (ConfigGame.P2Type == QuoridorGame.Enum_PlayerType.Human)
+            {
+                HintStr = "P2:Human";
+            }
+            else
+            {
+                HintStr = "P2:AI,算法：";
+                HintStr += ConfigGame.P2DecisionSystem.UsedAlgorithm.ToString();
+                HintStr += System.Environment.NewLine;
+                if (ConfigGame.P2DecisionSystem.UsedAlgorithm == QuoridorDecisionSystem.Enum_DecisionAlgorithm.AlphaBetaPurning)
+                {
+                    QuoridorDecisionSystem.ABPurningPara ParaConfiged = ConfigGame.P2DecisionSystem.ThisABPurningPara;
+                    HintStr += ParaConfiged.DepthMax.ToString() + "层剪枝，"
+                        + ParaConfiged.GoodExtension_Depth.ToString() + "层算杀";
+                    HintStr += System.Environment.NewLine;
+                    if (ParaConfiged.SortActionList)
+                        HintStr += "结点有序;";
+                    if (ParaConfiged.UseTT)
+                        HintStr += "置换表;";
+                    if (ParaConfiged.UseFormulae)
+                        HintStr += "分局势;";
+                    HintStr += System.Environment.NewLine;
+                    if (ParaConfiged.UseGoodExtension)
+                        HintStr += "单步延伸评分下限" + ParaConfiged.GoodExtension_ScoreLower.ToString();
+                }
+            }
+            P2ParaShowTB.Text = HintStr;
+            QuoridorDecisionSystem DS = ConfigGame.P1DecisionSystem;
+            
+        }
         public DebugView DV;
         public DebugTool DT;
         QuoridorEvalution NowQuoridor = new QuoridorEvalution();
@@ -262,25 +347,8 @@ namespace Quoridor_With_C
                 #endregion
 
                 #region 配置算法选择控件
-                CompareAlgorithmCB.Items.Add("None");
-                CompareAlgorithmCB.Items.Add(GameTreeNode.Enum_GameTreeSearchFrameWork.AlphaBetaPurning);
-                AlgorithmSelectCB.Items.Add(GameTreeNode.Enum_GameTreeSearchFrameWork.AlphaBetaPurning);
-
-                CompareAlgorithmCB.Items.Add(GameTreeNode.Enum_GameTreeSearchFrameWork.MinMax);
-                AlgorithmSelectCB.Items.Add(GameTreeNode.Enum_GameTreeSearchFrameWork.MinMax);
-
-                AlgorithmSelectCB.Items.Add("蒙特卡洛树搜索");
-
-                CompareAlgorithmCB.SelectedIndex = 0;
-                AlgorithmSelectCB.Items.Add("并行MTD（f）算法");
-                AlgorithmSelectCB.SelectedIndex = AlgorithmSelectCB.Items.Count - 1;
-                DepthSelectCB.SelectedIndex = 1;
-                DepthCompareCB.SelectedIndex = 1;
+                ConfigTabPageInit();
                 #endregion
-                # region 单独给棋盘对弈一个线程
-                GameThread = new Thread(Form1.form1.QuoridorGame_Do);
-                GameThread.Start();
-                # endregion
                 Console.WriteLine("棋盘HashCode为：" + GameTreeNode.InitChessBoardHashCode.ToString());
             }
             else
@@ -299,8 +367,8 @@ namespace Quoridor_With_C
                 PlaceHorizontalBoardBTN.Dispose();
                 TestBTN.Dispose();
 
-                IfUseTT_CopareCB.Visible = false;
-                IfUseTT_CopareCB.Enabled = false;
+                ConfigTabControl.Visible = false;
+                ConfigTabControl.Enabled = false;
                 TestTB.Visible = false;
                 skinToolStrip1.Visible = false;
                 skinToolStrip1.Enabled = false;
@@ -379,18 +447,12 @@ namespace Quoridor_With_C
         QuoridorAction SelfAction = new QuoridorAction(NowAction.Action_Wait, new Point(-1, -1));
 
         public ChessManual ThisCM = new ChessManual();
-        public QuoridorGame NowGame = new QuoridorGame();
+        public QuoridorGame NowGame = new QuoridorGame(
+            QuoridorGame.Enum_PlayerType.Human, QuoridorGame.Enum_PlayerType.AI,
+                new QuoridorDecisionSystem(EnumNowPlayer.Player1, QuoridorDecisionSystem.Enum_DecisionAlgorithm.AlphaBetaPurning, new QuoridorDecisionSystem.ABPurningPara())
+                , new QuoridorDecisionSystem(EnumNowPlayer.Player2, QuoridorDecisionSystem.Enum_DecisionAlgorithm.AlphaBetaPurning, new QuoridorDecisionSystem.ABPurningPara()));
         public void QuoridorGame_Do()
         {
-            #region 配置游戏对局参数
-            QuoridorDecisionSystem P1DS = new QuoridorDecisionSystem();
-            QuoridorDecisionSystem P2DS = new QuoridorDecisionSystem( EnumNowPlayer.Player2
-                , QuoridorDecisionSystem.Enum_DecisionAlgorithm.AlphaBetaPurning,
-                new QuoridorDecisionSystem.ABPurningPara(
-                    2, true, false, -50, 50, true));
-            NowGame = new QuoridorGame(QuoridorGame.Enum_PlayerType.Human, QuoridorGame.Enum_PlayerType.AI,
-                P1DS, P2DS);
-            #endregion
             #region 配置初始棋盘
             //NowGame.QuoridorEva.ThisChessBoard.ChessBoardAll[0, 3].GridStatus = Grid.GridInsideStatus.Empty;
             //NowGame.QuoridorEva.ThisChessBoard.ChessBoardAll[1, 3].GridStatus = Grid.GridInsideStatus.Have_Player1;
@@ -517,419 +579,6 @@ namespace Quoridor_With_C
                 NowGame.HumanPolicyFinish = true;
             }
             string Hint = "OK";
-            //# region 计算相关操作对应的操作位置的行和列
-
-            //int col = 0, row = 0;//0~7行列
-            //if (PlayerNowAction == NowAction.Action_PlaceVerticalBoard)
-            //{
-            //    col = Convert.ToInt16((TP.X - _FormDraw.StartLocation_X) / _FormDraw.CB_BlockWidth);
-            //    row = Convert.ToInt16((TP.Y + _FormDraw.CB_BlockWidth / 2 - _FormDraw.StartLocation_Y) / _FormDraw.CB_BlockWidth) - 1;
-            //}
-            //else if (PlayerNowAction == NowAction.Action_PlaceHorizontalBoard)
-            //{
-            //    col = Convert.ToInt16((TP.X + _FormDraw.CB_BlockWidth / 2 - _FormDraw.StartLocation_X) / _FormDraw.CB_BlockWidth) - 1;
-            //    row = Convert.ToInt16((TP.Y - _FormDraw.StartLocation_Y) / _FormDraw.CB_BlockWidth);
-            //}
-            //else if (PlayerNowAction == NowAction.Action_Move_Player1 || PlayerNowAction == NowAction.Action_Move_Player2)
-            //{
-            //    col = Convert.ToInt16(TP.X / _FormDraw.CB_BlockWidth) - 1;
-            //    row = Convert.ToInt16(TP.Y / _FormDraw.CB_BlockWidth) - 1;
-            //}
-
-            //# endregion
-
-            //#region 玩家落子
-            //if (!(row >= 0 && row <= 6 && col >= 0 && col <= 6))
-            //{
-            //    Hint = "点击越界！";
-            //    return Hint;
-            //}
-
-            //QuoridorRuleEngine.CheckBoardResult RuleCheckResult = new QuoridorRuleEngine.CheckBoardResult();
-            
-            //RuleCheckResult = NowQuoridor.QuoridorRule.CheckBoard(NowQuoridor.ThisChessBoard, PlayerNowAction, NowPlayer, row, col);
-            //string RuleHint = RuleCheckResult.HintStr;
-
-            //if ((RuleHint == "Player1 No Board" && NowPlayer == EnumNowPlayer.Player1)
-            //    || (RuleHint == "Player2 No Board" && NowPlayer == EnumNowPlayer.Player2))
-            //{
-            //    if (PlayerNowAction == NowAction.Action_PlaceHorizontalBoard
-            //        || PlayerNowAction == NowAction.Action_PlaceVerticalBoard)
-            //    {
-            //        MessageBox.Show(RuleHint);
-            //        return RuleHint;
-            //    }
-            //}
-
-            //if (RuleHint != "OK")
-            //{
-            //    MessageBox.Show(RuleHint);
-            //    return RuleHint;
-            //}
-
-            //ThisCM.RenewActionSequence(PlayerNowAction, row, col);
-            //long HashBuff = 0;
-            //OpponentAction.ActionPoint.X = row;
-            //OpponentAction.ActionPoint.Y = col;
-            //OpponentAction.PlayerAction = PlayerNowAction;
- 
-
-            //if (PlayerFirstAction)
-            //{
-            //    GameTreeNode.InitTranslationTable();
-            //    PlayerFirstAction = false;
-            //    QuoridorAction QA = new QuoridorAction(PlayerNowAction, new Point(row, col));
-            //    HashBuff = GameTreeNode.NodeTranslationTable.NodeGetHashCode(GameTreeNode.InitChessBoardHashCode, QA, NowQuoridor.ThisChessBoard);
-            //}
-            //else
-            //{ 
-            //    QuoridorAction QA = new QuoridorAction(PlayerNowAction, new Point(row,col));
-            //    HashBuff = GameTreeNode.NodeTranslationTable.NodeGetHashCode(Root.NodeHashCode, QA, NowQuoridor.ThisChessBoard);
-            //}
-
-            //Hint = NowQuoridor.QuoridorRule.Action(ref NowQuoridor.ThisChessBoard,row, col, PlayerNowAction);
-
-            //if (Hint != "OK")
-            //{
-            //    MessageBox.Show(Hint);
-            //    return Hint;
-            //}
-            //if (NowPlayer == EnumNowPlayer.Player1)
-            //{
-            //    if (PlayerNowAction == NowAction.Action_PlaceVerticalBoard
-            //        || PlayerNowAction == NowAction.Action_PlaceHorizontalBoard)
-            //        NowQuoridor.ThisChessBoard.NumPlayer1Board -= 2;
-            //    NowPlayer = EnumNowPlayer.Player2;
-            //}
-            //else if (NowPlayer == EnumNowPlayer.Player2)
-            //{
-            //    if (PlayerNowAction == NowAction.Action_PlaceVerticalBoard
-            //        || PlayerNowAction == NowAction.Action_PlaceHorizontalBoard)
-            //        NowQuoridor.ThisChessBoard.NumPlayer2Board -= 2;
-            //    NowPlayer = EnumNowPlayer.Player1;
-            //}
-
-            //NowQuoridor.ThisChessBoard.DrawNowChessBoard(ref Gr, ChessWhitePB, ChessBlackPB);
-            //ChessBoardPB.Refresh();
-
-            string result = "";//NowQuoridor.QuoridorRule.CheckResult(NowQuoridor.ThisChessBoard);
-            //if (result != "No success")
-            //{
-            //    if (result == "Player2 Success!")
-            //        ThisCM.EnterChessManual(EnumNowPlayer.Player2);
-            //    else if (result == "Player1 Success!")
-            //        ThisCM.EnterChessManual(EnumNowPlayer.Player1);
-            //    MessageBox.Show(result);
-            //    System.Environment.Exit(0);
-            //}
-
-            //if (NowPlayer == EnumNowPlayer.Player1)
-            //{
-            //    ActionPlayerLabel.Text = "白子";
-            //    BlackBoardNumLB.Text = NowQuoridor.ThisChessBoard.NumPlayer2Board.ToString();
-            //    WhiteBoardNumLB.Text = NowQuoridor.ThisChessBoard.NumPlayer1Board.ToString();
-
-            //    PlayerNowAction = NowAction.Action_Move_Player1;
-            //}
-            //if (NowPlayer == EnumNowPlayer.Player2)
-            //{
-            //    ActionPlayerLabel.Text = "黑子";
-            //    BlackBoardNumLB.Text = NowQuoridor.ThisChessBoard.NumPlayer2Board.ToString();
-            //    WhiteBoardNumLB.Text = NowQuoridor.ThisChessBoard.NumPlayer1Board.ToString();
-
-            //    PlayerNowAction = NowAction.Action_Move_Player2;
-            //}
-            //NowQuoridor.Player_Now = NowPlayer;
-
-            //GameTreeNode.InitChessBoardHashCode = HashBuff;
-            //#endregion
-
-            #region AI落子
-            //if (GameMode == GameModeStatus.SinglePlay)
-            //{
-            //    count_AIAction++;
-            //    Console.WriteLine("第" + count_AIAction.ToString() + "次落子:");
-
-            //    System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
-            //    TimeSpan timespan = stopwatch.Elapsed; //  获取当前实例测量得出的总时间
-            //    double milliseconds = timespan.TotalMilliseconds;  //  总毫秒数
-            //    double seconds = timespan.TotalSeconds;
-
-            //    IfUseViewFormDebug = IfUseTreeViewCB.Checked;
-            //    int TreeDepth = Convert.ToInt16(DepthSelectCB.Text);
-
-            //    double AlphaInit = 0;
-            //    double BetaInit = 0;
-
-            //    if (CompareAlgorithmCB.SelectedItem.ToString() != "None")
-            //    {
-            //        if (CompareAlgorithmCB.SelectedItem.ToString() == GameTreeNode.Enum_GameTreeSearchFrameWork.AlphaBetaPurning.ToString())
-            //        {
-            //            GameTreeNode.SearchFrameWork = GameTreeNode.Enum_GameTreeSearchFrameWork.AlphaBetaPurning;
-            //        }
-            //        else if (CompareAlgorithmCB.SelectedItem.ToString() == GameTreeNode.Enum_GameTreeSearchFrameWork.MinMax.ToString())
-            //        {
-            //            GameTreeNode.SearchFrameWork = GameTreeNode.Enum_GameTreeSearchFrameWork.MinMax;
-            //        }
-
-            //        Root = new GameTreeNode();
-            //        Root.NodePlayer = EnumNowPlayer.Player1;
-
-            //        int P2Dis = NowQuoridor.AstarEngine.AstarRestart(NowQuoridor.ThisChessBoard, EnumNowPlayer.Player2
-            //            , NowQuoridor.ThisChessBoard.Player2Location.X, NowQuoridor.ThisChessBoard.Player2Location.Y);
-            //        int P1Dis = NowQuoridor.AstarEngine.AstarRestart(NowQuoridor.ThisChessBoard, EnumNowPlayer.Player1
-            //            , NowQuoridor.ThisChessBoard.Player1Location.X, NowQuoridor.ThisChessBoard.Player1Location.Y);
-            //        Root.NodeAction.ActionCheckResult.P1Distance = P1Dis;
-            //        Root.NodeAction.ActionCheckResult.P2Distance = P2Dis;
-            //        try
-            //        {
-            //            AlphaInit = Convert.ToDouble(AlphaSet_CompareCB.Text);
-            //            BetaInit = Convert.ToDouble(BetaSet_CompareCB.Text);
-            //            if (AlphaInit > BetaInit)
-            //            {
-            //                MessageBox.Show("Alpha值必须小于等于Beta值");
-            //                return "SetError";
-            //            }
-            //            # region 全局期望窗口
-            //            Root.alpha = AlphaInit;
-            //            Root.beta = BetaInit;
-            //            #endregion
-
-            //            QuoridorEvalution.ActionListIfSort = IfSorted_CompareCB.Checked;
-            //            GameTreeNode.IfUseTanslationTable = IfUseTT_CompareCB.Checked;
-            //        }
-            //        catch (Exception)
-            //        {
-                        
-            //            throw;
-            //        }
-
-            //        #region 对比算法测试
-            //        QuoridorEvalution.AIRunTime.AstarNum = 0;
-            //        QuoridorEvalution.AIRunTime.Astar_s = 0;
-
-            //        stopwatch = new System.Diagnostics.Stopwatch();
-            //        stopwatch.Start(); //  开始监视代码运行时间
-            //        /***************待测代码段****************/
-            //        GameTreeNode.CreateGameTree(Root, NowQuoridor.ThisChessBoard, TreeDepth, DebugSelectCB.Checked);//skinCheckBox1.Checked);//可以改变最大深度来提高算法强度,一定要是奇数
-            //        if (IfUseViewFormDebug)
-            //        {
-            //            if (DV.treeView2.Nodes[DV.treeView2.Nodes.Count - 1].Text != "Root")
-            //                DV.treeView2.Nodes.Add(new TreeNode("第" + count_AIAction.ToString() + "次落子:"));
-            //            else
-            //                DV.treeView2.Nodes[0] = new TreeNode("第" + count_AIAction.ToString() + "次落子:");
-            //            GameTreeNode.GameTreeView(Root, DV.treeView2.Nodes[DV.treeView2.Nodes.Count - 1]);
-            //        }
-
-            //        Console.WriteLine("对比算法结果：");
-            //        Console.WriteLine(Root.NodeAction.ToString() + "(" + Root.NodeAction.ActionPoint.X.ToString() + "," + Root.NodeAction.ActionPoint.Y.ToString() + ")");
-
-            //        /***************待测代码段****************/
-            //        stopwatch.Stop(); //  停止监视
-            //        timespan = stopwatch.Elapsed; //  获取当前实例测量得出的总时间
-            //        milliseconds = timespan.TotalMilliseconds;  //  总毫秒数
-            //        seconds = timespan.TotalSeconds;
-
-            //        Console.WriteLine("算法用时：" + seconds.ToString() + "s");
-            //        GameTreeNode.NodeNum = 0;
-            //        GameTreeNode.CalGameTreeNodeNum(Root);
-            //        Console.WriteLine("博弈树节点总数：" + GameTreeNode.NodeNum.ToString() + "个");
-            //        //Console.WriteLine("Astar平均用时：" + QuoridorAI.AIRunTime.Astar_s.ToString() + "ms");
-            //        //Console.WriteLine("Astar次数：" + QuoridorAI.AIRunTime.AstarNum.ToString() + "次");
-            //        //Console.WriteLine("Astar总用时：" + (QuoridorAI.AIRunTime.Astar_s * QuoridorAI.AIRunTime.AstarNum).ToString() + "ms");
-            //        Console.WriteLine("*************");
-
-            //        #endregion
-            //    }
-
-            //    if (AlgorithmSelectCB.SelectedItem.ToString() == GameTreeNode.Enum_GameTreeSearchFrameWork.AlphaBetaPurning.ToString())
-            //    {
-            //        GameTreeNode.SearchFrameWork = GameTreeNode.Enum_GameTreeSearchFrameWork.AlphaBetaPurning;
-            //    }
-            //    else if (AlgorithmSelectCB.SelectedItem.ToString() == GameTreeNode.Enum_GameTreeSearchFrameWork.MinMax.ToString())
-            //    {
-            //        GameTreeNode.SearchFrameWork = GameTreeNode.Enum_GameTreeSearchFrameWork.MinMax;
-            //    }
-            //    try
-            //    {
-            //        AlphaInit = Convert.ToDouble(AlphaSetTB.Text);
-            //        BetaInit = Convert.ToDouble(BetaSetTB.Text);
-            //        if (AlphaInit > BetaInit)
-            //        {
-            //            MessageBox.Show("Alpha值必须小于等于Beta值");
-            //            return "SetError";
-            //        }
-            //    }
-            //    catch (Exception)
-            //    {
-
-            //        throw;
-            //    }
-            //    QuoridorDecisionSystem QDS = new QuoridorDecisionSystem(QuoridorDecisionSystem.Enum_DecisionAlgorithm.AlphaBetaPurning
-            //        , new QuoridorDecisionSystem.ABPurningPara(
-            //            TreeDepth, IfSortedCB.Checked, IfUseTTCB.Checked, AlphaInit, BetaInit));
-            //    #region AI博弈树决策
-            //    QuoridorEvalution.AIRunTime.AstarNum = 0;
-            //    QuoridorEvalution.AIRunTime.Astar_s = 0;
-
-            //    stopwatch = new System.Diagnostics.Stopwatch();
-            //    stopwatch.Start(); //  开始监视代码运行时间
-            //    /***************待测代码段****************/
-            //    QuoridorAction NextAction = new QuoridorAction(NowAction.Action_Wait,new Point(-1,-1));
-            //    GameTreeNode RootNode = new GameTreeNode();
-            //    #region MCTS
-            //    if (AlgorithmSelectCB.SelectedItem.ToString() == "蒙特卡洛树搜索")
-            //    {
-            //        int SimNum = 0;
-            //        try
-            //        {
-            //            SimNum = Convert.ToInt16(SimNumSetTB.Text);
-            //            MonteCartoTreeNode._C = Convert.ToDouble(CValueSetTB.Text);
-            //        }
-            //        catch (Exception)
-            //        {
-                        
-            //            throw;
-            //        }
-            //        if (AIFirstAction)
-            //        {
-            //            MTRoot = new MonteCartoTreeNode();
-            //            AIFirstAction = false;
-            //        }
-            //        else
-            //        {
-            //            MTRoot = MonteCartoTreeNode.GetNextPolicyRootNode(SelfAction, OpponentAction, MTRoot);
-            //        }
-            //        //MonteCartoTreeNode._C = 0.04;//0.0055比较折中
-            //        MTRoot.NodePlayer = EnumNowPlayer.Player1;
-            //        NextAction = MonteCartoTreeNode.GetMCTSPolicy(NowQuoridor.ThisChessBoard, MTRoot, SimNum);
-            //    }
-            //    #endregion
-            //    else
-            //    {
-            //        #region AB剪枝树
-            //        NextAction = QDS.GetNextPolicy(NowQuoridor.ThisChessBoard, out RootNode);
-            //        //Root = GameTreeNode.MTDfSearch(NowQuoridor.ThisChessBoard, EnumNowPlayer.Player1, Root.beta, 2, Root.alpha, Root.beta);
-            //        if (IfUseViewFormDebug)
-            //        {
-            //            if (DV.treeView1.Nodes[DV.treeView1.Nodes.Count - 1].Text != "Root")
-            //                DV.treeView1.Nodes.Add(new TreeNode("第" + count_AIAction.ToString() + "次落子:"));
-            //            else
-            //                DV.treeView1.Nodes[0] = new TreeNode("第" + count_AIAction.ToString() + "次落子:");
-            //            GameTreeNode.GameTreeView(RootNode, DV.treeView1.Nodes[DV.treeView1.Nodes.Count - 1]);
-            //        }
-            //        #endregion 
-            //    }
-            //    Console.WriteLine("决策算法结果：");
-            //    Console.WriteLine(NextAction.PlayerAction.ToString() + "(" + NextAction.ActionPoint.X.ToString() + "," + NextAction.ActionPoint.Y.ToString() + ")");
-
-            //    /***************待测代码段****************/
-            //    stopwatch.Stop(); //  停止监视
-            //    timespan = stopwatch.Elapsed; //  获取当前实例测量得出的总时间
-            //    milliseconds = timespan.TotalMilliseconds;  //  总毫秒数
-            //    seconds = timespan.TotalSeconds;
-
-            //    Console.WriteLine("算法用时：" + seconds.ToString() + "s");
-            //    GameTreeNode.NodeNum = 0;
-            //    GameTreeNode.CalGameTreeNodeNum(RootNode);
-            //    Console.WriteLine("博弈树节点总数：" + GameTreeNode.NodeNum.ToString() + "个");
-            //    //Console.WriteLine("Astar平均用时：" + QuoridorAI.AIRunTime.Astar_s.ToString() + "ms");
-            //    //Console.WriteLine("Astar次数：" + QuoridorAI.AIRunTime.AstarNum.ToString() + "次");
-            //    //Console.WriteLine("Astar总用时：" + (QuoridorAI.AIRunTime.Astar_s * QuoridorAI.AIRunTime.AstarNum).ToString() + "ms");
-            //    Console.WriteLine("*************");
-
-            //    /*更新根节点深度*/
-            //    GameTreeNode.RootDepth += 2;
-
-            //    #endregion
-            //    //NowQuoridor.TestEvaluation();
-            //    //NowQuoridor.AlphaBetaPruningInit(NowQuoridor.ThisChessBoard.ChessBoardAll, EnumNowPlayer.Player2);                
-            //    //QuoridorAction AIAction = NowQuoridor.AlphaBetaPruning(NowQuoridor.ThisChessBoard, EnumNowPlayer.Player2, 4, -10000, 10000, ref buff);
-            //    //QuoridorAction AIAction = NowQuoridor.AIAction_Greedy(EnumNowPlayer.Player2);
-            //    //Hint = NowQuoridor.QuoridorRule.Action(ref NowQuoridor.ThisChessBoard, AIAction.ActionPoint.X, AIAction.ActionPoint.Y, AIAction.PlayerAction);
-
-            //    #region MCTS
-            //    int NextActionX = 0, NextActionY = 0;
-            //    if (AlgorithmSelectCB.SelectedItem.ToString() == "蒙特卡洛树搜索")
-            //    {
-            //        Hint = NowQuoridor.QuoridorRule.Action(ref NowQuoridor.ThisChessBoard, NextAction.ActionPoint.X, NextAction.ActionPoint.Y, NextAction.PlayerAction);
-            //        PlayerNowAction = NextAction.PlayerAction;
-            //        NextActionX = NextAction.ActionPoint.X;
-            //        NextActionY = NextAction.ActionPoint.Y;
-            //    }
-            //    #endregion
-            //    else
-            //    {
-                    
-            //        #region GameTree
-            //        Hint = NowQuoridor.QuoridorRule.Action(ref NowQuoridor.ThisChessBoard, NextAction.ActionPoint.X, NextAction.ActionPoint.Y, NextAction.PlayerAction);
-            //        PlayerNowAction = NextAction.PlayerAction;
-            //        NextActionX = NextAction.ActionPoint.X;
-            //        NextActionY = NextAction.ActionPoint.Y;
-            //        #endregion 
-            //    }
-            //    if (Hint != "OK")
-            //    {
-            //        MessageBox.Show(Hint);
-            //        return Hint;
-            //    }
-            //    if (NowPlayer == EnumNowPlayer.Player1)
-            //    {
-            //        if (PlayerNowAction == NowAction.Action_PlaceVerticalBoard
-            //            || PlayerNowAction == NowAction.Action_PlaceHorizontalBoard)
-            //            NowQuoridor.ThisChessBoard.NumPlayer1Board -= 2;
-            //        NowPlayer = EnumNowPlayer.Player2;
-            //    }
-            //    else if (NowPlayer == EnumNowPlayer.Player2)
-            //    {
-            //        if (PlayerNowAction == NowAction.Action_PlaceVerticalBoard
-            //            || PlayerNowAction == NowAction.Action_PlaceHorizontalBoard)
-            //            NowQuoridor.ThisChessBoard.NumPlayer2Board -= 2;
-            //        NowPlayer = EnumNowPlayer.Player1;
-            //    }
-
-            //    SelfAction = NextAction;
-            //    ThisCM.RenewActionSequence(PlayerNowAction, NextActionX, NextActionY);
-
-            //    NowQuoridor.ThisChessBoard.DrawNowChessBoard(ref Gr, ChessWhitePB, ChessBlackPB);
-            //    ChessBoardPB.Refresh();
-
-            //    result = NowQuoridor.QuoridorRule.CheckResult(NowQuoridor.ThisChessBoard);
-            //    if (result != "No success")
-            //    {
-            //        if (result == "Player2 Success!")
-            //            ThisCM.EnterChessManual(EnumNowPlayer.Player2);
-            //        else if (result == "Player1 Success!")
-            //            ThisCM.EnterChessManual(EnumNowPlayer.Player1);
-            //        MessageBox.Show(result);
-            //        System.Environment.Exit(0);
-            //    }
-
-            //    if (NowPlayer == EnumNowPlayer.Player1)
-            //    {
-            //        //MessageBox.Show("现在轮到玩家1操作！");
-            //        TestTB.Text = "当前行动玩家：白子";
-            //        TestTB.Text += System.Environment.NewLine;
-            //        TestTB.Text += "白子剩余挡板：" + NowQuoridor.ThisChessBoard.NumPlayer1Board.ToString();
-            //        TestTB.Text += System.Environment.NewLine;
-            //        TestTB.Text += "黑子剩余挡板：" + NowQuoridor.ThisChessBoard.NumPlayer2Board.ToString();
-
-            //        PlayerNowAction = NowAction.Action_Move_Player1;
-            //    }
-            //    if (NowPlayer == EnumNowPlayer.Player2)
-            //    {
-            //        //MessageBox.Show("现在轮到玩家2操作！");
-            //        TestTB.Text = "当前行动玩家：黑子";
-            //        TestTB.Text += System.Environment.NewLine;
-            //        TestTB.Text += "白子剩余挡板：" + NowQuoridor.ThisChessBoard.NumPlayer1Board.ToString();
-            //        TestTB.Text += System.Environment.NewLine;
-            //        TestTB.Text += "黑子剩余挡板：" + NowQuoridor.ThisChessBoard.NumPlayer2Board.ToString();
-
-            //        PlayerNowAction = NowAction.Action_Move_Player2;
-            //    }
-            //    NowQuoridor.Player_Now = NowPlayer;
-            //}
-            #endregion
 
             PlaceVerticalBoardBTN.Enabled = true;
             PlaceHorizontalBoardBTN.Enabled = true;
@@ -1375,6 +1024,70 @@ namespace Quoridor_With_C
                     break;
                 default:
                     break;
+            }
+        }
+
+        private void skinTextBox1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void ConfigABP_BTN_Click(object sender, EventArgs e)
+        {
+            if (P1TypeSetCB.SelectedIndex == 0)//AI
+                NowGame.P1Type = QuoridorGame.Enum_PlayerType.AI;
+            else
+                NowGame.P1Type = QuoridorGame.Enum_PlayerType.Human;
+            if (P2TypeSetCB.SelectedIndex == 0)//AI
+                NowGame.P2Type = QuoridorGame.Enum_PlayerType.AI;
+            else
+                NowGame.P2Type = QuoridorGame.Enum_PlayerType.Human;
+            QuoridorDecisionSystem QDS = NowGame.P2DecisionSystem;
+            if (ABPConfigCB.SelectedIndex == 0)//P1
+                QDS = NowGame.P1DecisionSystem;
+
+            int Depth = Convert.ToInt16(ABPDepthSelectCB.SelectedItem);
+            bool SortNode = IfSortedCB.Checked;
+            bool UseTT = IfUseTTCB.Checked;
+            bool UseSituation = IsUseGameSituationCB.Checked;
+            double AlphaInit = Convert.ToDouble(AlphaSetTB.Text);
+            double BetaInit = Convert.ToDouble(BetaSetTB.Text);
+            int GE_Depth = Convert.ToInt16(OE_DepthSelectCB.Text);
+            double ScoreLimit = Convert.ToDouble(ScoreLimitSetTB.Text);
+            bool UseGE = false;
+            if (GE_Depth > 0)
+                UseGE = true;
+            QDS.ThisABPurningPara = new QuoridorDecisionSystem.ABPurningPara(Depth
+                , SortNode, UseTT, AlphaInit, BetaInit, UseSituation, UseGE, GE_Depth, ScoreLimit);
+
+            ShowParaConfigStr(NowGame);
+        }
+
+        private void StartGameBtn_Click(object sender, EventArgs e)
+        {
+            if (StartGameBtn.Text == "开始游戏")
+            {
+                if (P1TypeSetCB.SelectedIndex == 0)//AI
+                    NowGame.P1Type = QuoridorGame.Enum_PlayerType.AI;
+                else
+                    NowGame.P1Type = QuoridorGame.Enum_PlayerType.Human;
+                if (P2TypeSetCB.SelectedIndex == 0)//AI
+                    NowGame.P2Type = QuoridorGame.Enum_PlayerType.AI;
+                else
+                    NowGame.P2Type = QuoridorGame.Enum_PlayerType.Human;
+                ShowParaConfigStr(NowGame);
+                # region 单独给棋盘对弈一个线程
+                GameThread = new Thread(Form1.form1.QuoridorGame_Do);
+                GameThread.Start();
+                # endregion
+                StartGameBtn.Text = "重开游戏";
+            }
+            else
+            {
+                GameThread.Abort();
+                GameThread = new Thread(Form1.form1.QuoridorGame_Do);
+                GameThread.Start();
+                StartGameBtn.Text = "开始游戏";
             }
         }
 

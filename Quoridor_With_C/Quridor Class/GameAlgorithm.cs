@@ -102,7 +102,7 @@ namespace QuoridorGameAlgorithm
                 }
                 else
                 {
-                    GameTreeNode.CreateGameTree(RootNode, ThisChessBoard, ThisABPurningPara.DepthMax, false);
+                    GameTreeNode.CreateGameTree(PolicyPlayer, RootNode, ThisChessBoard, ThisABPurningPara.DepthMax, false);
                     NextPolicy = RootNode.NodeAction;
                 }   
             }
@@ -120,18 +120,65 @@ namespace QuoridorGameAlgorithm
             FormulaeListInit();
         }
         public QuoridorDecisionSystem() { FormulaeListInit(); }
+        public int FormulaePolicyNum = 0;
+        /// <summary>
+        /// 检测是否开局结束
+        /// </summary>
+        /// <param name="ThisChessBoard">待检测局面</param>
+        /// <returns>检测结果</returns>
+        public bool CheckInitialSituationEnd(ChessBoard ThisChessBoard)
+        {
+            bool Judge1 = false;
+            bool Judge2 = false;
+            bool Judge3 = false;
+            int OpponentBoardNum = ThisChessBoard.NumPlayer1Board;
+            if (PolicyPlayer == EnumNowPlayer.Player1)
+                OpponentBoardNum = ThisChessBoard.NumPlayer2Board;
+            Judge1 = OpponentBoardNum <= 12;
 
+            Point PlayerLocation = ThisChessBoard.Player1Location;
+            if (PolicyPlayer == EnumNowPlayer.Player2)
+                PlayerLocation = ThisChessBoard.Player2Location;
+            if (PolicyPlayer == EnumNowPlayer.Player1 && PlayerLocation.X >= 2)
+                Judge2 = true;
+            else if (PolicyPlayer == EnumNowPlayer.Player2 && PlayerLocation.X <= 4)
+                Judge2 = true;
+
+            Judge3 = FormulaePolicyNum >= 4;
+
+            if (Judge1 || Judge2 || Judge3)
+                return true;
+            return false;
+        }
+        /// <summary>
+        /// 获得开局时的决策
+        /// </summary>
+        /// <param name="ThisChessBoard">当前棋盘状态</param>
+        /// <returns>下一步决策</returns>
         public QuoridorAction GetFormulaePolicy(ChessBoard ThisChessBoard)
         {
             QuoridorAction NextPolicy = new QuoridorAction(NowAction.Action_Wait, new Point(-1, -1));
             string CBString = ChessBoardToString(ThisChessBoard);
-            if (FormulaeList.ContainsKey(CBString))
+            string LString = ChessBoardLocationToString(ThisChessBoard, PolicyPlayer);
+            if (CBFormulaeList.ContainsKey(CBString))//检测棋盘定式库
             {
-                NextPolicy = FormulaeList[CBString];
+                NextPolicy = CBFormulaeList[CBString];
+                if (NextPolicy.SkipChessScore == 999)
+                {
+                    NowGameSituation = GameSituation.PreviousSituation;                    
+                }
+            }
+            else if (LocationFormulaeList.ContainsKey(LString))//检测位置定式库
+            {
+                NextPolicy = LocationFormulaeList[LString];
+                if (NextPolicy.SkipChessScore == 999)
+                {
+                    NowGameSituation = GameSituation.PreviousSituation;
+                }
             }
             else//直走或者最短路径走
             {
-                Point PlayerLocation = ThisChessBoard.Player1Location;
+                Point PlayerLocation = ThisChessBoard.Player1Location;                
                 if (PolicyPlayer == EnumNowPlayer.Player2)
                 {
                     PlayerLocation = ThisChessBoard.Player2Location;
@@ -151,23 +198,26 @@ namespace QuoridorGameAlgorithm
                     List<QuoridorAction> MoveActionList = new List<QuoridorAction>();
 
                     NowEvalution.AddMoveAction(ref MoveActionList, ThisChessBoard, PolicyPlayer, PlayerLocation);
-                    double MinRoad = 999;
-                    foreach (QuoridorAction QA in MoveActionList)
-                    {
-                        if (QA.SelfScore < MinRoad)
-                        {
-                            MinRoad = QA.SelfScore;
-                            NextPolicy = QA;
-                        }
-                    }
+                    NowEvalution.ActionListEvaluation(ThisChessBoard, ref MoveActionList, PolicyPlayer, 0, 0, -50);
+                    NextPolicy = MoveActionList[0];
+                }
+                if (CheckInitialSituationEnd(ThisChessBoard))
+                {
+                    NowGameSituation = GameSituation.PreviousSituation;
                 }
             }
+            FormulaePolicyNum++;
             return NextPolicy;
         }
         /// <summary>
         /// 定式库
         /// </summary>
-        public Dictionary<string, QuoridorAction> FormulaeList = new Dictionary<string, QuoridorAction>();
+        public Dictionary<string, QuoridorAction> CBFormulaeList = new Dictionary<string, QuoridorAction>();
+        /// <summary>
+        /// 位置定式库
+        /// </summary>
+        public Dictionary<string, QuoridorAction> LocationFormulaeList = new Dictionary<string, QuoridorAction>();
+
         /// <summary>
         /// 把Grid对象转换成Int数字
         /// </summary>
@@ -195,6 +245,22 @@ namespace QuoridorGameAlgorithm
             return Buff;
         }
         /// <summary>
+        /// 将棋盘玩家位置状态转换成字符串
+        /// </summary>
+        public string ChessBoardLocationToString(ChessBoard ThisChessBoard, EnumNowPlayer Player)
+        {
+            string LStr = "";
+            Point PlayerLocation = ThisChessBoard.Player1Location;
+            if (Player == EnumNowPlayer.Player2)
+                PlayerLocation = ThisChessBoard.Player2Location;
+            if (Player == EnumNowPlayer.Player1)
+                LStr = "P1:";
+            else
+                LStr = "P2:";
+            LStr += PlayerLocation.X.ToString() + "," + PlayerLocation.Y.ToString();
+            return LStr;
+        }
+        /// <summary>
         /// 将棋盘状态转换成字符串
         /// </summary>
         public string ChessBoardToString(ChessBoard ThisChessBoard)
@@ -211,25 +277,102 @@ namespace QuoridorGameAlgorithm
             }
             return CBStr;
         }
+        public void AddFormulae(Dictionary<string, QuoridorAction> ListToAdd, string FormulaeStr, int ActionNum, bool IfFinish)
+        {
+            QuoridorAction NowActionBuff = new QuoridorAction(NowAction.Action_Wait, new Point(-1, -1));
+            int ActionIndex = ActionNum / 100;
+            switch (ActionIndex)
+            {
+                case 0:
+                    NowActionBuff.PlayerAction = NowAction.Action_PlaceVerticalBoard;
+                    break;
+                case 1:
+                    NowActionBuff.PlayerAction = NowAction.Action_PlaceHorizontalBoard;
+                    break;
+                case 2:
+                    NowActionBuff.PlayerAction = NowAction.Action_Move_Player1;
+                    break;
+                case 3:
+                    NowActionBuff.PlayerAction = NowAction.Action_Move_Player2;
+                    break;
+                default:
+                    break;
+            }
+            int row = (ActionNum / 10) % 10;
+            int col = ActionNum % 10;
+            NowActionBuff.ActionPoint = new Point(row, col);
+            if (IfFinish)
+                NowActionBuff.SkipChessScore = 999;
+            ListToAdd.Add(FormulaeStr, NowActionBuff);
+        }
         public void FormulaeListInit()
         {
             string CBStr = "";
+            int ActionNumBuff = 0;
             # region 手动录入定式库
             ///1
             ChessBoard CBBuff = new ChessBoard();
             QuoridorAction ActionBuff = new QuoridorAction(NowAction.Action_Wait, new Point(-1, -1));
-            CBBuff.ChessBoardAll[6, 1].IfUpBoard = true;
-            CBBuff.ChessBoardAll[6, 2].IfUpBoard = true;
-            CBBuff.ChessBoardAll[6, 3].IfUpBoard = true;
-            CBBuff.ChessBoardAll[6, 4].IfUpBoard = true;
+            CBStr = "1616164161616161616161616161616161616161616161616161616161616161616161616161616161616181018181616";
+            AddFormulae(CBFormulaeList, CBStr, 55, true);
+            ///2      
+            CBBuff = new ChessBoard();
+            ActionBuff = new QuoridorAction(NowAction.Action_Wait, new Point(-1, -1));
+            CBBuff.ChessBoardAll[5, 1].IfUpBoard = true;
+            CBBuff.ChessBoardAll[5, 2].IfUpBoard = true;
+            CBBuff.ChessBoardAll[5, 3].IfUpBoard = true;
+            CBBuff.ChessBoardAll[5, 4].IfUpBoard = true;
+            CBBuff.ChessBoardAll[0, 3].GridStatus = Grid.GridInsideStatus.Empty;
+            CBBuff.ChessBoardAll[1, 3].GridStatus = Grid.GridInsideStatus.Have_Player1;
             CBBuff.ChessBoardAll[6, 3].GridStatus = Grid.GridInsideStatus.Empty;
-            CBBuff.ChessBoardAll[6, 2].GridStatus = Grid.GridInsideStatus.Have_Player2;
+            CBBuff.ChessBoardAll[5, 2].GridStatus = Grid.GridInsideStatus.Have_Player2;
             ActionBuff.PlayerAction = NowAction.Action_PlaceVerticalBoard;
-            ActionBuff.ActionPoint = new Point(5, 5);
+            ActionBuff.ActionPoint = new Point(5, 3);
             ActionBuff.SkipChessScore = 999;
             CBStr = ChessBoardToString(CBBuff);
-            FormulaeList.Add(CBStr, ActionBuff);
-            ///2
+            CBFormulaeList.Add(CBStr, ActionBuff);
+
+            ///3
+            CBBuff = new ChessBoard();
+            ActionBuff = new QuoridorAction(NowAction.Action_Wait, new Point(-1, -1));
+            CBBuff.ChessBoardAll[0, 3].GridStatus = Grid.GridInsideStatus.Empty;
+            CBBuff.ChessBoardAll[2, 3].GridStatus = Grid.GridInsideStatus.Have_Player1;
+            CBBuff.ChessBoardAll[6, 3].GridStatus = Grid.GridInsideStatus.Empty;
+            CBBuff.ChessBoardAll[4, 3].GridStatus = Grid.GridInsideStatus.Have_Player2;
+            ActionBuff.PlayerAction = NowAction.Action_PlaceHorizontalBoard;
+            ActionBuff.ActionPoint = new Point(2, 3);
+            ActionBuff.SkipChessScore = 999;
+            CBStr = ChessBoardToString(CBBuff);
+            CBFormulaeList.Add(CBStr, ActionBuff);
+            ///4
+            CBBuff = new ChessBoard();
+            ActionBuff = new QuoridorAction(NowAction.Action_Wait, new Point(-1, -1));
+            CBBuff.ChessBoardAll[0, 3].GridStatus = Grid.GridInsideStatus.Empty;
+            CBBuff.ChessBoardAll[1, 3].GridStatus = Grid.GridInsideStatus.Have_Player1;
+            CBBuff.ChessBoardAll[6, 3].GridStatus = Grid.GridInsideStatus.Empty;
+            CBBuff.ChessBoardAll[5, 3].GridStatus = Grid.GridInsideStatus.Have_Player2;
+            ActionBuff.PlayerAction = NowAction.Action_Move_Player1;
+            ActionBuff.ActionPoint = new Point(2, 3);
+            // ActionBuff.SkipChessScore = 999;
+            CBStr = ChessBoardToString(CBBuff);
+            CBFormulaeList.Add(CBStr, ActionBuff);
+            ///5
+            CBBuff = new ChessBoard();
+            ActionBuff = new QuoridorAction(NowAction.Action_Wait, new Point(-1, -1));
+            CBBuff.ChessBoardAll[2, 3].IfUpBoard = true;
+            CBBuff.ChessBoardAll[2, 4].IfUpBoard = true;
+            CBBuff.ChessBoardAll[5, 2].IfUpBoard = true;
+            CBBuff.ChessBoardAll[5, 3].IfUpBoard = true;
+            CBBuff.ChessBoardAll[6, 3].GridStatus = Grid.GridInsideStatus.Empty;
+            CBBuff.ChessBoardAll[4, 3].GridStatus = Grid.GridInsideStatus.Have_Player2;
+            CBBuff.ChessBoardAll[0, 3].GridStatus = Grid.GridInsideStatus.Empty;
+            CBBuff.ChessBoardAll[2, 3].GridStatus = Grid.GridInsideStatus.Have_Player2;
+            ActionBuff.PlayerAction = NowAction.Action_PlaceVerticalBoard;
+            ActionBuff.ActionPoint = new Point(3, 3);
+            ActionBuff.SkipChessScore = 999;
+            CBStr = ChessBoardToString(CBBuff);
+            CBFormulaeList.Add(CBStr, ActionBuff);
+
             # endregion
         }
     }
