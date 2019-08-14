@@ -478,7 +478,6 @@ namespace GameTree
             {
                 string SonTextbuff = GetGameTreeNodeViewText(Son, false, true);
                 TreeNode SonTreeNode = new TreeNode(SonTextbuff);
-
                 NowTreeNode.Nodes.Add(SonTreeNode);
                 GameTreeView(Son, SonTreeNode);
                 if (NowNode.depth == 0)

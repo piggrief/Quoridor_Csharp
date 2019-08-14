@@ -180,7 +180,7 @@
             this.TestTB.Name = "TestTB";
             this.TestTB.NormlBack = null;
             this.TestTB.Padding = new System.Windows.Forms.Padding(5);
-            this.TestTB.ReadOnly = false;
+            this.TestTB.ReadOnly = true;
             this.TestTB.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.TestTB.Size = new System.Drawing.Size(626, 55);
             // 
@@ -192,6 +192,7 @@
             this.TestTB.SkinTxt.Location = new System.Drawing.Point(5, 5);
             this.TestTB.SkinTxt.Multiline = true;
             this.TestTB.SkinTxt.Name = "BaseText";
+            this.TestTB.SkinTxt.ReadOnly = true;
             this.TestTB.SkinTxt.Size = new System.Drawing.Size(616, 45);
             this.TestTB.SkinTxt.TabIndex = 0;
             this.TestTB.SkinTxt.WaterColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(127)))), ((int)(((byte)(127)))));
@@ -644,6 +645,7 @@
             this.IfUseTT_CopareCB.Size = new System.Drawing.Size(371, 329);
             this.IfUseTT_CopareCB.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.IfUseTT_CopareCB.TabIndex = 35;
+            this.IfUseTT_CopareCB.KeyUp += new System.Windows.Forms.KeyEventHandler(this.IfUseTT_CopareCB_KeyUp);
             // 
             // skinTabPage3
             // 
@@ -1365,6 +1367,9 @@
             this.Text = "步步为营游戏仿真环境";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Form1_KeyPress);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyUp);
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseClick);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseMove);

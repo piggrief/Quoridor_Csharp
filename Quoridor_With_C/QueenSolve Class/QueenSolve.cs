@@ -28,7 +28,7 @@ namespace Queen
             EuclideanDistance,
             ManhattanDistance_Diagonal
         }
-        public DistanceCalMethod UsedCalMethod = DistanceCalMethod.ManhattanDistance;//TSP问题使用的距离公式
+        public DistanceCalMethod UsedCalMethod = DistanceCalMethod.EuclideanDistance;//TSP问题使用的距离公式
         double DiagonalWalkTimeRate = Math.Sqrt(2);//斜走一个距离放大系数
         double StraightWalkTimeRate = 1;//直走一个距离放大系数
 
@@ -48,7 +48,7 @@ namespace Queen
                 case DistanceCalMethod.ManhattanDistance:
                     return Convert.ToDouble(Math.Abs(x1 - x2) + Math.Abs(y1 - y2));
                 case DistanceCalMethod.EuclideanDistance:
-                    double sum_pingfang = x1 * x1 + y1 * y1;
+                    double sum_pingfang = (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
                     return Math.Sqrt(Convert.ToDouble(sum_pingfang));
                 case DistanceCalMethod.ManhattanDistance_Diagonal:
                     int x0 = Math.Abs(x1 - x2);
